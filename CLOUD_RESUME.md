@@ -1,3 +1,9 @@
+## Ethernet ten-output hold repair targeted PASS — 2026-11-15
+
+Run43648005592/headf58d9ada2b6441b33ea8c27ff693e7a1e6c525f6 completed SUCCESS. All60targeted outputs/corners/setup-hold checks >=50ps. Worst hold slow/typical/fast +1.611442327/+.725703955/+.242022291ns; worst setup +2.147369862/+3.322887897/+3.968505621ns. CandidateODB635f0e623eb202d845bde5a1f29f65466cf82f639dc2f7044aaabcac1451c203. Safe14135181374 SHAa42354f2b51531f3e4bd645dccbc35776eaed567ead072579d830765440f7149; native14134996872 SHAe6893782d2385474b989299f52807ea4e4c11f4ffc06a6a366310fe3484d5832. Receipt docs/evidence/rx-ethernet-hold-eco-20261115.json. Source trainingECOunchanged, twentyidentitydelaycells only; actual io reports in native archive (safe has result hashes but report upload glob was old training glob).
+
+Wholechip comparison43648249331 still pending at check; inspect its outcome BEFORE treating ECO as nonregressive. Targeted PASS does not close remaining setup, internal hold, routing or production signoff. PCIe targeted input run43648146822 still live; preserve its distinct baseline when using results. RXbankmainchip43646859306 and packedPHY43642783223 continue.
+
 ## RX bank traffic PASS, full RTL qualification complete — 2026-11-15
 
 Traffic43646430563/job132605179099/head a5084f973055411c1891033fadf040b9055c9dfd completed SUCCESS. Exact RTL6e8736695b6fe059716fd90b5b8d969ca80a326f6c3a4705325bb5b7ec8831c0: eight300000cycle reference cases passed and eight ready-inversion mutations rejected. Artifact14135230618 SHA256f7b4174d19a9a4957ee989856c404cea9c93b2d2d3e16f27f36a04d1338f86bf; all16case logs authenticated and actual PASS/MISMATCH messages independently inspected. Receipt docs/evidence/rx-bank-local-traffic-20261115.json. Combined with formal14133878061/92b362a146853ab4680bbf46fd134d0970701524521077d286383fe57bff6918, exact new bank source now has both intended RTL qualification gates. This is NOT physical signoff or proof of setup improvement.
