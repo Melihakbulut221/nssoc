@@ -1,3 +1,13 @@
+# Corrected clock-capture diagnosis: physical cp/cn were saved
+
+Clock audit43571554607 source`df70272f91e5819edc20421868e6ef7e0fdd4382` completed/success. Safe14104249669SHA`3030d7a5065d48fea1a0857aa4a081dbce2944a0b8e2118e73aab84b68d49329`. Exact full acbuf15 raw reproduces original failed data/device gates. Both v(cp),v(cn) exist. Prior notes saying clock vectors were absent were incorrect: clk/clock substring search missed cp/cn. Corrected both settling scripts to include contract-bound cp/cn aliases. Full diagnosis source and report preserved in scripts/diagnose_cdr_saved_clock.py and docs/evidence/cdr-saved-clock-port-result-20261114.json.
+
+Receiver port crossings:258/258 rising,257/257 falling; rising source-relative10.987..11.662ps,falling10.889..11.207ps. Differentialrange-0.29949..+0.27762V, commonmode1.28353..1.29335V. These are receiver port voltages, NOT internal latch-clock timing, PLL recovery, jitter qualification or timing acceptance. Original stimulus-referenced sampler thresholds/windows remain unchanged; do not subtract observed delay to obtain a pass. Existing captured internal device-base voltages may permit further stage diagnosis without new simulation once actual topology identified.
+
+New acload12/16screen43571075470 still live at last poll; other six43569629324,43567570194,43566292104,43562021054,43561900502,43558722004 also live. Fullgoalopen.
+
+---
+
 # Exact CDR failure recovered; independent collector-load screen running
 
 Native diagnosis43570807730 completed/success: original sampler/comparison and device gates reproduced exactly from full raw. acbuf15 eight HBT violations are active minimumVce0.2186..0.3017V vs0.4V floor, NOT excessive current. acbuf20 lowers selectorVce to0.0734..0.1273V and adds buffer/tail headroom violations plus three startupVce peaks1.603..1.609V vs1.6V ceiling. Do not relax those bounds. C sampler low-margin samples occur only when bits[k-2]!=bits[k-1] in the diagnosed interior history; not a proven clock-topology explanation. No internal clock measurement inferred.
