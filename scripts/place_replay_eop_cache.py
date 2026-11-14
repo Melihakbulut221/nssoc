@@ -93,6 +93,16 @@ detailed_placement
 check_placement -verbose
 estimate_parasitics -placement
 reports electrical_repair
+repair_timing -setup -max_iterations 100
+detailed_placement
+check_placement -verbose
+estimate_parasitics -placement
+reports setup_repair
+repair_timing -hold -max_iterations 1000
+detailed_placement
+check_placement -verbose
+estimate_parasitics -placement
+reports hold_repair
 puts NSSOC_REPLAY_PLACEMENT_SCREEN_COMPLETE_NOT_ROUTED
 """
  script=nfolder/'place.tcl';script.write_text(tcl)
@@ -105,6 +115,6 @@ puts NSSOC_REPLAY_PLACEMENT_SCREEN_COMPLETE_NOT_ROUTED
   text=report.read_text();slacks=re.findall(r'([-+]?[0-9]+\.[0-9]+)\s+slack\s+\((?:MET|VIOLATED)\)',text)
   assert slacks,(report,text[-1000:])
   row[report.name]={'worst_reported_slack_ns':min(map(float,slacks)),'reported_paths':len(slacks),'sha256':sha(report)}
- assert len(row)==12
+ assert len(row)==24
  result['cases'][label]=row;(out/'placement-comparison.json').write_text(json.dumps(result,indent=2)+'\n')
 result['status']='COMPLETE_ISOLATED_PLACEMENT_ESTIMATE_NOT_TIMING_ACCEPTED';(out/'placement-comparison.json').write_text(json.dumps(result,indent=2)+'\n')

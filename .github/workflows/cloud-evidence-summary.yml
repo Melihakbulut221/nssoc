@@ -1,4 +1,4 @@
-name: Replay EOP cache identical-area native placement screen
+name: Replay EOP cache guarded setup hold repair comparison
 on:
   workflow_dispatch:
 permissions:
@@ -36,7 +36,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: replay-eop-cache-placement-${{ github.run_id }}
+          name: replay-eop-cache-timing-repair-${{ github.run_id }}
           path: |
             out/*.json
             out/baseline/*.log
@@ -47,6 +47,6 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: replay-eop-cache-placement-native-${{ github.run_id }}
+          name: replay-eop-cache-timing-repair-native-${{ github.run_id }}
           path: out/native
           retention-days: 30
