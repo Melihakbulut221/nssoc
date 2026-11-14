@@ -1,0 +1,120 @@
+{
+  "run": 43528773096,
+  "source": "e8d24c8d92dbec192db84115d8c8110f82a1812c",
+  "artifact": 14096209969,
+  "sha256": "060df5b533bae871a584bc37254816ee44637337a527b3b04ea5daea193ed790",
+  "accepted": false,
+  "route_metrics": {
+    "antenna__violating__nets": 1,
+    "antenna__violating__pins": 1,
+    "route__antenna_violation__count": 1,
+    "antenna_diodes_count": 610,
+    "design__instance__count__class:antenna_cell": 1128,
+    "design__instance__area__class:antenna_cell": 6139.93,
+    "route__drc_errors__iter:0": 1372,
+    "route__drc_errors__iter:1": 296,
+    "route__drc_errors__iter:2": 276,
+    "route__drc_errors__iter:3": 17,
+    "route__drc_errors__iter:4": 3,
+    "route__drc_errors__iter:5": 3,
+    "route__drc_errors__iter:6": 2,
+    "route__drc_errors__iter:7": 2,
+    "route__drc_errors": 0,
+    "route__drc_errors__iter:8": 1,
+    "route__drc_errors__iter:9": 1,
+    "route__drc_errors__iter:10": 1,
+    "route__drc_errors__iter:11": 0
+  },
+  "corners": {
+    "nom_fast_1p32V_m40C": {
+      "metrics": {
+        "clock__skew__worst_hold": -0.7362052287287091,
+        "clock__skew__worst_setup": 0.9328438285864451,
+        "design__max_cap_violation__count": 111,
+        "design__max_fanout_violation__count": 1429,
+        "design__max_slew_violation__count": 138,
+        "timing__hold__tns": -4.781761344453476,
+        "timing__hold__wns": -0.3196499821975733,
+        "timing__hold__ws": -0.3196499821975733,
+        "timing__hold_r2r__ws": -0.31965,
+        "timing__hold_r2r_vio__count": 82,
+        "timing__hold_vio__count": 82,
+        "timing__setup__tns": 0,
+        "timing__setup__wns": 0,
+        "timing__setup__ws": 1.3820256441541927,
+        "timing__setup_r2r__ws": 1.382026,
+        "timing__setup_r2r_vio__count": 0,
+        "timing__setup_vio__count": 0,
+        "timing__unannotated_net__count": 6363,
+        "timing__unannotated_net_filtered__count": 0
+      },
+      "setup_groups": {},
+      "hold_groups": {
+        "clk_i": 5,
+        "eth_rx_clk_i": 18,
+        "pcie_clk_i": 59
+      }
+    },
+    "nom_slow_1p08V_125C": {
+      "metrics": {
+        "clock__skew__worst_hold": -1.1116562429674308,
+        "clock__skew__worst_setup": 1.8422984770293185,
+        "design__max_cap_violation__count": 104,
+        "design__max_fanout_violation__count": 1429,
+        "design__max_slew_violation__count": 695,
+        "timing__hold__tns": -0.5873324215441449,
+        "timing__hold__wns": -0.2527476077746256,
+        "timing__hold__ws": -0.2527476077746256,
+        "timing__hold_r2r__ws": -0.252748,
+        "timing__hold_r2r_vio__count": 3,
+        "timing__hold_vio__count": 3,
+        "timing__setup__tns": -478.9968806062795,
+        "timing__setup__wns": -2.0702151689998187,
+        "timing__setup__ws": -2.0702151689998187,
+        "timing__setup_r2r__ws": -2.070215,
+        "timing__setup_r2r_vio__count": 1358,
+        "timing__setup_vio__count": 1367,
+        "timing__unannotated_net__count": 6363,
+        "timing__unannotated_net_filtered__count": 0
+      },
+      "setup_groups": {
+        "asynchronous": 49,
+        "clk_i": 544,
+        "eth_tx_clk_i": 1,
+        "pcie_clk_i": 773
+      },
+      "hold_groups": {
+        "eth_rx_clk_i": 3
+      }
+    },
+    "nom_typ_1p20V_25C": {
+      "metrics": {
+        "clock__skew__worst_hold": -0.8401999334088212,
+        "clock__skew__worst_setup": 1.202111555434714,
+        "design__max_cap_violation__count": 106,
+        "design__max_fanout_violation__count": 1429,
+        "design__max_slew_violation__count": 262,
+        "timing__hold__tns": -0.9696095312205271,
+        "timing__hold__wns": -0.22761837503534674,
+        "timing__hold__ws": -0.22761837503534674,
+        "timing__hold_r2r__ws": -0.227618,
+        "timing__hold_r2r_vio__count": 11,
+        "timing__hold_vio__count": 11,
+        "timing__setup__tns": 0,
+        "timing__setup__wns": 0,
+        "timing__setup__ws": 0.07291811805201595,
+        "timing__setup_r2r__ws": 0.072918,
+        "timing__setup_r2r_vio__count": 0,
+        "timing__setup_vio__count": 0,
+        "timing__unannotated_net__count": 6363,
+        "timing__unannotated_net_filtered__count": 0
+      },
+      "setup_groups": {},
+      "hold_groups": {
+        "eth_rx_clk_i": 11
+      }
+    }
+  },
+  "scope": "Old cut10j four-driver plus antenna-repair candidate, original clock constraints, core-only nominal RC corners. Not new CRC RTL, full chip padframe or manufacturing closure.",
+  "decision": "Reject: route DRC zero but antenna and timing/electrical gates fail. Do not adopt. Existing five-driver, isolated RX hold and fresh CRC runs remain separate live candidates."
+}
