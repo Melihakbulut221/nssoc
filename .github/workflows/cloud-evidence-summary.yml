@@ -1,4 +1,4 @@
-name: Inspect paired650 actual comparator input transfer and headroom
+name: Inspect actual paired650 interface drivers and native metal RC
 on:
   workflow_dispatch:
 permissions:
@@ -19,21 +19,21 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/diagnose_paired650_loaded.py
-            /scripts/cdr_mos650_full650_loaded.py
+            /scripts/diagnose_paired650_drive_rc.py
+            /scripts/cdr_mos650_spice_syntax.py
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Read authenticated existing waveform only in cloud
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
+      - name: Read authenticated circuit and solve actual passive conductor matrices
         run: |
           sudo mkdir -p /mnt/paired650-wave-audit
           sudo chown "$USER" /mnt/paired650-wave-audit
-          python3 -B scripts/diagnose_paired650_loaded.py
+          python3 -B scripts/diagnose_paired650_drive_rc.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-input-transfer-${{ github.run_id }}
+          name: paired650-drive-rc-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
