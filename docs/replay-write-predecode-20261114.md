@@ -31,3 +31,19 @@ The tested source and helpers are now integrated, with the switch **default off*
 [Identical-library mapping](https://github.com/Melihakbulut221/nssoc/actions/runs/43615106119) passed for both versions. Isolated replay cell counts are 5,900 baseline versus 5,898 predecode; sequential cells increase from 1,605 to 1,622. This is not a clock-load, area-of-chip or timing verdict. Direct write-control sink counts include mapper-created buffer trees and do not establish end-to-end path delay. The first reporting attempt rejected two zero-port Yosys `$scopeinfo` metadata records; the corrected analyzer explicitly checks that these have no connections, and still rejects every unknown hardware cell type. See [mapping receipt](evidence/replay-write-predecode-mapping-20261114.json).
 
 Next measure the affected and newly exposed paths after physical implementation, then run coherent full-chip routing, extraction, original-clock all-corner timing and physical verification. Earlier routed/LVS passes do not apply to a new netlist. Full serial PHY and manufacturing qualification remain separate open requirements.
+
+## Same-area physical screen and exact write-path readback
+
+[Native placement comparison](https://github.com/Melihakbulut221/nssoc/actions/runs/43616617171) used identical 600 by 600 micrometre cores, the same cells and constraints, a 4 ns ideal clock and placement-estimated wire RC. [Readback](https://github.com/Melihakbulut221/nssoc/actions/runs/43617173813) used the exact saved databases without moving cells. It identified all nine baseline and all 26 predecoded write-register clock pins, then reported their paths to register data pins.
+
+| Measurement | Baseline | Predecode |
+|---|---:|---:|
+| Write path slow setup, placed | -1.373463 ns | +0.403627 ns |
+| Write path slow setup, electrical repair | -0.883149 ns | +0.131997 ns |
+| Write path fast hold, electrical repair | +0.269111 ns | +0.182012 ns |
+| All register paths slow setup, electrical repair | -2.358329 ns | -2.344590 ns |
+| All register paths fast hold, electrical repair | -0.057772 ns | -0.059318 ns |
+
+The targeted path improves by 1.015146 ns after electrical repair in this isolated screen. Overall timing still fails because other paths remain. Ideal-clock placement estimates do not prove a corresponding full-chip improvement. The experiment switch remains default off pending whole-chip implementation and extracted timing. [Receipt](evidence/replay-write-predecode-placement-20261114.json) binds both native placements and all report hashes.
+
+An initial parser failure was resolved without altering logic: OpenSTA rejected `wire signed` on the retained CRC loop-index metadata. The adapter checks the mapped JSON proves this wire is a nonnegative constant, removes only that declaration qualifier, and verifies reversing the edit restores the original netlist byte-for-byte. Signed data/state wires are not permitted through that adapter.
