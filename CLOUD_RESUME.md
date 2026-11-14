@@ -1,3 +1,7 @@
+## Residual hold census complete — 2026-11-15
+
+Run43649796906/head2cf06c24822c96d805c9c6a7bd1a4229b043404d SUCCESS. Safe14134799084 SHA395a053dbc2c7809a2b33b4c8a9339310b2be89e5a2c103289d4c1ace6ff3f2c. Exact combinedODB de8647ca... has230remaining fast hold endpoints:227pcie_clk_i,3clk_i.97endpoint setup pairs absent in capped max report; need targeted -to actualdata pins for these before ECO. Worst Ethernet TX FIFO SRAM bank2 fromFFslice376654, fast-.163726ns; endpointworst slowsetup+1.846647ns. Bank3 fromslice376655 fast-.126689, slowsetup+1.859098. Next worstPCIe FFslice164433 self-feedbackQ->nand2->o21ai->D fast-.060047ns; setup absent. Full negative minpath text is in census.json, so derive actualterminal (especiallySRAM) from data-arrival section, not just instanceendpoint. Consider fast-corner-aware internal hold repair but do not regress slowsetup or waive clocks. New RXbankRTL physicalcandidate is still separate and source-bound.
+
 ## Combined I/O repair PASS; slow/typical hold zero — 2026-11-15
 
 Producer43648980039/head95929ee677c79d9bab52f47c28f684eedb91795a completed SUCCESS. CandidateODBde8647caef5c3d38121edeb9d102f53e5406f77371ca161d254459aad58075ca; native14135173417 SHA31bfe99bd985d6edfd9246d21c511edf2d17f17371d091158bf9299c909f824b. Safe14135452833 SHA1748d71661772a2e02b2d0c10a0b0db0e85b871bdf8f8291b9fc4c2448979939. All240targeted reports authenticated, all40IOsetup/holdchecks >=50ps. Worst setup slow/typ/fast +.725850523/+1.675288439/+2.164728642ns; worst hold +.666230619/+.278011858/+.089237399ns.
