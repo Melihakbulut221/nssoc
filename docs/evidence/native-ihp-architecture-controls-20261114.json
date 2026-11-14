@@ -1,0 +1,310 @@
+{
+  "run": 43557240046,
+  "source": "8a4f8605f4e6ac501f111df5ccbb0ea868bdd514",
+  "observed_utc": "2026-11-14T04:36:02.843057+00:00",
+  "artifacts": [
+    {
+      "id": 14098123802,
+      "name": "native-model-x64-result",
+      "sha256": "05e660a27508e16b75cfe18e3fbe558032e2cb6f59d54ac9e283f72e1a93c299",
+      "result": {
+        "status": "PASS",
+        "scope": "Native mapped SCRUBCTL recovery and known-value semantics; not whole-SoC acceptance",
+        "commands": [
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/yosys",
+              "-s",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/synth.ys"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.4647990009999887,
+            "log_sha256": "62e0b3549a8974d3895cc19928b8d1610efefd6c4b9a2e439dde4fdee143ce25"
+          },
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/iverilog",
+              "-g2012",
+              "-DFUNCTIONAL",
+              "-s",
+              "tb_scrub_native_clear",
+              "-o",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/positive.vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_scrub_native_clear.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/netlist.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.06402367400001197,
+            "log_sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+          },
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/positive.vvp"
+            ],
+            "returncode": 0,
+            "elapsed_s": 6.674978898000006,
+            "log_sha256": "f30ccf13f34cfc5ce3d7a887653e6360da2be3fb4c4a18700a4241b527ed7bd9"
+          },
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/iverilog",
+              "-g2012",
+              "-DFUNCTIONAL",
+              "-s",
+              "tb",
+              "-o",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/negative.vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/fixtures/tb_scrub_clear_negative.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/fixtures/scrub_counter_clear_pre_fix.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.032039380000000506,
+            "log_sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+          },
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/negative.vvp"
+            ],
+            "returncode": 1,
+            "elapsed_s": 0.015578791000010028,
+            "log_sha256": "a622ca17bc4a10c7ff255d407d90249b82fe9bc51436bfd10d77aa62d714fd37"
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/scripts/check_scrub_native.py": "e3c9d7eeee73d83f523047ac869ea271c01dcb54833d5eb834e1102f7f38637c",
+          "/home/runner/work/nssoc/nssoc/hw/soc/rtl/soc_scrub.v": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_scrub_native_clear.v": "f3d50eed1121d7f8ee3f88b96d96cd2cd12a1fb7e6f8a9f71ea088ef085c3253",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/fixtures/scrub_counter_clear_pre_fix.v": "59ee325f869d6f8bea00ff33535700fc3597e76cbe42bff8f4724801452ed8ef",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/fixtures/tb_scrub_clear_negative.v": "5638ec623eef25f193657ba02ff022ffaec1220e6d00ed1375256131b46fc10f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+        },
+        "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-337-ge39348712-dirty)",
+        "yosys": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)",
+        "native_cell": {
+          "library": "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+          "compile": {
+            "command": [
+              "/tmp/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-s",
+              "tb_native_cell_gate",
+              "-o",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/native-cell/sim.vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/native-cell/tb_native_cell_gate.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.015553283999992118
+          },
+          "runs": [
+            {
+              "command": [
+                "/tmp/oss-cad-suite/bin/vvp",
+                "-i",
+                "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/native-cell/sim.vvp"
+              ],
+              "returncode": 0,
+              "elapsed_s": 0.0075200619999975515,
+              "pass_banner": true
+            }
+          ],
+          "passed": true
+        },
+        "sources_unchanged": true
+      }
+    },
+    {
+      "id": 14097789782,
+      "name": "native-model-arm64-result",
+      "sha256": "85fbb3abc4eec77f5ca568bc336355751560e90a2c368a8746b1d337deecdb73",
+      "result": {
+        "status": "PASS",
+        "scope": "Native mapped SCRUBCTL recovery and known-value semantics; not whole-SoC acceptance",
+        "commands": [
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/yosys",
+              "-s",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/synth.ys"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.5151483379999036,
+            "log_sha256": "227a840cdb8dead97701ce4b7a9ce313f5ccc4ad899dfaaceefce394534ce37c"
+          },
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/iverilog",
+              "-g2012",
+              "-DFUNCTIONAL",
+              "-s",
+              "tb_scrub_native_clear",
+              "-o",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/positive.vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_scrub_native_clear.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/netlist.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.06399610799996935,
+            "log_sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+          },
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/positive.vvp"
+            ],
+            "returncode": 0,
+            "elapsed_s": 7.2332771410000305,
+            "log_sha256": "f30ccf13f34cfc5ce3d7a887653e6360da2be3fb4c4a18700a4241b527ed7bd9"
+          },
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/iverilog",
+              "-g2012",
+              "-DFUNCTIONAL",
+              "-s",
+              "tb",
+              "-o",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/negative.vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/fixtures/tb_scrub_clear_negative.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tb/fixtures/scrub_counter_clear_pre_fix.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.031844464999949196,
+            "log_sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+          },
+          {
+            "command": [
+              "/tmp/oss-cad-suite/bin/vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/negative.vvp"
+            ],
+            "returncode": 1,
+            "elapsed_s": 0.015609913000048437,
+            "log_sha256": "a622ca17bc4a10c7ff255d407d90249b82fe9bc51436bfd10d77aa62d714fd37"
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/scripts/check_scrub_native.py": "e3c9d7eeee73d83f523047ac869ea271c01dcb54833d5eb834e1102f7f38637c",
+          "/home/runner/work/nssoc/nssoc/hw/soc/rtl/soc_scrub.v": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_scrub_native_clear.v": "f3d50eed1121d7f8ee3f88b96d96cd2cd12a1fb7e6f8a9f71ea088ef085c3253",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/fixtures/scrub_counter_clear_pre_fix.v": "59ee325f869d6f8bea00ff33535700fc3597e76cbe42bff8f4724801452ed8ef",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/fixtures/tb_scrub_clear_negative.v": "5638ec623eef25f193657ba02ff022ffaec1220e6d00ed1375256131b46fc10f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+        },
+        "iverilog": "Icarus Verilog version 14.0 (devel) (s20260301-343-g591d2c247-dirty)",
+        "yosys": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, GNU /usr/bin/aarch64-linux-gnu-g++ 15.2.0)",
+        "native_cell": {
+          "library": "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+          "compile": {
+            "command": [
+              "/tmp/oss-cad-suite/bin/iverilog",
+              "-g2005-sv",
+              "-s",
+              "tb_native_cell_gate",
+              "-o",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/native-cell/sim.vvp",
+              "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/native-cell/tb_native_cell_gate.v",
+              "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+            ],
+            "returncode": 0,
+            "elapsed_s": 0.03175103699993542
+          },
+          "runs": [
+            {
+              "command": [
+                "/tmp/oss-cad-suite/bin/vvp",
+                "-i",
+                "/home/runner/work/nssoc/nssoc/hw/soc/out/native-architecture/native-cell/sim.vvp"
+              ],
+              "returncode": 0,
+              "elapsed_s": 0.015855038000040622,
+              "pass_banner": true
+            }
+          ],
+          "passed": true
+        },
+        "sources_unchanged": true
+      }
+    }
+  ],
+  "scope": "Native flip-flop gate and mapped SCRUB positive and known-failing negative controls passed on x86 and ARM, pinned original suite. Not SRAM, whole-chip MBIST or checkpoint acceptance.",
+  "next_run": 43557409470,
+  "next_source": "85aeb1e224eca0cf2d1f5008da9e8ed59e4d199d",
+  "live_cad_snapshot": [
+    {
+      "run": 43553707234,
+      "jobs": [
+        {
+          "id": 132321681018,
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 43550440744,
+      "jobs": [
+        {
+          "id": 132311448151,
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 43541234973,
+      "jobs": [
+        {
+          "id": 132282035917,
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 43538031308,
+      "jobs": [
+        {
+          "id": 132271681912,
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 43529228292,
+      "jobs": [
+        {
+          "id": 132242493345,
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 132242493732,
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 43534692191,
+      "jobs": [
+        {
+          "id": 132260725348,
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    }
+  ],
+  "chip_acceptance": false
+}
