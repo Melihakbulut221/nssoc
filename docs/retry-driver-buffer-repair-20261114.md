@@ -9,3 +9,9 @@ The actual fast, typical and slow Liberty files are bound by hash to the frozen 
 [Run 43610680141](https://github.com/Melihakbulut221/nssoc/actions/runs/43610680141) reroutes the candidate and then extracts RC and measures setup, hold, capacitance, slew and fanout at all three original corners. The original independent netlists receive exactly one reversible buffer-master replacement so their reference agrees with the sized layout. Clock constraints and all acceptance thresholds remain unchanged.
 
 The candidate is not yet accepted as a routed or timing-closed design. A larger buffer can increase its predecessor's load and worsen short-path hold. New geometry must receive fresh routing, extraction, DRC, antenna and LVS verification. The old chip LVS pass and this local function proof do not establish those results or complete serial PCIe PHY integration.
+
+## Subsequent baseline measurement
+
+The diode-legalized baseline finished extraction and STA in run 43591198141. It still fails acceptance: slow setup 539 endpoints, worst -1.074318 ns; typical hold 8 endpoints, worst -0.033812 ns; fast hold 115 endpoints, worst -0.110755 ns. Router DRC remains zero, but antenna violations remain at 377 nets / 424 pins. Capacitance, slew and fanout violations are also nonzero. See the [full measurement receipt](evidence/diode-legalized-routed-sta-20261114.json).
+
+The new worst write-enable branch includes a `nand3_1` with 1.356738 ns delay and `place31537` (`buf_1`) with 0.977058 ns delay. It differs from the earlier `place31551` branch targeted by the running experiment. That experiment remains useful as an isolated comparison, but cannot be assumed to close the distributed decoder/load problem. A registered partial write-address decode is a possible next candidate; it has not been implemented or qualified.

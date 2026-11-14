@@ -1,0 +1,89 @@
+Startpoint: $auto$ff.cc:337:slice$309577
+            (rising edge-triggered flip-flop clocked by pcie_clk_i)
+Endpoint: $auto$ff.cc:337:slice$570168
+          (rising edge-triggered flip-flop clocked by pcie_clk_i)
+Path Group: pcie_clk_i
+Path Type: max
+
+Fanout         Cap        Slew       Delay        Time   Description
+---------------------------------------------------------------------------------------------
+                                  0.000000    0.000000   clock pcie_clk_i (rise edge)
+                                  0.000000    0.000000   clock source latency
+     1    0.116538    0.197205    0.178274    0.178274 ^ pcie_clk_i (in)
+                                                         pcie_clk_i (net)
+                      0.228996    0.000000    0.178274 ^ clkbuf_0_pcie_clk_i/A (sg13g2_buf_16)
+     2    0.133773    0.076340    0.218438    0.396713 ^ clkbuf_0_pcie_clk_i/X (sg13g2_buf_16)
+                                                         clknet_0_pcie_clk_i (net)
+                      0.101341    0.035397    0.432110 ^ clkbuf_1_1_0_pcie_clk_i/A (sg13g2_buf_8)
+     4    0.151250    0.138281    0.219633    0.651743 ^ clkbuf_1_1_0_pcie_clk_i/X (sg13g2_buf_8)
+                                                         clknet_1_1_0_pcie_clk_i (net)
+                      0.145134    0.025348    0.677090 ^ clkbuf_3_4_0_pcie_clk_i/A (sg13g2_buf_8)
+     4    0.118114    0.113609    0.220374    0.897464 ^ clkbuf_3_4_0_pcie_clk_i/X (sg13g2_buf_8)
+                                                         clknet_3_4_0_pcie_clk_i (net)
+                      0.120949    0.023593    0.921057 ^ clkbuf_5_16_0_pcie_clk_i/A (sg13g2_buf_8)
+     4    0.116334    0.111032    0.210479    1.131537 ^ clkbuf_5_16_0_pcie_clk_i/X (sg13g2_buf_8)
+                                                         clknet_5_16_0_pcie_clk_i (net)
+                      0.112025    0.008961    1.140498 ^ clkbuf_7_67__f_pcie_clk_i/A (sg13g2_buf_16)
+     5    0.071888    0.050349    0.162617    1.303115 ^ clkbuf_7_67__f_pcie_clk_i/X (sg13g2_buf_16)
+                                                         clknet_7_67__leaf_pcie_clk_i (net)
+                      0.050376    0.001903    1.305018 ^ clkbuf_leaf_290_pcie_clk_i/A (sg13g2_buf_8)
+    16    0.070969    0.073389    0.149727    1.454745 ^ clkbuf_leaf_290_pcie_clk_i/X (sg13g2_buf_8)
+                                                         clknet_leaf_290_pcie_clk_i (net)
+                      0.073751    0.003993    1.458738 ^ $auto$ff.cc:337:slice$309577/CLK (sg13g2_dfrbpq_1)
+     2    0.079302    0.502795    0.638662    2.097400 ^ $auto$ff.cc:337:slice$309577/Q (sg13g2_dfrbpq_1)
+                                                         u_pcie.flow.packets.retry.write_valid (net)
+                      0.503902    0.020367    2.117767 ^ place35302/A (sg13g2_buf_1)
+     8    0.029663    0.198915    0.376415    2.494182 ^ place35302/X (sg13g2_buf_1)
+                                                         net35302 (net)
+                      0.198938    0.002319    2.496501 ^ $abc$720139$auto$blifparse.cc:397:parse_blif$810545/A (sg13g2_nand3_1)
+     6    0.117590    1.594826    1.356738    3.853239 v $abc$720139$auto$blifparse.cc:397:parse_blif$810545/Y (sg13g2_nand3_1)
+                                                         $abc$720139$new_n128367 (net)
+                      1.595595    0.031111    3.884349 v place31537/A (sg13g2_buf_1)
+     2    0.164274    0.849530    0.977058    4.861408 v place31537/X (sg13g2_buf_1)
+                                                         net31537 (net)
+                      0.856961    0.068149    4.929557 v $abc$720139$auto$blifparse.cc:397:parse_blif$811702/A (sg13g2_nor2_1)
+     1    0.006686    0.208195    0.295619    5.225176 ^ $abc$720139$auto$blifparse.cc:397:parse_blif$811702/Y (sg13g2_nor2_1)
+                                                         $abc$720139$new_n129524 (net)
+                      0.208195    0.000424    5.225600 ^ place28884/A (sg13g2_buf_2)
+     8    0.102327    0.331015    0.420569    5.646169 ^ place28884/X (sg13g2_buf_2)
+                                                         net28884 (net)
+                      0.331198    0.006799    5.652967 ^ $abc$720139$auto$blifparse.cc:397:parse_blif$811708/S (sg13g2_mux2_1)
+     1    0.004341    0.064845    0.364190    6.017158 v $abc$720139$auto$blifparse.cc:397:parse_blif$811708/X (sg13g2_mux2_1)
+                                                         $abc$720139$auto$rtlil.cc:3513:MuxGate$716141 (net)
+                      0.064845    0.000244    6.017402 v $auto$ff.cc:337:slice$570168/D (sg13g2_dfrbpq_1)
+                                              6.017402   data arrival time
+
+                                  4.000000    4.000000   clock pcie_clk_i (rise edge)
+                                  0.000000    4.000000   clock source latency
+     1    0.116538    0.197205    0.161296    4.161296 ^ pcie_clk_i (in)
+                                                         pcie_clk_i (net)
+                      0.228996    0.000000    4.161296 ^ clkbuf_0_pcie_clk_i/A (sg13g2_buf_16)
+     2    0.133773    0.076340    0.197635    4.358931 ^ clkbuf_0_pcie_clk_i/X (sg13g2_buf_16)
+                                                         clknet_0_pcie_clk_i (net)
+                      0.101341    0.032026    4.390956 ^ clkbuf_1_1_0_pcie_clk_i/A (sg13g2_buf_8)
+     4    0.151250    0.138281    0.198715    4.589672 ^ clkbuf_1_1_0_pcie_clk_i/X (sg13g2_buf_8)
+                                                         clknet_1_1_0_pcie_clk_i (net)
+                      0.144524    0.021916    4.611588 ^ clkbuf_3_5_0_pcie_clk_i/A (sg13g2_buf_8)
+     4    0.110323    0.108544    0.192533    4.804121 ^ clkbuf_3_5_0_pcie_clk_i/X (sg13g2_buf_8)
+                                                         clknet_3_5_0_pcie_clk_i (net)
+                      0.114104    0.018153    4.822275 ^ clkbuf_5_20_0_pcie_clk_i/A (sg13g2_buf_8)
+     4    0.125048    0.119309    0.185455    5.007730 ^ clkbuf_5_20_0_pcie_clk_i/X (sg13g2_buf_8)
+                                                         clknet_5_20_0_pcie_clk_i (net)
+                      0.127382    0.022782    5.030511 ^ clkbuf_7_81__f_pcie_clk_i/A (sg13g2_buf_16)
+     5    0.077631    0.052736    0.153271    5.183783 ^ clkbuf_7_81__f_pcie_clk_i/X (sg13g2_buf_16)
+                                                         clknet_7_81__leaf_pcie_clk_i (net)
+                      0.053709    0.005223    5.189005 ^ clkbuf_leaf_481_pcie_clk_i/A (sg13g2_buf_8)
+    10    0.050010    0.057917    0.125444    5.314449 ^ clkbuf_leaf_481_pcie_clk_i/X (sg13g2_buf_8)
+                                                         clknet_leaf_481_pcie_clk_i (net)
+                      0.058157    0.002456    5.316905 ^ $auto$ff.cc:337:slice$570168/CLK (sg13g2_dfrbpq_1)
+                                 -0.250000    5.066905   clock uncertainty
+                                  0.062071    5.128976   clock reconvergence pessimism
+                                 -0.185893    4.943083   library setup time
+                                              4.943083   data required time
+---------------------------------------------------------------------------------------------
+                                              4.943083   data required time
+                                             -6.017402   data arrival time
+---------------------------------------------------------------------------------------------
+                                             -1.074318   slack (VIOLATED)
+
+

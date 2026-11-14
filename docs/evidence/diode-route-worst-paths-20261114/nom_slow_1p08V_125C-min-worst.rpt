@@ -1,0 +1,80 @@
+Startpoint: $auto$ff.cc:337:slice$169734
+            (rising edge-triggered flip-flop clocked by eth_rx_clk_i)
+Endpoint: u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem
+          (rising edge-triggered flip-flop clocked by eth_rx_clk_i)
+Path Group: eth_rx_clk_i
+Path Type: min
+
+Fanout         Cap        Slew       Delay        Time   Description
+---------------------------------------------------------------------------------------------
+                                  0.000000    0.000000   clock eth_rx_clk_i (rise edge)
+                                  0.000000    0.000000   clock source latency
+     6    0.245149    0.368475    0.373476    0.373476 ^ eth_rx_clk_i (in)
+                                                         eth_rx_clk_i (net)
+                      0.565824    0.000000    0.373476 ^ clkbuf_regs_1_eth_rx_clk_i/A (sg13g2_buf_16)
+     1    0.018356    0.056026    0.256264    0.629740 ^ clkbuf_regs_1_eth_rx_clk_i/X (sg13g2_buf_16)
+                                                         eth_rx_clk_i_regs (net)
+                      0.056033    0.002103    0.631843 ^ clkbuf_0_eth_rx_clk_i_regs/A (sg13g2_buf_16)
+     4    0.172332    0.083396    0.127967    0.759810 ^ clkbuf_0_eth_rx_clk_i_regs/X (sg13g2_buf_16)
+                                                         clknet_0_eth_rx_clk_i_regs (net)
+                      0.123931    0.043591    0.803401 ^ clkbuf_2_1_0_eth_rx_clk_i_regs/A (sg13g2_buf_8)
+     2    0.077223    0.080884    0.171693    0.975094 ^ clkbuf_2_1_0_eth_rx_clk_i_regs/X (sg13g2_buf_8)
+                                                         clknet_2_1_0_eth_rx_clk_i_regs (net)
+                      0.083868    0.011468    0.986563 ^ clkbuf_3_3__f_eth_rx_clk_i_regs/A (sg13g2_buf_16)
+     5    0.092892    0.055230    0.134079    1.120642 ^ clkbuf_3_3__f_eth_rx_clk_i_regs/X (sg13g2_buf_16)
+                                                         clknet_3_3__leaf_eth_rx_clk_i_regs (net)
+                      0.066822    0.018222    1.138863 ^ clkbuf_leaf_25_eth_rx_clk_i_regs/A (sg13g2_buf_8)
+    15    0.065493    0.069660    0.141403    1.280266 ^ clkbuf_leaf_25_eth_rx_clk_i_regs/X (sg13g2_buf_8)
+                                                         clknet_leaf_25_eth_rx_clk_i_regs (net)
+                      0.069994    0.003607    1.283873 ^ $auto$ff.cc:337:slice$169734/CLK (sg13g2_dfrbpq_1)
+     2    0.037236    0.197729    0.388726    1.672599 v $auto$ff.cc:337:slice$169734/Q (sg13g2_dfrbpq_1)
+                                                         u_eth.u_mac.rx_fifo.fifo_inst.u_sram.wq_data[8] (net)
+                      0.197745    0.001762    1.674361 v max_cap66633/A (sg13g2_buf_8)
+     4    0.284057    0.179824    0.242874    1.917235 v max_cap66633/X (sg13g2_buf_8)
+                                                         net66633 (net)
+                      0.342747    0.141036    2.058272 v $abc$720139$auto$blifparse.cc:397:parse_blif$751074/A (sg13g2_nand2_1)
+     1    0.005445    0.084005    0.134361    2.192633 ^ $abc$720139$auto$blifparse.cc:397:parse_blif$751074/Y (sg13g2_nand2_1)
+                                                         $abc$720139$new_n68896 (net)
+                      0.084005    0.000349    2.192982 ^ $abc$720139$auto$blifparse.cc:397:parse_blif$751075/B1 (sg13g2_o21ai_1)
+     1    0.002403    0.055929    0.074711    2.267694 v $abc$720139$auto$blifparse.cc:397:parse_blif$751075/Y (sg13g2_o21ai_1)
+                                                         $abc$583639$flatten\\\\u_eth.\\\\u_mac.\\\\rx_fifo.\\\\fifo_inst.\\\\u_sram.$indirect$\\\\A_DIN$/home/runner/work/nssoc/nssoc/hw/soc/rtl/dft/soc_eth_fifo_sram.v:234$29613[8] (net)
+                      0.055929    0.000000    2.267694 v wire66519/A (sg13g2_buf_2)
+     1    0.033307    0.103293    0.168806    2.436500 v wire66519/X (sg13g2_buf_2)
+                                                         net66519 (net)
+                      0.138120    0.004093    2.440593 v u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem/A_DIN[8] (RM_IHPSG13_2P_256x16_c2_bm_bist)
+                                              2.440593   data arrival time
+
+                                  0.000000    0.000000   clock eth_rx_clk_i (rise edge)
+                                  0.000000    0.000000   clock source latency
+     6    0.245149    0.368475    0.226690    0.226690 ^ eth_rx_clk_i (in)
+                                                         eth_rx_clk_i (net)
+                      0.375057    0.000000    0.226690 ^ delaybuf_0_eth_rx_clk_i/A (sg13g2_buf_16)
+     1    0.070775    0.062503    0.250305    0.476995 ^ delaybuf_0_eth_rx_clk_i/X (sg13g2_buf_16)
+                                                         delaynet_0_eth_rx_clk_i (net)
+                      0.075950    0.026525    0.503520 ^ delaybuf_1_eth_rx_clk_i/A (sg13g2_buf_16)
+     1    0.037049    0.037063    0.131034    0.634554 ^ delaybuf_1_eth_rx_clk_i/X (sg13g2_buf_16)
+                                                         delaynet_1_eth_rx_clk_i (net)
+                      0.039009    0.009627    0.644182 ^ delaybuf_2_eth_rx_clk_i/A (sg13g2_buf_16)
+     1    0.096133    0.050572    0.118455    0.762637 ^ delaybuf_2_eth_rx_clk_i/X (sg13g2_buf_16)
+                                                         delaynet_2_eth_rx_clk_i (net)
+                      0.084494    0.034957    0.797594 ^ delaybuf_3_eth_rx_clk_i/A (sg13g2_buf_16)
+     1    0.042956    0.039372    0.138590    0.936184 ^ delaybuf_3_eth_rx_clk_i/X (sg13g2_buf_16)
+                                                         delaynet_3_eth_rx_clk_i (net)
+                      0.040016    0.006559    0.942743 ^ clkbuf_0_eth_rx_clk_i/A (sg13g2_buf_16)
+     2    0.157178    0.076968    0.128714    1.071457 ^ clkbuf_0_eth_rx_clk_i/X (sg13g2_buf_16)
+                                                         clknet_0_eth_rx_clk_i (net)
+                      0.110315    0.040867    1.112324 ^ clkbuf_1_1_0_eth_rx_clk_i/A (sg13g2_buf_8)
+     4    0.237241    0.189874    0.224400    1.336724 ^ clkbuf_1_1_0_eth_rx_clk_i/X (sg13g2_buf_8)
+                                                         clknet_1_1_0_eth_rx_clk_i (net)
+                      0.374526    0.111315    1.448039 ^ u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem/A_CLK (RM_IHPSG13_2P_256x16_c2_bm_bist)
+                                  0.250000    1.698039   clock uncertainty
+                                  0.000000    1.698039   clock reconvergence pessimism
+                                  0.730417    2.428456   library hold time
+                                              2.428456   data required time
+---------------------------------------------------------------------------------------------
+                                              2.428456   data required time
+                                             -2.440593   data arrival time
+---------------------------------------------------------------------------------------------
+                                              0.012137   slack (MET)
+
+
