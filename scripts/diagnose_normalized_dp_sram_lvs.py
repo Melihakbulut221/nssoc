@@ -16,7 +16,7 @@ with tarfile.open(fileobj=io.BytesIO(z.read(names[0])),mode='r:gz') as t:
  for m in t.getmembers():
   if not m.isfile() or not m.name.endswith(('.lvs','.rb','.lylvs','.py','.lym','.drc')):continue
   text=t.extractfile(m).read().decode();lines=text.splitlines();hits=set()
-  if m.name.endswith('/sg13g2.lvs'):main_sources.append({'path':m.name,'source':text})
+  if m.name.endswith(('/sg13g2.lvs','/custom_classes.lvs','/custom_reader.lvs','/custom_devices.lvs','/globals.lvs','/general_connections.lvs','/mos_connections.lvs','/res_connections.lvs')):main_sources.append({'path':m.name,'source':text})
   for i,line in enumerate(lines):
    if any(k in line for k in ('LVSRES','same_device_classes','res_metal1','equivalent_pins','same_nets','compare_parameter','ignore_parameter','RES2','connect_global','connect_implicit','VDD!')):
     hits.update(range(max(0,i-4),min(len(lines),i+5)))
