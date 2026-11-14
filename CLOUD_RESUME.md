@@ -1,3 +1,18 @@
+## 2026-11-14 — packed PHY geometry generated; full native physical validation live
+
+The measured AD/CD/selector loading now has a physical candidate, not only another diagnostic. Generation run **43639421390**, source **dbe212de5ae00036284f104d45742db443186f51**, branch `codex/paired650-packed-buffers`, completed successfully. It keeps the first six sampler/clock bands fixed and packs the later ten complete buffer/comparator bands with a16um gap measured between actual occupied regions (all material layers, child bounds and parent labels). No primitive resizing or local wiring edits. All37 global TM1 trunks are rebuilt with exact via incidence retained; serialized geometry and real deletion mutations were checked.
+
+Actual total SIGNAL trunk length decreases **25676.76um ->23738.76um**, a1938um/about7.55% reduction versus the actual previous paired candidate. No individual signal trunk becomes longer. Upper occupied extent decreases329.4um, but supplies retain their original outside endpoints, so this is not a claim that total chip bbox shrank. No RC or timing improvement has yet been demonstrated.
+
+New GDS SHA256 `ecae8ae8e49beea391b1d2575da6f5ac9ea01180550ae65fc786ddc6fd9ee193`; original source geometry `c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c`; paired comparison `285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514`.
+- Native artifact14131740193 SHA256 `89585c334b2ae7f06b21e6851babe72ec11b5d1b4e0bee675c79090129193057` (cloud only).
+- Proof artifact14130989352 SHA256 `590ee5edefb5e0de9a0997fc8d92a06513e601670b045fbb8e0a2d4187e9de98`.
+- Receipt: `docs/evidence/paired650-packed-generation-20261114.json`; design note: `docs/paired650-packed-buffers-20261114.md`.
+
+NEW full physical run **43639600962**, source **63db8effa6600507bb540a19011d17a284536f73**, branch `codex/paired650-packed-physical`. Derived from previously successful native physical source8274b540...; changes only exact branch/runtime admission, candidate input pins, additional packing provenance assertions and source-closure hashes. Original full560 DRC, deep/flat650 LVS and fault gates remain unchanged. Independent650 reference schematic is unchanged. This job must finish before building new exact geometry/anchor/metal RC and rerunning original loaded electrical gates. Do not transfer the old paired DRC/LVS/RC acceptance to the packed candidate.
+
+Mainchip CRC run43638590941 still executes placement/CTS and independent actual native gate boot; RX+CRC build43638771489 is still running its fresh replay positive/mutation regressions. Both were confirmed live. They are separate sources. Full serial PHY, chip setup/hold and manufacturing acceptance remain open; all native work stays in cloud.
+
 ## 2026-11-14 — RX traffic passed; qualified RX+CRC mainchip build now live
 
 RX traffic job **132576149016** inrun **43637085427**, source **c5becaa11a0274839f798a47890dd021fb78d0cf**, completed successfully. Eight original-reference 300000-cycle tests passed and eight ready-inversion mutations were rejected. Safe artifact14130976590, SHA256 `8058a0fd3fdfbb1beef7f95138bb1e061d8ce4df94364b274105f28a403b6c51`. Exact RX RTL hash remains `c16d14cb42d27d261ec7aca5a303f9c3b63e24da6ce651b1a504fe3e56f658ec`. Receipt: `docs/evidence/rx-cursor-traffic-20261114.json`. The overall run is red because of the INITIAL formal hierarchy-harness error; the separate corrected formal run43637249034 passed both proofs and both mutations. Both exact results are required.
