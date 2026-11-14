@@ -4,8 +4,8 @@ import pathlib,json,hashlib,tarfile,zipfile,io,sys,time,collections
 import klayout.db as db
 def value(obj,key):
  v=getattr(obj,key);return v() if callable(v) else v
-P=pathlib.Path;case=sys.argv[1];assert case in ['identity','signal_open','sram_mos_width','inspect']
-out=P('out');out.mkdir();derived=out/'derived';derived.mkdir()
+P=pathlib.Path;case=sys.argv[1];assert case in ['identity','signal_open','sram_mos_width','port_name','inspect']
+out=P('out')/case;out.mkdir(parents=True);derived=P('out/derived')/case;derived.mkdir(parents=True)
 def sha(p):
  with P(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 assert sha('native.zip')=='fd250afa9a2c55ef266149c583d76256dd8dcdd9d5f043cfd892a7043e15979b'
@@ -60,6 +60,11 @@ if case=='signal_open':
    mutation={'kind':'single_top_cell_input_disconnected','instance':sub.name,'cell':sub.circuit_ref().name,'pin':value(pin,'name'),'old_net':old.name,'new_net':fresh.name}
    break
  assert mutation is not None
+elif case=='port_name':
+ pin=next(p for p in top.each_pin() if value(p,'name')=='CAN_RX_I')
+ net=top.net_for_pin(pin.id());assert net is not None and net.name=='CAN_RX_I'
+ old=net.name;net.name='FAULT_CONTROL_WRONG_CAN_RX_PORT'
+ mutation={'kind':'one_reference_top_port_net_name','pin':value(pin,'name'),'old_net_name':old,'new_net_name':net.name}
 elif case=='sram_mos_width':
  c=reference.circuit_by_name('NSDP_RM_IHPSG13_256X16_C2_2P_BITKIT_16X2_SRAM');assert c is not None
  for dev in c.each_device():
@@ -84,5 +89,9 @@ lvs.xref().clear()
 start=time.monotonic();matched=lvs.compare(comparer);ports=lvs.flag_missing_ports(top) if matched else False
 rows=[{'layout':p.first().name if p.first() is not None else None,'reference':p.second().name if p.second() is not None else None,'status':str(p.status())} for p in lvs.xref().each_circuit_pair()]
 actual=bool(matched and ports);expected=case=='identity'
-result={'case':case,'reference_spice_case_sensitive':reference.is_case_sensitive(),'explicit_model_pairs':class_pairs,'native_comparison_completed':True,'compare_returned':matched,'missing_ports_check_passed':ports,'accepted':actual,'expected_acceptance':expected,'control_passed':actual==expected,'mutation':mutation,'circuit_status_counts':dict(collections.Counter(x['status'] for x in rows)),'nonmatching':[x for x in rows if x['status']!='Match'],'elapsed_seconds':time.monotonic()-start,'original_database_sha256':digest,'original_database_unchanged':sha(report)==digest,'scope':'Full stored transistor graphs, original circuit-name correspondence only. No original net/pin matching reused, no blackboxes or device removal. Controlled reference mutation in memory; original extracted database unchanged. Not new layout or manufacturing acceptance.'}
+# Negative result must come from its intended gate, not a generic failure.
+if case=='identity': gate_correct=bool(matched and ports and len(rows)==108 and all(r['status']=='Match' for r in rows))
+elif case=='port_name': gate_correct=bool(matched and not ports)
+else: gate_correct=not matched
+result={'case':case,'reference_spice_case_sensitive':reference.is_case_sensitive(),'explicit_model_pairs':class_pairs,'native_comparison_completed':True,'compare_returned':matched,'missing_ports_check_passed':ports,'accepted':actual,'expected_acceptance':expected,'control_passed':actual==expected and gate_correct,'intended_gate_checked':gate_correct,'mutation':mutation,'circuit_status_counts':dict(collections.Counter(x['status'] for x in rows)),'nonmatching':[x for x in rows if x['status']!='Match'],'elapsed_seconds':time.monotonic()-start,'original_database_sha256':digest,'original_database_unchanged':sha(report)==digest,'scope':'Full stored transistor graphs, original circuit-name correspondence only. No original net/pin matching reused, no blackboxes or device removal. Controlled reference mutation in memory; original extracted database unchanged. Not new layout or manufacturing acceptance.'}
 (derived/'result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result));assert result['control_passed'] and result['original_database_unchanged']

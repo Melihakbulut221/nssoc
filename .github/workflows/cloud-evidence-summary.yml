@@ -1,4 +1,4 @@
-name: Full chip native transistor connectivity and SRAM width fault controls
+name: Full chip native transistor and port fault controls
 on:
   workflow_dispatch:
 permissions:
@@ -8,10 +8,6 @@ jobs:
   controls:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
-    strategy:
-      fail-fast: false
-      matrix:
-        case: [identity]
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -26,11 +22,31 @@ jobs:
           set -euo pipefail
           gh api repos/${{ github.repository }}/actions/artifacts/14117582646/zip > native.zip
           python3 -m pip install klayout==0.30.13
-      - run: python3 scripts/check_full_chip_native_faults.py ${{ matrix.case }}
+      - name: Identity must pass before any negative control
+        run: python3 scripts/check_full_chip_native_faults.py identity
+      - name: Reject independent connectivity, device and port faults
+        run: |
+          set -euo pipefail
+          for case in signal_open sram_mos_width port_name; do
+            python3 scripts/check_full_chip_native_faults.py "$case"
+          done
+      - name: Require complete control set
+        run: |
+          python3 - <<'PYCODE'
+          import json,pathlib
+          root=pathlib.Path('out/derived')
+          cases=['identity','signal_open','sram_mos_width','port_name']
+          rows=[json.loads((root/c/'result.json').read_text()) for c in cases]
+          assert [r['case'] for r in rows]==cases
+          assert all(r['control_passed'] and r['intended_gate_checked'] and r['native_comparison_completed'] and r['original_database_unchanged'] for r in rows)
+          assert [r['accepted'] for r in rows]==[True,False,False,False]
+          assert len({r['original_database_sha256'] for r in rows})==1
+          (root/'aggregate.json').write_text(json.dumps({'status':'FULL_CHIP_STORED_GRAPH_FAULT_CONTROLS_PASSED','manufacturing_approval':False,'cases':rows},indent=2))
+          PYCODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: full-chip-native-fault-${{ matrix.case }}-${{ github.run_id }}
+          name: full-chip-native-fault-suite-${{ github.run_id }}
           path: out/derived
           if-no-files-found: error
           retention-days: 90
