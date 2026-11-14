@@ -20,5 +20,21 @@ for run,head,aid,digest in inputs:
    elif isinstance(j,dict):j={k:v for k,v in j.items()if k not in ('outputs','protected_inputs','placement_source','current_boot_source_revalidation','source_hashes')}
    data['json_reports'][name]={'source_sha256':hashlib.sha256(raw).hexdigest(),'value':j}
   elif Path(name).name in ('max.rpt','min.rpt','summary.rpt','antenna.rpt'):
-   raw=z.read(name);data['path_excerpts'][name]={'source_sha256':hashlib.sha256(raw).hexdigest(),'text':'\n'.join(raw.decode().splitlines()[:85])}
+   raw=z.read(name);data['path_excerpts'][name]={'source_sha256':hashlib.sha256(raw).hexdigest(),'text':'\n'.join(raw.decode().splitlines()[:240])}
+ # Count every reported path without truncating to the first path excerpt.
+ data['reported_path_groups']={}
+ import re
+ for name in z.namelist():
+  if not (name.endswith('/max.rpt') or name.endswith('/min.rpt')):continue
+  groups={}
+  for block in z.read(name).decode().split('Startpoint:')[1:]:
+   g=re.search(r'Path Group: (.+)',block)
+   slack=re.search(r'([-+0-9.]+)\s+slack \((?:VIOLATED|MET)\)',block)
+   if not g or not slack:continue
+   value=float(slack.group(1));key=g.group(1).strip()
+   entry=groups.setdefault(key,dict(reported=0,violating=0,worst_slack=None,worst_path=None))
+   entry['reported']+=1;entry['violating']+=int(value<0)
+   if entry['worst_slack'] is None or value<entry['worst_slack']:
+    entry['worst_slack']=value;entry['worst_path']='Startpoint:'+block
+  data['reported_path_groups'][name]=groups
  (OUT/(str(aid)+'.json')).write_text(json.dumps(data,indent=2)+'\n')
