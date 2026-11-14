@@ -1,3 +1,9 @@
+## DP bounded-comparison diagnostic launched
+
+Run [43587554414](https://github.com/Melihakbulut221/nssoc/actions/runs/43587554414), source `d4a4f4f4468e56f354b87ce20748ca9945b2f1c9`, branch `codex/dp-sram-bounded-comparison`. Restores exact timeout archive only in cloud. Validates runtime/deck/reader/reference/input hashes. Only adds `max_branch_complexity(16)` in strict compare branch, leaving depth, device/port/dimension acceptance unchanged. Native default and bounded identity/fault controls run first. Bound exhaustion is failed_match in pinned KLayout source, not match. Native cap1800s for diagnosis; any unresolved graph remains failure. No full-chip/vendor/production claim. Safe `dp-sram-bounded-derived-*`; native artifacts cloud-only. Do not rerun old 43562021054.
+
+Live alongside PHY sizing43584735530, CRC antenna43579643337, SP LVS43566292104, MBIST43573697024. Previous evidence below.
+
 ## DP engineering full-macro LVS timed out in comparison, not a mismatch verdict
 
 Run 43562021054/source `70ebe8dca3b28d91a259f49bfee6b5b57c219f6e` is TERMINAL FAILURE. Native KLayout reached 18000-second timeout. Do not poll or blindly rerun it. Safe derived artifact 14110887368 SHA256 `f242d163ee68b57e2d873ec8b4104be8c9c30dc5ed2749102c964a318ece1195`. Native archive 14110867794 SHA256 `d0109ba41e2d146d25a90f7dcaeba2602b87168cbe9b0d01a175b57b1734658e` stays cloud-only.
