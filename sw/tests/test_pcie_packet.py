@@ -38,14 +38,14 @@ def runtime():
         (
             "bad_tx_seed",
             "soc_pcie_lcrc_tx.v",
-            "length<=count+1'b1;state<=PREFIX0;crc<=32'hffffffff;",
-            "length<=count+1'b1;state<=PREFIX0;crc<=32'hfffffffe;",
+            "prefix_crc<=crc_byte(crc_byte(32'hffffffff,",
+            "prefix_crc<=crc_byte(crc_byte(32'hfffffffe,",
         ),
         (
             "advance_while_stalled",
             "soc_pcie_lcrc_tx.v",
-            "if (tx_valid_o && tx_ready_i) begin",
-            "if (tx_valid_o) begin",
+            "if (tx_valid_o && tx_ready_i) begin\n                case(state)",
+            "if (tx_valid_o) begin\n                case(state)",
         ),
         (
             "drop_pending_ack",
