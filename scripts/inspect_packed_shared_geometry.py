@@ -60,7 +60,8 @@ addition=kdb.Region();proof=[];clearance=600;growth=600
 for component,owned in sorted(selected.items()):
  other=metal3-owned
  foreign_vias=(reg(29)+reg(49))-(reg(29)+reg(49)).interacting(owned)
- expanded=(owned.sized(growth)-other.sized(clearance)-foreign_vias.sized(clearance)).merged()
+ patch=(owned.sized(growth)-owned-other.sized(clearance)-foreign_vias.sized(clearance)-addition.sized(clearance)).merged()
+ expanded=(owned+patch).merged()
  assert (owned-expanded).is_empty(),('Existing metal clipped',component)
  patch=(expanded-owned).merged()
  assert not patch.is_empty(),('No legal widening',component)
@@ -71,16 +72,16 @@ for component,owned in sorted(selected.items()):
  addition=(addition+patch).merged()
  proof.append({'wire_component':component,'original_m3_area_um2':owned.area()*l.dbu*l.dbu,'added_m3_area_um2':patch.area()*l.dbu*l.dbu,'original_bbox_dbu':str(owned.bbox()),'via_incidence_unchanged':True})
 assert not addition.is_empty()
-# Overlay in a new wrapper; retain every original primitive and original metal.
-original_name=T.name;T.name=original_name+'_unmodified'
-C=l.create_cell(original_name);C.insert(kdb.CellInstArray(T.cell_index(),kdb.Trans()));C.shapes(l.layer(30,0)).insert(addition)
+# Keep the exact original top hierarchy and public text labels.
+original_geometry={str(l.get_info(li)):kdb.Region(T.begin_shapes_rec(li)).merged()for li in l.layer_indexes()}
+C=T;C.shapes(l.layer(30,0)).insert(addition)
 Path('native').mkdir();opts=kdb.SaveLayoutOptions();opts.select_cell(C.cell_index());l.write('native/candidate.gds',opts)
 check=kdb.Layout();check.read('native/candidate.gds');assert len(check.top_cells())==1
 actual={str(check.get_info(li)):kdb.Region(check.top_cell().begin_shapes_rec(li)).merged()for li in check.layer_indexes()}
-expected={str(l.get_info(li)):kdb.Region(T.begin_shapes_rec(li)).merged()for li in l.layer_indexes()}
+expected=original_geometry
 expected['30/0']=(expected['30/0']+addition).merged()
 assert set(actual)==set(expected)
 assert all((actual[k]^expected[k]).is_empty()for k in expected)
 assert not (actual['30/0']^(expected['30/0']-addition)).is_empty(),'Deleted-patch control ineffective'
-payload={'source_gds_sha256':result['source_gds_sha256'],'candidate_gds_sha256':hashlib.sha256(Path('native/candidate.gds').read_bytes()).hexdigest(),'accepted':False,'status':'GEOMETRY_CANDIDATE_REQUIRES_DRC_LVS_FRESH_RC_AND_ORIGINAL_LOADED_TEST','dbu_um':l.dbu,'growth_um':growth*l.dbu,'other_net_clearance_um':clearance*l.dbu,'components':proof,'only_metal3_added':True,'all_original_geometry_retained':True,'serialized_region_equality_checked':True,'deleted_patch_control_rejected':True,'scope':'Conservative local M3 widening reached through actual M1-Via1-M2-Via2 incidence. No new vias, device changes, net swaps, electrical pass or signoff claimed.'}
+payload={'source_gds_sha256':result['source_gds_sha256'],'candidate_gds_sha256':hashlib.sha256(Path('native/candidate.gds').read_bytes()).hexdigest(),'accepted':False,'status':'GEOMETRY_CANDIDATE_REQUIRES_DRC_LVS_FRESH_RC_AND_ORIGINAL_LOADED_TEST','dbu_um':l.dbu,'growth_um':growth*l.dbu,'other_net_clearance_um':clearance*l.dbu,'components':proof,'only_metal3_added':True,'original_top_hierarchy_and_labels_retained':True,'all_original_geometry_retained':True,'serialized_region_equality_checked':True,'deleted_patch_control_rejected':True,'scope':'Conservative local M3 widening reached through actual M1-Via1-M2-Via2 incidence. No new vias, device changes, net swaps, electrical pass or signoff claimed.'}
 Path('out/shared-widening-proof.json').write_text(json.dumps(payload,indent=2))
