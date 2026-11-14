@@ -1,0 +1,100 @@
+{
+  "native_run": 43516903518,
+  "native_source": "3fd0fded2d874efa0109d8558a213380de1f36a7",
+  "diagnostic_run": 43554935242,
+  "diagnostic_source": "ffd8a3e892490e2f4c29a113146478226e6c888c",
+  "artifact": 14097821467,
+  "artifact_sha256": "9a6223790659ea30c8600ef293161b04f177640f4b624bb5070cc4b92f5d4781",
+  "accepted": false,
+  "gate_result": {
+    "native_cell_gate": {
+      "library": "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "compile": {
+        "command": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_native_cell_gate",
+          "-o",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/native-cell-gate/sim.vvp",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/native-cell-gate/tb_native_cell_gate.v",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.03185696399987137
+      },
+      "runs": [
+        {
+          "command": [
+            "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+            "-i",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/native-cell-gate/sim.vvp"
+          ],
+          "returncode": 0,
+          "elapsed_s": 0.015791985999840108,
+          "pass_banner": true
+        }
+      ],
+      "passed": true
+    },
+    "compile": {
+      "command": [
+        "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_logicrom_gl",
+        "-o",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/sim.vvp",
+        "-DFUNCTIONAL",
+        "-DTIMEOUT_CYCLES=3000000",
+        "-DEXIT_CODE_ADDR=32'h00001f94",
+        "-DEXIT_MAGIC_ADDR=32'h00001f98",
+        "-DCHECKS_ADDR=32'h00001fcc",
+        "-DFAILS_ADDR=32'h00001fd0",
+        "-DNSSOC_GL_MBIST",
+        "-DNSSOC_GL_PCIE",
+        "-DNSSOC_GL_PCIE_ASYNC",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis/soc_top.netlist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/flash_w25q128jv.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/mapped_mbist_boot_monitor.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 8.135046287000023
+    },
+    "runs": [
+      {
+        "command": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+          "-i",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/sim.vvp",
+          "+flash0=/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/flash0.hex"
+        ],
+        "returncode": 124,
+        "elapsed_s": 20000.064375370002,
+        "pass_banner": false,
+        "pcie_profile": "packet-async",
+        "mbist_profile": "system-ethernet",
+        "pcie_idle_boot_passed": false,
+        "mbist_boot_passed": false,
+        "pcie_idle_boot_status": "failed",
+        "mbist_boot_status": "failed",
+        "passed": false
+      }
+    ],
+    "sources_unchanged": true,
+    "passed": false
+  },
+  "native_progress_log": "LOGICROM_GL begin: immutable gates, no ROM or RAM preload\nLOGICROM_GL progress cycles=10000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=20000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=30000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=40000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=50000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=60000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=70000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=80000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=90000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=100000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=110000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=120000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=130000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=140000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=150000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=160000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=170000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=180000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=190000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=200000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=210000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=220000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=230000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=240000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=250000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=260000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=270000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=280000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=290000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=300000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=310000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=320000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=330000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=340000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=350000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=360000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=370000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=380000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=390000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=400000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=410000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=420000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=430000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=440000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=450000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=460000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=470000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=480000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=490000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=500000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=510000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=520000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=530000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=540000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=550000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=560000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=570000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=580000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=590000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=600000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=610000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=620000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=630000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=640000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=650000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=660000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=670000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=680000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=690000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=700000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=710000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=720000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=730000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=740000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=750000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=760000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=770000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=780000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=790000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=800000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=810000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=820000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=830000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=840000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=850000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=860000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=870000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=880000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=890000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=900000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=910000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=920000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=930000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=940000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=950000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=960000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=970000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=980000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=990000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1000000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1010000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1020000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1030000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1040000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1050000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1060000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1070000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1080000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1090000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1100000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1110000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1120000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1130000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1140000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1150000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1160000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1170000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1180000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1190000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1200000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1210000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1220000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1230000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1240000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1250000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1260000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1270000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1280000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1290000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1300000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1310000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1320000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1330000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1340000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1350000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1360000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1370000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1380000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1390000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1400000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1410000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1420000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1430000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1440000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1450000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000\nboot: strap 0x840LOGICROM_GL progress cycles=1460000 uart=17 flash_frames=0 ram_sec=0000 ram_ded=0000\n00000 cnt 0x00000000 of 0x00000003 stat 0x00030000 wdog 0x00000000 rpt 0x00000000 tmr 0x00000000\nboot: cleared RAMLOGICROM_GL progress cycles=1470000 uart=131 flash_frames=0 ram_sec=0000 ram_ded=0000\n startup scrub record\nboot: image 0x00000000 at 0x00018000\nLOGICROM_GL progress cycles=1480000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1490000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1500000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1510000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1520000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000\nLOGICROM_GL progress cycles=1530000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000\n",
+  "finding": "Native simulation rc124 after20000.064s, progress logged through1530000cycles. UART begins around1460000cycles; flash_frames=6 by1480000. No native pass banner. RTL preparation PASS is separate and must not be conflated with MBIST gate completion.",
+  "next_action": "Do not blindly rerun the same timeout. Inspect native MBIST/reset duration and simulator hotspots; accelerate without skipping MBIST backgrounds, memory banks or firmware checks. A simulator substitution requires native-model/four-state compatibility validation. Any checkpoint scheme must preserve full event and state semantics, not only RAM contents.",
+  "native_recovery_artifact": 14097721346,
+  "native_recovery_sha256": "0c938debffdf355789437cd647020d460d3aa7ad6f7a45e0a6fcdf0fc509e676"
+}
