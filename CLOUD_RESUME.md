@@ -1,3 +1,13 @@
+## 2026-11-15 — RX postCTS input-address mismatch corrected; fresh run live
+
+Initial RX postCTS43642916374/source219de71d65ac179920bd8eba0505dc9f00738032 FAILED before CAD execution. Its workflow still downloaded CRC source14131535375 and mapping14130736810 while the restore helper correctly required RX hashes. Source authentication rejected the mismatch. No timing result from that run exists. Corrected only the two artifact addresses to RX14132027737/14131928219; no identity check or timing gate removed. NEW run **43643048434**, source **db35595f13bc3eb63890086789b93e252fbb4cb6**, same `codex/rx-cursor-chip-postcts` branch, job132594638172. This supersedes the earlier live handle. It still consumes exact RX CTS43641707777/job132590504077 and retains all clocks/derates/repair settings.
+
+Packed full-loaded43642783223/job132593819470 confirmed live in composition/transient step. Do not restart either job merely because no intermediate artifact is available.
+
+Additional CRC report inspection: worst hold at all3corners is pcie_training_i ->slice183526, with two inserted delay cells; residual slow/typ/fast -0.389349/-0.360047/-0.325918ns. Standard max.rpt contains NO training input paths, because report is truncated to other worse paths; this is not evidence of available setup margin. Before any targeted extra delay ECO, explicitly measure this input setup/hold in all3corners on the exact new RX repaired database. Preserve external delay and clock uncertainty constraints. Existing repair used max_buffer_percent50 and max_iterations1000; its log reports unable to repair all hold checks and186 inserted hold buffers, not proof that the total buffer limit was reached.
+
+Full goal remains open. All native work stays in cloud.
+
 ## 2026-11-15 — RX CTS complete; exact new three-corner repair executing
 
 RX physical job132590504077 in43641707777 completed SUCCESS, source62db42e598ccca15b5d51f202b2c5b52ab33b976. Same twenty SRAMs,356 authenticated outputfiles,596.51s, protected inputs unchanged. CTSODB2d7f284e5a22dcaced71be4bcf1956f5d6d00373653d6a0217c1b4c694271b69. Safe14132319537 SHAf68456d7af8c3cc649cee632a11bce69723b7a948bd8247050284156adca7c86; native14133215435 SHA88a6068cd6374965d52e0a72f6b77466fd3a0fcd7f80d1a0aaf8438afa9ed314. Full receipt `docs/evidence/rx-cursor-chip-cts-20261115.json`. Independent native gateboot remains pending, not inherited from another source.
