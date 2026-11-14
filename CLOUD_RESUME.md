@@ -1,3 +1,32 @@
+## 2026-11-14 — EOP-cache behavioral qualification PASSED; paired physical gain measured
+
+Simulation43629411055/source00113c97cc04fc41551e45e1efa9c0499aa2bc17 PASSED12positive300k-cycle runs (cachealone6/allphysicaloptions6), original output/storage/coverage checks intact; all12compiledwrong+2increment controls rejected. Exact source e478d785... unchanged/restored. Formal43629312391 already passed2physical-option sizes. Full receipts now in docs/evidence/replay-eop-cache-qualification-20261114.json.
+
+Physical43629920068/sourced25b831d07ae9f3444fec0b78656bcd5c02bee37 completed, NOTclosed. Actualcachedstate isone sg13g2_dfrbpq_1, source soc_pcie_replay_tx.v:310.5-322.8, loweredQ andmappedcellbothbound. Baseline5895cells/cache5870. Same600umcore/4nsidealclock/5percentderates/IHPlibraries/layerRC: afterelectricalrepair slowsetup-2.881974 -> -2.486284ns (395.690psbetter), typical-.367894 -> -.142452, fastsetup+1.067601 -> +1.279902. Fasthold-.048063 -> -.064218ns (16.155psworse). NoCTS/routed/fullchipacceptance. Previous isolatedwritepredecode results had different preprocessing; compare onlycurrentpaired baseline/cache.
+
+Nativealiasdiagnosis43630223798/sourceb424163331ae07b47deba73c58a2ab6ceca89079 passed. Oldcriticalread_pos[1]->replay_read_onehot[62]. Newcriticalreplay_read_onehot[33]->read_replay_bank[0].ahead[5]; 0.15-0.19pFloads and0.8-1.2nsbuf1stages dominate distribution, comparatorno longerworst. Fastholdendsnext_store_sequence[0]. Safe/native IDs+SHA/fullpathreceipts retained in evidenceJSON; native14127781771 remains cloudonly.
+
+Fresh mainchip43630345267/sourcebdd7cc588490425ff98c4718ea8986ecc06a128a uses new default-off EOP_CACHE forwarded by both sim_soc.sh and syn_soc_top.sh. Preservesallprioroptions20SRAM/firmwarechecks. Checker binds exactnewRTL, onecachedsourceflop and26writepredecodebits. Newcandidate; gateboot/postCTS/routing/RCX/DRC/LVS stillrequired. Do notinheritoldpasses or cancel liveoldgateboot.
+
+Next blockrepair sourceacb583e43098fc4f1b58aa7422f67a6c5493ef0c/codex/eop-cache-timing-repair extends identicalpairedscreen with native setup100iterations andhold1000iterations, legalization andall3cornerreports aftereach;24reports/candidate mandatory. Acceptanceconstraintsunchanged. First dispatch preparation hitGitHub git/trees422timeout beforebranchcreation; authoritativeabsencechecked andtreecreationretried, nowdispatched. Not a CADfailure. No experimentalworkflows/candidateRTL merged intointegration yet.
+
+Current new handles:
+
+[
+  {
+    "id": 43630345267,
+    "head_sha": "bdd7cc588490425ff98c4718ea8986ecc06a128a",
+    "status": "in_progress",
+    "conclusion": null
+  },
+  {
+    "id": 43630531400,
+    "head_sha": "acb583e43098fc4f1b58aa7422f67a6c5493ef0c",
+    "status": "in_progress",
+    "conclusion": null
+  }
+]
+
 ## 2026-11-14 — EOP-cache physical screen current handle and alias diagnosis
 
 Current physical trial43629920068/source d25b831d07ae9f3444fec0b78656bcd5c02bee37 on codex/replay-eop-cache-placement. First43629515583 failed at missing replay_eop_q alias; second43629722934/source9ba674777abc814c6691cf2f077178d928943d58 proved both replay_eop_q/core_eop names optimized away (only external EOP names retained), then failed the alias guard. These are mapping-validator failures before placement, not measured timing failures. Original candidate RTL unchanged e478d785... and clock constraints unchanged.
