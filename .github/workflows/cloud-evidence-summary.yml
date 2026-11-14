@@ -36,12 +36,16 @@ jobs:
       - name: Install pinned control libraries
         run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2 klayout==0.30.4.post1
       - name: Qualify original controls and all actual MOS650 schematic fault hooks
-        run: python3 -B scripts/cloud_cdr_wire_shortcuts_physical.py --controls
+        run: |
+          python3 -B scripts/check_physical_memory_sampler.py
+          python3 -B scripts/cloud_cdr_wire_shortcuts_physical.py --controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: wire-physical-controls-${{ github.run_id }}
-          path: hw/soc/out/cloud-cdr-wire-shortcuts-physical
+          path: |
+            hw/soc/out/cloud-cdr-wire-shortcuts-physical
+            memory-sampler-controls.json
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 90

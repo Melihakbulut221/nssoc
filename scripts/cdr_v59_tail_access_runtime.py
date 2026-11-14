@@ -11,8 +11,8 @@ from pathlib import Path
 
 SUPERVISOR="docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py"
 SUPERVISOR_SHA="e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b"
-SAMPLER="docs/evidence/cdr-v59-tail-qualified-memory-sampler-20261026.py"
-SAMPLER_SHA="55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07"
+SAMPLER="scripts/physical_memory_sampler.py"
+SAMPLER_SHA="36721c1b98c0481e5c91568888634e8becdb1678f33a50fcf0c9f69c93f49d6a"
 PROBE="scripts/check_cdr_v59_mim_runtime.py"
 WRITER="scripts/cdr_v59_mim_admission.py"
 WRITER_SHA="a985d8bf1c94c6a3ba3d4f19c24193f35598a883eab56a52ed6de86ff98c14e5"
