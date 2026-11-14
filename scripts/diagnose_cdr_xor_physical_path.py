@@ -217,4 +217,47 @@ for port in ['aqp','aqn','adp','adn','bqp','bqn','s0p','s0n','cdp','cdn','s1p','
    if touched:devices[name]={'kind':kind,'terminal_indices':touched,'nodes':dev['nodes'],'nx':dev.get('nx')}
  loads[port]={'incident_explicit_capacitance_f':sum(x['value'] for x in caps),'incident_capacitor_count':len(caps),'largest_incident_caps':sorted(caps,key=lambda x:x['value'],reverse=True)[:12],'connected_devices':devices}
 out['passive_load_inventory']={'expanded_passive_instances':len(expanded),'explicit_capacitors':len(capacitors),'numeric_wire_resistors':len(resistors),'ports':loads,'scope':'All explicitly numeric C and R in top and recursively expanded gp_* subcircuits. PDK device intrinsic capacitance is excluded; coupling is not treated as ground. Wire R collapsed only for connectivity, not electrical measurement.'}
+# Identify buffer inputs without walking backwards through active latches.
+# Traverse only PDK resistor divider edges, stopping at every sampler port
+# and supply. This distinguishes raw B from retimed D explicitly.
+from collections import defaultdict,deque
+adj=defaultdict(list)
+for name,dev in bound['groups']['rppd'].items():
+ a,b=map(root,dev['nodes'][:2]);adj[a].append((b,name));adj[b].append((a,name))
+sampler_ports=[tag+'q'+pol for tag in 'abcd' for pol in 'pn']
+sampler_roots=defaultdict(list)
+for name in sampler_ports:sampler_roots[root(name)].append(name)
+rails={root(name) for name in ['avdd','avss','vdd','vss','0','sub','body_1']}
+traces={}
+for output in ['adp','adn','cdp','cdn','s0p','s0n','s1p','s1n']:
+ drivers={name:dev for name,dev in bound['groups']['npn13g2'].items() if root(dev['nodes'][0])==root(output)}
+ assert drivers,output
+ traces[output]={}
+ for name,dev in drivers.items():
+  start=root(dev['nodes'][1]);queue=deque([(start,[])]);seen={start};hits={}
+  while queue:
+   node,path=queue.popleft()
+   if node in sampler_roots:
+    for sampler in sampler_roots[node]:hits[sampler]=path
+    continue
+   if node in rails:continue
+   for nxt,resistor in adj[node]:
+    if nxt not in seen:seen.add(nxt);queue.append((nxt,path+[resistor]))
+  assert hits,(output,name,'No sampler through input divider')
+  traces[output][name]={'base_node':dev['nodes'][1],'sampler_ports_through_resistors_only':hits,'semiconductor_edges_traversed':0}
+out['buffer_input_sampler_binding']=traces
+sampler_rows=[]
+for phase in [.1,.3,.49,.6,.75,.9]:
+ times=loaded.START+(indices+.5+phase)*loaded.UI
+ for a,b in [(0,1),(1,0)]:
+  mask=(current==a)&(previous==b);row={'phase_ui':phase,'current_previous':[a,b],'samplers':{}}
+  for tag in 'abcd':
+   values=np.interp(times,t,diff('xpd.'+tag+'qp','xpd.'+tag+'qn'))[mask]
+   row['samplers'][tag]={'minimum_v':float(values.min()),'median_v':float(np.median(values)),'maximum_v':float(values.max())}
+  sampler_rows.append(row)
+out['all_sampler_transition_rows']=sampler_rows
+out['native_metadata_keys']=sorted(meta)
+out['native_metadata_provenance']={k:value for k,value in meta.items() if any(word in k for word in ['source','sha','file']) and isinstance(value,(str,int,float,bool))}
+with zipfile.ZipFile('native.zip') as archive:
+ out['native_report_member_names']=[n for n in archive.namelist() if n.endswith(('.json','.cir','.gds','.spice'))]
 P('out').mkdir();P('out/xor-physical-path.json').write_text(json.dumps(out,indent=2))
