@@ -1,0 +1,23 @@
+{
+  "run": 43641038903,
+  "source_head": "8372a48986258a93441a79fc2ea9b52f8a36a577",
+  "derived_artifact": 14132421197,
+  "derived_sha256": "7fa141baca76d3fe5543764c433efcf5e7cd70ba77851a6890594e7df86d305a",
+  "failure": {
+    "electrical_accepted": false,
+    "error": "ValueError('native command precise-actual-mim-geometry failed')",
+    "final_timing_complete": false,
+    "full_pex_qualified": false,
+    "full_phy_accepted": false,
+    "gate_poly_RC_extracted": false,
+    "mim_intrinsic_composition_qualified": false,
+    "substrate_r_modeled": false,
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_metal_rc.py\", line 314, in main\n    mim_extract(cfg,physical)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_metal_rc.py\", line 246, in mim_extract\n    execute([sys.executable,\"-B\",ROOT/\"scripts/cdr_mos650_mim_support.py\",\"--geometry\"],variant+\"-actual-mim-geometry\")\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_metal_rc.py\", line 211, in execute\n    if error is not None:raise error\n                         ^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_metal_rc.py\", line 181, in execute\n    need(proc.returncode==0,\"native command \"+label+\" failed\")\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_metal_rc.py\", line 14, in need\n    if not ok:raise ValueError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^\nValueError: native command precise-actual-mim-geometry failed\n"
+  },
+  "stderr": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_mim_support.py\", line 212, in <module>\n    if sys.argv[1:]==[\"--geometry\"]:generate()\n                                    ^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_mim_support.py\", line 17, in generate\n    assert sha(G)=='285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "root_cause": "MIM geometry helper retained old paired GDS hash; new packed GDS correctly rejected before extraction.",
+  "correction_head": "a82ae4f177962c6eeca9a1a678d7423274ddb313",
+  "retry_run": 43641595711,
+  "acceptance_gates_changed": false,
+  "numeric_rc_accepted": false
+}
