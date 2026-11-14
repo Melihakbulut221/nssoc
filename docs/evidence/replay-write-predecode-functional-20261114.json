@@ -1,0 +1,144 @@
+{
+  "status": "FUNCTIONAL_CANDIDATE_PASSED_NOT_TIMING_ACCEPTED",
+  "source": "f95fe2d305c3a64f234376218ccaeaebebe1b284",
+  "rtl_sha256": "374722073fc503a85970748d79daad12fd360fb1edeb58b76250ddf3b967eb35",
+  "formal": {
+    "run": 43613750120,
+    "source": "1d665b21afbe869f46d4befa832c6b76197e5610",
+    "artifact": 14121491806,
+    "sha256": "12f351aa981e44d133f7f1a98df44fb0c2200d6b8acc77567dd245cc983bf824",
+    "result": {
+      "rtl_sha256": "374722073fc503a85970748d79daad12fd360fb1edeb58b76250ddf3b967eb35",
+      "cases": [
+        {
+          "depth": 2,
+          "max_bytes": 22,
+          "returncode": 0,
+          "log_sha256": "2f8270be441163f45dfd68c746073f0face78dfe88f8d2dcaa2895e9ce0bad52",
+          "passed": true
+        },
+        {
+          "depth": 4,
+          "max_bytes": 38,
+          "returncode": 0,
+          "log_sha256": "ec441f97119d4e0411b973b4bec73804af5cbd7b3a769641869bb2a246755c10",
+          "passed": true
+        }
+      ]
+    },
+    "runtime": "OSS CAD Suite 2026-08-04",
+    "notes": "Full flattened real replay module, mapped memory, async2sync, equiv_make/simple/induct. Default knobs at DEPTH2/MAX22 and DEPTH4/MAX38. Not analog reset characterization."
+  },
+  "simulation": {
+    "run": 43613400964,
+    "artifact": 14121536975,
+    "sha256": "d7b9f22b4d4562919eb16a9b4b6209a77e871f8790cf61a4a0111832fe9fec74",
+    "tests": {
+      "soc_pcie_buffered_flow_packets.xml": 5,
+      "soc_pcie_flow_packets.xml": 3,
+      "soc_pcie_reliable_packets.xml": 4,
+      "soc_pcie_replay_tx.xml": 7
+    },
+    "cosim": {
+      "cosim/d2_b22_t128_seed6.log": "SUMMARY seed=164256312 cycles=300000 frames_in=2961 bad_in=32 frames_out=4706 replayed_out=1811 replays=1091 stalls=54312 take_pairs=61973 take_gaps=22932 acks=4696 losses=84 source_errors=34 resets=6 mismatches=0",
+      "cosim/d2_b22_t128_seed5.log": "SUMMARY seed=933426481 cycles=300000 frames_in=2964 bad_in=29 frames_out=4743 replayed_out=1834 replays=1113 stalls=54032 take_pairs=62689 take_gaps=23130 acks=4786 losses=83 source_errors=34 resets=8 mismatches=0",
+      "cosim/d4_b38_t256_seed1.log": "SUMMARY seed=-1704003622 cycles=300000 frames_in=3556 bad_in=32 frames_out=4719 replayed_out=1280 replays=626 stalls=69169 take_pairs=92207 take_gaps=31979 acks=3797 losses=96 source_errors=37 resets=7 mismatches=0",
+      "cosim/d4_b38_t1024_seed3.log": "SUMMARY seed=1608933590 cycles=300000 frames_in=3669 bad_in=45 frames_out=4603 replayed_out=1062 replays=586 stalls=67918 take_pairs=89598 take_gaps=31399 acks=3935 losses=95 source_errors=55 resets=13 mismatches=0",
+      "cosim/d4_b38_t256_seed2.log": "SUMMARY seed=45471432 cycles=300000 frames_in=3587 bad_in=28 frames_out=4765 replayed_out=1282 replays=674 stalls=69650 take_pairs=93239 take_gaps=32346 acks=3855 losses=89 source_errors=35 resets=10 mismatches=0",
+      "cosim/d4_b38_t256_seed4.log": "SUMMARY seed=-752063416 cycles=300000 frames_in=3565 bad_in=23 frames_out=4712 replayed_out=1238 replays=623 stalls=68591 take_pairs=91242 take_gaps=31682 acks=3812 losses=79 source_errors=32 resets=9 mismatches=0",
+      "cosim-knobs/d2_b22_t128_seed5.log": "SUMMARY seed=933426481 cycles=300000 frames_in=2964 bad_in=29 frames_out=4743 replayed_out=1834 replays=1113 stalls=54032 take_pairs=62689 take_gaps=23130 acks=4786 losses=83 source_errors=34 resets=8 mismatches=0",
+      "cosim-knobs/d2_b22_t128_seed6.log": "SUMMARY seed=164256312 cycles=300000 frames_in=2961 bad_in=32 frames_out=4706 replayed_out=1811 replays=1091 stalls=54312 take_pairs=61973 take_gaps=22932 acks=4696 losses=84 source_errors=34 resets=6 mismatches=0",
+      "cosim-knobs/d4_b38_t1024_seed3.log": "SUMMARY seed=1608933590 cycles=300000 frames_in=3669 bad_in=45 frames_out=4603 replayed_out=1062 replays=586 stalls=67918 take_pairs=89598 take_gaps=31399 acks=3935 losses=95 source_errors=55 resets=13 mismatches=0",
+      "cosim-knobs/d4_b38_t256_seed1.log": "SUMMARY seed=-1704003622 cycles=300000 frames_in=3556 bad_in=32 frames_out=4719 replayed_out=1280 replays=626 stalls=69169 take_pairs=92207 take_gaps=31979 acks=3797 losses=96 source_errors=37 resets=7 mismatches=0",
+      "cosim-knobs/d4_b38_t256_seed2.log": "SUMMARY seed=45471432 cycles=300000 frames_in=3587 bad_in=28 frames_out=4765 replayed_out=1282 replays=674 stalls=69650 take_pairs=93239 take_gaps=32346 acks=3855 losses=89 source_errors=35 resets=10 mismatches=0",
+      "cosim-knobs/d4_b38_t256_seed4.log": "SUMMARY seed=-752063416 cycles=300000 frames_in=3565 bad_in=23 frames_out=4712 replayed_out=1238 replays=623 stalls=68591 take_pairs=91242 take_gaps=31682 acks=3812 losses=79 source_errors=32 resets=9 mismatches=0"
+    },
+    "cycles_total": 3600000,
+    "factorization": {
+      "status": "PASS",
+      "scope": "Boolean factorization and five source-update guards only; sequential behavior tested separately",
+      "rtl_sha256": "374722073fc503a85970748d79daad12fd360fb1edeb58b76250ddf3b967eb35",
+      "cases": [
+        {
+          "bytes": 36,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "097372a33bf82541f8dfe593388d7c814dbe8821585325ca8e312eccb5366171"
+        },
+        {
+          "bytes": 36,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "8b13ac2dc8014161bc2a68317df92c369f3c08549fa97f7876c494359878d799"
+        },
+        {
+          "bytes": 44,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "553df8012e28d7f7d58d7bbcdd36b6abddeefe5b3133d4790e19a362c8ba5ce0"
+        },
+        {
+          "bytes": 44,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "dca0661d967a49fe78b9fbe32c3d4e87f89dd148374daabf48b8d11457f4d923"
+        },
+        {
+          "bytes": 76,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "80b6b05e4eca0fdd2de0635a1ce9c3c189f613db074a52b9307257f989ccd43b"
+        },
+        {
+          "bytes": 76,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "af0c55320b79dd3d1cb0474bb0ae1fe1cbbb0e233acc761577a3d624837b3219"
+        },
+        {
+          "bytes": 152,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "ee40a00b137a9188c650d7ad1ea0b15f3f91e2a05f3df65ef34816586712379c"
+        },
+        {
+          "bytes": 152,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "43bbc869a1344148293f84e3d1040c6c4b70856e869b850d0ac92f97a47f429c"
+        },
+        {
+          "bytes": 608,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "36a2a9a9b90027ef3fb6d81e59e8a1fb11263921ca9a7174ba95c02d82365605"
+        },
+        {
+          "bytes": 608,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "cdba9ee84d26863b1f5ee8ae546b1964d238c6bc5c191e8bcfc199d13f1c0497"
+        },
+        {
+          "bytes": 32768,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "616b8576eafd957701f847628753e677bfee11b0f2a1ec3378d8443dff632195"
+        },
+        {
+          "bytes": 32768,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "534aa12ec8f8477851d9914113ba275ba01086ac71adea8bf89f82baa3a20fe2"
+        }
+      ]
+    }
+  },
+  "earlier_formal_failure": {
+    "run": 43613576934,
+    "reason": "Ubuntu packaged old Yosys rejected existing baseline SystemVerilog cast syntax; no functional counterexample"
+  },
+  "pending_stronger_storage_and_compiled_fault_controls": 43614166666,
+  "timing_accepted": false,
+  "manufacturing_approval": false
+}

@@ -1,3 +1,15 @@
+## 2026-11-14 — predecode functional qualification passed; exact-jumper DRT live
+
+Full actual replay RTL equivalence PASSED run43613750120/source1d665b21afbe869f46d4befa832c6b76197e5610 using pinned OSS CAD Suite2026-08-04, configurations2x22 and4x38. Earlier43613576934 failed only old Ubuntu Yosys parser on existing sized-cast syntax. Safe14121491806 authenticated, both complete native proof logs/hash/verdicts checked. Simrun43613400964/sourcef95fe2d305c3a64f234376218ccaeaebebe1b284 PASSED:12 all-output co-simulation cases,3.6millioncycles,zero mismatches, plus19 independent cocotb tests across4suites,zero skips/errors/failures. Receipt docs/evidence/replay-write-predecode-functional-20261114.json. RTL remains experiment-only and default-off. This is NOT measured timing closure.
+
+Stronger validation43614166666/source5634da5c513f0ef0ed76df2d68155e8f6d760132 (codex/replay-write-predecode) now additionally compares every actual memory write strobe and every stored byte, including malformed frames; restores baseline source SHAfff6a0d3abb6b3f3a468baef8312b357efb7b591d3733cd92f3dda3345c34c63 by reversing only opt-in changes; compiles actual wrong-low-select mutation and requires specific strobe mismatch in all6seeds. Same candidate RTL SHA374722073fc503a85970748d79daad12fd360fb1edeb58b76250ddf3b967eb35. Do not merge experiment workflow. Preserve source/helper/tests only after controls pass.
+
+PreDRTscreen43612029407 PASSED,699reportedjumpers across iterations,473 changedguide nets outof158097,159934cells/354ports and allinstancegeometry/connectivity unchanged. Safe14120604011/native14120788686 pinned in docs/evidence/pre-drt-jumper-screen-20261114.json. Not finalantennaacceptance.
+
+Continue exactguides via live43614100441/sourceb83bc3a3f204bf9a2833c89fd632ae9308a58b56, branchcodex/exact-jumper-guides-drt. Restore authenticated guides.tgz (SHA69172352eb82e92a998843405c2db5ade521c96654e85fd9ff1fe1785e93b510), renameoldroute tojumper-source, explicitlytake after-jumpers.odb and read_guides after-jumpers.guide in pinnednativeDRT; NO GRTpass. BindexactODB/guide/SDC/netlistSHAs in jumper-input-proof.json. Original16DRTiters/0postDRTrepairloops, no constraint/gate relaxation. DRTthenCheckAntennas and freshRCX/3cornerSTA withallzeroacceptance. Safe route-pre_drt_jumpers-43614100441/routed-sta-pre_drt_jumpers-43614100441; native routed-db-pre_drt_jumpers-43614100441 and pre-drt-jumpers-rcx-native-43614100441 cloudonly.
+
+Other live original jobs: buf4reroute43610680141, PHY43603972722; no restart. Fullgoalstillopen.
+
 ## 2026-11-14 — registered replay write predecode candidate in cloud qualification
 
 Existing source/checkpoint e259ba0bb7b255d238aba602fcb405fc10e4bae7 recovered after continuation. No native assets or source checkout written locally. Current diode baseline receipt/six worst paths were successfully committed; do not rerun it.
