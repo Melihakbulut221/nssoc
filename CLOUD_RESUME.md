@@ -1,3 +1,11 @@
+# Full saved CDR device/history diagnosis launched
+
+43570807730 source`ec52087e74b97d707236035938df178180f27378`, branch`codex/cdr-native-device-history-diagnosis`, verified in_progress. Two cloud jobs restore original full raw waveforms for rejected acbuf15/acbuf20; no simulator rerun. Exact archive/raw hashes, candidate nx=2 binding, unchanged gates must reproduce saved results. Reports exact failing HBT metric/time/terminal voltages and four-bit history at original sampler phases. Safe artifacts`cdr-native-failure-derived-VARIANT-43570807730`. Native archives remain cloud-only. Implementation on experiment branch; integrate only after successful result. Receipt:docs/evidence/cdr-native-failure-diagnosis-launch-20261114.json.
+
+Six prior routing/LVS/MBIST jobs still live at latest poll. Full production goal remains open.
+
+---
+
 # CDR comparison completed: current-only buffer change is insufficient
 
 Diagnostic43570390846 completed/success; safe14104122995 SHA`f5c99f1b5635a011c56874959815b8d09850b49e518d9c542b7e4ca5d77a40b4`. Result saved in docs/evidence/cdr-ac-buffer-settling-result-20261114.json. Diagnostic success is not a PHY pass.
