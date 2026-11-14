@@ -94,7 +94,9 @@ def primitives(name,stack=()):
  for t in bodies[name]:
   if t[0][0].upper()=='X':
    assert not any('=' in v for v in t),('parameterized call needs explicit parser',t)
-   child=t[-1].upper();assert child in headers and len(t)-2==len(headers[child]),t
+   child=t[-1].upper();nodes=t[1:-1]
+   if nodes and nodes[-1]=='/':nodes=nodes[:-1] # CDL subcircuit separator, not an electrical pin
+   assert '/' not in nodes and child in headers and len(nodes)==len(headers[child]),(name,child,len(nodes),len(headers.get(child,[])))
    total+=primitives(child,stack+(name,))
   else:assert t[0][0].upper() in 'MRCDQ';total+=1
  assert total>0,('empty reference cell',name)
