@@ -14,11 +14,12 @@ jobs:
           sparse-checkout: |
             scripts
             hw/soc/rtl/pcie
-      - name: Install actual Yosys
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y yosys
-          yosys -V
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Record supported Yosys runtime
+        run: yosys -V
       - name: Prove real replay state and outputs without blackboxes
         run: python3 scripts/prove_replay_write_predecode.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
