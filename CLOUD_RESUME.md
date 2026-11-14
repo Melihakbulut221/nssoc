@@ -1,3 +1,9 @@
+## 2026-11-14 — isolated PHY select-bias trial rejected; physical diagnosis live
+
+PHY43596398222 completed FAILURE of frozen data gates, simulatorRC0,4671.69s. Variantbd10_lowz8_xor2_cdata3_sel15: only ibs0/ibs1 bias1mA->1.5mA relativecdata3, model unchanged. Device/phase/VI gates pass but data fails. X385wrong-sign/717below100mV of765samples; Y0wrong-sign/580below100mV. SamplerA65,C148,D96 below100mV,Bpasses. No layout or PHY acceptance. Safe14116609449 SHA f02366f817e8128ef272a93accd09f6c1bc7968f538373969ffd2de8a32a3677. Native14116918270 SHA2f2dd3cffcadde6e7111065c3e5c79580ec245f5bffa14a54116cb66c6587868 (cloud only). Mixeddivider-whatif artifact containswaveform: do not download locally.
+
+Follow diagnosisrun43603401088 (source85e8478623537af67a0642c7ed7cc109c37b86ac, codex/cdr-select-bias-physical-trace). Uses existing frozen-phase physical-path observer on completed native waveform, reproduces all original gates first, now also saves interface_truth_rows. It does not rerun/modify circuit or loosen gates. Inspect input-sign disagreements and strong-input XOR violations to select a justified next circuit change. Do not blindly increase bias or accept partial Y improvement. Full-chip LVS43602758557 and route43591198141 remain active at last poll.
+
 ## 2026-11-14 — every native reference pin connection verified
 
 Run43603138368 PASSED (source b278e7a3281e2c6eb4031af5f51ab8aeb0d92a02). Actual frozen KLayout reader graph compared against independent powered-Verilog JSON and qualified CDL pin mapping: all158681native instances and816244pin connections match, zero mismatches. Wrong-signal-net and missing-pin controls rejected. Previous354top-pins/7456816primitive/DP70110/SP1211120counts also pass. No physical-layout LVS acceptance implied. Artifact14116878522 SHA cf4412a58b54b5693149db8f1519bc837796cb66e4e10d14924111f4c44248c1. Receipt docs/evidence/chip-native-reference-connectivity-20261114.json. Updated tested native reader helpers retained.
