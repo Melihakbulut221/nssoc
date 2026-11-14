@@ -1,21 +1,27 @@
-name: CDR C slave data and feedback sizing - frozen gates
+name: Diagnose saved XOR input and output margins at unchanged phases
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  divider-whatif:
+  diagnose:
     runs-on: ubuntu-24.04
-    timeout-minutes: 330
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        variant: [bd10_lowz8_xor2_cdata3, bd10_lowz8_xor2_cslave3]
+        include:
+          - variant: bd10_lowz8_xor2_cdata3
+            native: '14112762376'
+            result: '14112882059'
+            digest: 8aab59e3437f6c4e6e4ec97448679d45a7b652af8f5a623bd5c63c9ec96f2610
+          - variant: bd10_lowz8_xor2_cslave3
+            native: '14112317745'
+            result: '14112233130'
+            digest: ce095c2ced48cd5b78a7f036e538f0737fae994ffa925c51ff89c76a0cb47d5e
     env:
       GH_TOKEN: ${{ github.token }}
-      ARTIFACT_ID: '13283214752'
-      ARTIFACT_SHA256: ac342f4945a262a4c0fb2440634aa600b8d3f07c6c257c9d3d6e648a319b2402
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -23,55 +29,22 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/cdr_n1_divider_whatif.py
+            /scripts/diagnose_cdr_xor_interfaces.py
             /scripts/cdr_mos650_full650_loaded.py
-      - name: Restore the preserved N1 native tree at its original absolute path
+            /scripts/cdr_n1_divider_whatif.py
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
+      - name: Restore native waveforms only on cloud runner
         run: |
           set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/14092472835/zip > buffer-topology.zip
-          gh api repos/${{ github.repository }}/actions/artifacts/14110140623/zip > sampler-phase.zip
-          W=/mnt/n1; sudo mkdir -p $W; sudo chown $USER $W
-          gh api repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip > $W/n1.zip
-          echo "$ARTIFACT_SHA256  $W/n1.zip" | sha256sum -c -
-          mkdir -p mos650-gate-ac
-          unzip -q $W/n1.zip -d mos650-gate-ac -x '*/wave.raw' '*/producer-*' '*/composition-n2/*' '*/composition-n4/*' '*/composition-n8/*' '*/composition-n16/*'
-          rm $W/n1.zip
-          ls mos650-gate-ac mos650-gate-ac/native mos650-gate-ac/native/loaded-n1-nominal_late
-          grep -n "^\.lib\|^\.include\|pre_osdi" mos650-gate-ac/native/loaded-n1-nominal_late/bench.cir
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
-      - name: Rerun with ${{ matrix.variant }} slave-stage values and the frozen gates
-        run: python3 -B scripts/cdr_n1_divider_whatif.py mos650-gate-ac ${{ matrix.variant }} whatif-${{ matrix.variant }}
+          gh api repos/${{ github.repository }}/actions/artifacts/${{ matrix.native }}/zip > native.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/${{ matrix.result }}/zip > result.zip
+          echo '${{ matrix.digest }}  result.zip' | sha256sum -c -
+          unzip -q result.zip result.json
+      - run: python3 scripts/diagnose_cdr_xor_interfaces.py ${{ matrix.variant }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: divider-whatif-${{ matrix.variant }}-${{ github.run_id }}
-          path: whatif-${{ matrix.variant }}
-          if-no-files-found: warn
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: slave-parallel-native-${{ matrix.variant }}-${{ github.run_id }}
-          path: |
-            mos650-gate-ac/native
-            mos650-gate-ac/derived/loaded-n1-nominal_late.json
+          name: cdr-xor-interfaces-derived-${{ matrix.variant }}-${{ github.run_id }}
+          path: out/*.json
           if-no-files-found: error
           retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: cdr-c-sampler-result-only-${{ matrix.variant }}-${{ github.run_id }}
-          path: |
-            whatif-${{ matrix.variant }}/result.json
-            whatif-${{ matrix.variant }}/isolated-c-sampler-change.json
-            whatif-${{ matrix.variant }}/candidate-current-density-binding.json
-          if-no-files-found: error
-          retention-days: 90
-      - name: Require unchanged waveform and device gates
-        run: |
-          python3 - <<'PYGATE'
-          import json
-          from pathlib import Path
-          d=json.loads(Path('whatif-${{ matrix.variant }}/result.json').read_text())
-          assert d['returncode']==0 and d['passed'] and d['data_passed'] and d['devices_passed'] and d['phase_passed'], 'Rejected circuit-screen candidate; not layout acceptance'
-          PYGATE
