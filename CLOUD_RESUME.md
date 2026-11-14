@@ -1,3 +1,11 @@
+## 2026-11-14 — exact buffer Liberty SAT qualification live
+
+Follow43611046213/source19ac096b9594e6854399ff2c2554e97b59224715 oncodex/retry-buffer-liberty-equivalence. scripts/qualify_retry_buffer_liberty.py verifies originalimplementationpackage822dab.../releaseasset663146895, readsinputcontractwithoutrestoringnativefileslocally, fetchespublicIHPc4b8...Gitblobs forstandardfast/slow/typLiberty and requires eachSHA256 equal everymatchingfrozenpackageinput. Typical additionally968b0cfd... . RuntimeAppImaged6a349.../ubuntu22samepinned.
+
+ActualYosys read_liberty (NOT-libblackboxes), flattenedtwo-cellcombinationalmiter and SAT provebuf1==buf4 for eachcorner. Separate inverterreplacement must produceactualSATproof failure, not genericparsererror. 3positive+3negativecases. Safeartifactretry-buffer-equivalence-43611046213 containsresultJSONandnativeYosyslogs; models/miter/nativework remaincloudonly. This is functionequivalence, not timing/physicalapproval. If frozenpublichash differs inspect ratherthan acceptingunboundmodel. No helpersmergeduntilpassed.
+
+Livejob snapshot: retrybuf4reroute43610680141/job132494855003 in Rebuildroutingfromverifiedretrydriversizing; baseline43591198141/job132436088101 in Rebuildroutingfromverifiedfourdiodelegalization; PHY43603972722/job132474510071 in frozengatesimulation. Nojobsrestarted. Existingbuf4placement/connectivitypassed aspreviouscheckpoint; fullgoalstillopen.
+
 ## 2026-11-14 — buf4 placement/connectivity PASSED; coherent reroute live
 
 Qualification43610473965/sourced0c1713733ef76d7ad8d601eac41d2a5e656227f PASSED on unchanged savedcandidate from43609939062. Nativecheck_placementrepeatedsuccess; all159933nontargetinstances and ALLnetconnections/354ports identical. Onlyplace31551 masterbuf1->buf4, X2617440->2615520DBU,Y1704780unchanged,R180->MX selectedrowreflection; statusPLACEDandA/X/VDD/VSSnets unchanged. Originalverifier was too strict about selectedorientation; diagnostic43610218581 provedexactdelta beforeexplicitqualification. No othergeometryallowed. Safe14120510154 SHA7118d141ef31cca85c805e615c7768d5a183f89da8da78316acbf11fa8854a52; native14120090635/d67191c...; candidateODB972d9676... . Receipt docs/evidence/retry-driver-buf4-placement-20261114.json. PlacementONLY, no timing/routingacceptance.
