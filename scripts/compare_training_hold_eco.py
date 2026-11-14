@@ -11,7 +11,7 @@ def archive(i,h,run,head):
  with path.open('rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()==h
  return zipfile.ZipFile(path)
 # Wait for the exact producer; never infer completion from a missing artifact.
-run=43651662225;head='f389138917f81319a765ae1c0a59f4beda1a9f86'
+run=43652982531;head='11890797d11a032989772232d9308036a9388841'
 deadline=time.monotonic()+2700
 while True:
  r=api('actions/runs/'+str(run));assert r['head_sha']==head
@@ -21,7 +21,7 @@ while True:
 assert r['conclusion']=='success'
 arts=api('actions/runs/'+str(run)+'/artifacts')['artifacts']
 def producer(kind):
- matches=[x for x in arts if x['name']==f'rx-feedback-hold-eco-{kind}-{run}' and not x['expired']];assert len(matches)==1
+ matches=[x for x in arts if x['name']==f'rx-feedback-fixed-hold-eco-{kind}-{run}' and not x['expired']];assert len(matches)==1
  item=matches[0];assert item['digest'].startswith('sha256:')
  return archive(item['id'],item['digest'].split(':')[1],run,head)
 prior=archive(14135173417,'31bfe99bd985d6edfd9246d21c511edf2d17f17371d091158bf9299c909f824b',43648980039,'95929ee677c79d9bab52f47c28f684eedb91795a')
