@@ -36,8 +36,12 @@ stat -liberty {lib}
         r=subprocess.run(['yosys','-Q','-T','-s',str(native/(label+'.ys'))],stdout=f,stderr=subprocess.STDOUT,timeout=900)
     assert r.returncode==0,label
     d=json.loads((native/(label+'.json')).read_text())['modules']['soc_pcie_replay_tx']
-    fanout=collections.Counter();types=collections.Counter()
+    fanout=collections.Counter();types=collections.Counter();metadata=0
     for c in d['cells'].values():
+        if c['type']=='$scopeinfo':
+            assert not c['connections'] and not c['port_directions']
+            metadata+=1
+            continue
         types[c['type']]+=1
         for pin,bits in c['connections'].items():
             if c['port_directions'][pin]=='input':fanout.update(x for x in bits if isinstance(x,int))
@@ -45,6 +49,6 @@ stat -liberty {lib}
     selected={n:[fanout[b] for b in v['bits']] for n,v in d['netnames'].items() if n in ('write_valid','write_address','write_low','write_group','write_data')}
     if label=='predecode':assert 'write_group' in selected and 'write_low' in selected
     else:assert 'write_valid' in selected and 'write_address' in selected
-    report['cases'][label]=dict(cell_count=sum(types.values()),cell_types=dict(types),named_write_net_sink_pins=selected,netlist_sha256=hashlib.sha256((native/(label+'.v')).read_bytes()).hexdigest())
+    report['cases'][label]=dict(nonphysical_zero_port_scopeinfo_records=metadata,cell_count=sum(types.values()),cell_types=dict(types),named_write_net_sink_pins=selected,netlist_sha256=hashlib.sha256((native/(label+'.v')).read_bytes()).hexdigest())
     (out/'mapping.json').write_text(json.dumps(report,indent=2)+'\n')
 report['status']='MAPPED_BOTH_CANDIDATES_NOT_PHYSICAL_TIMING';(out/'mapping.json').write_text(json.dumps(report,indent=2)+'\n')
