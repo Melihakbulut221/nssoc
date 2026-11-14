@@ -1,3 +1,9 @@
+## C sampler original-bias path diagnosis launched
+
+Run [43584141378](https://github.com/Melihakbulut221/nssoc/actions/runs/43584141378), source `413bd9793862cfd88281883d82ae8355f3ba811b`, branch `codex/cdr-c-sampler-original-bias-path`. Uses both rejected original-bias load12/load16 native captures on cloud runners only, replays original gates, then reports physical transistor voltages/currents by bit history. No acceptance or circuit changes. Inspect safe `cdr-sampler-c-path-derived-*` JSON on completion; do not download native archives locally. Do not merge experiment workflow.
+
+Four existing jobs were still in progress without artifacts: CRC antenna resume 43579643337, SP LVS 43566292104, DP LVS 43562021054, MBIST 43573697024. Do not restart them. Prior checkpoint below remains applicable.
+
 # CRC continuation handoff archive-name error fixed
 
 43579396178 failed BEFORE native CAD: base archive SHA passed, but tar expected routed.tgz whereas actual freshCRCbase14100640319 contains handoff.tgz. Verified original parent workflowb1626c18095a9a9c7a06b3cb1bd508a4a0ba7f19 uses handoff.tgz. No repair result or changed design. Stop polling thisfailedrun.
