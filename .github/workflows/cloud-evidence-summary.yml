@@ -1,4 +1,4 @@
-name: Extract exact paired650 native identities and fresh metal graph
+name: Bind current paired650 device terminals and gate contacts
 on:
   workflow_dispatch:
 permissions:
@@ -16,12 +16,12 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr650-paired-wire-pins.json
+          sparse-checkout: /scripts/cdr650-paired-anchors-pins.json
       - name: Materialize exact source closure
         run: |
           python3 - <<'PYCODE'
           import pathlib,json,subprocess
-          p='scripts/cdr650-paired-wire-pins.json';names=sorted(set(json.loads(pathlib.Path(p).read_text())['files'])|{p})
+          p='scripts/cdr650-paired-anchors-pins.json';names=sorted(set(json.loads(pathlib.Path(p).read_text())['files'])|{p})
           assert all(not n.startswith('/') and '..' not in pathlib.Path(n).parts and not any(c in n for c in '*?[]\\\n\r') for n in names)
           subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n' for n in names),text=True,check=True)
           PYCODE
@@ -29,18 +29,18 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 klayout==0.30.4.post1
-      - run: python3 -B scripts/extract_cdr650_paired_wire_graph.py
+      - run: python3 -B scripts/extract_cdr650_paired_terminal_anchors.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-wire-derived-${{ github.run_id }}
-          path: paired-wire-graph/derived/
+          name: paired650-anchors-derived-${{ github.run_id }}
+          path: paired-terminal-anchors/derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-wire-native-${{ github.run_id }}
-          path: paired-wire-graph/native/
+          name: paired650-anchors-native-${{ github.run_id }}
+          path: paired-terminal-anchors/native/
           if-no-files-found: warn
           retention-days: 90
