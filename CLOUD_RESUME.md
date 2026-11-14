@@ -1,3 +1,11 @@
+## 2026-11-14 — fresh RC current handle after exact geometry pin correction
+
+Follow **43623877135**, sourceca7922a41bb122ec714a23cd2ca5b7ea63d197ba, branchcodex/cdr650-paired-fresh-metal-rc; confirmed in_progress. Previous43623675068/source81c9464b91d9d5b618b604104e97c06212adb3b6 is terminal failure, NOT live. All current source acquisition/anchor hashes/native integer MIM dimensions passed, then support.generate() correctly rejected a stale hardcoded baseline GDS SHA c3351820... before actual native R/C. Replaced that sole source-identity constant with exact newly DRC/LVS-qualified candidate285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514 and rebound source manifest. No geometry, numerical method, circuit assumption, threshold or acceptance check was relaxed. New explicit dispatch uses approved_source=ca7922a41bb122ec714a23cd2ca5b7ea63d197ba. Do not restart a live run.
+
+First failed safe14124782932/7408ea38f69ed1d24d56d716ed0598f17d6004f609bd55064843d2b06442717a; native14125425563/7b4c90bc5b25c23527834e49d32f323ca5f1f96bb3a854f2c442ba1cd2a75efe cloud only. New expected safe paired650-metal-rc-derived-43623877135/native paired650-metal-rc-native-43623877135. Two native orders and13wire+9MIM faults each remain required, followed by new gate-poly/MIM composition and unchanged electrical tests; no new R/C result yet.
+
+Previous actual paired650 DRC/LVS and terminal-anchor successes remain valid for their exact hashes. Fullproductiongoal active, no local files.
+
 ## 2026-11-14 — paired650 all terminal anchors PASSED; fresh MIM-aware RC live
 
 Run43623472892/source54a4766e9256d2cd0a3f93f5441ca5d1c238c7ce PASSED actual current650 device-location, terminal anchor, gate-poly-group, contact and dedup workers. 2046terminals,1428distinct physical anchors,200actual gate contacts across50groups, separate intrinsic MOS gates preserved. All source material reread from actual serialized new GDS and L2N; current native-owner probes passed. Ten original actual binding corruptions rejected (lost terminal, parameter, duplicate instance, wrong native owner, missing anchor/group/contact, duplicate contact, gate ideal collapse, wrong group association).
