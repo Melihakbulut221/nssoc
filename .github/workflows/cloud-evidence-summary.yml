@@ -1,4 +1,4 @@
-name: Reroute legalized antenna diodes and verify extracted three-corner STA
+name: Reroute sized retry driver and verify extracted three-corner STA
 on:
   workflow_dispatch:
 permissions:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        name: [crc_diode_legalized]
+        name: [retry_buf4]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -50,7 +50,7 @@ jobs:
           print('restored PDK and tool files',n)
           PY
           rm -rf $W/pkg
-      - name: Rebuild routing from verified four-diode legalization
+      - name: Rebuild routing from verified retry-driver sizing and legal placement
         if: env.RUN == 'true'
         run: |
           set -euo pipefail
@@ -67,7 +67,7 @@ jobs:
           tar -xzf $W/h/route-incomplete.tgz -C "$PWD"
           rm -rf $W/h
           mv $OUT/route $OUT/recovered-route
-          gh api repos/${{ github.repository }}/actions/artifacts/14112212387/zip > legalized.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/14120090635/zip > legalized.zip
           python3 scripts/prepare_antenna_resume.py
           set +e
           mkdir -p $OUT/route
@@ -122,7 +122,7 @@ jobs:
       fail-fast: false
       matrix:
         # r_cut4h_td_d68 and r_cut3hh_td_d68 are the route-hold job's databases.
-        name: [crc_diode_legalized]
+        name: [retry_buf4]
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
@@ -215,4 +215,20 @@ jobs:
         with:
           name: routed-sta-${{ matrix.name }}-${{ github.run_id }}
           path: out
+          retention-days: 30
+      - name: Preserve native extracted state for coherent follow-up
+        if: always()
+        run: |
+          set -euo pipefail
+          OUT=hw/soc/out/impl-probe
+          mkdir -p /mnt/s/rcx-native
+          if [ -d "$OUT/rcx" ]; then
+            tar -czf /mnt/s/rcx-native/rcx-native.tgz "$OUT/rcx" "$OUT/prepared" "$OUT/routed-state.json"
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: retry-buf4-rcx-native-${{ github.run_id }}
+          path: /mnt/s/rcx-native
+          if-no-files-found: warn
           retention-days: 30
