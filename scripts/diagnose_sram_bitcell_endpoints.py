@@ -17,7 +17,7 @@ with tarfile.open(fileobj=io.BytesIO(z.read(tgzs[0])),mode='r:gz') as t:
 assert digest(data)=='c367b0565c64b00eedd2510d465d9c0d9cba64a7c2f79e4c04b5a9389bd49598'
 P('/tmp/original-bitcell.lvsdb').write_bytes(data)
 db=kdb.LayoutVsSchematic();db.read('/tmp/original-bitcell.lvsdb')
-layout_netlist=db.netlist();reference_netlist=db.reference()
+layout_netlist=field(db,'netlist');reference_netlist=field(db,'reference')
 layout_circuit=layout_netlist.circuit_by_name('RM_IHPSG13_2P_BITKIT_CELL')
 reference_circuit=reference_netlist.circuit_by_name('RM_IHPSG13_2P_BITKIT_CELL')
 assert layout_circuit is not None and reference_circuit is not None
