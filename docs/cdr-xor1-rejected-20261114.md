@@ -19,3 +19,9 @@ The trial is rejected. The prior nx2 circuit also remains unaccepted. Raw wavefo
 The same audit observes 32 physical clock-connected HBT bases and expands all 50 passive `gp_*` subcircuits. It inventories 18,476 explicit capacitors and 28,984 numeric wire resistors. Incident explicit capacitance is approximately 0.567 pF at `adp`, 0.595 pF at `adn`, and 0.235 pF at `s0p`. These totals include coupling and exclude device intrinsic capacitance; they are not effective grounded loads or qualified RF extraction. The next investigation should bind the dominant capacitances to actual geometry and extraction assumptions before modifying the buffer/layout. Further blind XOR-device shrinking is not supported by these results.
 
 [Detailed receipt](evidence/cdr-buffer-loading-and-retimed-selector-20261114.json) retains clock observations, passive load inventory and direct sampler binding. This diagnosis does not accept the failed circuit.
+
+## Native capacitor provenance
+
+Read-only run [43619048065](https://github.com/Melihakbulut221/nssoc/actions/runs/43619048065) authenticated the original metal extraction archive and located the dominant loads in Magic's native records. `T382_rppd_2.n0` carries 131020.2109375 aF and `T383_rppd_2.n0` 146790.359375 aF, corresponding to composed C8237/C8243. The original conductor aliases include each buffer collector and its six XOR input bases. Distributed resistance branches are retained. These capacitances were not introduced by the latest transistor-multiplicity trial.
+
+The next physical investigation is the driver-to-load geometry and compact placement/routing of this interface. Native-record agreement does not qualify RF parasitic distribution, substrate treatment, PVT, or the layout corresponding to changed device parameters. All electrical gates remain unchanged and the candidate remains rejected. See `docs/evidence/cdr-native-cap-records-20261114.json` for source/artifact hashes and bounded native records.
