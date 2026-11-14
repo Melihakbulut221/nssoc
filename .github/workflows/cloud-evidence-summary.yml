@@ -1,39 +1,27 @@
-name: Diagnose comparator shared emitter and collector metal networks
+name: Inspect exact packed comparator shared-net metal geometry
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  diagnose:
+  inspect:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 20
     env:
       GH_TOKEN: ${{ github.token }}
-      OPENBLAS_NUM_THREADS: '1'
-      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-          filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /scripts/diagnose_paired650_drive_rc.py
-            /scripts/cdr_mos650_spice_syntax.py
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
-      - name: Read authenticated circuit and solve actual passive conductor matrices
-        run: |
-          sudo mkdir -p /mnt/paired650-wave-audit
-          sudo chown "$USER" /mnt/paired650-wave-audit
-          python3 -B scripts/diagnose_paired650_drive_rc.py
+          sparse-checkout: /scripts/inspect_packed_shared_geometry.py
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
+      - run: python3 scripts/inspect_packed_shared_geometry.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-shared-net-rc-${{ github.run_id }}
+          name: packed650-shared-geometry-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
