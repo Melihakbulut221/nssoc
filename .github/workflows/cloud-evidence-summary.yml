@@ -1,4 +1,4 @@
-name: Engineering SRAM full chip reference collision preflight
+name: Engineering SRAM full chip reference geometry collision preflight
 on:
   workflow_dispatch:
 permissions:
@@ -17,6 +17,7 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: /scripts/preflight_sram_reference_libraries.py
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.13
       - run: |
           set -euo pipefail
           gh api repos/${{ github.repository }}/actions/artifacts/14113411418/zip > dp.zip
@@ -24,7 +25,7 @@ jobs:
           python3 scripts/preflight_sram_reference_libraries.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: sram-reference-library-preflight-${{ github.run_id }}
+          name: sram-library-geometry-preflight-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
