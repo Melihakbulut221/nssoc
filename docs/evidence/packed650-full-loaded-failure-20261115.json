@@ -1,0 +1,138 @@
+{
+  "accepted": false,
+  "status": "REJECTED_WHOLE_MIM_ACTUAL650_LOADED",
+  "source_head": "15a63339b7a18be32652b2d481c863bd8936c208",
+  "phase_average_v": 0.01577074717554181,
+  "phase_gate": {
+    "constant_maximum_abs_v": 0.01,
+    "minimum_signed_v": 0.03,
+    "window_s": [
+      3.0000000000000004e-09,
+      3.3875e-08
+    ]
+  },
+  "phase_passed": false,
+  "vi": {
+    "actual_filter_connection": true,
+    "bias_passed": true,
+    "closed_loop": false,
+    "mean_output_difference_v": 0.013390629867910361,
+    "mean_signed_current_a": 4.691608543284178e-05,
+    "minimum_active_tail_current_a": {
+      "xtx": 0.00025120557430825547,
+      "xty": 0.0002478575114981063
+    },
+    "native_mim_geometry_um": [
+      40,
+      40
+    ],
+    "output_commonmode_v": [
+      1.9446772844345193,
+      1.9531795456633823
+    ],
+    "passed": false,
+    "phase_limits": {
+      "constant_maximum_abs_current_a": 5e-06,
+      "constant_maximum_abs_voltage_v": 0.002,
+      "minimum_signed_current_a": 5e-05,
+      "minimum_signed_voltage_v": 0.005
+    },
+    "phase_passed": false,
+    "real_input_loading": true
+  },
+  "data_passed": false,
+  "devices_passed": false,
+  "diagnostics": [],
+  "sources_unchanged": true,
+  "full_phy_accepted": false,
+  "full_pex_qualified": false,
+  "final_timing_complete": false,
+  "sampler_checks": {
+    "a": {
+      "below_100mv_samples": 129,
+      "maximum_clock_to_valid_s": 4.7343749999990876e-11,
+      "minimum_signed_margin_v": 0.012690931998583848,
+      "passed": false,
+      "samples": 765,
+      "wrong_sign_samples": 0
+    },
+    "b": {
+      "below_100mv_samples": 128,
+      "maximum_clock_to_valid_s": 4.26562499999959e-11,
+      "minimum_signed_margin_v": 0.04406183409751172,
+      "passed": false,
+      "samples": 765,
+      "wrong_sign_samples": 0
+    },
+    "c": {
+      "below_100mv_samples": 130,
+      "maximum_clock_to_valid_s": 1.189062500003487e-10,
+      "minimum_signed_margin_v": -0.0032563769209828803,
+      "passed": false,
+      "samples": 765,
+      "wrong_sign_samples": 10
+    },
+    "d": {
+      "below_100mv_samples": 128,
+      "maximum_clock_to_valid_s": 5.4531249999990755e-11,
+      "minimum_signed_margin_v": -0.010010921855512965,
+      "passed": false,
+      "samples": 765,
+      "wrong_sign_samples": 31
+    }
+  },
+  "comparisons": {
+    "x": {
+      "below_100mv_samples": 737,
+      "maximum_clock_to_valid_s": 1.189062500003487e-10,
+      "minimum_signed_margin_v": -0.12549295044151756,
+      "passed": false,
+      "samples": 765,
+      "wrong_sign_samples": 384
+    },
+    "y": {
+      "below_100mv_samples": 671,
+      "maximum_clock_to_valid_s": 1.189062500003487e-10,
+      "minimum_signed_margin_v": -0.00875070571996216,
+      "passed": false,
+      "samples": 765,
+      "wrong_sign_samples": 52
+    }
+  },
+  "run": 43642783223,
+  "producer_head": "15a63339b7a18be32652b2d481c863bd8936c208",
+  "derived_artifact_id": 14135338555,
+  "derived_sha256": "53940fed9591cbafab85792525eacc8f44fa3a41200874d57cea1b0a4a0fcfb2",
+  "native_artifact_id": 14135837525,
+  "native_sha256": "fdee30ae9abd5a38d685b819d7cb3fc84840a3fab2cbef0f4aa8ded130997c0c",
+  "raw_sha256": "bbd4390a3ecd4b3e15ecce9ccd34c5adb03c2eed1ad68f8853b34badcde1e9b6",
+  "native_returncode": 0,
+  "native_elapsed_seconds": 4841.458178944,
+  "hbt_below_minimum_vce": {
+    "xpd.xd0211": {
+      "maximum_alltime_abs_ic_per_emitter_a": 0.0018989572644838913,
+      "maximum_alltime_abs_vbe_v": 0.9323480054265942,
+      "maximum_alltime_abs_vce_v": 0.6955610575779962,
+      "minimum_active_vce_v": 0.38389059422083843
+    },
+    "xpd.xd0212": {
+      "maximum_alltime_abs_ic_per_emitter_a": 0.0018599020194921265,
+      "maximum_alltime_abs_vbe_v": 0.9305053104793093,
+      "maximum_alltime_abs_vce_v": 0.6947844450626435,
+      "minimum_active_vce_v": 0.38228366529070223
+    }
+  },
+  "failed_mos_screen_count": 0,
+  "failure": {
+    "electrical_accepted": false,
+    "error": "Actual whole-wire retimed sampling, loaded phase/current or device gate failed",
+    "error_type": "AssertionError",
+    "final_timing_complete": false,
+    "full_pex_qualified": false,
+    "full_phy_accepted": false,
+    "gate_poly_RC_extracted": false,
+    "mim_intrinsic_composition_qualified": false,
+    "substrate_r_modeled": false,
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_ac.py\", line 413, in main\n    count=characterize(models)\n          ^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_gate_ac.py\", line 330, in characterize\n    result=loaded.run_loaded(sys.modules[__name__],models,variant,engine,target/\"model.cir\",contract,bound,case)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_full650_loaded.py\", line 321, in run_loaded\n    measure_wave(bound,t,d,bits,offset,protected,r,constant,fault)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_mos650_full650_loaded.py\", line 243, in measure_wave\n    assert passed,'Actual whole-wire retimed sampling, loaded phase/current or device gate failed'\n           ^^^^^^\nAssertionError: Actual whole-wire retimed sampling, loaded phase/current or device gate failed\n"
+  }
+}
