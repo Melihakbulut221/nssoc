@@ -1,3 +1,11 @@
+##107-branch repair and whole-chip impact launched; MIM source guard corrected — 2026-11-15
+
+Residual ECO43655839647/head08d99bb8bc95db8629648202c37e7a17c8121840 live on codex/rx-residual-short-hold-eco. Exact combinedODB4f937eac... restored from14137831182/1d8aa6f... . Adds214identitydelaycells only107 selected firstsink branches; indices9/11excluded from measured109list. Existingallplacements frozen/restored; originalmasters/incidence retained except exactsinks. Reports1566=3corners*2types*(40IO+111oldfeedback+3SRAM+107newbranches); 50ps targetedgate. Selectionmanifest rx-residual-eco-selection.json. No pass yet.
+
+Whole-chip comparator dispatched on codex/rx-residual-short-hold-impact head9aa1f0b5831693257e9cda78bea99e377f10824b; awaits exact43655839647 and compares against combined109-hold baseline. Inspect actualtargeted result and globalregressions beforeacceptance. Existing setupviolationsremainopen.
+
+PHY RC43655635850 FAILED before actualMIMextraction: cdr_mos650_mim_support.py line17 still pinned oldpackedGDSecae... . Allnewanchor acquisitionpassed. Updated singleexactGDSguard to verifiedf93aa... and refreshed sourcepins; unchangednumericalmethods/geometricchecks/faultgates. Successor dispatched with source ae914da1b8791477927d34ac8c8b50c060d2921a on codex/shared650-widened-metal-rc. No RC/electricalpassyet. Previousfailurederived14137970823 contains precise-actual-mim-geometry.stderr. Awaitnewactualresult.
+
 ## Widened PHY RC running;107 residual short branches selected from measured margins — 2026-11-15
 
 Anchors43655485838/head2df206f2f4b66cd6bb9bd6a7529c9eeedea37298 SUCCESS:1428physicalanchors200gatecontacts2046terminals. Derived14138025358 SHA9edacef48d4e10df6e857dcff5e424b6e1e18ba8c7b72f158e88fa3ef4ab88c2; native14137404512 SHAfec8e0124d6d69e54ba765c1aa5b333eb32d7b33742324a9bb847dfc7b76f5e3. Fresh metal RC43655635850/heade0e7a5deb1257ffd31c89f3adf11e00be96226bb live on codex/shared650-widened-metal-rc. Authenticates exact new anchors/GDSf93aa..., all frozen numerical methods and both native orders/13wire+9MIMfaults each unchanged. No oldRC reused; wait for actual result, then new gate/full composition and frozen loaded test. Electrical/PHY acceptance still false.
