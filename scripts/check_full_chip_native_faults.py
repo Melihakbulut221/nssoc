@@ -2,7 +2,7 @@
 """Actual full-chip native comparer identity/open/device-size controls, cloud only."""
 import pathlib,json,hashlib,tarfile,zipfile,io,sys,time,collections
 import klayout.db as db
-P=pathlib.Path;case=sys.argv[1];assert case in ['identity','signal_open','sram_mos_width']
+P=pathlib.Path;case=sys.argv[1];assert case in ['identity','signal_open','sram_mos_width','inspect']
 out=P('out');out.mkdir();derived=out/'derived';derived.mkdir()
 def sha(p):
  with P(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
@@ -20,6 +20,14 @@ lvs=db.LayoutVsSchematic();lvs.read(str(report));layout=lvs.netlist();reference=
 pairs=[(p.first().name,p.second().name,str(p.status())) for p in lvs.xref().each_circuit_pair()]
 assert len(pairs)==108 and all(s=='Match' for a,b,s in pairs)
 top=reference.circuit_by_name('SOC_TOP');assert top is not None
+if case=='inspect':
+ info={'status':'STORED_NETLIST_STRUCTURE_INVENTORY','accepted':False}
+ for side,nl in [('layout',layout),('reference',reference)]:
+  tops=[c for c in nl.each_circuit() if c.name.lower()=='soc_top'];assert len(tops)==1;c=tops[0]
+  subs=list(c.each_subcircuit());devs=list(c.each_device());classes=list(nl.each_device_class())
+  info[side]={'top_subcircuits':len(subs),'top_devices':len(devs),'top_pins':[p.name for p in c.each_pin()],'subcircuits_first':[{'name':x.name,'type':x.circuit_ref().name,'pins':[p.name for p in x.circuit_ref().each_pin()]} for x in subs[:3]],'devices_first':[{'name':d.name,'class':d.device_class().name} for d in devs[:3]],'classes':[{'name':dc.name,'python_type':str(type(dc)),'parameters':[{'name':p.name,'id':p.id} for p in dc.parameter_definitions()]} for dc in classes]}
+ (derived/'inventory.json').write_text(json.dumps(info,indent=2));sys.exit(0)
+
 mutation=None
 if case=='signal_open':
  for sub in top.each_subcircuit():
