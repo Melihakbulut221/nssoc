@@ -26,5 +26,26 @@ for kind,method,describe in [('devices','each_device_pair',device),('nets','each
   status=str(p.status());counts[status]+=1
   if status!='Match' and len(samples)<100:samples.append({'status':status,'layout':describe(p.first()),'reference':describe(p.second())})
  r[kind]={'status_counts':dict(counts),'first_100_nonmatches':samples}
+# Separate true parameter-distribution differences from failed pairing cascades.
+r['device_inventories']={}
+for label,circuit in [('layout',pair.first()),('reference',pair.second())]:
+ counts=collections.Counter()
+ for d in circuit.each_device():
+  info=device(d);key=(info['class'].casefold(),tuple(sorted((k,round(v,12)) for k,v in info['parameters'].items())))
+  counts[key]+=1
+ rows=[{'class':k[0],'parameters':dict(k[1]),'count':v} for k,v in sorted(counts.items())]
+ assert len(rows)<2000
+ r['device_inventories'][label]=rows
+r['warnings']={}
+for kind,method,describe in [('devices','each_device_pair',device),('nets','each_net_pair',named),('subcircuits','each_subcircuit_pair',named)]:
+ groups={};counts=collections.Counter()
+ for p in getattr(xref,method)(pair):
+  status=str(p.status())
+  if status=='Match':continue
+  side='both' if p.first() and p.second() else ('layout_only' if p.first() else 'reference_only')
+  key=status+':'+side;counts[key]+=1
+  bucket=groups.setdefault(key,[])
+  if len(bucket)<20:bucket.append({'layout':describe(p.first()),'reference':describe(p.second())})
+ r['warnings'][kind]={'group_counts':dict(counts),'first_20_per_group':groups}
 pathlib.Path('out').mkdir();pathlib.Path('out/top-mismatch.json').write_text(json.dumps(r,indent=2))
 print(json.dumps({k:v['status_counts'] for k,v in r.items() if isinstance(v,dict) and 'status_counts' in v}))
