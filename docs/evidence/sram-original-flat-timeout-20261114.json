@@ -1,0 +1,77 @@
+{
+  "observed_utc": "2026-11-14T05:04:56.951295+00:00",
+  "run": 43529228292,
+  "source": "13d88396f2be3a7823981be6ffe5e67df7b9ed32",
+  "flat_job": 132242493732,
+  "conclusion": "failure_timeout_18000_seconds",
+  "derived_artifact": {
+    "id": 14099936774,
+    "sha256": "5d0d13bd234c2b42ab4db0a2c0cde7fb2a35d65fa656581580199095d2a60678"
+  },
+  "native_artifact": {
+    "id": 14100130986,
+    "sha256": "2e08deb7ec3bd3ed86435d3a5e90de73b002dfffdd2f9f97200cf0ba4a943af3",
+    "cloud_only": true
+  },
+  "result": {
+    "derived/result.json": {
+      "status": "ERROR_OR_INCOMPLETE_LVS",
+      "top": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+      "run_id": "43529228292",
+      "source_sha": "13d88396f2be3a7823981be6ffe5e67df7b9ed32",
+      "current_vendor_macro_lvs_passed": false,
+      "full_chip_lvs_passed": false,
+      "manufacturing_approval": false,
+      "scope": "Exact frozen current macro; original PDK deck with no added exclusions or tolerance changes. Existing deck ignores R above 1e9 and C below 1e-18; this is not complete parasitic/foundry qualification.",
+      "klayout_version": "KLayout 0.30.13",
+      "runtime_package_sha256": "0bb6b913fd6a32581d50b08be744b522a2a477baa1ed7e253c97cc18ce248a24",
+      "gds_sha256": "420b5223d14e2f873a2464849e3decbbec2b5b16b3c6a0f8cd2bb21b0d52365b",
+      "cdl_sha256": "1b307d5bd84ba57087717c1d1e631959352c6d20a27167b3ed08f637e3d312a8",
+      "deck_sha256": "5de8c4b60398f95d5a596b265dc4f723f2a208c908b71284770180dbe62bd234",
+      "restored_inputs_sha256": "f00709bc48a6db73c5cea5846534f4b5d9e8fad68df69be573eac22cf7f14762",
+      "runtime_sha256": "288ed7a513436fac79255686914ff71b1d351fd79bd98f2eb6f9fecd14e149f7",
+      "normalization": "Native combine_devices on both extracted and original reference; no simplify/purge, no parameter tolerances added, no reference or layout edits.",
+      "switches": {
+        "input": "/home/runner/work/nssoc/nssoc/out/native/inputs/hw/soc/tools/ciel-corrpre/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds",
+        "schematic": "/home/runner/work/nssoc/nssoc/out/native/inputs/hw/soc/tools/ciel-corrpre/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/cdl/RM_IHPSG13_2P_256x16_c2_bm_bist.cdl",
+        "topcell": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+        "report": "/home/runner/work/nssoc/nssoc/out/native/lvs.lvsdb",
+        "log": "/home/runner/work/nssoc/nssoc/out/native/deck.log",
+        "target_netlist": "/home/runner/work/nssoc/nssoc/out/native/extracted.cir",
+        "run_mode": "flat",
+        "no_simplify": "true",
+        "no_series_res": "true",
+        "no_parallel_res": "true",
+        "combine_devices": "true",
+        "allow_unmatched_ports": "false",
+        "purge": "false",
+        "purge_nets": "false",
+        "top_lvl_pins": "false",
+        "net_only": "false",
+        "verbose": "false"
+      },
+      "error": "TimeoutExpired: Command '['/usr/bin/klayout', '-b', '-zz', '-r', '/home/runner/work/nssoc/nssoc/out/native/inputs/hw/soc/tools/ciel-corrpre/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs', '-rd', 'input=/home/runner/work/nssoc/nssoc/out/native/inputs/hw/soc/tools/ciel-corrpre/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds', '-rd', 'schematic=/home/runner/work/nssoc/nssoc/out/native/inputs/hw/soc/tools/ciel-corrpre/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/cdl/RM_IHPSG13_2P_256x16_c2_bm_bist.cdl', '-rd', 'topcell=RM_IHPSG13_2P_256x16_c2_bm_bist', '-rd', 'report=/home/runner/work/nssoc/nssoc/out/native/lvs.lvsdb', '-rd', 'log=/home/runner/work/nssoc/nssoc/out/native/deck.log', '-rd', 'target_netlist=/home/runner/work/nssoc/nssoc/out/native/extracted.cir', '-rd', 'run_mode=flat', '-rd', 'no_simplify=true', '-rd', 'no_series_res=true', '-rd', 'no_parallel_res=true', '-rd', 'combine_devices=true', '-rd', 'allow_unmatched_ports=false', '-rd', 'purge=false', '-rd', 'purge_nets=false', '-rd', 'top_lvl_pins=false', '-rd', 'net_only=false', '-rd', 'verbose=false']' timed out after 17999.999981806002 seconds",
+      "native_outputs": {
+        "run.log": {
+          "bytes": 32962,
+          "sha256": "fe50dccc90aff32447cd2e12f66387d3995fb7202f06d917f1a537472bdcef1b"
+        },
+        "command.json": {
+          "bytes": 1260,
+          "sha256": "277d70b3b44765ddcda66559b0b0a846a296ebab42b2c2c939b81c9974ad7fb6"
+        },
+        "restored-inputs.json": {
+          "bytes": 142481,
+          "sha256": "f00709bc48a6db73c5cea5846534f4b5d9e8fad68df69be573eac22cf7f14762"
+        },
+        "deck.log": {
+          "bytes": 34210,
+          "sha256": "25488713c83255df61630e9f16c08b1f883e525810ea0077f462b37d5e2a0ddc"
+        }
+      }
+    }
+  },
+  "next_run": 43559617022,
+  "next_source": "b75511764c3b131039325a05a142b98b9271e971",
+  "scope": "Original flat run incomplete, no database/verdict. Superseded for investigation by strict unmerged full-macro result and bounded original bitcell comparison; no waiver or pass."
+}
