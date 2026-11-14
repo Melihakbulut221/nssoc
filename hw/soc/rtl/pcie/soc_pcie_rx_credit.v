@@ -349,6 +349,20 @@ module soc_pcie_rx_credit #(
     // asynchronous reset assertion and the next clock edge, while the
     // queue is held in reset (r2_lane_d is 1 throughout a reset). The
     // master register stays for the group and pick logic.
+    // Opt-in distribution experiment: the parent guarantees rst_copy_ni
+    // equals rst_ni at every reset/release. Keep the external valid contract,
+    // but qualify this cursor's control with its own existing reset tree.
+    // No clock exception, added cycle or reset gating removal.
+`ifdef SOC_PCIE_RX_CURSOR_LOCAL_RESET
+`ifndef SOC_PCIE_RESET_COPIES
+    soc_pcie_cursor_local_requires_reset_copies unsupported_cursor_reset();
+`else
+    wire r2_handshake=rst_copy_ni && link_up_i && out_ready_i &&
+        (output_active || (!training_i && (select_dllp ? dllp_pending : tlp_available && out_ready_i)));
+`endif
+`else
+    wire r2_handshake=handshake;
+`endif
     localparam integer R2_GROUPS=3;
     localparam integer R2_LANES=(CAP+R2_GROUPS-1)/R2_GROUPS;
     reg [R2_LANES-1:0] r2_lane;
@@ -361,15 +375,15 @@ module soc_pcie_rx_credit #(
     wire [R2_GROUPS-1:0] r2_group_near=r2_lane[R2_LANES-1] ? r2_group_next : r2_group;
     wire [R2_GROUPS-1:0] r2_group_far=(r2_lane[R2_LANES-1] | r2_lane[R2_LANES-2]) ? r2_group_next : r2_group;
     // r2_lane's next value (the always block below), for the copies.
-    wire [R2_LANES-1:0] r2_lane_d=(!link_up_i || (handshake && out_eop_o)) ? {{(R2_LANES-1){1'b0}},1'b1} :
-        handshake ? r2_lane_near : r2_lane;
+    wire [R2_LANES-1:0] r2_lane_d=(!link_up_i || (r2_handshake && out_eop_o)) ? {{(R2_LANES-1){1'b0}},1'b1} :
+        r2_handshake ? r2_lane_near : r2_lane;
     // Section 16: the pick registers' next value, for one copy per bank
     // (soc_pcie_rx_pick_copy, reset like the master), so each pick bit
     // drives the 8 stage-2 gates of one bank instead of 48 through a tree.
     // Order {first, far, near}, as the always block below assigns them.
-    wire [R2_GROUPS-1:0] r2_pick_near_d=(!link_up_i || handshake) ? {R2_GROUPS{1'b0}} : r2_group_near;
-    wire [R2_GROUPS-1:0] r2_pick_far_d=(!link_up_i || !handshake || out_eop_o) ? {R2_GROUPS{1'b0}} : r2_group_far;
-    wire r2_pick_first_d=!link_up_i || (handshake && out_eop_o);
+    wire [R2_GROUPS-1:0] r2_pick_near_d=(!link_up_i || r2_handshake) ? {R2_GROUPS{1'b0}} : r2_group_near;
+    wire [R2_GROUPS-1:0] r2_pick_far_d=(!link_up_i || !r2_handshake || out_eop_o) ? {R2_GROUPS{1'b0}} : r2_group_far;
+    wire r2_pick_first_d=!link_up_i || (r2_handshake && out_eop_o);
     wire [2*R2_GROUPS:0] r2_pick_d={r2_pick_first_d,r2_pick_far_d,r2_pick_near_d};
 `ifndef SYNTHESIS
     // Simulation only: one bit per copy, set while it differs from its
@@ -388,7 +402,7 @@ module soc_pcie_rx_credit #(
             r2_lane<=1;r2_group<=1;r2_pick_near<=0;r2_pick_far<=0;r2_pick_first<=1;
         end else if(!link_up_i) begin
             r2_lane<=1;r2_group<=1;r2_pick_near<=0;r2_pick_far<=0;r2_pick_first<=1;
-        end else if(handshake) begin
+        end else if(r2_handshake) begin
             if(out_eop_o) begin
                 r2_lane<=1;r2_group<=1;r2_pick_near<=0;r2_pick_far<=0;r2_pick_first<=1;
             end else begin

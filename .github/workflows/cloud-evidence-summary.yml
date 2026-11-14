@@ -1,13 +1,16 @@
-name: Qualify CRC-select replay and build new main-chip mapped source
+name: Build source-bound RX cursor and CRC mainchip candidate after qualification
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   build:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
+      GH_TOKEN: ${{ github.token }}
+      SOC_PCIE_RX_CURSOR_LOCAL_RESET: '1'
       SOC_ETH_FIFO_RDREG: '1'
       SOC_BUSSTAT_EVPEND: '1'
       SOC_SRAM_MBIST_PIPE: '1'
@@ -44,6 +47,8 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Require exact formal and traffic qualification artifacts
+        run: python3 scripts/require_rx_cursor_qualification.py
       - name: Prepare pinned source and tool inputs
         run: |
           set -euo pipefail
@@ -66,21 +71,23 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: crc-select-mainchip-source-native-${{ github.run_id }}
+          name: rx-cursor-mainchip-source-native-${{ github.run_id }}
           path: native/build.tgz
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: crc-select-mainchip-mapping-${{ github.run_id }}
-          path: out/mapping.json
+          name: rx-cursor-mainchip-mapping-${{ github.run_id }}
+          path: |
+            out/mapping.json
+            out/rx-qualification-gate.json
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: crc-select-replay-regressions-${{ github.run_id }}
+          name: rx-cursor-replay-regressions-${{ github.run_id }}
           path: |
             out/qualification.json
             out/case-*.log
