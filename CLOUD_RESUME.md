@@ -1,3 +1,13 @@
+## 2026-11-14 — buf4 native placement passed; selected-instance delta diagnosis pending
+
+Run43609939062/sourcef8b704e002e5ccff680059459fba0ec4cf21c429: standaloneOpenDBswap passed; detailedplacement passed and159933othercells fixed, selecteddriver displacement1.9um, check_placementpassed. Finalverifier rejected selectedplace31551 attribute mismatch (currently permits onlymaster/location change; orientation/status stillstrict). All-net connectivity and alltopports comparisons alreadypassed before thatassert. Do not assume whichfielddiffers untildiagnostic.
+
+Native14120090635 SHAd67191c33b2015eb39b097946904044e564990b12fddcd0c6d88f643d9ada340, innerretry-buf4-native.tgz. SourceODB c9deaebb...; candidate native/buf4-legalized-unrouted.odb SHA972d9676e2f3af51fda24b2411048b60383e9dfffdb92cd8550a9caf9c53e0b9. Safe14120075645 SHA2ca7cb3965d7dc1562c2928908b63f0b559dd06462250a6ba95902a34f2b4930. Candidate NOTaccepted and NOtimingclaim.
+
+Follow diagnostic43610218581/sourcec35979b8f0efd150ea6f0ff4ed551088f1478121, samebranchcodex/retry-driver-buf4-placement. Restores ONLYoriginal+candidateODB from pinnednativearchive in cloud; does not rerun/editplacement. Updatedverifier writes derived/native-delta.json before originalstrictassert. Inspect actualselectedchange; preserve allnonselectedgeometry, everypin/net/topport and placementstatus. If selectedorientationchanged, determine legitimate legalizedroworientation and explicitlydocument permittedselectedtransform rather than suppressing unexpecteddiffs. No nativefiles local.
+
+Also checked officialLibreLane3.0.5 source: GlobalRouting.outputs=[ODB,DEF], so it does NOT update nl/pnl. Futurecandidate needs matchingbuf4in independentlogical/poweredreference. WriteViews can emit freshviews, or exactsingle-master replacement in originalnl/pnl with inversehash guard and nativeconnectivityproof; do not pair oldbuf1reference withbuf4layout. Primarysource librelane/steps/openroad.py classGlobalRouting and scripts/openroad/common/io.tcl write_views. Originalbaseline43591198141/PHY43603972722 remainlive at priorpoll.
+
 ## 2026-11-14 — native sizing callback fix; next integration must regenerate netlists
 
 Retry43609730238 reachedOpenROAD but swapMaster on STA-attachedODB withoutLiberty crashed (signal11 sta::ConcreteCell::portCount/equivCellsArcs/dbStaCbk). Derived14119308393 proves nativefailure; no successfulplacement. The chosen geometry mutation has not yet been validated.
