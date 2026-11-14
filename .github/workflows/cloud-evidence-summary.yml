@@ -1,12 +1,16 @@
-name: Replay EOP cache actual protocol simulation and mutation controls
+name: Replay EOP cache identical-area native placement screen
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  prove:
+  place:
     runs-on: ubuntu-22.04
-    timeout-minutes: 45
+    timeout-minutes: 95
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -14,21 +18,35 @@ jobs:
           sparse-checkout: |
             scripts
             hw/soc/rtl/pcie
-            hw/soc/tb
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Record supported Yosys runtime
-        run: yosys -V
-      - name: Prove real replay state and outputs without blackboxes
-        run: python3 scripts/qualify_replay_eop_cache.py
+      - name: Restore pinned runtime and exact mapped candidates only in cloud
+        run: |
+          set -euo pipefail
+          sudo mkdir -p /mnt/s
+          sudo chown "$USER" /mnt/s
+          curl -fsSL --retry 5 -o /mnt/s/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo 'd6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  /mnt/s/librelane.AppImage' | sha256sum -c -
+          chmod +x /mnt/s/librelane.AppImage
+          python3 scripts/map_replay_eop_cache.py
+      - name: Place both candidates with identical boundaries and report all corners
+        run: python3 scripts/place_replay_eop_cache.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: replay-eop-cache-simulation-${{ github.run_id }}
+          name: replay-eop-cache-placement-${{ github.run_id }}
           path: |
-            out/**/*.log
-            out/**/*.ys
             out/*.json
+            out/baseline/*.log
+            out/baseline/*.rpt
+            out/cache/*.log
+            out/cache/*.rpt
+          retention-days: 30
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: replay-eop-cache-placement-native-${{ github.run_id }}
+          path: out/native
           retention-days: 30
