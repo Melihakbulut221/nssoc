@@ -24,7 +24,7 @@ try:
  assert sha(native/'source.odb')=='c9deaebb26a07bf0909c249547156b1a1cb96401c8ccfa3748acff818131d959'
  env=dict(os.environ);env.pop('GH_TOKEN',None);env.pop('GITHUB_TOKEN',None)
  start=time.monotonic()
- for label,args in [('placement',['scripts/retry_driver_buf4_placement.tcl']),('verify',['-python','scripts/verify_retry_driver_buf4.py'])]:
+ for label,args in [('prepare',['-python','scripts/prepare_retry_driver_buf4.py']),('placement',['scripts/retry_driver_buf4_placement.tcl']),('verify',['-python','scripts/verify_retry_driver_buf4.py'])]:
   with (native/(label+'.log')).open('w') as log:
    proc=subprocess.run(['/mnt/s/librelane.AppImage','openroad','-exit']+args,env=env,stdout=log,stderr=subprocess.STDOUT,timeout=1800)
   lines=(native/(label+'.log')).read_text(errors='replace').splitlines();r[label]={'returncode':proc.returncode,'tail':lines[-50:]}
