@@ -1,3 +1,13 @@
+## 2026-11-14 — independent full transistor reference emitted
+
+Cloud run 43601779482 PASSED, source a8b0244721df1e6d994b30b094fcb3413b25d799. Full hierarchical CDL emitted from unchanged powered routed Verilog: 158681 instances, 354 top pins, 7456816 recursive primitive devices, 1140 qualified isolated clock-load outputs. All 158661 standard-cell supplies and 20 SRAM VDD/VDDARRAY/VSS supplies resolve exactly to VPWR/VGND. No internal constants or supply mismatch. Both SRAM primitive totals match prior native macro LVS (70110 DP,1211120 SP). Original eight empty corner/edge library definitions are preserved and listed; no logical instance is empty. Full source library records unchanged. Pin-order emission/readback passed, but native KLayout reference parse and physical chip LVS are NOT yet run.
+
+Native artifact 14115684311 SHA256 894aa48ad4ee2c0f6e43724f1a88f20b278128e49d27b3584148759317c5c0b9 contains streamout-native.tgz. Reference path hw/soc/out/namespaced-streamout/pinmap-native/soc_top-full-transistor.cdl SHA256 523438b6014557b86ee7d438f95ddbfaabb76f390265283fcb844c233fcb8aa4. Full native data stays cloud-only. Derived artifact14116063825. Details in docs/evidence/chip-full-transistor-reference-20261114.json.
+
+Next: native KLayout reader qualification, then full hierarchical LVS using exact assembled namespaced GDS artifact14116226453 (run43599532225), exact full reference above, and both verified macro deck transformations. Preserve primitive counts, top ports, strict unmatched-port rules, and no blackboxing. Consider reading/validating reference first to catch syntax/name/port treatment before heavy extraction. Full chip layout is still the prior failed-timing route, not final route; no full serial PHY acceptance. First reference runs43601292901/43601561542 failed only new Python parser assumptions (CDL slash delimiter and original empty corner definitions), corrected without modifying library bytes or circuit topology.
+
+Current job snapshot: {"43591198141": {"status": "in_progress", "conclusion": null}, "43596398222": {"status": "in_progress", "conclusion": null}}
+
 ## 2026-11-14 — all 1140 open clock-load outputs qualified
 
 Cloud run 43600938256 passed (source eb33eff08d22a924bec182547086dce9dafb187c). Frozen Liberty confirms all 1140 omitted scalar X/Y pins are outputs on exact clkload-number instances. Missing input/power, bus, width mismatch and unrelated-instance controls reject. Top ports have no constants or aliases. This is interface qualification, NOT full-chip LVS. See docs/evidence/chip-open-output-qualification-20261114.json.
