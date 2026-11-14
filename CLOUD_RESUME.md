@@ -1,3 +1,13 @@
+# Route recovery checkpoint located; implement resumed antenna pass next
+
+Inventory43567101492 completed/success. Safe14103305888SHA`9e8ece69660c7d0b8cb99aa997cbad3a143766c7843db23e7d8876a0a31da3e1`. Saved checkpoint `hw/soc/out/impl-probe/rcx/4-openroad-detailedrouting/drt-run-1/soc_top.odb`,221619313bytes,SHA`6613e8102b7a4076f1748b75447ece150ccf86818c06dc89b50ca42cb2b92b7e`, after first antenna pass (28nets/31pins remain; intermediateDRC0). Native archive14102387358SHA`3f7e4ca94925a33d730cfe47b1f4487434c05b76e4c6e10e847f04317d3898e6`. Presence/hash verified, native restore still untested.
+
+NEXT: create split cloud recovery flow. Restore original base14068260482SHAcf6a83685c33cdf4083786f0ab136ef1ea2666b44476521228aed5eed73d0855 then candidate archive overlay to sameabsolute workspace. State ODB must bind drt-run-1; SDC at rcx/1-nssoc-cut10jfivedriverresize/soc_top.sdc SHA5c65218b6106315c71d45c19eb61af09781607f0f438f2c7f99c4427884d24a4. Old state has STALE inherited route/antenna metrics; clear/recompute, not acceptance. Upstream LibreLane3.0.5 `librelane/scripts/openroad/drt.tcl` inspected: drt_run writes eachODB, initial `drt_run $i {*}$drt_args` then incr i, whilecheck_antennas/repair_antennas/drt_run. Adapt runtime script with exact anchor guard to omit first full reroute from this checkpoint, then fresh antenna check/repair. Native restart behavior needs validation; no pass claim from files. Separate route handoff and RCX/STA (avoid330min combined budget). Existing freshCRCroute unaffected; do not use old instance ECOs there.
+
+Receipt:`docs/evidence/five-driver-route-checkpoint-result-20261114.json`. Stilllive SP43566292104,DP43562021054,newroute43561900502,CDR43562981217,MBIST43558722004,oldholdroute43541234973. Full goal open.
+
+---
+
 # Old five-driver route timed out; cloud recovery inventory running
 
 43538031308 completed/failure, nativeRCX_STA_RC=124 after19800s. Initial detailedroute4h06m;244antenna nets/261pins. First repair424diodes and intermediateDRC0, then28nets/31pins. Second repair44diodes started, cut off during pin access. NO final route or extracted STA. Derived14102821860 SHA256`30ce5dfb1e35baa00e3da190ccfb5f83b346e2f4b9d53f7c2d9b7e7d87d24585`; native14102387358 SHA256`3f7e4ca94925a33d730cfe47b1f4487434c05b76e4c6e10e847f04317d3898e6`192.8MB, cloud-only.
