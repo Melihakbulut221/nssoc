@@ -1,3 +1,7 @@
+## Remaining hold paths identified — 2026-11-15
+
+Derived job43647574845 completed success, source f67516a6169da71b3841057daee9b8ce73c1b603; artifact14134294466 SHA25602cf38a2a13692d1f7ffa7dae7ebdb401228e055300f05b9f04dda30f03b45f8. Reads exact RX ECO native archive cloud-side; first three paths per actual min report retained. Slow worst pcie_rx_dllp_i->FFslice173055 -.014111ns; next pcie_rx_error_i->slice173056 -.000558; eop_i->slice173057 +.003425. Typical same ports -.156492/-.148541/-.145831. Fast worst is Ethernet output: FFslice371202->eth_txd_o[2] -.227691; slice371204->eth_txd_o[4] -.227516; slice170336->eth_tx_en_o -.226977. DLLP first sink hold23697/A; Ethernet bit2 ends hold23858/X driving output (priorhold23857 andoutput97). Next action: obtain paired all-corner setup margins and full violation census from existing native max/min reports before adding any delays. Do not apply repair based on min reports alone or conflate these with prospective RX-bank RTL candidate.
+
 ## RX physical input repair measured — 2026-11-15
 
 ECO43646555578/head6a87c130412d272c700214201820da450f693fad completed successfully. Derived14133708950 SHA30f64d9adeecb122e49fdd218bc144870e6c93f6f7bb5f9985120233a2f5f8b5; native14134159392 SHA92d72fe95c41b068bc255e7f9f7a3b0e7abaa415990ec57e948ccc246e7b2e26. CandidateODB dce675ce9aab6a7833fcb55ded416540b392affb065521ef53e3ce9d33d1d54c. Input hold slow/typ/fast +.661808610/+.275306463/+.087556742 ns; setup +1.604881644/+2.232374668/+2.557558775 ns. Targeted50ps margin passed all six checks.
