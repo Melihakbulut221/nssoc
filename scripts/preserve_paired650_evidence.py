@@ -35,9 +35,9 @@ def main():
     m=api('actions/artifacts/'+str(aid));assert m['workflow_run']['id']==run and m['workflow_run']['head_sha']==source and not m['expired']and m['digest']=='sha256:'+digest
     rows.append({'run':run,'source':source,'artifact':aid,'sha256':digest,'original_metadata':m,'asset_name':f'run-{run}-artifact-{aid}.zip'})
   assert len(rows)==15 and len({r['artifact']for r in rows})==15
-  tag='cloud-results-'+os.environ['GITHUB_RUN_ID']+'-1-paired650-evidence'
-  api('git/refs',{'ref':'refs/tags/'+tag,'sha':head})
-  release=api('releases',{'tag_name':tag,'target_commitish':head,'name':'Paired650 intermediate evidence — not PHY or production approval','body':'Source-bound preservation of eight measured intermediate stages. Original run, commit, archive digest and scope remain in the manifest. This is not a chip release or signoff.','draft':False,'prerelease':True,'make_latest':'false'})
+  tag='cloud-paired650-evidence-'+head
+  reference=api('git/ref/tags/'+tag);assert reference['object']['type']=='commit'and reference['object']['sha']==head
+  release=api('releases/tags/'+tag)
   assert release['target_commitish']==head and release['prerelease']and not release['draft']and not release['assets']
   manifest.update(release_id=release['id'],release_url=release['html_url'],tag=tag);save()
   for row in rows:
