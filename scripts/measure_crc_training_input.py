@@ -1,4 +1,4 @@
-"""Ten Ethernet output pairs of native delay cells after exact RX input ECO."""
+"""Read-only targeted PCIe input setup/hold from exact RX training ECO."""
 import os,json,subprocess,zipfile,hashlib,stat,re
 from pathlib import Path
 import cloud_predecode_postcts as prior
@@ -67,9 +67,6 @@ rows={}
 for p in (OUT/'run').glob('*/io-*.rpt'):
  text=p.read_text();v=re.findall(r'([-+]?[0-9]+\.[0-9]+)\s+slack\s+\((?:MET|VIOLATED)\)',text);assert v
  rows[str(p.relative_to(OUT))]={'worst_slack_ns':min(map(float,v)),'reported_paths':len(v),'sha256':prior.sha(p)}
-assert len(rows)==60
-states=list((OUT/'run').glob('*-nssoc-trainingholdeco/state_out.json'));assert len(states)==1
-eco_state=json.loads(states[0].read_text());eco_odb=Path(eco_state['odb']);assert eco_odb.is_file()
-assert len(rows)==60
-input_closed=all(v['worst_slack_ns']>=0.05 for v in rows.values())
-(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'twenty_delay_cells_inserted':True,'native_delay_is_identity_buffer':True,'ethernet_setup_hold_margin_50ps_passed':input_closed,'candidate_odb_sha256':prior.sha(eco_odb),'reports':rows,'accepted':False,'scope':'Ten Ethernet outputs, two native delay cells each; after RX training ECO; original incidence protected, fresh placement RC, no routed or full-chip signoff.'},indent=2))
+assert len(rows)==174
+assert len(rows)==174
+(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'reports':rows,'accepted':False,'scope':'Read-only exact RX training ECO: all29remaining PCIe input paths in three corners, max/min each; no layout change or routed signoff.'},indent=2))

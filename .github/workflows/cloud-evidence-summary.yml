@@ -1,4 +1,4 @@
-name: Two native delay cells per Ethernet output after RX input ECO
+name: Measure all remaining PCIe input setup and hold without ECO
 on:
   workflow_dispatch:
 permissions:
@@ -30,17 +30,17 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-ethernet-hold-eco-derived-${{ github.run_id }}
+          name: rx-pcie-input-timing-derived-${{ github.run_id }}
           path: |
             input-timing/result.json
             input-timing/native.log
-            input-timing/run/*/training-*.rpt
+            input-timing/run/*/io-*.rpt
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-ethernet-hold-eco-native-${{ github.run_id }}
+          name: rx-pcie-input-timing-native-${{ github.run_id }}
           path: input-timing/run/
           if-no-files-found: warn
           retention-days: 90
