@@ -17,9 +17,10 @@ with tarfile.open(fileobj=io.BytesIO(z.read(tgzs[0])),mode='r:gz') as t:
 assert digest(data)=='c367b0565c64b00eedd2510d465d9c0d9cba64a7c2f79e4c04b5a9389bd49598'
 P('/tmp/original-bitcell.lvsdb').write_bytes(data)
 db=kdb.LayoutVsSchematic();db.read('/tmp/original-bitcell.lvsdb')
-xref=db.xref()
-pairs=[p for p in xref.each_circuit_pair() if p.first() and p.first().name=='RM_IHPSG13_2P_BITKIT_CELL'];assert len(pairs)==1
-pair=pairs[0]
+layout_netlist=db.netlist();reference_netlist=db.reference()
+layout_circuit=layout_netlist.circuit_by_name('RM_IHPSG13_2P_BITKIT_CELL')
+reference_circuit=reference_netlist.circuit_by_name('RM_IHPSG13_2P_BITKIT_CELL')
+assert layout_circuit is not None and reference_circuit is not None
 
 def inspect(c):
     names=[field(n,'expanded_name') for n in c.each_net()]
@@ -40,8 +41,8 @@ def inspect(c):
         else:
             bodies.extend({'model':name,'body_external_ports':anchors} for terminal,anchors in terminals if terminal.upper()=='B')
     assert len(resistors)==6
+    assert any(x['body_external_ports'] for x in bodies) or c is layout_circuit, 'Reference MOS bodies must have named ports'
     return {'ports':sorted(field(pin,'name') for pin in c.each_pin()),'resistors':resistors,'mos_body_port_sets':bodies,'connected_port_count':sum(len(v) for v in pins.values()),'resistor_anchored_terminal_counts':[sum(bool(v) for v in r['signature']) for r in resistors]}
-layout_circuit=pair.first();reference_circuit=pair.second()
 a=inspect(layout_circuit);b=inspect(reference_circuit);mapping=[]
 for r in b['resistors']:
     hits=[x for x in a['resistors'] if x['signature']==r['signature'] and all(x['signature'])]
