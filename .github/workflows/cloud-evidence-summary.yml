@@ -1,4 +1,4 @@
-name: Inspect exact packed comparator shared-net metal geometry
+name: Generate guarded local M3 widening for shared comparator nets
 on:
   workflow_dispatch:
 permissions:
@@ -21,7 +21,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-shared-geometry-${{ github.run_id }}
+          name: packed650-shared-widening-derived-${{ github.run_id }}
           path: out/
           if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: packed650-shared-widening-native-${{ github.run_id }}
+          path: native/
+          if-no-files-found: warn
           retention-days: 90
