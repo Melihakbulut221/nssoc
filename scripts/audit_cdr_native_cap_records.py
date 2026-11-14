@@ -58,5 +58,21 @@ for root,driver in [('T382_rppd_2','T275_C'),('T383_rppd_2','T273_C'),('T397_rpp
   xy=item['point_dbu'];points.append({'label':item['label'],'point_dbu':xy,'manhattan_distance_from_driver_um':sum(abs(a-b) for a,b in zip(origin,xy))*layout.dbu})
  rows[root]={'driver':driver,'anchor_count':len(group),'span_x_um':(max(r['point_dbu'][0] for r in group)-min(r['point_dbu'][0] for r in group))*layout.dbu,'span_y_um':(max(r['point_dbu'][1] for r in group)-min(r['point_dbu'][1] for r in group))*layout.dbu,'anchors':points}
 out['conductor_geometry']=rows
+# Preserve actual macro boundaries before proposing any relocation. Device
+# shapes and routing are only observed; source GDS stays byte-identical.
+macro_rows=[]
+for top in layout.top_cells():
+ for ordinal,inst in enumerate(top.each_inst()):
+  child=inst.cell
+  pins=[]
+  for li in layout.layer_indexes():
+   info=layout.get_info(li)
+   if info.datatype not in (2,25):continue
+   for shape in child.each_shape(li):
+    if shape.is_text():pins.append({'layer':str(info),'text':shape.text.string,'position_dbu':[shape.text.x,shape.text.y]})
+  macro_rows.append({'ordinal':ordinal,'cell':child.name,'instance_transform':str(inst.trans),'complex_transform':str(inst.cplx_trans),'bbox_dbu':str(inst.bbox()),'cell_bbox_dbu':str(child.bbox()),'regular_array':inst.is_regular_array(),'array_na':inst.na,'array_nb':inst.nb,'child_instance_count':sum(1 for _ in child.each_inst()),'pin_labels':pins})
+out['top_macro_instances']=macro_rows
+assert hashlib.sha256(pathlib.Path('source.gds').read_bytes()).hexdigest()==out['geometry']['sha256']
+
 out['geometry_scope']='Exact native physical terminal anchors and GDS DBU. Manhattan distances are lower bounds, not measured routed lengths. No physical edits or acceptance.'
 pathlib.Path('out').mkdir();pathlib.Path('out/capacitor-native-records.json').write_text(json.dumps(out,indent=2))
