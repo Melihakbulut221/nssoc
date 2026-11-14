@@ -1,3 +1,15 @@
+# RX6 final antenna independently0/0; routed timing rejected; CDR load12 data fails
+
+43577454990 source7e10978a522ae51d0ccc3d251e1f04e7c089884a completed/success. Fresh read-only native antenna check0nets/0pins,0warnings/errors. ODBSHA3eaa76b381138c637770590f5e19bdedebedc9e658c854fe9b4bf109d31c03cd,SDCSHA5c65218b6106315c71d45c19eb61af09781607f0f438f2c7f99c4427884d24a4 unchanged. Old1/2was pre-finalrepair: do not repair this now-clean antenna candidate. Safe14107441301 SHA25849f1b1bffc545a7984b6e20aca9ec633dd49ca36023d35a795d616b77590d. Tested source copied to main. Receipt rx6-final-antenna-zero-20261114.json. Future routing must check antennas unconditionally after final repair; no report-only freshness assumption.
+
+43569629324 terminal/failure. SafeSTA14107520603 SHA3e1a511d5f9560af0dae28a9ecf652d32ee3fb647eb0d5bc8e87fd0944148911 verified/read. Slow1327setup(-1.996737943ns),0hold;typ0setup,2hold(-.012410961ns);fast0setup,74hold(-.111859136ns). FastgroupsPCIe70/CPU4; EthRXhold0. SlowsetupPCIe754/CPU529/async41/EthTX3. Cap105/106/111,slew751/249/125,fanout1423each. Timingreject; freshCRC43561900502 remains priority separate netlist. Do not transplant old-instance ECO. RepeatSTAartifactdownload timedout180s before mutation; first successful SHAverified read supplied exact scalarreceipt docs/evidence/rx6-routed-timing-rejected-20261114.json. No simulator rerun needed.
+
+CDR43571075470 acload12 completed/failure: simulatorRC0/devicePASS/phasePASS/dataFAIL; X381wrong717below100mV,Y1wrong588below,765samples each. A/C/Dlowmargin65/139/96,Bpass. Safe14107175734 SHAc7afa62bbf62281ed8aad8aff94c97bc16af769ceaedd21cff1815c422ca7501; fullresult docs/evidence/cdr-acload12-rejected-20261114.json. Native14107240670 SHAa4f8b266f11b0a48d7bda855c8a6d69933d6ea2933be82f2ec200a89925eb3d5 cloudonly, mixed14106494834 SHA7847a708ebe849dbb6219c58982ff24543d9094dd96e1b7872942f9e6ff22f71cloudonly. RawSHA7591486c78ad4f9e50e82c675417f047b04d8f71d781bb11ea1e4f0e5ca64444,113490points. acload16 stillpending atlastpoll.
+
+Livehandles43571075470(partial),43566292104,43562021054,43561900502,43573697024. Stop polling43569629324/43577454990 aslive. Fullgoalopen; router/antenna checks are not foundry signoff or fullPHY.
+
+---
+
 # Antenna audit format-key bug corrected; final-archive-bound check live
 
 43577172823 failed before OpenROAD measurement with KeyError:'SDC': deprecated DesignFormat.name returns lowercase format id, not enum identifier. Replacement uses explicit odb/sdc keys. Removed incorrect pre-route-SDC hash comparison: final views are bound to exact SHA-verified final routed archive14105679819; hash invariance of ODB/SDC before/after native check remains required. No layout/threshold changes; old SDC equality was not evaluated due KeyError, so no claim of measured hash mismatch.
