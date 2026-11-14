@@ -11,8 +11,9 @@ ys=(syn/'soc_top_syn.ys').read_text();assert '-DSOC_PCIE_REPLAY_WRITE_PREDECODE'
 assert os.environ['SOC_PCIE_REPLAY_EOP_CACHE']=='1' and '-DSOC_PCIE_REPLAY_EOP_CACHE' in ys
 assert sha('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')=='e478d785013174a7a7ce63b6fcbd8aa609736e65e292748eb8c0311e453f69e8'
 m=json.loads((syn/'soc_top.mapped.json').read_text())['modules']['soc_top']
-cached=[{'name':n,'type':c['type'],'src':c['attributes'].get('src','')} for n,c in m['cells'].items() if c['type'].startswith('sg13g2_df') and 'hw/soc/rtl/pcie/soc_pcie_replay_tx.v:310.5-322.8' in c['attributes'].get('src','').split('|')]
+cached=[{'name':n,'type':c['type'],'src':c['attributes'].get('src','')} for n,c in m['cells'].items() if c['type'].startswith('sg13g2_df') and any(token=='hw/soc/rtl/pcie/soc_pcie_replay_tx.v:310.5-322.8' or token.endswith('/hw/soc/rtl/pcie/soc_pcie_replay_tx.v:310.5-322.8') for token in c['attributes'].get('src','').split('|'))]
 assert len(cached)==1,cached
+assert m["cells"][cached[0]["name"]]["connections"]["CLK"]==m["ports"]["pcie_clk_i"]["bits"]
 selected={name:net for name,net in m['netnames'].items() if name.endswith(('.write_low','.write_group'))}
 assert len(selected)==2,sorted(selected)
 widths={name:len(net['bits']) for name,net in selected.items()}
