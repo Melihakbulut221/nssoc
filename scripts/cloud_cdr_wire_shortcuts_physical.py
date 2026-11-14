@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/paired650-packed-physical"
+BRANCH="codex/packed650-shared-widening-physical"
 PAIRED="scripts/cdr650-paired-physical-input.json"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA='30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f'
@@ -184,7 +184,7 @@ def baseline_candidate():
 def candidate():
     import zipfile
     baseline=baseline_candidate()
-    cfg=json.loads((ROOT/PAIRED).read_bytes())
+    outer_cfg=json.loads((ROOT/PAIRED).read_bytes());cfg=outer_cfg["predecessor"]
     run=acquire.api("actions/runs/"+str(cfg["run"]))
     need(run["head_sha"]==cfg["source"] and run["status"]=="completed" and run["conclusion"]=="success" and run["run_attempt"]==1,"exact paired producer")
     target=ROOT/"paired-candidate-cache";target.mkdir()
@@ -212,6 +212,40 @@ def candidate():
     need(proof["unchanged_first_six_bands"] and proof["packing_gap_um"]==16.0,"exact packed candidate contract")
     need(proof["packed_signal_length_sum_um"]<proof["paired_signal_length_sum_um"],"actual total signal length reduction")
     need(all(t["packed_length_um"]<=t["paired_length_um"] for t in proof["signal_trunk_comparison"]),"no individual signal trunk length regression")
+    packed_bytes=candidate_bytes
+    cfg=outer_cfg
+    new_run=acquire.api("actions/runs/"+str(cfg["run"]))
+    need(new_run["head_sha"]==cfg["source"] and new_run["status"]=="completed" and new_run["conclusion"]=="success" and new_run["run_attempt"]==1,"exact widened producer")
+    widened_archives={}
+    for name,record in cfg["artifacts"].items():
+        info=acquire.api("actions/artifacts/"+str(record["id"]))
+        need(not info["expired"] and info["workflow_run"]["id"]==cfg["run"] and info["workflow_run"]["head_sha"]==cfg["source"] and info["digest"]=="sha256:"+record["sha256"],"exact widened artifact metadata")
+        path=target/("widened-"+name+".zip")
+        with path.open("xb")as stream:subprocess.run(["gh","api","repos/Melihakbulut221/nssoc/actions/artifacts/"+str(record["id"])+"/zip"],stdout=stream,check=True)
+        need(sha(path)==record["sha256"],"whole widened archive digest");widened_archives[name]=path
+    with zipfile.ZipFile(widened_archives["native"])as z:
+        need(z.namelist()==["candidate.gds"],"exact widened native inventory");candidate_bytes=z.read("candidate.gds")
+    with zipfile.ZipFile(widened_archives["proof"])as z:proof=json.loads(z.read("shared-widening-proof.json"))
+    need(hashlib.sha256(candidate_bytes).hexdigest()==cfg["candidate_sha256"]==proof["candidate_gds_sha256"],"widened GDS binding")
+    need(hashlib.sha256(packed_bytes).hexdigest()==proof["source_gds_sha256"]==cfg["predecessor"]["candidate_sha256"],"exact packed predecessor")
+    need(proof["accepted"]is False and proof["only_metal3_added"]and proof["original_top_hierarchy_and_labels_retained"]and proof["all_original_geometry_retained"]and proof["serialized_region_equality_checked"]and proof["deleted_patch_control_rejected"],"complete guarded generation proof")
+    need(len(proof["components"])==10 and all(x["via_incidence_unchanged"]for x in proof["components"]),"all shared nets preserve via incidence")
+    import klayout.db as db
+    prior_path=target/"packed-predecessor.gds";prior_path.write_bytes(packed_bytes)
+    new_path=target/"widened-candidate.gds";new_path.write_bytes(candidate_bytes)
+    old_layout=db.Layout();old_layout.read(str(prior_path));new_layout=db.Layout();new_layout.read(str(new_path))
+    need(old_layout.dbu==new_layout.dbu==.001 and len(old_layout.top_cells())==len(new_layout.top_cells())==1,"exact hierarchy units")
+    need(old_layout.top_cell().name==new_layout.top_cell().name==TOP,"unchanged top name")
+    def regions(layout):return {str(layout.get_info(li)):db.Region(layout.top_cell().begin_shapes_rec(li)).merged()for li in layout.layer_indexes()}
+    old_regions=regions(old_layout);new_regions=regions(new_layout);need(set(old_regions)==set(new_regions),"unchanged layer set")
+    for key,old_region in old_regions.items():
+        new_region=new_regions[key]
+        need((old_region-new_region).is_empty(),"no original geometry removed "+key)
+        if key!="30/0":need((old_region^new_region).is_empty(),"only M3 may change "+key)
+    patch=new_regions["30/0"]-old_regions["30/0"];need(not patch.is_empty(),"actual new M3 exists")
+    for key in ["29/0","49/0"]:need((patch&old_regions[key]).is_empty(),"no new via incidence "+key)
+    def texts(layout):return sorted((str(layout.get_info(li)),shape.text.to_s())for li in layout.layer_indexes()for shape in layout.top_cell().each_shape(li)if shape.is_text())
+    need(texts(old_layout)==texts(new_layout)and len(texts(new_layout))==25,"exact top public labels")
     layout=target/"native/layout";layout.mkdir(parents=True)
     (layout/(TOP+".gds")).write_bytes(candidate_bytes)
     shutil.copyfile(baseline/"native/layout/schematic.cir",layout/"schematic.cir")
