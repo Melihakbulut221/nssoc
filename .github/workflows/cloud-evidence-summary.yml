@@ -1,8 +1,9 @@
-name: Generate current650 paired-band physical candidate
+name: Generate physically packed paired650 buffer and comparator candidate
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   audit:
     runs-on: ubuntu-24.04
@@ -15,22 +16,23 @@ jobs:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/audit_cdr_native_cap_records.py
+          sparse-checkout: /scripts/generate_paired650_packed_buffers.py
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
       - run: |
           set -euo pipefail
           gh api repos/${{ github.repository }}/releases/assets/707281704 -H 'Accept: application/octet-stream' > metal.tgz
           gh api repos/${{ github.repository }}/releases/assets/706980601 -H 'Accept: application/octet-stream' > geometry.tgz
-          python3 scripts/audit_cdr_native_cap_records.py
+          gh api repos/${{ github.repository }}/actions/artifacts/14124466665/zip > paired-reference.zip
+          python3 scripts/generate_paired650_packed_buffers.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr650-paired-layout-proof-${{ github.run_id }}
+          name: paired650-packed-layout-proof-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cdr650-paired-layout-native-${{ github.run_id }}
+          name: paired650-packed-layout-native-${{ github.run_id }}
           path: native/
           if-no-files-found: error
           retention-days: 90
