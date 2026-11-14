@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"mos650-metal-rc";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-metal-rc-inputs.json";PINS="scripts/cdr-mos650-metal-rc-pins.json"
 METHODS="docs/evidence/mos650-metal-rc-original-methods.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-mim-rc"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr650-paired-fresh-metal-rc"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -109,18 +109,47 @@ def methods():
  need(set(outputs)=={"run-rc01.py","audit-rc48.py","mutations48.py"},"complete native extraction/audit/control methods")
  return outputs,changes
 def inputs(cfg):
- physical=ROOT/"mos650-wires";need(not physical.exists(),"exclusive authenticated source-view restoration")
- selected=acquire(cfg["view"],physical,lambda n:n.startswith(("native/view/","native/selected/","derived/")))
- view=physical/"native/view";record=read(physical/"derived/result.json")
- need(record["status"]=="PASS_CURRENT650_WIRES_200_GATE_CONTACTS_AND_SEPARATE_INTRINSIC_ELECTRODES_REQUIRES_RC","actual complete650 topology producer")
- need((record["devices"],record["terminals"],record["components"],record["electrical_nets"])==(650,2046,113,114),"all actual native topology counts")
+ import zipfile
+ physical=ROOT/"paired-terminal-anchors";need(not physical.exists(),"exclusive paired source restoration")
+ spec=cfg["paired_view"]
+ run=api("actions/runs/"+str(spec["run"]))
+ need(run["head_sha"]==spec["source"] and run["status"]=="completed" and run["conclusion"]=="success" and run["run_attempt"]==1,"actual completed paired anchors")
+ def zip_source(record):
+  aid=record["id"];metadata=api("actions/artifacts/"+str(aid))
+  need(not metadata["expired"] and metadata["workflow_run"]["id"]==record["run"] and metadata["workflow_run"]["head_sha"]==record["source"] and metadata["digest"]=="sha256:"+record["sha256"],"source artifact identity")
+  packed=NATIVE/(str(aid)+".zip")
+  with packed.open("xb")as stream:subprocess.run(["gh","api","repos/"+REPO+"/actions/artifacts/"+str(aid)+"/zip"],stdout=stream,check=True,timeout=600)
+  need(pin(packed)["sha256"]==record["sha256"],"whole paired artifact digest")
+  archive=zipfile.ZipFile(packed);need(len(set(archive.namelist()))==len(archive.namelist()),"unique archive members")
+  return archive
+ archives={name:zip_source(record)for name,record in spec["artifacts"].items()}
+ selected={}
+ def copy(z,name,target):
+  rel=PurePosixPath(name);need(not rel.is_absolute() and ".."not in rel.parts,"safe regular source path")
+  info=z.getinfo(name);need(not info.is_dir() and (info.external_attr>>16)&0o170000!=0o120000,"regular source member")
+  path=physical/target;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(z.read(name));selected[target]=pin(path)
+ for name in archives["native"].namelist():
+  if name.startswith(("selected/","view/")):copy(archives["native"],name,"native/"+name)
+ for name in archives["derived"].namelist():copy(archives["derived"],name,"derived/"+name)
+ copy(archives["identity"],"lvs_flat-identity.json","derived/lvs_flat-identity.json")
+ record=read(physical/"derived/result.json");view=physical/"native/view"
+ need(record["status"]=="PASS_PAIRED650_CURRENT_TERMINAL_AND_GATE_CONTACT_ANCHORS_REQUIRES_FRESH_RC" and record["context"]["run"]==spec["run"] and record["context"]["source"]==spec["source"],"current accepted anchor producer")
+ need((record["devices"],record["terminals"],record["physical_anchors"],record["gate_contacts"])==(650,2046,1428,200),"complete paired census")
+ need(record["gds_sha256"]==pin(physical/"native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds")["sha256"]=="285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514","exact physically qualified paired GDS")
+ need(not record["old_RC_reused"] and not record["wire_rc_extracted"],"fresh extraction required")
+ flat=read(physical/"derived/lvs_flat-identity.json")
+ need(pin(physical/"native/selected/physical/lvs_flat/result.lvsdb")==flat["lvsdb"],"actual current intrinsic-terminal geometry")
+ graph=read(view/"wire/native05/result.json")
+ need((graph["native_device_count"],graph["native_terminal_count"],graph["wire_component_count"],graph["native_electrical_net_count"])==(650,2046,113,114),"actual current conductor topology")
+ for name,record0 in graph["outputs"].items():need(pin(view/"wire/native05"/name)==record0,"bound actual conductor file")
  anchors=read(view/"wire/anchors08.json")
  need((anchors["logical_anchor_count"],anchors["physical_anchor_count"])==(1428,1428),"actual geometric alias counts")
- need(len(anchors["anchors"])==1428 and anchors["dispositions"]==dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1203,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=643,RETAINED_INTRINSIC_GATE_REQUIRES_POLY_RC=200),"all geometric anchors and explicit body scope")
- need(record["physical_run"]==41710162510 and record["physical_gate_contacts"]==200 and record["intrinsic_gate_metal_shortcuts"]is False,"current physically accepted source and separate gate electrodes")
- need(anchors["physical_gate_contact_count"]==200 and anchors["intrinsic_gate_metal_shortcuts"]is False and len(anchors["gate_groups"])==50,"all current native gate contacts and groups")
- for n,h in anchors["inputs"].items():
-  p=Path(n);need(p.is_relative_to(physical)and p.is_file()and pin(p)["sha256"]==h,"unchanged absolute complete source input binding")
+ need(len(anchors["anchors"])==1428 and anchors["dispositions"]==dict(ACTUAL_TERMINAL_METAL_POINT_REFERENCE=1203,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=643,RETAINED_INTRINSIC_GATE_REQUIRES_POLY_RC=200),"all geometric anchors and body scope")
+ need(anchors["physical_gate_contact_count"]==200 and anchors["intrinsic_gate_metal_shortcuts"]is False and len(anchors["gate_groups"])==50,"all real gate contacts and separate intrinsic electrodes")
+ for name,h in anchors["inputs"].items():
+  path=Path(name);need(path.is_relative_to(physical) and path.is_file() and pin(path)["sha256"]==h,"complete unchanged current anchor input")
+ cfg["view"]={"run":spec["run"],"source":spec["source"],"selected":selected}
+ save("paired-view-acquisition.json",dict(spec=spec,selected=selected,old_RC_reused=False,**FLAGS))
  runtime=NATIVE/"runtime-parent";runtime.mkdir()
  acquire(cfg["runtime"],runtime,lambda n:n in cfg["runtime"]["selected"])
  stage=NATIVE/"wire-stage";stage.mkdir();shutil.copytree(runtime/"wire-stage/magic-cloud",stage/"magic-cloud")
@@ -267,7 +296,7 @@ def mim_extract(cfg,physical):
  for n,p in cfg["view"]["selected"].items():need(pin(physical/n)==p,"current physical source unchanged")
  gate()
  save("result.json",dict(status="PASS_CURRENT650_MIM_AWARE_TWO_ORDER_RC_AND22_FAULTS_EACH_REQUIRES_FULL_COMPOSITION",
-  context=gate(),physical_source_run=41712243960,current_native_devices=650,current_native_terminals=2046,physical_anchors=1428,physical_gate_contacts=200,
+  context=gate(),physical_source_run=cfg["view"]["run"],current_native_devices=650,current_native_terminals=2046,physical_anchors=1428,physical_gate_contacts=200,
   native_mim_devices=7,actual_resistors=results["precise"]["capture"]["R"],actual_capacitors=results["precise"]["capture"]["C"],
   native_orders=["precise","precise_reversed"],both_native_orders_verified=True,native_rc_and_device_records_equal_in_both_orders=True,
   wire_fault_controls_per_order=13,mim_fault_controls_per_order=9,order_equivalence=equivalence,reversal=reversal,

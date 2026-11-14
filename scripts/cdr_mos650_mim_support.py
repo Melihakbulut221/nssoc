@@ -13,7 +13,7 @@ def require(ok,message):
     if not ok:raise ValueError(message)
 def generate():
     import klayout.db as pya
-    P=ROOT/'mos650-wires/native/view';G=P/'parent/layout'/(TOP+'.gds');D=P/'parent/physical/lvs_flat/result.lvsdb'
+    P=ROOT/'paired-terminal-anchors/native/view';G=P/'parent/layout'/(TOP+'.gds');D=P/'parent/physical/lvs_flat/result.lvsdb'
     assert sha(G)=='c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c'
     L=pya.Layout();L.read(str(G));T=L.cell(TOP);assert L.dbu==.001 and T is not None
     native=pya.LayoutVsSchematic();native.read(str(D));assert native.netlist().top_circuit().name==TOP

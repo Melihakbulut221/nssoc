@@ -1,4 +1,4 @@
-name: Extract actual650 MIM aware RC and verify native order conservation
+name: Extract fresh paired650 MIM-aware RC with both native orders
 on:
   workflow_dispatch:
     inputs:
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     permissions:
-      contents: write
+      contents: read
       actions: read
     env:
       GH_TOKEN: ${{ github.token }}
@@ -91,20 +91,19 @@ jobs:
       - name: Extract actual MIM geometry RC in both native orders and reject raw faults
         id: native
         run: python3 -B scripts/cdr_mos650_metal_rc.py --extract
-      - name: Preserve every actual native success or failure
-        if: always()
-        run: python3 -B scripts/cdr_mos650_metal_rc.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: mos650-derived-${{ github.run_id }}
+          name: paired650-metal-rc-derived-${{ github.run_id }}
           path: mos650-metal-rc/derived
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: mos650-native-fallback-${{ github.run_id }}
-          path: mos650-metal-rc
+          name: paired650-metal-rc-native-${{ github.run_id }}
+          path: |
+            mos650-metal-rc
+            paired-terminal-anchors
           if-no-files-found: warn
           retention-days: 90
