@@ -1,0 +1,184 @@
+{
+  "observed_at": "2026-11-14T03:51:40.720270+00:00",
+  "run": 43553545114,
+  "source": "e8c09d6041199f1b57b2f7122621909ac9a5ec58",
+  "artifact": 14096828657,
+  "artifact_sha256": "b58b9142d77cb2f5b429ea23df5854b5e65f5bb19158561d635f9be9872214da",
+  "native_controls": {
+    "status": "PASS_ISOLATED_MERGE_SWITCH_CONTROLS",
+    "source_sha": "e8c09d6041199f1b57b2f7122621909ac9a5ec58",
+    "original_custom_devices_sha256": "203cdb6276ada39a8bf646d01b8ea62fdb05ba369b26d1a1509b6af425aab308",
+    "original_RES2_source": "class RES2 < RBA::DeviceClassResistor\n  def initialize\n    super\n    enable_parameter('W', true)\n    enable_parameter('L', true)\n    enable_parameter('R', false)\n  end\nend",
+    "candidate_RES2_source": "class RES2 < RBA::DeviceClassResistor\n  def initialize\n    super\n    self.supports_serial_combination = SERIES_RES\n    self.supports_parallel_combination = PARALLEL_RES\n    enable_parameter('W', true)\n    enable_parameter('L', true)\n    enable_parameter('R', false)\n  end\nend",
+    "cases": [
+      {
+        "topology": "serial",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "original",
+        "requested_serial": false,
+        "requested_parallel": false,
+        "expected_count": 1
+      },
+      {
+        "topology": "parallel",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "original",
+        "requested_serial": false,
+        "requested_parallel": false,
+        "expected_count": 1
+      },
+      {
+        "topology": "serial",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "original",
+        "requested_serial": false,
+        "requested_parallel": true,
+        "expected_count": 1
+      },
+      {
+        "topology": "parallel",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "original",
+        "requested_serial": false,
+        "requested_parallel": true,
+        "expected_count": 1
+      },
+      {
+        "topology": "serial",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "original",
+        "requested_serial": true,
+        "requested_parallel": false,
+        "expected_count": 1
+      },
+      {
+        "topology": "parallel",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "original",
+        "requested_serial": true,
+        "requested_parallel": false,
+        "expected_count": 1
+      },
+      {
+        "topology": "serial",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "original",
+        "requested_serial": true,
+        "requested_parallel": true,
+        "expected_count": 1
+      },
+      {
+        "topology": "parallel",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "original",
+        "requested_serial": true,
+        "requested_parallel": true,
+        "expected_count": 1
+      },
+      {
+        "topology": "serial",
+        "device_count_before": 2,
+        "device_count_after": 2,
+        "variant": "fixed",
+        "requested_serial": false,
+        "requested_parallel": false,
+        "expected_count": 2
+      },
+      {
+        "topology": "parallel",
+        "device_count_before": 2,
+        "device_count_after": 2,
+        "variant": "fixed",
+        "requested_serial": false,
+        "requested_parallel": false,
+        "expected_count": 2
+      },
+      {
+        "topology": "serial",
+        "device_count_before": 2,
+        "device_count_after": 2,
+        "variant": "fixed",
+        "requested_serial": false,
+        "requested_parallel": true,
+        "expected_count": 2
+      },
+      {
+        "topology": "parallel",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "fixed",
+        "requested_serial": false,
+        "requested_parallel": true,
+        "expected_count": 1
+      },
+      {
+        "topology": "serial",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "fixed",
+        "requested_serial": true,
+        "requested_parallel": false,
+        "expected_count": 1
+      },
+      {
+        "topology": "parallel",
+        "device_count_before": 2,
+        "device_count_after": 2,
+        "variant": "fixed",
+        "requested_serial": true,
+        "requested_parallel": false,
+        "expected_count": 2
+      },
+      {
+        "topology": "serial",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "fixed",
+        "requested_serial": true,
+        "requested_parallel": true,
+        "expected_count": 1
+      },
+      {
+        "topology": "parallel",
+        "device_count_before": 2,
+        "device_count_after": 1,
+        "variant": "fixed",
+        "requested_serial": true,
+        "requested_parallel": true,
+        "expected_count": 1
+      }
+    ],
+    "scope": "Exact Ruby RES2 class instantiated in native KLayout two-resistor graphs, with boundary pins and all four switch combinations. Not macro LVS, topology qualification, DRC, or manufacturing acceptance. No SRAM GDS/CDL or comparison tolerances changed.",
+    "production_accepted": false,
+    "upstream_reference": "https://github.com/IHP-GmbH/IHP-Open-PDK/pull/1121",
+    "upstream_head": "3df647ebe53439ae41d56a1e9c2b38003ba2124d"
+  },
+  "prior_harness_failures": [
+    {
+      "run": 43553195656,
+      "reason": "unsupported Ruby getter; subprocess stderr initially hidden"
+    },
+    {
+      "run": 43553342992,
+      "reason": "native error captured: supports_serial_combination? does not exist; replaced getter test with actual Ruby RES2 graphs"
+    }
+  ],
+  "macro_candidate": {
+    "id": 43553707234,
+    "head_sha": "c077726eb378897ef2bf2b2e10bb8c6333195111",
+    "status": "in_progress",
+    "conclusion": null
+  },
+  "macro_candidate_branch": "codex/sram-strict-resistor-merge-fix",
+  "macro_scope": "Only tested RES2 two-line switch correction added to prior frozen selective-flatten experiment. Controls artifact/class SHA are mandatory. Original GDS/CDL, W/L comparison and full port/extraction audit unchanged. Expected recursive count70110 = previous62046 +8064 formerly combined series pairs; this is a guard to verify in native run, not yet a measured result.",
+  "accepted_macro": false,
+  "manufacturing_approval": false
+}
