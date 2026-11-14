@@ -300,7 +300,30 @@ module soc_pcie_replay_tx #(
     // send starts; a slot's length is written at its commit, before any
     // send of that slot, so this equals lengths[send_slot]-1 throughout.
     reg [BW-1:0] send_last;
+`ifdef SOC_PCIE_REPLAY_EOP_CACHE
+    // Cache the comparison alongside the state updates that can change it.
+    // No stream stage or handshake latency is added. Link loss holds both
+    // operands; reset makes both zero. Send start sets cursor zero, and a
+    // non-last accepted byte increments it with exactly BW-bit wraparound.
+    reg replay_eop_q;
+    wire [BW-1:0] replay_read_increment=read_pos+1'b1;
+    always @(posedge clk_i or negedge rst_ni) begin
+        if(!rst_ni) replay_eop_q<=1'b1;
+        else if(link_up_i) begin
+            if(!(ack_valid_i && ack_ready_o) && !sending && !capturing &&
+               !training_i && !halt && !(replay_pending && !replay_active)) begin
+                if(replay_active) replay_eop_q<=(lengths[replay_slot]==BW'(1));
+                else if(reserve_valid_o && reserve_ready_i)
+                    replay_eop_q<=(lengths[new_slot]==BW'(1));
+            end
+            if(core_valid && core_ready && !core_eop)
+                replay_eop_q<=(replay_read_increment==send_last);
+        end
+    end
+    assign core_eop=replay_eop_q;
+`else
     assign core_eop=read_pos==send_last;
+`endif
     // The replay timer still starts when the last byte leaves on the wire:
     // the first-replayed-frame mark travels with the bytes.
     wire tx_first;
