@@ -80,5 +80,17 @@ try:
   neighbors=[[rn for rn,rd in resistors.items() if root in [find(x) for x in rd['nodes'][:2]]] for root in roots]
   records.append({'capacitor':n,'dimensions':dimension(d),'endpoint_probe_labels':labels,'parallel_with_divider_resistors':parallel,'endpoint_neighbor_resistors':neighbors})
  r.update(status='DIVIDER_TOPOLOGY_CLASSIFIED',model_sha256=hashlib.sha256(raw).hexdigest(),subcircuit=subckts[0],collapsed_wire_resistors=wires,pdk_resistors_not_collapsed={n:dimension(d) for n,d in resistors.items()},capacitors=records)
+ buffer_nodes={}
+ for ident in (273,275,278,280):
+  for terminal in ('b','c','e'):
+   node=f'w_t{ident}_{terminal}';root=find(node)
+   matches=[]
+   for name,d in instances.items():
+    positions=[i for i,n in enumerate(d['nodes']) if find(n)==root]
+    if positions:matches.append({'device':name,'model':d['model'],'terminal_positions':positions,'parameters':d['params']})
+   assert matches,('No physical device neighbor for buffer terminal',node)
+   buffer_nodes[node]={'connected_devices':matches,'supply_aliases':[n for n in ('avdd','avss') if find(n)==root]}
+ r['buffer_terminal_neighborhoods']=buffer_nodes
+ r['scope']+=' Buffer neighborhoods identify model terminals and attached PDK components only; no RC or bias conclusion from wire collapse.'
 except Exception as e:r.update(status='ERROR',error=type(e).__name__+': '+str(e))
 (out/'divider-topology.json').write_text(json.dumps(r,indent=2));print(json.dumps(r));raise SystemExit(0 if r['status']=='DIVIDER_TOPOLOGY_CLASSIFIED' else 1)

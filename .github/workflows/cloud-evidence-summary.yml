@@ -1,4 +1,4 @@
-name: CDR lowz8 exact divider and MIM topology
+name: CDR lowz8 buffer terminal and load topology
 on:
   workflow_dispatch:
 permissions:
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-lowz8-divider-topology-${{ github.run_id }}
+          name: cdr-lowz8-buffer-topology-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
