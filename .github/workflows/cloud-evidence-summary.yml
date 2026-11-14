@@ -1,4 +1,4 @@
-name: CRC byte-order candidate packet simulation and bad-seed control
+name: Current PCIe packet mutation regression
 on:
   workflow_dispatch:
 permissions:
@@ -17,38 +17,30 @@ jobs:
             hw/soc/rtl/pcie
             hw/soc/tb/cocotb
             hw/requirements.txt
+            sw/tests
+            sw/requirements.txt
       - name: Install simulation runtime
         run: |
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends iverilog
           python3 -m venv .venv
-          .venv/bin/pip install -r hw/requirements.txt
-      - name: Replay standalone transmitter and complete packet ports
+          .venv/bin/pip install -r hw/requirements.txt -r sw/requirements.txt
+      - name: Run complete packet regression without skipped cases
         run: |
           set -euo pipefail
-          .venv/bin/python scripts/check_pcie_packet.py --unit-tx --out out/tx
-          .venv/bin/python scripts/check_pcie_packet.py --out out/endpoint
-          .venv/bin/python scripts/check_pcie_flow_packets.py --out out/flow
-      - name: Reject corrupted CRC seed with the actual endpoint bench
-        run: |
-          .venv/bin/python - <<'PYCONTROL'
-          import pathlib,shutil,subprocess,json
-          rtl=pathlib.Path('mutant');shutil.copytree('hw/soc/rtl/pcie',rtl)
-          p=rtl/'soc_pcie_lcrc_tx.v';s=p.read_text()
-          old="prefix_crc<=crc_byte(crc_byte(32'hffffffff,"
-          assert s.count(old)==1
-          p.write_text(s.replace(old,"prefix_crc<=crc_byte(crc_byte(32'hfffffffe,"))
-          r=subprocess.run(['.venv/bin/python','scripts/check_pcie_packet.py','--rtl-dir',str(rtl),'--out','out/bad-seed'])
-          d=json.loads(pathlib.Path('out/bad-seed/result.json').read_text())
-          assert r.returncode!=0 and d['returncode']!=0 and d['tests']['failed']>0 and d['tests']['skipped']==0
-          assert sum(d['tests'].values())==d['expected_tests']
-          pathlib.Path('out/negative-control.json').write_text(json.dumps({'status':'PASS_BAD_CRC_SEED_REJECTED','result':d,'production_accepted':False},indent=2))
-          PYCONTROL
+          mkdir -p out
+          .venv/bin/python -m pytest -q sw/tests/test_pcie_packet.py --junitxml=out/packet-pytest.xml | tee out/packet-pytest.log
+          .venv/bin/python - <<'PYCHECK'
+          import xml.etree.ElementTree as E
+          root=E.parse('out/packet-pytest.xml').getroot();cases=list(root.iter('testcase'))
+          assert len(cases)==8, len(cases)
+          assert all(not any(c.find(t) is not None for t in ['skipped','failure','error']) for c in cases)
+          PYCHECK
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: crc-order-packet-simulation-${{ github.run_id }}
+          name: pcie-current-packet-mutations-${{ github.run_id }}
           path: |
             out/**/*.json
             out/**/*.xml
