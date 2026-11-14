@@ -1,7 +1,7 @@
 import copy,hashlib,json
 from pathlib import Path
 import klayout.db as db
-from cdr_mos650_wires import ROOT,NATIVE,DERIVED,TOP,METALS,need,save,pin
+from cdr_mos650_wires import ROOT,NATIVE,DERIVED,TOP,METALS,FLAGS,need,save,pin
 
 def prove_band_relocation(g,prior,hierarchy,annotations,signature):
  baseline=db.Layout();baseline.read(str(NATIVE/'baseline.gds'))
