@@ -57,4 +57,51 @@ for label,p,n in [('data_a','xpd.adp','xpd.adn'),('data_c','xpd.cdp','xpd.cdn'),
  result['input_observations'][label]={str(phase):{'min':float(np.interp(edges+phase*UI,t,delta).min()),'max':float(np.interp(edges+phase*UI,t,delta).max()),'mean':float(np.interp(edges+phase*UI,t,delta).mean())}for phase in phases}
 result['hbt_failures']={n:x for n,x in prior['device_checks'].items()if x['minimum_active_vce_v']<.4 or x['maximum_alltime_abs_vce_v']>1.6 or x['maximum_alltime_abs_vbe_v']>1 or x['maximum_alltime_abs_ic_per_emitter_a']>=.003}
 result['status']='DIAGNOSED_ORIGINAL_FAILED_WAVEFORM_NOT_ACCEPTED'
+# Diagnostic transfer/alignment: do not replace the frozen acceptance vectors.
+# Every relation below is reported, including uncovered input combinations.
+edges=np.array([START+(i+.5)*UI for i in range(1,256)])
+pairs={k:('xpd.'+k+'qp','xpd.'+k+'qn')for k in 'abcd'}
+pairs.update(ad=('xpd.adp','xpd.adn'),cd=('xpd.cdp','xpd.cdn'),s0=('xpd.s0p','xpd.s0n'),s1=('xpd.s1p','xpd.s1n'),x=('xp','xn'),y=('yp','yn'))
+def sampled(tag,phase):
+ p,n=pairs[tag];return np.interp(edges+phase*UI,t,v(p)-v(n))
+def stats(x):
+ return {'n':int(len(x)),'minimum_v':float(x.min()),'maximum_v':float(x.max()),'mean_v':float(x.mean()),'weak_abs_100mv':int(np.sum(np.abs(x)<.1))}
+result['transfer_bins']={}
+for phase in [.3,.6,.75,.9]:
+ values={tag:sampled(tag,phase)for tag in pairs};row={'signals':{},'comparators':{},'sampled_device_headroom':{}}
+ for tag in ['ad','cd','s0','s1']:
+  raw=values[tag];p,n=pairs[tag];cm=np.interp(edges+phase*UI,t,(v(p)+v(n))/2)
+  rr={'differential':stats(raw),'commonmode':stats(cm),'relations':{}}
+  for origin in ['a','b','c','d']:
+   # Integer lag is diagnostic only, never an allowed expected-data correction.
+   for lag in [-1,0,1]:
+    ii=np.arange(255);jj=ii+lag;valid=(jj>=0)&(jj<255);aa=raw[ii[valid]];bb=values[origin][jj[valid]]
+    strong=(np.abs(aa)>=.1)&(np.abs(bb)>=.1)
+    rr['relations'][f'{origin}:lag{lag}']={'pairs':int(len(aa)),'same_sign':int(np.sum((aa>0)==(bb>0))),'opposite_sign':int(np.sum((aa>0)!=(bb>0))),'strong_pairs':int(strong.sum()),'strong_same_sign':int(np.sum(((aa>0)==(bb>0))&strong)),'rms_difference_v':float(np.sqrt(np.mean((aa-bb)**2)))}
+  row['signals'][tag]=rr
+ for output in ['x','y']:
+  rr={}
+  for data in ['ad','cd']:
+   for select in ['s0','s1']:
+    da=values[data];se=values[select];yy=values[output];bins={}
+    for db in [0,1]:
+     for sb in [0,1]:
+      use=((da>0)==bool(db))&((se>0)==bool(sb))
+      cell={'n':int(use.sum())}
+      if use.any():
+       strong=use&(np.abs(da)>=.1)&(np.abs(se)>=.1)
+       cell.update(output=stats(yy[use]),data=stats(da[use]),select=stats(se[use]),strong_input_pairs=int(strong.sum()))
+       if strong.any():cell['output_for_strong_inputs']=stats(yy[strong])
+      bins[f'{db}{sb}']=cell
+    rr[data+':'+select]=bins
+  row['comparators'][output]=rr
+ # Real native device headroom at the same sample instants. Report all HBTs;
+ # cannot infer topology from a coincidental net alias or waive the all-time gate.
+ for name,device in bound['groups']['npn13g2'].items():
+  c,b,e,_=device['nodes'];vce=np.interp(edges+phase*UI,t,v(c)-v(e));vbe=np.interp(edges+phase*UI,t,v(b)-v(e))
+  row['sampled_device_headroom'][name]={'minimum_vce_v':float(vce.min()),'maximum_vce_v':float(vce.max()),'maximum_abs_vbe_v':float(np.abs(vbe).max()),'below_400mv_samples':int(np.sum(vce<.4))}
+ result['transfer_bins'][str(phase)]=row
+result['transfer_scope']='Relations and all candidate comparator input pair bins, without inferred topology, input polarity swaps, retiming, expected-vector replacement or acceptance waiver. Missing combinations stay explicitly n=0.'
+
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
+
