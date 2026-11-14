@@ -12,10 +12,10 @@ with tarfile.open(fileobj=io.BytesIO(z.read(names[0])),mode='r:gz') as t:
  P('lvs.lvsdb').write_bytes(raw)
  rule_evidence=[]
  for m in t.getmembers():
-  if not m.isfile() or not m.name.endswith('.lvs'):continue
+  if not m.isfile() or not m.name.endswith(('.lvs','.rb','.lylvs','.py')):continue
   text=t.extractfile(m).read().decode();lines=text.splitlines();hits=set()
   for i,line in enumerate(lines):
-   if any(k in line for k in ('LVSRES','same_device_classes','res_metal1','equivalent_pins','same_nets','compare_parameter','ignore_parameter')):
+   if any(k in line for k in ('LVSRES','same_device_classes','res_metal1','equivalent_pins','same_nets','compare_parameter','ignore_parameter','RES2','connect_global','connect_implicit','VDD!')):
     hits.update(range(max(0,i-4),min(len(lines),i+5)))
   if hits:rule_evidence.append({'path':m.name,'sha256':hashlib.sha256(text.encode()).hexdigest(),'lines':[{'line':i+1,'text':lines[i]} for i in sorted(hits)]})
 lvs=db.LayoutVsSchematic();lvs.read('lvs.lvsdb');rows=[]
