@@ -1,0 +1,60 @@
+"""Read exact failed packed650 waveform; no new stimulus or acceptance change."""
+import os,json,subprocess,hashlib,zipfile,shutil,importlib.util
+from pathlib import Path
+import numpy as np
+assert os.environ.get('GITHUB_ACTIONS')=='true'
+P='repos/Melihakbulut221/nssoc/'
+out=Path('out');out.mkdir();work=Path('/mnt/paired650-wave-audit');work.mkdir(exist_ok=True)
+def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
+def sha(p):
+ with Path(p).open('rb')as f:return hashlib.file_digest(f,'sha256').hexdigest()
+r=api('actions/runs/43642783223');assert r['status']=='completed' and r['conclusion']=='failure' and r['head_sha']=='15a63339b7a18be32652b2d481c863bd8936c208'
+def acquire(aid,digest):
+ m=api('actions/artifacts/'+str(aid));assert m['workflow_run']['id']==r['id'] and m['workflow_run']['head_sha']==r['head_sha'] and m['digest']=='sha256:'+digest and not m['expired']
+ p=work/(str(aid)+'.zip')
+ with p.open('xb')as f:subprocess.run(['gh','api',P+'actions/artifacts/'+str(aid)+'/zip'],stdout=f,check=True)
+ assert sha(p)==digest
+ return zipfile.ZipFile(p)
+safe=acquire(14135338555,'53940fed9591cbafab85792525eacc8f44fa3a41200874d57cea1b0a4a0fcfb2')
+report_raw=safe.read('loaded-n1-nominal_late.json');prior=json.loads(report_raw)
+assert prior['status']=='REJECTED_WHOLE_MIM_ACTUAL650_LOADED'and prior['sources_unchanged']and prior['diagnostics']==[]
+z=acquire(14135837525,'fdee30ae9abd5a38d685b819d7cb3fc84840a3fab2cbef0f4aa8ded130997c0c')
+names=[n for n in z.namelist()if n.endswith('/loaded-n1-nominal_late/wave.raw')];assert len(names)==1
+raw=work/'wave.raw'
+with z.open(names[0])as f,raw.open('xb')as g:shutil.copyfileobj(f,g,1024*1024)
+assert sha(raw)==prior['raw_capture']['raw_sha256']=='bbd4390a3ecd4b3e15ecce9ccd34c5adb03c2eed1ad68f8853b34badcde1e9b6'
+reader=Path('scripts/cdr_mos650_full650_loaded.py')
+expected=[v for k,v in prior['protected_inputs'].items()if k.endswith('/scripts/cdr_mos650_full650_loaded.py')];assert len(expected)==1 and sha(reader)==expected[0]
+spec=importlib.util.spec_from_file_location('frozen_loaded',reader);mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
+t,d,capture=mod.read_streamed_wave(raw,prior['vectors'],mod.STOP,mod.STEP)
+bound=prior['binding'];bits=prior['source_bits'];UI=mod.UI;START=mod.START
+result={'source_run':r['id'],'source_head':r['head_sha'],'safe_artifact':14135338555,'native_artifact':14135837525,'source_report_sha256':hashlib.sha256(report_raw).hexdigest(),'raw_sha256':sha(raw),'reader_sha256':sha(reader),'rows':capture['header_rows'],'columns':capture['columns'],'accepted':False,'scope':'Diagnostic phase/transition/lag bins on the complete original failed waveform. Original acceptance remains failed; no timing-window or expected-bit replacement.','stages':{},'input_observations':{}}
+def v(n):return d['v('+bound['aliases'].get(n,n)+')']
+phases=[0,.1,.2,.3,.4,.5,.6,.75,.9]
+for tag in 'abcdxy':
+ if tag in 'abcd':
+  positive='xpd.'+tag+'qp';negative='xpd.'+tag+'qn';expect=prior['expected_samples'][tag];reference=prior['sampler_checks'][tag];official=[.3,.6,.9]
+ else:
+  positive=tag+'p';negative=tag+'n';expect=prior['expected_comparisons'][tag];reference=prior['comparisons'][tag];official=[.6,.75,.9]
+ delta=v(positive)-v(negative);edges=np.array([START+(i+(0 if tag=='b'else .5))*UI for i in range(1,256)])
+ expected=np.array(expect);sign=2*expected-1
+ def sample(phase):return np.interp(edges+phase*UI,t,delta)
+ observed=np.concatenate([sample(p)*sign for p in official])
+ assert int(np.sum(observed<=0))==reference['wrong_sign_samples']and int(np.sum(observed<.1))==reference['below_100mv_samples']
+ assert abs(float(observed.min())-reference['minimum_signed_margin_v'])<1e-12
+ rows={}
+ for phase in phases:
+  raw_values=sample(phase);signed=raw_values*sign
+  byexpected={}
+  for bit in [0,1]:
+   keep=expected==bit
+   if keep.any():byexpected[str(bit)]={'count':int(keep.sum()),'mean_differential_v':float(raw_values[keep].mean()),'minimum_signed_v':float(signed[keep].min()),'wrong_sign':int(np.sum(signed[keep]<=0)),'below_100mv':int(np.sum(signed[keep]<.1))}
+  rows[str(phase)]={'minimum_signed_v':float(signed.min()),'wrong_sign':int(np.sum(signed<=0)),'below_100mv':int(np.sum(signed<.1)),'by_expected_bit':byexpected}
+ result['stages'][tag]={'original_acceptance_reproduced':True,'original_checks':{k:x for k,x in reference.items()if k!='clock_to_valid_by_bit_s'},'diagnostic_phase_bins':rows}
+# Direct internal source/clock differentials; informational, never substituted for expected outputs.
+for label,p,n in [('data_a','xpd.adp','xpd.adn'),('data_c','xpd.cdp','xpd.cdn'),('select0','xpd.s0p','xpd.s0n'),('select1','xpd.s1p','xpd.s1n')]:
+ delta=v(p)-v(n);edges=np.array([START+(i+.5)*UI for i in range(1,256)])
+ result['input_observations'][label]={str(phase):{'min':float(np.interp(edges+phase*UI,t,delta).min()),'max':float(np.interp(edges+phase*UI,t,delta).max()),'mean':float(np.interp(edges+phase*UI,t,delta).mean())}for phase in phases}
+result['hbt_failures']={n:x for n,x in prior['device_checks'].items()if x['minimum_active_vce_v']<.4 or x['maximum_alltime_abs_vce_v']>1.6 or x['maximum_alltime_abs_vbe_v']>1 or x['maximum_alltime_abs_ic_per_emitter_a']>=.003}
+result['status']='DIAGNOSED_ORIGINAL_FAILED_WAVEFORM_NOT_ACCEPTED'
+(out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
