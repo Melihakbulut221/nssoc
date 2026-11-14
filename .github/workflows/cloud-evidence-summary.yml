@@ -1,54 +1,36 @@
-name: Assemble actual paired650 metal gate intrinsic circuit and run frozen loaded case
+name: Compare old and paired650 native wire capacitance and DC resistance
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  mesh:
+  compare:
     runs-on: ubuntu-24.04
-    timeout-minutes: 355
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
-      APPROVED_SOURCE: ${{ github.sha }}
-      PYTHONDONTWRITEBYTECODE: '1'
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
-      GATE_PARTITION: '1'
-      LOADED_CASE: nominal_late
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
           filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/cdr-mos650-gate-ac-pins.json
-      - name: Restore exact source closure
-        run: |
-          python3 - <<'PYCODE'
-          import json,subprocess,pathlib
-          p='scripts/cdr-mos650-gate-ac-pins.json'
-          names=sorted(set(json.loads(pathlib.Path(p).read_text())['files'])|{p})
-          assert all(not n.startswith('/') and '..' not in pathlib.Path(n).parts and not any(c in n for c in '*?[!\\\n\r') for n in names)
-          subprocess.run(['git','sparse-checkout','set','--no-cone','--stdin'],input=''.join('/'+n+'\n'for n in names),text=True,check=True)
-          PYCODE
+          sparse-checkout: |
+            /scripts/compare_paired650_wire_load.py
+            /scripts/cdr_mos650_spice_syntax.py
+            /scripts/cdr-mos650-gate-ac-inputs.json
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir --report /tmp/nssoc-gate-reduce-packages.json numpy==2.3.3 scipy==1.16.2
-      - name: Assemble all five partition bases and execute whole 256 bit loaded nominal late case
-        run: python3 -B scripts/cdr_mos650_gate_ac.py --extract
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 scipy==1.16.2
+      - run: python3 scripts/compare_paired650_wire_load.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-full-composition-derived-${{ github.run_id }}
-          path: paired650-full-composition/derived/
+          name: paired650-wire-load-derived-${{ github.run_id }}
+          path: wire-load-compare/derived/
           if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: paired650-full-composition-native-${{ github.run_id }}
-          path: paired650-full-composition/
-          if-no-files-found: warn
           retention-days: 90
