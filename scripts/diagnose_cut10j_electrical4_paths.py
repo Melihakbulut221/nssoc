@@ -5,7 +5,7 @@ b=pathlib.Path('reports.zip').read_bytes()
 assert hashlib.sha256(b).hexdigest()=='cb79f308624a57c7650cd69a83bbe6dabb6803b5317d5a46d25755d0f07062dd'
 z=zipfile.ZipFile(io.BytesIO(b)); rows=[]
 for n in z.namelist():
- if not n.endswith('.rpt'): continue
+ if not (n.endswith('/max.head.rpt') or n.endswith('/min.head.rpt')): continue
  s=z.read(n).decode(errors='strict')
  blocks=re.split(r'(?=Startpoint:)',s)
  selected=[]
@@ -16,6 +16,7 @@ for n in z.namelist():
   if not any(q in block for q in ['g_wsel[6]','A_ADDR[6]','hold51227']):continue
   slack=re.search(r'(-?\d+(?:\.\d+)?)\s+slack\s*\((?:VIOLATED|MET)\)',block)
   if not slack:slack=re.search(r'slack\s*\((?:VIOLATED|MET)\)\s+(-?\d+(?:\.\d+)?)',block)
+  if not slack: continue # Ignore truncated path tails, never infer their slack.
   selected.append({'startpoint':start[1],'endpoint':end[1],'slack_report_units':float(slack[1]) if slack else None,'path':block})
  if selected:
   selected.sort(key=lambda x:float('inf') if x['slack_report_units'] is None else x['slack_report_units'])
