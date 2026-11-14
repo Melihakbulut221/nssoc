@@ -57,7 +57,11 @@ for line in model.splitlines():
  else:logical.append(line)
 parent={}
 def local(n):
- n=n.lower();return n[4:] if n.startswith('xpd.') else n
+ # Resolve logical interface names through the same native binding used by v().
+ n=n.lower()
+ aliases={k.lower():val.lower() for k,val in bound['aliases'].items()}
+ n=aliases.get(n,aliases.get('xpd.'+n,n))
+ return n[4:] if n.startswith('xpd.') else n
 def find(n):
  n=local(n);parent.setdefault(n,n)
  if parent[n]!=n:parent[n]=find(parent[n])
@@ -85,7 +89,7 @@ for output in ['adp','adn','s0p','s0n']:
     next_roots.add(find(dev['nodes'][1]))
   frontier=next_roots-reach;reach.update(next_roots)
   if not frontier:break
- assert selected
+ assert selected, (output, find(output), {k:val for k,val in bound['aliases'].items() if output in k}, list(bound['groups']['npn13g2'].items())[:2])
  paths[output]={'devices':selected,'sampler_ports_reached':[n for n in ['aqp','aqn','bqp','bqn'] if port_roots[n] in reach]}
 selected_names=sorted({n for row in paths.values() for n in row['devices']})
 phase_groups=[]
