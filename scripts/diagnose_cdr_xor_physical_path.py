@@ -152,4 +152,69 @@ for phase in [0,.1,.4,.49,.51,.6,.75,.9]:
  row['sampler_b_sign_agreement']={'transition_samples':int(changed.sum()),'with_previous_bit':int(((bv>0)==previous)[changed].sum()),'with_current_bit':int(((bv>0)==current)[changed].sum()),'weak_under_100mv':int((abs(bv)<.1)[changed].sum())}
  clock_rows.append(row)
 out['observation_schedule_audit']={'clock_generator_contract':'loaded.clock: rising START+(i+.5)*UI, falling START+(i+1)*UI, finite 5ps transition','unchanged_original_xor_sample_phases_ui':[.6,.75,.9],'clock_aliases':clock_aliases,'available_clock_vectors':clock_vectors,'rows':clock_rows,'model_subcircuit_headers':[line for line in logical if line.lower().startswith('.subckt ')],'acceptance_changed':False,'requires_physical_topology_interpretation':True}
+# Actual clock-connected transistor bases, not guessed friendly aliases.
+clock_bases={}
+for name,dev in bound['groups']['npn13g2'].items():
+ for port in ['cp','cn']:
+  if find(dev['nodes'][1])==find(port):
+   node=bound['aliases'].get(dev['nodes'][1],dev['nodes'][1])
+   if 'v('+node+')' in d:clock_bases[name]={'clock_port':port,'base_node':node}
+assert clock_bases,'No observed physical clock-connected HBT bases'
+clock_samples=[]
+for phase in [0,.1,.4,.49,.51,.6,.75,.9]:
+ times=loaded.START+(indices+.5+phase)*loaded.UI
+ row={'phase_ui':phase,'devices':{}}
+ for name,dev in clock_bases.items():
+  values=np.interp(times,t,d['v('+dev['base_node']+')'])
+  row['devices'][name]={'clock_port':dev['clock_port'],'minimum_v':float(values.min()),'median_v':float(np.median(values)),'maximum_v':float(values.max())}
+ clock_samples.append(row)
+out['physical_clock_base_observations']={'bases':clock_bases,'samples':clock_samples,'wire_connectivity_only':True}
+# Expand only native passive gp_* subcircuits. Semiconductor and PDK resistor
+# models remain devices. Incident capacitance is not a grounded RC pole.
+import re
+subcircuits={};current_sub=None
+for line in logical:
+ tok=line.lower().split()
+ if tok[0]=='.subckt':
+  assert tok[1] not in subcircuits;current_sub=tok[1];subcircuits[current_sub]={'ports':tok[2:],'rows':[]}
+ elif tok[0]=='.ends':current_sub=None
+ elif current_sub:subcircuits[current_sub]['rows'].append(tok)
+def scalar(value):
+ match=re.fullmatch(r'([+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)(?:e[+-]?[0-9]+)?)(meg|[tgkmunpf]?)',value)
+ assert match,value
+ factor={'':1.,'t':1e12,'g':1e9,'meg':1e6,'k':1e3,'m':1e-3,'u':1e-6,'n':1e-9,'p':1e-12,'f':1e-15}[match[2]]
+ value=float(match[1])*factor;assert math.isfinite(value) and value>=0;return value
+resistors=[];capacitors=[];expanded=[]
+def expand(name,ports,prefix,depth=0):
+ assert depth<10
+ sub=subcircuits[name];assert len(ports)==len(sub['ports'])
+ pins=dict(zip(sub['ports'],ports));assert len(pins)==len(ports)
+ def node(n):return '0' if n=='0' else pins.get(n,prefix+n)
+ for row in sub['rows']:
+  if row[0].startswith(('r','c')):
+   assert len(row)==4,row
+   item={'name':prefix+row[0],'nodes':[node(row[1]),node(row[2])],'value':scalar(row[3])}
+   (resistors if row[0].startswith('r') else capacitors).append(item)
+  elif row[0].startswith('x') and row[-1].startswith('gp_'):
+   assert row[-1] in subcircuits
+   expanded.append(prefix+row[0]);expand(row[-1],[node(n) for n in row[1:-1]],prefix+row[0]+'.',depth+1)
+name='nssoc_cdr650_gate_n1';expand(name,subcircuits[name]['ports'],'')
+assert expanded and capacitors and resistors
+assert len({x['name'] for x in resistors+capacitors})==len(resistors)+len(capacitors)
+parents={}
+def root(n):
+ n=local(n);parents.setdefault(n,n)
+ if parents[n]!=n:parents[n]=root(parents[n])
+ return parents[n]
+for row in resistors:parents[root(row['nodes'][0])]=root(row['nodes'][1])
+loads={}
+for port in ['aqp','aqn','adp','adn','bqp','bqn','s0p','s0n','cdp','cdn','s1p','s1n']:
+ target=root(port);caps=[row for row in capacitors if (root(row['nodes'][0])==target) != (root(row['nodes'][1])==target)]
+ devices={}
+ for kind,group in bound['groups'].items():
+  for name,dev in group.items():
+   touched=[i for i,n in enumerate(dev['nodes']) if root(n)==target]
+   if touched:devices[name]={'kind':kind,'terminal_indices':touched,'nodes':dev['nodes'],'nx':dev.get('nx')}
+ loads[port]={'incident_explicit_capacitance_f':sum(x['value'] for x in caps),'incident_capacitor_count':len(caps),'largest_incident_caps':sorted(caps,key=lambda x:x['value'],reverse=True)[:12],'connected_devices':devices}
+out['passive_load_inventory']={'expanded_passive_instances':len(expanded),'explicit_capacitors':len(capacitors),'numeric_wire_resistors':len(resistors),'ports':loads,'scope':'All explicitly numeric C and R in top and recursively expanded gp_* subcircuits. PDK device intrinsic capacitance is excluded; coupling is not treated as ground. Wire R collapsed only for connectivity, not electrical measurement.'}
 P('out').mkdir();P('out/xor-physical-path.json').write_text(json.dumps(out,indent=2))
