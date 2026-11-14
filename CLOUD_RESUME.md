@@ -1,3 +1,13 @@
+# SP direct-pin recovery passed; original SRAM LVS remains failed
+
+43564703460 completed/success source`daf24ca240958f2ed85099b48f72bb0b44904487`; safe14101134348 SHA256`9ef327edaad1aaa5c6d605e127c36c8fb658d464a9da3836cf6f47b5503314e2`. Native saved DB reused, no extraction rerun. One duplicate expanded net name confirmed in original layout; direct Net.each_pin avoids merging conductors by label. All three R have unique two-external-endpoint correspondence: R0/R1 -> res_metal2, R2 -> res_metal3; each W0.2/L0.6um versus original genericW0.26. Isolated body ports still absent in layout vs NW/PW reference; NEVER alias those. Tested script now on integration.
+
+Next: use this independent SP map for a separately versioned engineering reference, preserving original GDS/CDL and strict fullmacro comparison. SP standalone MET3RES width is0.26 (NOT DP0.24); no SP fullmacro correction/acceptance yet. Determine exact SP primitive counts/hierarchy, do not transplant DP70110 assumption. Current DP engineering comparison43562021054 remains running. Receipt:`docs/evidence/sp-sram-direct-pin-result-20261114.json`.
+
+Keep live route43561900502, CDR43562981217, MBIST43558722004 and oldroutes43541234973/43538031308. Full product remains unqualified.
+
+---
+
 # SP original bitcell LVS failed; saved-database endpoint recovery running
 
 Run43563445727 completed/failure. Independent audit: one NoMatch,9primitives both sides,0extraction diagnostics. Three original generic R W0.26 vs extracted twoM2/oneM3 W0.2 (L0.6). Endpoint diagnosis stopped with AssertionError; expanded-name uniqueness assumption suspected. Duplicate VSS port labels observed; NEVER merge nets by those labels or alias body ports.
