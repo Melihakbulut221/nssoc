@@ -1,3 +1,9 @@
+## Conditional RX bank whole-chip build — 2026-11-15
+
+Run 43646859306, source 05ad63a01140ff0fa8a2b75c78bbc5031a51b420, branch codex/rx-bank-mainchip. This is a queued dependency-gated build, NOT a passed qualification or timing result. Before native CAD, require_rx_cursor_qualification.py waits for exact formal job132604800997/run43646311455/head d93e575991c560ec910925eee630f6555af26d81 and traffic job132605179099/run43646430563/head a5084f973055411c1891033fadf040b9055c9dfd. Each wait is bounded 45min; failure or unresolved deadline stops before CAD. Verifies completed-success jobs, exact source hash, complete case/mutation counts, each producer artifact run/head and GitHub SHA256 digest, and every case log against its reported hash. The old candidate's static formal artifact ID is intentionally replaced by new immutable producer run/head/job bindings; fresh artifact hashes will be recorded once published. No substitution of old proof allowed.
+
+Then unchanged firmware/native-cell preflight, replay regression and full synthesis with twenty SRAMs execute, using original clock/architecture selectors. Native and mapping artifacts named rx-bank-mainchip-*. Native mapped boot and physical timing remain separate required gates. Do not merge the experimental workflow. Prior runs remain running, not canceled or restarted.
+
 ## RX input diagnosis and bank harness correction — 2026-11-15
 
 Completed diagnostic run 43645678166, source 950a045c064f8b77b28f8cd4e89b6f7cb93af70e, artifact 14134236381 SHA256 21188dbe10d102293be8f744d404e9e9e76ee314caa1bc4055347dc01f6e6ade. Exact RX repaired ODB unchanged. Slow/typical/fast input setup margins +2.859017372/+3.015025139/+3.079114914 ns, hold -0.429313272/-0.417217821/-0.387760997 ns. Actual first sink hold23727/A, endpoint slice183541. These are placement RC, not routed signoff.
