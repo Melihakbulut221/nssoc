@@ -66,7 +66,10 @@ transaction, so modulo epoch wrap does not impose an artificial lifetime limit.
 A POR must reach every mailbox and both FIFO domains; asynchronous assertion and
 clean release plus CDC physical constraints remain integration obligations.
 
-## Planned cloud verification, not yet executed
+## Completed cloud verification
+
+Verified on 2026-11-14 against the retained [native result](evidence/pcie-training-epoch-native-41227114547/reports/result.json) and [terminal summary](evidence/pcie-training-epoch-native-41227114547/derived-terminal-summary.json): [run 41227114547](https://github.com/Melihakbulut221/nssoc/actions/runs/41227114547) passed all 110 positive tests without positive skips, six compiled semantic mutation detections, and four production hierarchy checks. These are historical executed results, not a new simulation run. The epoch-control, training-ingress, shared-front RTL and the two new test files still have the same Git blobs as the tested source. This corrects the stale pre-execution status; it does not establish normative TS/EQ/LTSSM behavior or full serial chip integration.
+
 
 The original source-only candidate and 16 passing controls are preserved at
 2a69d010371aff75fb8be204c92ef4c1d384d48e and run41226031156. Root and peer reviewed
@@ -74,11 +77,10 @@ the exact RTL and oracle bytes there. The activation adapter leaves those bytes
 unchanged and requires the real dedicated epoch-rtl job, actual branch/HEAD,
 manual rtl mode and an explicit approved_source equal to that workflow's SHA.
 A separate empty exact-source release must already exist before tool provisioning
-or any simulation. Controls mode performs no native work. An activation source
-and passing source/refusal controls still require explicit dispatch review.
+or any simulation. Controls mode performs no native work. The reviewed activation was subsequently executed in run `41227114547`.
 
-Planned matrix: 110 positive named RTL tests, six compiled semantic mutants and
-four hierarchy checks. New command/actual-ingress tests run in Icarus and pinned
+Executed matrix: 110 positive named RTL tests, six compiled semantic mutants and
+four hierarchy checks, all passed at source `f2e452405f87aa079f79f604604294138fcfe261`. New command/actual-ingress tests run in Icarus and pinned
 Verilator5.040 at FIFO depths4/8/32 with EPOCH_W=2 (more than three complete wraps).
 The default16-bit controller elaborates in the native hierarchy census. The
 original50 shared-front/normal-event composition tests are retained unchanged.
