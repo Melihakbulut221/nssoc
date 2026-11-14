@@ -53,8 +53,19 @@ elif case=='sram_mos_width':
  assert mutation is not None
 comparer=db.NetlistComparer();comparer.max_branch_complexity=2048
 for a,b,status in pairs:comparer.same_circuits(layout.circuit_by_name(a),reference.circuit_by_name(b))
+# Restore model-name correspondence explicitly; never ignore an actual model.
+class_pairs=[]
+for rc in reference.each_device_class():
+ candidates=[lc for lc in layout.each_device_class() if lc.name.lower()==rc.name.lower()]
+ assert len(candidates)==1,(rc.name,len(candidates))
+ lc=candidates[0]
+ assert type(lc)==type(rc),(lc.name,rc.name)
+ assert [(value(p,'name'),value(p,'id')) for p in lc.parameter_definitions()]==[(value(p,'name'),value(p,'id')) for p in rc.parameter_definitions()]
+ comparer.same_device_classes(lc,rc);class_pairs.append([lc.name,rc.name])
+# compare appends to the existing cross-reference; remove only old results.
+lvs.xref().clear()
 start=time.monotonic();matched=lvs.compare(comparer);ports=lvs.flag_missing_ports(top) if matched else False
 rows=[{'layout':p.first().name if p.first() is not None else None,'reference':p.second().name if p.second() is not None else None,'status':str(p.status())} for p in lvs.xref().each_circuit_pair()]
 actual=bool(matched and ports);expected=case=='identity'
-result={'case':case,'native_comparison_completed':True,'compare_returned':matched,'missing_ports_check_passed':ports,'accepted':actual,'expected_acceptance':expected,'control_passed':actual==expected,'mutation':mutation,'circuit_status_counts':dict(collections.Counter(x['status'] for x in rows)),'nonmatching':[x for x in rows if x['status']!='Match'],'elapsed_seconds':time.monotonic()-start,'original_database_sha256':digest,'original_database_unchanged':sha(report)==digest,'scope':'Full stored transistor graphs, original circuit-name correspondence only. No original net/pin matching reused, no blackboxes or device removal. Controlled reference mutation in memory; original extracted database unchanged. Not new layout or manufacturing acceptance.'}
+result={'case':case,'explicit_model_pairs':class_pairs,'native_comparison_completed':True,'compare_returned':matched,'missing_ports_check_passed':ports,'accepted':actual,'expected_acceptance':expected,'control_passed':actual==expected,'mutation':mutation,'circuit_status_counts':dict(collections.Counter(x['status'] for x in rows)),'nonmatching':[x for x in rows if x['status']!='Match'],'elapsed_seconds':time.monotonic()-start,'original_database_sha256':digest,'original_database_unchanged':sha(report)==digest,'scope':'Full stored transistor graphs, original circuit-name correspondence only. No original net/pin matching reused, no blackboxes or device removal. Controlled reference mutation in memory; original extracted database unchanged. Not new layout or manufacturing acceptance.'}
 (derived/'result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result));assert result['control_passed'] and result['original_database_unchanged']
