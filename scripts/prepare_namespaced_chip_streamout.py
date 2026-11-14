@@ -48,11 +48,18 @@ for name in z.namelist():
  (lib/rel).write_bytes(z.read(name))
 manifest=json.loads((lib/'manifest.json').read_text());assert manifest['status']=='COLLISION_FREE_MACRO_LIBRARY_BUNDLE'
 for name,row in manifest['files'].items():assert sha(lib/name)==row['sha256']
+def resolve_original_macro_gds(value):
+ if value.startswith('pdk_dir::'):
+  relative=value.split('::',1)[1];assert not P(relative).is_absolute() and '..' not in P(relative).parts
+  matches=[root/name for name in contract['input_files'] if name.endswith('/ihp-sg13g2/'+relative)]
+  assert len(matches)==1,('Ambiguous pinned PDK macro path',value,list(map(str,matches)))
+  return matches[0]
+ assert P(value).is_absolute();return P(value)
 macro_changes={}
 for kind,top,original_hash in [('dp','RM_IHPSG13_2P_256x16_c2_bm_bist','420b5223d14e2f873a2464849e3decbbec2b5b16b3c6a0f8cd2bb21b0d52365b'),('sp','RM_IHPSG13_1P_2048x64_c2_bm_bist','48be5102bf97e56daee4cda1f63eaf6e7bb3450a68d48a2825060b1172011d00')]:
- macro=changed['MACROS'][top];before=macro['gds'];assert isinstance(before,list) and len(before)==1 and sha(before[0])==original_hash
+ macro=changed['MACROS'][top];before=macro['gds'];assert isinstance(before,list) and len(before)==1 and sha(resolve_original_macro_gds(before[0]))==original_hash
  replacement=[str(lib/(kind+'.gds'))];macro['gds']=replacement
- macro_changes[top]={'original_gds':before,'original_sha256':original_hash,'replacement_gds':replacement,'replacement_sha256':sha(replacement[0]),'instances':len(macro.get('instances',{}))}
+ macro_changes[top]={'original_gds':before,'original_sha256':original_hash,'resolved_original_gds':str(resolve_original_macro_gds(before[0])),'replacement_gds':replacement,'replacement_sha256':sha(replacement[0]),'instances':len(macro.get('instances',{}))}
 undo=copy.deepcopy(changed)
 for top,row in macro_changes.items():undo['MACROS'][top]['gds']=row['original_gds']
 assert undo==original,'Non-GDS configuration field changed'
