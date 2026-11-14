@@ -55,8 +55,16 @@ if {[connections $block] ne $before} {error "Pin/net connectivity changed during
 # Isolate only bank6 A_ADDR6 after its existing final buffer. Functional identity
 # of delay A->X is checked in all restored standard-cell Liberty models first.
 set macro_name {u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem}
-set macro [$block findInst $macro_name]
-if {$macro eq "NULL"} {error "Missing target SRAM"}
+set matches {}
+foreach candidate [$block getInsts] {
+    set canonical [string map [list "\\" ""] [$candidate getName]]
+    if {$canonical eq $macro_name} {lappend matches $candidate}
+}
+if {[llength $matches] != 1} {error "Expected unique canonical target SRAM: [llength $matches] matches"}
+set macro [lindex $matches 0]
+set macro_name [$macro getName]
+if {[[$macro getMaster] getName] ne "RM_IHPSG13_2P_256x16_c2_bm_bist"} {error "Unexpected SRAM master"}
+puts "NSSOC_RX6_RESOLVED_TARGET $macro_name"
 set endpoint [$macro findITerm {A_ADDR[6]}]
 if {$endpoint eq "NULL"} {error "Missing target SRAM address pin"}
 set old_net [$endpoint getNet]
