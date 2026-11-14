@@ -1,3 +1,7 @@
+## C sampler transistor diagnosis completed, PHY still rejected
+
+Run 43584141378: both jobs passed diagnosis, reproduced original failing gates. Ten physically connected HBTs traced from C output, including feedback. Safe results and original full reports in `docs/evidence/cdr-c-sampler-path-result-20261114.json`. Load12/load16 both show history 010 minimum about 51.92mV and median about 93.3mV at frozen samples, below 100mV requirement; load change does not fix sampler. Script now retained; experiment workflow not merged. Next: analyze phase-resolved C master/slave acquisition and feedback currents before a circuit candidate; pooled node percentiles do not prove instantaneous differential gain. No new simulation/layout/PHY pass. Four previous long jobs remain separate; check their actual terminal results.
+
 ## C sampler original-bias path diagnosis launched
 
 Run [43584141378](https://github.com/Melihakbulut221/nssoc/actions/runs/43584141378), source `413bd9793862cfd88281883d82ae8355f3ba811b`, branch `codex/cdr-c-sampler-original-bias-path`. Uses both rejected original-bias load12/load16 native captures on cloud runners only, replays original gates, then reports physical transistor voltages/currents by bit history. No acceptance or circuit changes. Inspect safe `cdr-sampler-c-path-derived-*` JSON on completion; do not download native archives locally. Do not merge experiment workflow.
