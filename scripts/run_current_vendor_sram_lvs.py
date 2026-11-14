@@ -65,7 +65,7 @@ try:
  def control(label,text,expected):
   target=native/('control-'+label);target.mkdir()
   reference_path=(target/'reference.cdl').resolve();reference_path.write_text(text)
-  overrides={'schematic':reference_path,'topcell':cell,'report':(target/'lvs.lvsdb').resolve(),'log':(target/'deck.log').resolve(),'target_netlist':(target/'extracted.cir').resolve()}
+  overrides={'schematic':reference_path,'topcell':cell,'top_lvl_pins':'true','report':(target/'lvs.lvsdb').resolve(),'log':(target/'deck.log').resolve(),'target_netlist':(target/'extracted.cir').resolve()}
   command=[str(app),'-b','-zz','-r',str(deck)]
   for k,v in {**switches,**overrides}.items():command+=['-rd',f'{k}={v}']
   with (target/'run.log').open('w') as f:proc=subprocess.run(command,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=120)
@@ -78,7 +78,7 @@ try:
   assert len(report['circuits'])==1 and report['circuits'][0]['layout_devices_recursive']==3 and report['circuits'][0]['schematic_devices_recursive']==3
   passed=proc.returncode==0 and not report['reasons']
   controls.append({'label':label,'expected_pass':expected,'passed':passed,'audit':report,'reference_sha256':sha(reference_path)})
-  (derived/'metal1-mapping-controls.json').write_text(json.dumps({'scope':'Native frozen CDLYX1_DUMMY; no geometry changes; strict W/L and connectivity negative controls','controls':controls,'production_accepted':False},indent=2))
+  (derived/'metal1-mapping-controls.json').write_text(json.dumps({'scope':'Native frozen CDLYX1_DUMMY with standard make_top_level_pins on extracted and reference leaf; no geometry changes, no forced net aliases; missing-port check retained; strict W/L and connectivity negatives','controls':controls,'production_accepted':False},indent=2))
   assert passed==expected, 'Unexpected control verdict: '+label
  control('unmapped-original',reference,False)
  reader.write_text(reader_before.replace(reader_needle,"    elsif num_nets == 2 && model.downcase == 'lvsres'\n      RES2.new\n"+reader_needle))
