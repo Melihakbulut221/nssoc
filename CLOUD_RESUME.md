@@ -1,3 +1,11 @@
+## DP bitcell name mismatch verified; strict correspondence experiment live
+
+Original GDS and engineered CDL hierarchy inventory43589227835 succeeded, safe14111637882 SHA320189ddd96027c6a03d6a848036f12410178b5f9cdd82ff4252b6d26769b3a4. Physical RM_IHPSG13_2P_BITKIT_CELL differs from reference RM_IHPSG13_256x16_c2_2P_BITKIT_CELL. Similar names alone do not prove equivalence. Pinned KLayout align flattens unmatched circuit names.
+
+New run43589771694/source ef4dcd378344f01360ae663e53ca5ee2bdd2450e, branch codex/dp-sram-explicit-bitcell-pair, inserts exactly this one explicit cell pair BEFORE align with existence guards. Bounded16 and all original comparison controls retained; five extra native renamed-cell identity/width/open/missing/extra-device controls required. No nil mapping, blackboxes, net aliases, pin equivalence or waived checks. Safe dp-sram-bitcell-paired-derived-*; native archives cloud only. Do not integrate experiment workflow or claim LVS until strict audit succeeds. Full inventory/receipt in docs/evidence/dp-sram-prealign-hierarchy-20261114.json.
+
+Other live runs unchanged: PHY43584735530; CRC antenna43579643337; SP LVS43566292104; MBIST continuation43588310054 from1.90Mcycles.
+
 ## SRAM search ambiguity confirmed independently; hierarchy inventory live
 
 Run43588998602/source `ff22dfcd50ea2e51222dba28d98c08e16610138b` succeeded without loading CAD objects. Reads exact serialized DB SHA341e7da... only on cloud. Safe14111003774 SHA `abc6554fb3974ede597897234ff08275820dc7ef6102f3d3132a7ae068437a02`. 5752 exact embedded complexity-limit messages: most need32, some128/256, four need8192. Therefore bounded topNoMatch cannot alone distinguish structural defects from search exhaustion. Do not classify all mismatches as design errors.
