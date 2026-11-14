@@ -1,4 +1,4 @@
-"""Read-only targeted residual internal pin setup/hold after combined IO ECOs."""
+"""Read-only all-path setup/hold through113specific feedback branch pins."""
 import os,json,subprocess,zipfile,hashlib,stat,re
 from pathlib import Path
 import cloud_predecode_postcts as prior
@@ -67,6 +67,6 @@ rows={}
 for p in (OUT/'run').glob('*/io-*.rpt'):
  text=p.read_text();v=re.findall(r'([-+]?[0-9]+\.[0-9]+)\s+slack\s+\((?:MET|VIOLATED)\)',text);assert v
  rows[str(p.relative_to(OUT))]={'worst_slack_ns':min(map(float,v)),'reported_paths':len(v),'sha256':prior.sha(p)}
-assert len(rows)==1380
-assert len(rows)==1380
-(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'reports':rows,'accepted':False,'scope':'Read-only exact combined IO ECO: all230remaining internal endpoint pins in three corners, max/min each; no layout change or routed signoff.'},indent=2))
+assert len(rows)==678
+assert len(rows)==678
+(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'reports':rows,'accepted':False,'scope':'Read-only exact combined IO ECO: all113self-feedback first branch pins in three corners, max/min each; no layout change or routed signoff.'},indent=2))
