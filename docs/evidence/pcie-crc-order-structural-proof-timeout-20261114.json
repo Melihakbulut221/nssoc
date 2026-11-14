@@ -1,0 +1,116 @@
+{
+  "observed_at": "2026-11-14T02:26:03.547040+00:00",
+  "run_id": 43543271489,
+  "source": "be7609b53929c286ee31537a333c226934b2d727",
+  "status": "INCOMPLETE_PROOF_TIMEOUT",
+  "results": [
+    {
+      "artifact_id": 14094336505,
+      "archive_sha256": "4d8f83ef2888be180aba45585db193feeb2b97677b5eadf434d0f6af59528d7d",
+      "result": {
+        "passed": false,
+        "base": "4726df32f2833d1c0ac2d6096ce0160ff7c07995",
+        "gold_sha256": "f2f31fc16eb3fd6fca3712786cc8518dad4262d1a224c7e8eccbd446d8f10772",
+        "candidate_sha256": "51aff3ebbbf80d251b4a3ebaa3c8da744d1c0e67fb3189f2cb947af1d15219ce",
+        "capacity": 8,
+        "direction": "forward",
+        "returncode": 124,
+        "counts": [
+          [
+            "367",
+            "152"
+          ],
+          [
+            "408",
+            "111"
+          ]
+        ],
+        "seconds": 1800.042380282,
+        "scope": "Sequential RTL equivalence under Yosys async2sync/undef semantics; no added input assumptions or valid masking. Requires both directions, simulation, and fresh physical validation.",
+        "production_accepted": false
+      }
+    },
+    {
+      "artifact_id": 14094296422,
+      "archive_sha256": "83ea9c77d2809d75289ddef6f40befe79c3bf5fb21ff0b90bee12a4dbb8ca806",
+      "result": {
+        "passed": false,
+        "base": "4726df32f2833d1c0ac2d6096ce0160ff7c07995",
+        "gold_sha256": "f2f31fc16eb3fd6fca3712786cc8518dad4262d1a224c7e8eccbd446d8f10772",
+        "candidate_sha256": "51aff3ebbbf80d251b4a3ebaa3c8da744d1c0e67fb3189f2cb947af1d15219ce",
+        "capacity": 8,
+        "direction": "reverse",
+        "returncode": 124,
+        "counts": [
+          [
+            "367",
+            "152"
+          ],
+          [
+            "408",
+            "111"
+          ]
+        ],
+        "seconds": 1800.02924115,
+        "scope": "Sequential RTL equivalence under Yosys async2sync/undef semantics; no added input assumptions or valid masking. Requires both directions, simulation, and fresh physical validation.",
+        "production_accepted": false
+      }
+    },
+    {
+      "artifact_id": 14094126977,
+      "archive_sha256": "a95e4f148fbe765da2475fecb796a6dd2cff0fc60ab5b507af01e4c6ab862bab",
+      "result": {
+        "passed": false,
+        "base": "4726df32f2833d1c0ac2d6096ce0160ff7c07995",
+        "gold_sha256": "f2f31fc16eb3fd6fca3712786cc8518dad4262d1a224c7e8eccbd446d8f10772",
+        "candidate_sha256": "51aff3ebbbf80d251b4a3ebaa3c8da744d1c0e67fb3189f2cb947af1d15219ce",
+        "capacity": 32,
+        "direction": "reverse",
+        "returncode": 124,
+        "counts": [
+          [
+            "1135",
+            "184"
+          ],
+          [
+            "1200",
+            "119"
+          ]
+        ],
+        "seconds": 1800.0027545169999,
+        "scope": "Sequential RTL equivalence under Yosys async2sync/undef semantics; no added input assumptions or valid masking. Requires both directions, simulation, and fresh physical validation.",
+        "production_accepted": false
+      }
+    },
+    {
+      "artifact_id": 14093908014,
+      "archive_sha256": "ab36cc415e643588899eb9aff7bcfd24ee6ad88ee5b49d6e897db9a1aadd2774",
+      "result": {
+        "passed": false,
+        "base": "4726df32f2833d1c0ac2d6096ce0160ff7c07995",
+        "gold_sha256": "f2f31fc16eb3fd6fca3712786cc8518dad4262d1a224c7e8eccbd446d8f10772",
+        "candidate_sha256": "51aff3ebbbf80d251b4a3ebaa3c8da744d1c0e67fb3189f2cb947af1d15219ce",
+        "capacity": 32,
+        "direction": "forward",
+        "returncode": 124,
+        "counts": [
+          [
+            "1135",
+            "184"
+          ],
+          [
+            "1200",
+            "119"
+          ]
+        ],
+        "seconds": 1800.029039602,
+        "scope": "Sequential RTL equivalence under Yosys async2sync/undef semantics; no added input assumptions or valid masking. Requires both directions, simulation, and fresh physical validation.",
+        "production_accepted": false
+      }
+    }
+  ],
+  "finding": "Forward structural merging reduced residual equivalence points from 402/1178 to 111/119 for capacities 8/32. All four directions/capacities timed out during induction after 1800 seconds. No completed proof or counterexample.",
+  "next_action": "Investigate residual CRC cone and proof partitioning before another run; preserve all output checks, both directions, and reset semantics. Do not merge candidate RTL based on timeout or packet simulations.",
+  "rtl_candidate_merged": false,
+  "production_accepted": false
+}
