@@ -38,3 +38,8 @@ Dört kontrolde de gerçek yerel karşılaştırma tamamlandı. Altyapı hatalar
 ## Açık kalan kapsam
 
 Mühendislik CDL adayı sekiz direnç kaydında özgün üretici CDL'sinden farklıdır; üretici referansının resmî düzeltilmesi/kalifikasyonu tamamlanmadı. Tek portlu SRAM'in tam makro LVS'si, bu referansların çip hiyerarşisine entegrasyonu ve tam çip transistor LVS'si ayrıca doğrulanmalıdır. Bu çalışma SRAM Liberty/RC kalifikasyonu, nihai zamanlama, tam PCIe PHY veya üretici onayını kapatmaz.
+
+
+## SP macro and full reference-fault controls
+
+Run43594788773:25Match,0extraction diagnostics,355ports and1211120recursive primitives preserved. Engineering reference only; five resistor corrections differ from original vendor CDL. SP inventory justified both-side normalization of INVX2/NAND2X2/CINVX4; native search bound2048 preserved all acceptance rules. Run43595161911 independently repeated identity and rejected width,layer and MOS-gate faults in the complete macro. All four controls passed their expected verdicts. This does not establish full-chip LVS or foundry approval. See docs/evidence/sp-full-controls-and-phy-paths-20261114.json.

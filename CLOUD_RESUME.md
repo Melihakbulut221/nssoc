@@ -1,3 +1,13 @@
+## SP full-macro fault controls all passed; A/B physical paths established
+
+43595161911/source da49561e5f322166feb371f7b5e6ee14d96da9fa completed SUCCESS all4controls. Identity25Match strictPASS. WidthR0.2u->.3u,layerR0metal2->metal3,andfirstMOSgateNT->NSSOC_INJECTED_OPEN_GATE each completed native compare and strictFAIL(24Match1NoMatch),as required. Not infrastructure rejection. Both SP and DP engineering macro comparisons now pass with full-macro fault sensitivity controls; original vendor references and full-chip/production qualification still not passed.
+
+PHY43595197025 sourced22e49cab14ddc4ed70a46492c9ea83d0509ac55 completed. Including physical rppd links established A-sampler toadp/adn andB-sampler tos0p/s0n reachability,29and52traceddevices respectively. No unresolved traversal frontier. This is connectivity evidence only, includes feedback/bias, not proof of forward gain or timing. Fixed-phase native waveforms and gates reproduced unchanged; data/XOR margins still fail. Do not repeat HBT-only/NMOS-only observer attempts. Next candidate requires localized RC/settling evidence and unchanged full electrical/data gates, then actual new layout/parasitics.
+
+Full-chip reference collision preflight run43595567300,source088ee293f07db0611dbd4c6dac103bd4f63c8f11,branchcodex/sram-reference-library-preflight. Checks shared SP/DP subcircuit names/definitions in exact passed reference artifacts before building a common chip reference. Safe sram-reference-library-preflight-* only. No circuit/geometry mutation, no full-chip acceptance. Legalized-diode route43591198141 remains running.
+
+Receipt docs/evidence/sp-full-controls-and-phy-paths-20261114.json. Native evidence remains only in cloud. Do not merge experiment workflows.
+
 ## SP full engineering macro LVS passed; full macro fault controls running
 
 Run43594788773 sourcef2caf1977cdea6d514b51e2f7aa99c57839d388e: strict audit PASS within comparison scope,25Match,0other,0extraction diagnostics,nativeRC0,auditRC0,124.616s. Both sides preserve1211120primitives and355nativeports before/after normalization. Evidence-backed INVX2/NAND2X2/CINVX4 flattening on both sides;2048 bounded search, original acceptance rules unchanged. Geometry unchanged. This is engineering reference with5resistor corrections, NOT original vendor reference/full chip/foundry approval.
