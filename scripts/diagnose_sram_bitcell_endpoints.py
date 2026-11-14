@@ -21,16 +21,18 @@ pairs=[p for p in db.xref().each_circuit_pair() if p.first() and p.first().name=
 pair=pairs[0]
 
 def inspect(c):
+    names=[field(n,'expanded_name') for n in c.each_net()]
+    assert len(names)==len(set(names)), "Expanded net names must be unique within circuit"
     pins={}
     for pin in c.each_pin():
         net=c.net_for_pin(field(pin,'id'))
-        if net is not None:pins.setdefault(field(net,'id'),[]).append(field(pin,'name').upper())
+        if net is not None:pins.setdefault(field(net,'expanded_name'),[]).append(field(pin,'name').upper())
     resistors=[];bodies=[]
     for d in c.each_device():
         cls=field(d,'device_class');name=field(cls,'name');params={field(q,'name'):d.parameter(field(q,'id')) for q in field(cls,'parameter_definitions')}
         terminals=[]
         for term in field(cls,'terminal_definitions'):
-            net=d.net_for_terminal(field(term,'id'));anchors=sorted(pins.get(field(net,'id'),[])) if net is not None else []
+            net=d.net_for_terminal(field(term,'id'));anchors=sorted(pins.get(field(net,'expanded_name'),[])) if net is not None else []
             terminals.append((field(term,'name'),anchors))
         if 'res' in name.lower():
             resistors.append({'name':field(d,'name'),'class':name,'L':params['L'],'W':params['W'],'signature':sorted([anchors for _,anchors in terminals])})
