@@ -212,6 +212,7 @@ def candidate():
     need(proof["unchanged_first_six_bands"] and proof["packing_gap_um"]==16.0,"exact packed candidate contract")
     need(proof["packed_signal_length_sum_um"]<proof["paired_signal_length_sum_um"],"actual total signal length reduction")
     need(all(t["packed_length_um"]<=t["paired_length_um"] for t in proof["signal_trunk_comparison"]),"no individual signal trunk length regression")
+    packed_proof=proof
     packed_bytes=candidate_bytes
     cfg=outer_cfg
     new_run=acquire.api("actions/runs/"+str(cfg["run"]))
@@ -246,6 +247,9 @@ def candidate():
     for key in ["29/0","49/0"]:need((patch&old_regions[key]).is_empty(),"no new via incidence "+key)
     def texts(layout):return sorted((str(layout.get_info(li)),shape.text.to_s())for li in layout.layer_indexes()for shape in layout.top_cell().each_shape(li)if shape.is_text())
     need(texts(old_layout)==texts(new_layout)and len(texts(new_layout))==25,"exact top public labels")
+    proof["ports"]=packed_proof["ports"]
+    need(len(proof["ports"])==25,"complete unchanged packed public port records")
+    proof["port_provenance"]={"source_gds_sha256":cfg["predecessor"]["candidate_sha256"],"actual_top_texts_compared":True,"all_positions_unchanged":True}
     layout=target/"native/layout";layout.mkdir(parents=True)
     (layout/(TOP+".gds")).write_bytes(candidate_bytes)
     shutil.copyfile(baseline/"native/layout/schematic.cir",layout/"schematic.cir")
