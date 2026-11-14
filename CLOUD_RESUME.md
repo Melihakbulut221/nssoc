@@ -1,3 +1,13 @@
+# Internal clock topology/measurement completed; no missing clock edges in observed candidate
+
+43572236262 source`e260cf027733c35302e1ac375b0d10a80ec69a24` completed/success. Safe14103694704SHA`b96721f2fa7ef446cbcfde835258d25b10d8c7dde97a112e447b742cba8ca8b9`. Prior43571981658 failed solely because one-to-one pairing assumption rejected real parallel clock devices; corrected by all shared-emitter positive/negative branch combinations, not arbitrary matching. Source and report: scripts/diagnose_cdr_internal_clock.py; docs/evidence/cdr-internal-clock-result-20261114.json.
+
+Native acbuf15 waveform and original failure gates reproduced. Connectivity-only wire-R collapse identifies16cp-driven+16cn-driven HBTs,32branch combinations,8master/slave MOS-tail banks. Actual captured base voltages retain full RC. All branches have258rising/257falling expected edges. C master/slave source-relative crossings roughly14.76..15.36ps, versus receiver port~11ps. This establishes measured internal clock arrival for this rejected candidate, not missing-edge causation, C sampler gain acceptance, jitter/PVT qualification, closed-loop PLL or final PHY. Keep original sample times/limits. C history-dependent amplitude problem remains; inspect data/latch/gain path next rather than assuming clocks absent. Await ongoing acload12/16 isolated load screen43571075470.
+
+Other six handles43569629324,43567570194,43566292104,43562021054,43561900502,43558722004 active at last poll. Fullgoalopen.
+
+---
+
 # Corrected clock-capture diagnosis: physical cp/cn were saved
 
 Clock audit43571554607 source`df70272f91e5819edc20421868e6ef7e0fdd4382` completed/success. Safe14104249669SHA`3030d7a5065d48fea1a0857aa4a081dbce2944a0b8e2118e73aab84b68d49329`. Exact full acbuf15 raw reproduces original failed data/device gates. Both v(cp),v(cn) exist. Prior notes saying clock vectors were absent were incorrect: clk/clock substring search missed cp/cn. Corrected both settling scripts to include contract-bound cp/cn aliases. Full diagnosis source and report preserved in scripts/diagnose_cdr_saved_clock.py and docs/evidence/cdr-saved-clock-port-result-20261114.json.
