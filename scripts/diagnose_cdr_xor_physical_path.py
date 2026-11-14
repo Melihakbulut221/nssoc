@@ -5,6 +5,7 @@ import numpy as np
 import cdr_mos650_full650_loaded as loaded
 P=pathlib.Path;variant=sys.argv[1]
 configs={'bd10_lowz8_xor2_cdata3':(14112762376,'29605a3d0eda6de2a348d2619d5f009edb87594d9581883be105d03d1bd6449f'),'bd10_lowz8_xor2_cslave3':(14112317745,'e75dfba4fbd10c671f23764bd580bb5225f2fd848357e0914fb316981c5a6ab2')}
+configs['bd10_lowz8_xor2_cdata3_sel15']=(14116918270,'2f2dd3cffcadde6e7111065c3e5c79580ec245f5bffa14a54116cb66c6587868')
 aid,digest=configs[variant];assert loaded.digest('native.zip')==digest
 z=zipfile.ZipFile('native.zip')
 def member(suffix):
@@ -118,5 +119,5 @@ for phase in [.6,.75,.9]:
     dev=bound['groups']['npn13g2'][name];vc,vb,ve,_=map(v,dev['nodes'])
     devices[name]={'collector_v':stats(vc),'base_v':stats(vb),'emitter_v':stats(ve),'vce_v':stats(vc-ve),'ic_a':stats(d['@q.'+name+'.qnpn13g2[ic]'])}
    phase_groups.append({'phase_ui':phase,'expected_a_b':[a,b],'samples':int(mask.sum()),'differentials_v':signals,'devices':devices})
-out={'status':'FIXED_PHASE_PHYSICAL_BUFFER_TRACE','accepted':False,'variant':variant,'source_run':43584735530,'native_artifact':aid,'native_sha256':digest,'raw_sha256':info['raw_sha256'],'original_gates_reproduced':True,'wire_resistors_collapsed_for_connectivity_only':wires,'group_counts':{k:len(g) for k,g in bound['groups'].items()},'paths':paths,'phase_groups':phase_groups,'scope':'HBT C/E-to-base, NMOS D/S-to-gate and two-terminal rppd resistor reachability, stopping at supply rails. Includes feedback and shared bias branches; does not assume forward gain. All original frozen gates reproduced. Numeric wires collapsed only for reachability; measured physical-terminal waveforms retain all RC. Original phases/gates unchanged. No new simulation/layout/PHY acceptance.'}
+out={'status':'FIXED_PHASE_PHYSICAL_BUFFER_TRACE','accepted':False,'variant':variant,'source_run':43596398222 if variant.endswith('_sel15') else 43584735530,'native_artifact':aid,'native_sha256':digest,'raw_sha256':info['raw_sha256'],'original_gates_reproduced':True,'wire_resistors_collapsed_for_connectivity_only':wires,'group_counts':{k:len(g) for k,g in bound['groups'].items()},'paths':paths,'phase_groups':phase_groups,'interface_truth_rows':rows,'scope':'HBT C/E-to-base, NMOS D/S-to-gate and two-terminal rppd resistor reachability, stopping at supply rails. Includes feedback and shared bias branches; does not assume forward gain. All original frozen gates reproduced. Numeric wires collapsed only for reachability; measured physical-terminal waveforms retain all RC. Original phases/gates unchanged. No new simulation/layout/PHY acceptance.'}
 P('out').mkdir();P('out/xor-physical-path.json').write_text(json.dumps(out,indent=2))
