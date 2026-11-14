@@ -13,7 +13,8 @@ assert sha('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')=='a5891101ff12672cf6da0fa5da0
 m=json.loads((syn/'soc_top.mapped.json').read_text())['modules']['soc_top']
 assert os.environ['SOC_PCIE_REPLAY_CRC_SELECT']=='1' and '-DSOC_PCIE_REPLAY_CRC_SELECT' in ys
 assert os.environ['SOC_PCIE_RX_CURSOR_LOCAL_RESET']=='1' and '-DSOC_PCIE_RX_CURSOR_LOCAL_RESET' in ys
-assert sha('hw/soc/rtl/pcie/soc_pcie_rx_credit.v')=='c16d14cb42d27d261ec7aca5a303f9c3b63e24da6ce651b1a504fe3e56f658ec'
+assert sha('hw/soc/rtl/pcie/soc_pcie_rx_credit.v')=='6e8736695b6fe059716fd90b5b8d969ca80a326f6c3a4705325bb5b7ec8831c0'
+assert json.loads(P('out/rx-qualification-gate.json').read_text())['source_sha256']=='6e8736695b6fe059716fd90b5b8d969ca80a326f6c3a4705325bb5b7ec8831c0'
 assert '-DSOC_PCIE_RX_READ2' in ys and '-DSOC_PCIE_RESET_COPIES' in ys
 # Source span is obtained from actual lowered RTL, never inherited line numbers.
 rtl=P('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')
