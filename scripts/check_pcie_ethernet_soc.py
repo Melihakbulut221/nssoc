@@ -84,7 +84,7 @@ def main():
                  "SOC_PCIE_TX_WORD_REG", "SOC_PCIE_REPLAY_AHEAD",
                  "SOC_PCIE_CREDIT_PICK",
                  "SOC_PCIE_SEQ_RX_REG",
-                 "SOC_PCIE_RX_COMMIT_COPIES"),
+                 "SOC_PCIE_RX_COMMIT_COPIES", "SOC_PCIE_REPLAY_WRITE_PREDECODE"),
         help="Opt-in timing knob of docs/combined-timing.md (repeatable)",
     )
     a = p.parse_args()
