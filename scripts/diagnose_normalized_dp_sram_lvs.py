@@ -11,9 +11,12 @@ with tarfile.open(fileobj=io.BytesIO(z.read(names[0])),mode='r:gz') as t:
  raw=t.extractfile('native/lvs.lvsdb').read();assert hashlib.sha256(raw).hexdigest()=='d712c5238849180c09e9ca7bc09d97b292047b945485d0911d9708f5b2ac5f4b'
  P('lvs.lvsdb').write_bytes(raw)
  rule_evidence=[]
+ rule_inventory=[m.name for m in t.getmembers() if '/libs.tech/klayout/' in m.name]
+ main_sources=[]
  for m in t.getmembers():
-  if not m.isfile() or not m.name.endswith(('.lvs','.rb','.lylvs','.py')):continue
+  if not m.isfile() or not m.name.endswith(('.lvs','.rb','.lylvs','.py','.lym','.drc')):continue
   text=t.extractfile(m).read().decode();lines=text.splitlines();hits=set()
+  if m.name.endswith('/sg13g2.lvs'):main_sources.append({'path':m.name,'source':text})
   for i,line in enumerate(lines):
    if any(k in line for k in ('LVSRES','same_device_classes','res_metal1','equivalent_pins','same_nets','compare_parameter','ignore_parameter','RES2','connect_global','connect_implicit','VDD!')):
     hits.update(range(max(0,i-4),min(len(lines),i+5)))
@@ -49,5 +52,5 @@ for pair in lvs.xref().each_circuit_pair():
    row['nonmatching_device_pairs'].append(dr)
   row['nonmatching_net_pairs']=[{'status':str(np.status()),'layout':None if np.first() is None else field(np.first(),'name'),'schematic':None if np.second() is None else field(np.second(),'name')} for np in lvs.xref().each_net_pair(pair) if str(np.status())!='Match']
  rows.append(row)
-r={'status':'DIAGNOSTIC_ONLY_NOT_LVS_PASS','source_run_id':43529228292,'source_artifact_id':14087058081,'database_sha256':hashlib.sha256(raw).hexdigest(),'nonmatching_circuits':rows,'rule_evidence':rule_evidence,'lvs_api_methods':[x for x in dir(lvs) if any(k in x for k in ['netlist','schematic','reference','compare'])],'manufacturing_approval':False}
+r={'status':'DIAGNOSTIC_ONLY_NOT_LVS_PASS','source_run_id':43529228292,'source_artifact_id':14087058081,'database_sha256':hashlib.sha256(raw).hexdigest(),'nonmatching_circuits':rows,'rule_evidence':rule_evidence,'rule_inventory':rule_inventory,'main_sources':main_sources,'lvs_api_methods':[x for x in dir(lvs) if any(k in x for k in ['netlist','schematic','reference','compare'])],'manufacturing_approval':False}
 P('out').mkdir();P('out/device-diagnosis.json').write_text(json.dumps(r,indent=2));print(json.dumps({'status':r['status'],'circuits':len(rows)}))
