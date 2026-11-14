@@ -1,3 +1,13 @@
+# Old five-driver route timed out; cloud recovery inventory running
+
+43538031308 completed/failure, nativeRCX_STA_RC=124 after19800s. Initial detailedroute4h06m;244antenna nets/261pins. First repair424diodes and intermediateDRC0, then28nets/31pins. Second repair44diodes started, cut off during pin access. NO final route or extracted STA. Derived14102821860 SHA256`30ce5dfb1e35baa00e3da190ccfb5f83b346e2f4b9d53f7c2d9b7e7d87d24585`; native14102387358 SHA256`3f7e4ca94925a33d730cfe47b1f4487434c05b76e4c6e10e847f04317d3898e6`192.8MB, cloud-only.
+
+Recovery inventory43567101492 source`a3907ddf599b5533187995ea8de00b35c60ec7c7`, branch`codex/five-driver-route-recovery-inventory`: inspect archive filenames/hashes and state view paths in cloud. Safe artifact`five-driver-recovery-inventory-43567101492`. Do NOT assume intermediate routedODB exists merely because logs show completedDRT; inspect saved states first. Next recovery must split/checkpoint stage budget; do not repeat unchanged330min run. Do not transplant this oldcandidateECO into freshCRCnetlist.
+
+Receipt:`docs/evidence/five-driver-route-timeout-recovery-20261114.json`. Other live runs:SP43566292104,DP43562021054,newCRCroute43561900502,CDR43562981217,MBIST43558722004,oldholdroute43541234973. Full product remains unqualified.
+
+---
+
 # SP fullmacro mismatch localized; six-boundary comparison running
 
 43564996899 completed/failure, extractionRC0/auditRC1:24Match,6NoMatch,1Skipped top;0extraction diagnostics. Both sides1211120recursiveprimitives (817450MOS+393670R), unchanged original/candidate CDL inventory. Tested reader hash87a75b402b35d7306153a66089c0f0105b4e50c4816c7c553d97219af6c41519 bound to actual candidate. Safe14102840450 SHA256`8aba5c22b51a18a6f7942427d2cdba5e48a65a8981c9806d917d2fed89f68e29`; native14101844940SHA`48f06a811262a9ae15a99ce5fd53c9e31503f450e3f90eae69e3135fffd1f120` stays cloud-only. No LVS pass.
