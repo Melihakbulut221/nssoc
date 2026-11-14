@@ -1,3 +1,13 @@
+# RX6 hold candidate routed: router DRC0 but antenna1net/2pins remain; STA started
+
+43569629324 source12101bb1da5f82420b08b363ef707d2d08e55933: routejob132370971009 completed/success. Exact final routed-state reports router DRC0, antenna1net/2pins (NOT antenna closure). Initial39 reproduced by NSSOC_RESUMED_PINNED_DRT_ANTENNA_39. 159731instances,20SRAM,1134antenna cells,0padcells. Ten unsupported LEF58_ENCLOSURE/noCUTCLASS warnings remain; router DRC0 is not foundry signoff.
+
+Safe14106655609 SHA30023bc4368caf39a3327cd0097b1feed3dd4862fa1314dea3a3bafe64c56829. Native routedDB14105679819 SHA623d7be7b8438522b6b0f81fdec45801006997892ec07953b4687ed88b53d85a remains cloud-only. Same-run routedSTA132392278204 started; await exact extracted timing, then diagnose remaining antenna from this exact saved database. Do not restart initial route or transplant old ECO. FreshCRC43561900502 separate/still live. Other liveCDR43571075470,LVS43566292104/43562021054,MBIST43573697024. All acceptance gates unchanged; fullgoalopen.
+
+Receipt:docs/evidence/rx6-route-residual-antenna-20261114.json.
+
+---
+
 # Extracted timing rejects older electrical candidate; misleading clock labels fixed separately
 
 43567570194 completed/failure. Exact finalroute DRC0/antenna0/0 but threecornerSTA fails: slow1390setup(-1.989753ns),2hold(-.356828ns);typ0setup,4hold(-.212935ns);fast0setup,98hold(-.251383ns). Cap105/109/113,slew708/272/144,fanout1416each(slow/typ/fast). SafeSTA14106081080SHA`04c1539e64b73d7e9d53f03d4aac401b43545b721d70c85672ede06c67842f0b`. NominalSPEFsha0a343a9739393cfe0b759e96b21a74241a1a4a7c4c6d7ae3ed3ea547d08d266e,capconservationpasses;RCminmaxunqualified. Receipt:docs/evidence/electrical-routed-timing-rejected-20261114.json.
