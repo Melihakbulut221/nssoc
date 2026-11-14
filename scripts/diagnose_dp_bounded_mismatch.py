@@ -13,26 +13,29 @@ def field(obj,name):
  v=getattr(obj,name);return v() if callable(v) else v
 pairs=list(xref.each_circuit_pair());bad=[p for p in pairs if str(p.status())!='Match'];assert len(bad)==1
 cp=bad[0];a,b=cp.first(),cp.second();assert field(a,'name')=='RM_IHPSG13_2P_256x16_c2_bm_bist'
+for circuit in [a,b]:
+ names=[field(n,'expanded_name') for n in circuit.each_net()]
+ assert len(names)==len(set(names)), 'Ambiguous expanded net identity'
 net_status=[{},{}];net_counts=collections.Counter();top_ports=[]
 def ports(c):
  out={}
  for p in c.each_pin():
   n=c.net_for_pin(field(p,'id'))
-  if n is not None:out.setdefault(field(n,'id'),[]).append(field(p,'name'))
+  if n is not None:out.setdefault(field(n,'expanded_name'),[]).append(field(p,'name'))
  return out
 port_maps=[ports(a),ports(b)]
 for pair in xref.each_net_pair(cp):
  status=str(pair.status());net_counts[status]+=1;row={'status':status}
  for i,net in enumerate([pair.first(),pair.second()]):
   if net is not None:
-   nid=field(net,'id');net_status[i][nid]=status;row[['layout_ports','reference_ports'][i]]=port_maps[i].get(nid,[])
+   nid=field(net,'expanded_name');net_status[i][nid]=status;row[['layout_ports','reference_ports'][i]]=port_maps[i].get(nid,[])
  if row.get('layout_ports') or row.get('reference_ports'):top_ports.append(row)
 def device(d,i):
  if d is None:return None
  cls=field(d,'device_class');params={field(q,'name'):d.parameter(field(q,'id')) for q in field(cls,'parameter_definitions')}
  terms=[]
  for term in field(cls,'terminal_definitions'):
-  n=d.net_for_terminal(field(term,'id'));nid=field(n,'id') if n is not None else None
+  n=d.net_for_terminal(field(term,'id'));nid=field(n,'expanded_name') if n is not None else None
   terms.append({'terminal':field(term,'name'),'net_comparison_status':net_status[i].get(nid,'missing'),'top_ports':port_maps[i].get(nid,[])})
  return {'class':field(cls,'name'),'parameters':params,'terminals':terms}
 counts=collections.Counter();samples=[];parameter_differences=collections.Counter()
