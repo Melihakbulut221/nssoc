@@ -1,3 +1,11 @@
+## DP engineering full-macro LVS timed out in comparison, not a mismatch verdict
+
+Run 43562021054/source `70ebe8dca3b28d91a259f49bfee6b5b57c219f6e` is TERMINAL FAILURE. Native KLayout reached 18000-second timeout. Do not poll or blindly rerun it. Safe derived artifact 14110887368 SHA256 `f242d163ee68b57e2d873ec8b4104be8c9c30dc5ed2749102c964a318ece1195`. Native archive 14110867794 SHA256 `d0109ba41e2d146d25a90f7dcaeba2602b87168cbe9b0d01a175b57b1734658e` stays cloud-only.
+
+Cloud log diagnosis 43587113786/source `1c2c0c3837f1c302a681a461ca1febed4ac80dc8` succeeded; safe artifact 14111100106 SHA256 `08511c7c8597c2a20a76df20a0b3048a90fade1858e6ead6334e0e746f1f48c5`. Last deck line: 05:48:26 UTC Starting SG13G2 LVS Comparison with flag_missing_ports, following derivation/extraction/alignment at 05:48:17..26. No final lvs.lvsdb/extracted.cir. Next inspect comparator matching behavior and strict negative controls; not geometry extraction or blind timeout extension. Existing six-cell flatten/count proof and engineered resistor candidate remain unqualified; no vendor/full-chip LVS pass. Full evidence in `docs/evidence/dp-sram-engineering-comparison-timeout-20261114.json`.
+
+Still live: PHY sizing 43584735530 (two variants), CRC antenna 43579643337, SP LVS 43566292104, MBIST 43573697024. Earlier records below.
+
 ## C sampler phase diagnosis completed; two isolated circuit candidates live
 
 New screen [43584735530](https://github.com/Melihakbulut221/nssoc/actions/runs/43584735530), source `842ab2012fae1904251fd1503024e5670de6ad8f`, branch `codex/cdr-c-slave-sizing`. Relative to `bd10_lowz8_xor2`, `cdata3` changes ONLY XD0255/XD0257 nx=4 to 3; `cslave3` additionally changes XD0253/XD0254. No bench, solver, acceptance, wiring-RC or layout changes. Candidate binding uses actual nx for current-density gates. Isolated-edit proof includes three negative controls. Do not integrate these circuit changes without results. Safe artifacts `cdr-c-sampler-result-only-*`; mixed NPZ and native artifacts stay cloud-only.
