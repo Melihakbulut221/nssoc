@@ -1,3 +1,13 @@
+# SP SRAM owner diagnosis passed; separate SP bitcell comparison running
+
+**43563284302 completed/success**, source`b7adb2000f01d80a24532e8dc91ea2057d07fd4e`, safe14100549566 SHA256`f63436b55538ad4ac67d374ea10d12cc9c355bf3ba05c96441f0cebcf890d6a6`. Original SP reference393670genericLVSRES:393216in131072bitcells(3each),64MET2RES,384MET3RES,6metal1dummy. All original W0.26/L0.6um. Physical marker leaves show bitcell-typeM2/M3W0.2 and standaloneM2/M3W0.26. **SP standalone metal3 is0.26, not DP0.24**; independent SP mapping required. No whole-macro polygon expansion/topology/LVS acceptance. Receipt:`docs/evidence/sp-sram-resistor-owners-result-20261114.json`.
+
+**43563445727**, source`60dd2a564467738d1fc55ef628bf751443896e2e`, branch`codex/sp-sram-original-bitcell`: original physicalRM_IHPSG13_1P_BITKIT_CELL vs originalCDLRM_IHPSG13_2048x64_c2_1P_BITKIT_CELL, explicit top-name translation only. ThreeR+sixMOS expected. Strict widths/classes/ports and no-merge correction; native1200s bound. Actual netlist endpoint mapping integrated (not xref display circuits), no body aliases. Do not call successful diagnosis LVS acceptance; inspect audit and mapping. Native artifacts cloud-only, derivedprefix`original-sp-sram-bitcell-derived-`.
+
+Long runs remain active as before: newroute43561900502, DPcandidate43562021054, MBIST43558722004, oldroutes43541234973/43538031308, A/Cbuffer43562981217. Keep full serial PHY, qualified RC/Liberty, current full-chip verification and external manufacturing approval open.
+
+---
+
 # Current SP SRAM independently inventoried next; DP evidence is not transferable
 
 **43563284302**, source`b7adb2000f01d80a24532e8dc91ea2057d07fd4e`, branch`codex/sp-sram-original-resistor-owners`: original **RM_IHPSG13_1P_2048x64_c2_bm_bist** GDS/CDL pins restored from package663146895 only in cloud. Script`scripts/diagnose_sp_sram_resistor_owners.py` enumerates original hierarchical generic resistor owners and physical marker-leaf dimensions. Full top polygon expansion intentionally omitted; no LVS/connection/production claim or source edits. Require no unresolved CDL child models. Receipt:`docs/evidence/sp-sram-resistor-owners-launch-20261114.json`.
