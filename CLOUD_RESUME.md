@@ -1,3 +1,11 @@
+## RX bank local-handshake experiment — 2026-11-15 continuation
+
+Not signoff. The RX critical-cone diagnostic run 43645631518 identified the current worst slow setup endpoint as bank_byte[0][4], FF slice176645, from soc_pcie_rx_credit.v bank register update. Startpoint slice343468 is the reset-copy driver. Worst slack remains -3.111556 ns. Diagnostic safe artifact 14133831439 SHA256 91aa435f74fa67aa5d0a0d4f5335f25648de9d8e4edef8374edf186e9a8a931b.
+
+New isolated experiment: codex/rx-bank-local-handshake, commit d93e575991c560ec910925eee630f6555af26d81. RTL SHA256 6e8736695b6fe059716fd90b5b8d969ca80a326f6c3a4705325bb5b7ec8831c0. For READ2, bank update/restart now use r2_handshake, matching the cursor's optional local reset tree under the unchanged equal-reset-copy contract. Default behavior is preserved. Full-module formal cases and eight traffic cases, including ready-inversion negative controls, dispatched via cloud-evidence-summary.yml. No physical improvement claimed; inspect both jobs before any synthesis promotion. Do not merge the experiment workflow.
+
+Still live at this check: packed PHY composition 43642783223, RX training input timing 43645678166, CRC and RX physical/boot runs 43638590941 and 43641707777 (physical jobs completed previously; boot remains separate). All edits/execution remain cloud-side; no local CAD artifacts.
+
 ## 2026-11-15 — RX postCTS mixed timing result; exact next diagnostics live
 
 RX postCTS43643048434/sourcedb35595f13bc3eb63890086789b93e252fbb4cb6 completed execution (1500.23s), NOT timing closure. After repair slow setup2631/WS-3.111556ns,hold3/WS-0.429313ns; typical setup635/WS-0.703858ns,hold29/WS-0.417218ns; fast setup0/WS+0.461950ns,hold270/WS-0.387761ns. Register-to-register hold0 slow/typ,230 fast/WS-0.163726. Slew26/5/2,cap0,fanout1348. Compared CRC-only: worst slow setup improves223ps but setup/hold counts regress; candidate not accepted. Exact repaired ODB3f0dea28cbacdfb5c3fdaff22abc9191cc589437c9a2fda4740e7ba5063d87bd. Safe14133259949 SHAf508cef6faf940e32aea7ab50f8ac83e8ce158e2bd3789c86c46633c6ed29c9b; native14133777129 SHA238cba66b6541bffa2407278ced7d453c64286bc5515a1d6e01939781f6f0c98. Receipt `docs/evidence/rx-cursor-postcts-20261115.json`.
