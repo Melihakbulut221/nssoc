@@ -57,11 +57,15 @@ for instance,cell in module['cells'].items():
   mapping.append({'formal':formal,'verilog_port':port,'bit_position':position,'explicit_supply_alias':alias})
  extras=sorted(set(connections)-used)
  if extras:errors.append({'reason':'extra connections absent from CDL header','ports':extras})
- if errors:
-  issues.setdefault(name,{'examples':[],'errors':errors})
-  if len(issues[name]['examples'])<5:issues[name]['examples'].append(instance)
+ def add_variant(table,key,detail):
+  variants=table.setdefault(key,[])
+  matching=[row for row in variants if row['detail']==detail]
+  if not matching:
+   matching=[{'detail':detail,'instances':0,'examples':[]}];variants.append(matching[0])
+  item=matching[0];item['instances']+=1
+  if len(item['examples'])<5:item['examples'].append(instance)
+ if errors:add_variant(issues,name,errors)
  signature={'formal_pin_count':len(headers[name]),'mapping':mapping,'connection_widths':{p:len(b) for p,b in sorted(connections.items())}}
- if name in rows:assert rows[name]==signature,('Instance interface mismatch',name,instance)
- else:rows[name]=signature
-r={'status':'INDEPENDENT_VERILOG_CDL_PINMAP_INVENTORY','source_view':key,'source_netlist_sha256':source_hash,'source_netlist_path':source,'source_route_run':43579643337,'yosys_returncode':proc.returncode,'source_unchanged':sha(source)==source_hash,'cdl_hashes':hashes,'top':top,'top_port_count':len(module['ports']),'cell_count':sum(counts.values()),'cell_type_counts':dict(counts),'interfaces':rows,'unknown_cell_types':unknown,'interface_issues':issues,'all_named_pin_interfaces_resolved':not unknown and not issues,'supply_configuration':{k:config.get(k) for k in ['VDD_NETS','GND_NETS','VDD_PIN','GND_PIN']},'full_chip_lvs_passed':False,'manufacturing_approval':False,'scope':'Independent logical Verilog parsed without synthesis/optimization. Full standard-cell and namespaced SRAM CDL formal interfaces inventoried. Does not emit schematic, assign missing supplies or prove final port ordering/LVS.'}
+ add_variant(rows,name,signature)
+r={'status':'INDEPENDENT_VERILOG_CDL_PINMAP_INVENTORY','source_view':key,'source_netlist_sha256':source_hash,'source_netlist_path':source,'source_route_run':43579643337,'yosys_returncode':proc.returncode,'source_unchanged':sha(source)==source_hash,'cdl_hashes':hashes,'top':top,'top_port_count':len(module['ports']),'cell_count':sum(counts.values()),'cell_type_counts':dict(counts),'interfaces':rows,'interface_variant_counts':{name:len(variants) for name,variants in rows.items()},'unknown_cell_types':unknown,'interface_issues':issues,'all_named_pin_interfaces_resolved':not unknown and not issues,'supply_configuration':{k:config.get(k) for k in ['VDD_NETS','GND_NETS','VDD_PIN','GND_PIN']},'full_chip_lvs_passed':False,'manufacturing_approval':False,'scope':'Independent logical Verilog parsed without synthesis/optimization. Full standard-cell and namespaced SRAM CDL formal interfaces inventoried. Does not emit schematic, assign missing supplies or prove final port ordering/LVS.'}
 (out/'pinmap-inventory.json').write_text(json.dumps(r,indent=2));print(json.dumps({k:r[k] for k in ['status','source_view','cell_count','unknown_cell_types','interface_issues','all_named_pin_interfaces_resolved']}))
