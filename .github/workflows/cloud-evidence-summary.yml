@@ -24,6 +24,7 @@ jobs:
         run: |
           set -euo pipefail
           gh api repos/${{ github.repository }}/actions/artifacts/14114996311/zip > macro.zip
+          gh api repos/${{ github.repository }}/actions/artifacts/14114621580/zip > sp-macro.zip
           gh api repos/${{ github.repository }}/actions/artifacts/14115684311/zip > reference.zip
           curl -fL --retry 5 https://www.klayout.org/downloads/Ubuntu-24/klayout_0.30.13-1_amd64.deb -o /tmp/klayout.deb
           echo '0bb6b913fd6a32581d50b08be744b522a2a477baa1ed7e253c97cc18ce248a24  /tmp/klayout.deb' | sha256sum -c -

@@ -18,6 +18,15 @@ assert sha(ref)=='523438b6014557b86ee7d438f95ddbfaabb76f390265283fcb844c233fcb8a
 cmd=json.loads((out/'native/effective-command.json').read_text());assert cmd[:4]==['/usr/bin/klayout','-b','-zz','-r']
 deck=P(cmd[4]);assert deck.is_relative_to(P.cwd()/'out/native') and deck.is_file()
 text=deck.read_text();anchor='# Instantiate a writer using the new delegate';assert text.count(anchor)==1
+(out/'derived/dp-lvs-deck-source.txt').write_text(text)
+assert sha('sp-macro.zip')=='13b66b4e31ad144bd9d47e5a209845027b76d23ff3dc1183d94a45de104bf4f3'
+with zipfile.ZipFile('sp-macro.zip') as z:
+ assert z.namelist()==['namespaced-native.tgz']
+ with tarfile.open(fileobj=io.BytesIO(z.read('namespaced-native.tgz')),mode='r:gz') as t:
+  entries=[m for m in t.getmembers() if m.isfile() and m.name.endswith('/lvs/sg13g2.lvs')]
+  assert len(entries)==1
+  (out/'derived/sp-lvs-deck-source.txt').write_bytes(t.extractfile(entries[0]).read())
+
 insertion=P('scripts/check_chip_reference_native.rb').read_text()+'\n'
 deck.write_text(text.replace(anchor,insertion+anchor,1))
 assert deck.read_text().replace(insertion,'',1)==text
