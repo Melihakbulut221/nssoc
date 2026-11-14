@@ -25,3 +25,18 @@ The same audit observes 32 physical clock-connected HBT bases and expands all 50
 Read-only run [43619048065](https://github.com/Melihakbulut221/nssoc/actions/runs/43619048065) authenticated the original metal extraction archive and located the dominant loads in Magic's native records. `T382_rppd_2.n0` carries 131020.2109375 aF and `T383_rppd_2.n0` 146790.359375 aF, corresponding to composed C8237/C8243. The original conductor aliases include each buffer collector and its six XOR input bases. Distributed resistance branches are retained. These capacitances were not introduced by the latest transistor-multiplicity trial.
 
 The next physical investigation is the driver-to-load geometry and compact placement/routing of this interface. Native-record agreement does not qualify RF parasitic distribution, substrate treatment, PVT, or the layout corresponding to changed device parameters. All electrical gates remain unchanged and the candidate remains rejected. See `docs/evidence/cdr-native-cap-records-20261114.json` for source/artifact hashes and bounded native records.
+
+## Measured physical span and layout direction
+
+[43619538391](https://github.com/Melihakbulut221/nssoc/actions/runs/43619538391) authenticated the exact native GDS and terminal-anchor archive; KLayout read back DBU=0.001um and top bounds 2316.6 x 4715.48um. Source geometry remained unchanged.
+
+| Conductor | Driver | XOR input distance from driver (Manhattan lower bound) |
+|---|---|---|
+| adp / T382_rppd_2 | T275_C | 1474.62–1804.62um |
+| adn / T383_rppd_2 | T273_C | 1594.62–2044.62um |
+| s0p / T397_rppd_2 | T282_C | 695.95–725.95um |
+| s0n / T398_rppd_2 | T281_C | 605.95–665.95um |
+
+The two data conductors each span 1322.77um vertically. This is a concrete physical-placement concern behind investigating the measured load; it does not by itself prove timing causality or predict a repaired waveform. Merely adding a parallel shortcut retains the old conductor capacitance. The next candidate must consider compact macro placement and coherent rerouting, including the resulting upstream sampler/divider connections, while preserving all device identities and circuit topology. Inspect the actual current macro boundaries before changing transforms. Fresh native DRC/deep+flat LVS, regenerated RC, unchanged loaded electrical gates, and subsequent full-PHY integration remain required.
+
+Full coordinates and source hashes: `docs/evidence/cdr-buffer-physical-spans-20261114.json`.
