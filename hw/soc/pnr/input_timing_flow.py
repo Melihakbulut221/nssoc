@@ -50,6 +50,11 @@ foreach inst [$block getInsts] {
  foreach pin [$inst getITerms] {dict set pins [[$pin getMTerm] getName] [$pin getNet]}
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
+set original_placement {}
+foreach inst [$block getInsts] {
+ dict set original_placement [$inst getName] [list [$inst getLocation] [$inst getOrient] [$inst getPlacementStatus]]
+ if {[$inst getPlacementStatus] eq "PLACED"} {$inst setPlacementStatus FIRM}
+}
 set old_count [llength [$block getInsts]]
 set old_nets [llength [$block getNets]]
 set changed {}
@@ -225,6 +230,8 @@ class TrainingHoldECO(ElectricalPostCTS):
   a=s.index('# Buffer I/O');b=s.index('report_floating_nets -verbose',a)
   s=s[:a]+ECO+'\n'+s[b:]
   if 'log_cmd repair_design' in s or 'unset_propagated_clock [all_clocks]' in s:raise RuntimeError('Unexpected broad repair or ideal clock')
+  if s.count('write_views')!=1:raise RuntimeError('Unexpected native write boundary')
+  s=s.replace('write_views','\nforeach inst [$block getInsts] {\n set name [$inst getName]\n if {![dict exists $original_placement $name]} {continue}\n lassign [dict get $original_placement $name] location orientation status\n if {[$inst getLocation] ne $location || [$inst getOrient] ne $orientation} {error "Original placement moved: $name"}\n $inst setPlacementStatus $status\n}\nputs "NSSOC_ORIGINAL_PLACEMENT_UNCHANGED_AND_STATUSES_RESTORED"\n'+'\nwrite_views')
   q=Path(self.step_dir)/'training_hold_eco.tcl';q.write_text(s);return str(q)
 
 @Flow.factory.register()

@@ -62,6 +62,7 @@ cmd=[str(app),'python',str(ROOT/'hw/soc/pnr/input_timing_flow.py'),'--flow','Inp
 with (OUT/'native.log').open('w')as log:code=subprocess.call(cmd,stdout=log,stderr=subprocess.STDOUT)
 if code:print((OUT/'native.log').read_text()[-6000:])
 assert code==0
+assert 'NSSOC_ORIGINAL_PLACEMENT_UNCHANGED_AND_STATUSES_RESTORED' in (OUT/'native.log').read_text()
 assert all(prior.sha(p)==h for p,h in protected.items())
 rows={}
 for p in (OUT/'run').glob('*/io-*.rpt'):
@@ -72,4 +73,4 @@ states=list((OUT/'run').glob('*-nssoc-trainingholdeco/state_out.json'));assert l
 eco_state=json.loads(states[0].read_text());eco_odb=Path(eco_state['odb']);assert eco_odb.is_file()
 assert len(rows)==906
 input_closed=all(v['worst_slack_ns']>=0.05 for v in rows.values())
-(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'222_delay_cells_inserted':True,'native_delay_is_identity_buffer':True,'all_io_and_feedback_setup_hold_margin_50ps_passed':input_closed,'candidate_odb_sha256':prior.sha(eco_odb),'reports':rows,'accepted':False,'scope':'111 feedback branches with two delays each; previous40IOs and111through-pins remeasured; original incidence protected, fresh placement RC, no routed or full-chip signoff.'},indent=2))
+(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'222_delay_cells_inserted':True,'original_placement_preserved':True,'original_placement_statuses_restored':True,'native_delay_is_identity_buffer':True,'all_io_and_feedback_setup_hold_margin_50ps_passed':input_closed,'candidate_odb_sha256':prior.sha(eco_odb),'reports':rows,'accepted':False,'scope':'111 feedback branches with two delays each; previous40IOs and111through-pins remeasured; original incidence protected, fresh placement RC, no routed or full-chip signoff.'},indent=2))
