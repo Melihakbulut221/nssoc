@@ -1,3 +1,11 @@
+## Fresh widened PHY graph verified; current terminal anchors dispatched — 2026-11-15
+
+Graph43655245035/head0a3f9c8527c9aa7244bb1e97fc68ea85801d0b7e SUCCESS. Independently authenticated derived14136829675 SHA f7b62b079a2f8359ffcbdda903498567d7f082969e71cd4632733d364d0edee2:650devices2046terminals25ports113components on exact newGDSf93aa21d..., old_RC_reused=false. Native14136809573 SHA c312cea831aadfa66456abd3b732620cb82322599dfbad572592fdb5ff115bb6 stays cloud.
+
+Next terminal anchors run43655485838/head2df206f2f4b66cd6bb9bd6a7529c9eeedea37298, branchcodex/shared650-widened-terminal-anchors, queued at lastcheck. Authenticates new graph artifacts/GDS/LVS, retains authenticated original packed predecessor for band provenance, independently checks exact newGDS, unchanged hierarchy/annotations/all retained children/non-M3 material and nonempty addition-only M3. Runs existing current-native anchor probes and fault controls unchanged. Needs actual outcome; no anchors/RC success claimed. If passes, adapt fresh metal RC to exact new anchors source, then frozen loaded electrical test. Do not reuse former RC.
+
+Residual109 timing43654879592 still live (not restarted). Boot43653859525 remains separate; prior CTS receipt is not timing acceptance. All production closure scope remains open.
+
 ## Widened PHY physical PASS; new bank CTS complete; fresh graph launched — 2026-11-15
 
 Verified physical run43654646137/head96e48b1938c13d6b875177e561e2499efd9338c6 SUCCESS: GDS f93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe, full560DRC zero markers, deep/flat650-device LVS and fault controls. Derived14137064874 SHA036daf19913f59ab61cb48427a2f9df61c6eb08122e2d3222ef4b3e22eae9771; native14137283857 SHA9be73184f06ad6186d50216ee9a4245fcccbafdfddd5052ceee5a8da37027ff4. Physical receipt docs/evidence/packed650-shared-widening-physical-20261115.json. Electrical/fullPHY/qualifiedPEX/finaltiming remain false.
