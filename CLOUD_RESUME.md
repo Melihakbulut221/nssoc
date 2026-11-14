@@ -1,3 +1,11 @@
+## 2026-11-14 — exact overloaded replay driver placement experiment live
+
+Follow43609541720/sourcea3487a2f42e87c3425db2573856838f7f77434af oncodex/retry-driver-buf4-placement. Targets ONLYplace31551 sg13g2_buf_1->sg13g2_buf_4 on verified159934-instance legalizedODB. Other159933instances LOCKED during detailed_placement, then exactoriginalstatusesrestored. max_displacement1000/1000, no legality waiver. Originaldriver/netnet31551, unique internal SIGNAL output, protection flags and pin-schema checked before swap. Native independent Python inventory compares ALL instance pinconnections, allnetmemberships, ports, nonselectedmaster/location/orientation/status and selectedorientation/status. Source/hash/runtime pinned. No simulationclock/SDC/RTL modifications.
+
+Safe artifact retry-buf4-placement-derived-43609541720 containsresult/native-proofJSON. Native retry-buf4-placement-native-43609541720 stayscloudonly, innerretry-buf4-native.tgz. If pass, resultingout/native/buf4-legalized-unrouted.odb is NOT a routed or timing-accepted candidate; regenerate GRT/DRT and allcornerRC/STA before assessing benefit/hold regressions. Existingroute43591198141 remains untouched as independentbaseline. No testedhelpermerge until nativeexecutionpassed. If requestedmasterabsent/placementfails inspectactualreport, do not weaken invariants.
+
+Source helpers: scripts/run_retry_driver_buf4_placement.py, scripts/retry_driver_buf4_placement.tcl, scripts/verify_retry_driver_buf4.py. Experimentalworkflow only. Parent evidence and rationale in immediatelypreceding checkpoint. Mainroute43591198141 and PHY43603972722 still IN_PROGRESS at dispatchsnapshot. Fullgoal notachieved.
+
 ## 2026-11-14 — concrete retry-store setup driver diagnosis
 
 While live route43591198141 and PHY43603972722 continue, inspected actual prior routed STA safe artifact14111793410/run43579643337 (29,027,528-byte ZIP, derived reports only, RAM only). `nom_slow_1p08V_125C/max.head.rpt` worst path write_valid ($auto$ff.cc:337:slice$309577) to $auto$ff.cc:337:slice$569476 has slack-0.799543ns, arrival5.755142ns, required4.955600ns, original4ns PCIe clock.
