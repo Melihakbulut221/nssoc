@@ -3,7 +3,7 @@ from pathlib import Path
 P='repos/Melihakbulut221/nssoc/'
 OUT=Path('out');OUT.mkdir()
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s],timeout=60))
-inputs=[(43625119515,'63a2a8fbed52f0765a46cd5f5cbacff5cf773623',14126103113,'06c0631fee76d2e8e360286c87e1d576c1deaf3adf0f7e2a284fbf52ef3f8032'),(43614100441,'b83bc3a3f204bf9a2833c89fd632ae9308a58b56',14126777842,'daa567669be4ef93410162062ed8a65865dfaac8b3d6885097c4d70aaf276c81'),(43614100441,'b83bc3a3f204bf9a2833c89fd632ae9308a58b56',14126605652,'7a5308faca9cc59da239de71c5699df75e49d838cd65973568ac1a9bfcc9a784')]
+inputs=[(43633451595, '2c515a0bfb946ef244cc9e94e2f6af8a7e22e2fe', 14129917895, '2f7429aa34519372129c4a272e381799bfee5a37aefc5b07495b9901e493110b')]
 for run,head,aid,digest in inputs:
  r=api('actions/runs/'+str(run));assert r['status']=='completed'and r['head_sha']==head
  meta=api('actions/artifacts/'+str(aid));assert meta['workflow_run']['id']==run and meta['workflow_run']['head_sha']==head and meta['digest']=='sha256:'+digest and not meta['expired']
@@ -38,3 +38,45 @@ for run,head,aid,digest in inputs:
     entry['worst_slack']=value;entry['worst_path']='Startpoint:'+block
   data['reported_path_groups'][name]=groups
  (OUT/(str(aid)+'.json')).write_text(json.dumps(data,indent=2)+'\n')
+
+# Bind worst after-repair endpoints to the exact independently revalidated mapping.
+import io,tarfile,collections
+valid=api('actions/runs/43631950511');assert valid['conclusion']=='success'and valid['head_sha']=='a238c421772e0f1ccd8a8e4ef64e7d5aad1cb894'
+meta=api('actions/artifacts/14128012721');assert meta['workflow_run']['id']==43630345267 and meta['workflow_run']['head_sha']=='bdd7cc588490425ff98c4718ea8986ecc06a128a'
+b=subprocess.check_output(['gh','api',P+'actions/artifacts/14128012721/zip']);assert hashlib.sha256(b).hexdigest()=='d32dd9bb9e0cc1d25f34e29cfbec4bb71908bef7bcaaa577327719602dcd3570'
+nz=zipfile.ZipFile(io.BytesIO(b));tar=tarfile.open(fileobj=io.BytesIO(nz.read('build.tgz')),mode='r:gz')
+found=[]
+for member in tar:
+ if member.isfile()and member.name.endswith('soc_top.mapped.json'):
+  raw=tar.extractfile(member).read();assert hashlib.sha256(raw).hexdigest()=='1c03ec19a0f8afc2384d92f8974be6cce48ff189e7e1a06e138a69f8754dd8f9';found.append(json.loads(raw))
+assert len(found)==1
+m=found[0]['modules']['soc_top'];cells=m['cells'];netnames=m['netnames']
+def norm(n):return n.replace('\\','').replace('\\','')
+# Report formatting may escape a Verilog identifier's backslash multiple times.
+def canonical(n):return n.replace(chr(92),'')
+lookup=collections.defaultdict(list)
+for n in cells:lookup[canonical(n)].append(n)
+targets={}
+for name,groups in data['reported_path_groups'].items():
+ if 'after'not in name:continue
+ for group,row in groups.items():
+  block=row['worst_path']
+  for side in ['Startpoint','Endpoint']:
+   match=re.search(side+r':\s*(\S+)',block);assert match
+   targets.setdefault(match[1],[]).append({'report':name,'group':group,'side':side,'slack':row['worst_slack']})
+rows=[]
+for requested,uses in targets.items():
+ matches=lookup.get(canonical(requested),[])
+ assert len(matches)<=1,(requested,matches)
+ if not matches:
+  rows.append({'requested':requested,'uses':uses,'status':'TOP_PORT_OR_POST_MAPPING_CELL_NOT_IN_ORIGINAL_NETLIST'});continue
+ n=matches[0];c=cells[n];pins={}
+ for pin,bits in c['connections'].items():
+  aliases=[]
+  for net,v in netnames.items():
+   if net.startswith('$'):continue
+   for i,bit in enumerate(v['bits']):
+    if isinstance(bit,int)and bit in bits:aliases.append({'net':net,'index':i+v.get('offset',0),'bit':bit})
+  pins[pin]={'bits':bits,'rtl_aliases':aliases}
+ rows.append({'requested':requested,'cell':n,'original_mapped_type':c['type'],'src':c.get('attributes',{}).get('src'),'pins':pins,'uses':uses,'status':'EXACT_ORIGINAL_MAPPING_ALIAS_NOT_POST_ECO_MASTER_CLAIM'})
+(OUT/'critical-mapping.json').write_text(json.dumps({'timing_run':43633451595,'mapping_producer':43630345267,'mapping_validation':43631950511,'mapped_sha256':'1c03ec19a0f8afc2384d92f8974be6cce48ff189e7e1a06e138a69f8754dd8f9','targets':rows,'accepted':False},indent=2))
