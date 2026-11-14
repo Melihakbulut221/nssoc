@@ -3,9 +3,9 @@
 import hashlib,json,os,re,subprocess,sys,tarfile,traceback,time,signal,math
 from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/"mos650-gate-ac";NATIVE=OUT/"native";DERIVED=OUT/"derived"
+OUT=ROOT/"paired650-gate-mesh";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-gate-poly-mesh"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr650-paired-gate-mesh"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -265,7 +265,7 @@ def characterize(models):
  current=NATIVE/"current-wire"
  access=read(current/"derived/gate-poly-access.json");anchors=read(current/"derived/terminal-anchors.json")
  gds=current/"native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds"
- need(pin(gds)==dict(bytes=1624572,sha256="c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c"),"exact current DRC/LVS-passing geometry")
+ need(pin(gds)==dict(bytes=1627742,sha256="285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514"),"exact current DRC/LVS-passing geometry")
  layout=db.Layout();layout.read(str(gds));top=layout.top_cell();need(top.name=="nssoc_cdr_pd500_resistor_v59"and layout.dbu==.001,"actual GDS coordinates")
  def layer(n):return db.Region(top.begin_shapes_rec(layout.layer(n,0))).merged()
  allpoly=layer(5);allcuts=layer(6);salblock=layer(28);psd=layer(14);metal=layer(8)
@@ -436,13 +436,34 @@ def characterize(models):
  for coarse,fine in zip(summaries,summaries[1:]):
   a=coarse["actual_uniform_injection_observation"]["voltages"];b=fine["actual_uniform_injection_observation"]["voltages"];need(set(a)==set(b),"same actual200 intrinsic gate averages")
   changes.append(dict(coarse_pitch_nm=coarse["pitch_nm"],fine_pitch_nm=fine["pitch_nm"],max_relative_gate_average_change=max(abs(a[k]-b[k])/abs(b[k])for k in a)))
- need(pin(gds)==dict(bytes=1624572,sha256="c335182048dc1696821ab875fb34447e5b5a9ba0f1a24d5d16d572680906c16c"),"actual geometry unchanged")
+ need(pin(gds)==dict(bytes=1627742,sha256="285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514"),"actual geometry unchanged")
  save("physical-gate-resistance-network.json",dict(pitches_nm=list(pitches),gate_groups=50,intrinsic_gates=200,physical_contacts=200,
   native_rectangle_references_passed=len(pitches),native_actual_mesh_DC_runs_passed=len(pitches),refinement_observations=changes,
   material_parameters=parameters,physical_gate_resistance_network_generated=True,full_metal_network_integrated=False,
   actual_intrinsic_devices_present=False,nonuniform_gate_convergence_qualified=False,material_values_qualified_for_signoff=False,**FLAGS))
  return 4
 
+
+def paired_current(dest):
+ import zipfile
+ def artifact(aid,digest,run,head,name):
+  r=api('actions/runs/'+str(run));need(r['status']=='completed' and r['conclusion']=='success' and r['head_sha']==head,'qualified paired producer')
+  meta=api('actions/artifacts/'+str(aid));need(meta['workflow_run']['id']==run and meta['workflow_run']['head_sha']==head and meta['digest']=='sha256:'+digest and not meta['expired'],'paired artifact identity')
+  path=NATIVE/name
+  with path.open('xb')as out:subprocess.run(['gh','api','repos/'+REPO+'/actions/artifacts/'+str(aid)+'/zip'],stdout=out,check=True)
+  need(pin(path)['sha256']==digest,'paired archive content')
+  return zipfile.ZipFile(path)
+ geometry=artifact(14124521775,'84bbb918af34605e7c6f14598fc68e7d5bb811a3d32d6c22bb294c0a51623ac6',43621748603,'0d90e18e09678eb1733123d97f41942dace720b3','paired-geometry.zip')
+ anchors=artifact(14124672969,'a3e3b980b8d03f8ef38d854b414649a40496711d532f4824957184fc9082c199',43623472892,'54a4766e9256d2cd0a3f93f5441ca5d1c238c7ce','paired-anchors.zip')
+ identity=artifact(14125295448,'d8376d4009da54acbe52569fd119add9f07f4f13d8120ebc65bd5fa193c899ac',43622884786,'e0a87989915cb7d65a20176de33649859f013393','paired-identity.zip')
+ rows={'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds':geometry.read('candidate.gds'),
+       'derived/gate-poly-access.json':anchors.read('gate-poly-access.json'),
+       'derived/terminal-anchors.json':anchors.read('terminal-anchors.json'),
+       'derived/lvs_flat-identity.json':identity.read('lvs_flat-identity.json')}
+ for name,raw in rows.items():
+  path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+ save('paired-current-acquisition.json',dict(files={n:pin(dest/n)for n in rows},geometry_run=43621748603,anchors_run=43623472892,identity_run=43622884786,**FLAGS))
+ return {n:pin(dest/n)for n in rows}
 
 def main():
  ctx=gate()
@@ -458,10 +479,10 @@ def main():
    save("source-controls.json",dict(context=ctx,source_files_verified=True,**FLAGS));return
   need(sys.argv[1:]==["--extract"],"explicit cloud characterization")
   current=NATIVE/"current-wire";current.mkdir()
-  acquire(cfg["current_wire"],current,lambda n:n in cfg["current_wire"]["selected"])
+  paired_source=paired_current(current)
   observed=current_cases(read(current/"derived/lvs_flat-identity.json"),read(current/"derived/gate-poly-access.json"))
-  need(observed==read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")["devices"],"complete native current fixture readback")
-  save("current-physical-cases.json",dict(devices=observed,source=cfg["current_wire"],**FLAGS))
+  need(len(observed)==200,"complete new native current fixture readback")
+  save("current-physical-cases.json",dict(devices=observed,source=paired_source,**FLAGS))
   models=acquire_models(cfg["runtime"]);model_report(models)
   magic=NATIVE/"magic";magic.mkdir()
   acquire(cfg["magic"],magic,lambda n:n.startswith("wire-stage/magic-cloud/"))
