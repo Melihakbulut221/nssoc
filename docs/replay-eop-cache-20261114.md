@@ -68,3 +68,12 @@ Those reports explicitly filter for register endpoints. An independent audit of 
 [All constrained path classes](https://github.com/Melihakbulut221/nssoc/actions/runs/43633057865) reveal an input setup violation that the register-only reports excluded: `in_sop_i` to a register has -0.037968963 ns slow-corner slack for the cache candidate. The baseline has -0.198555619 ns. The cache's worst constrained fast hold is +0.000090150 ns. Therefore the block is **not timing-closed**. A repair using positive 50 ps setup and 25 ps hold optimization margins is running without changing interface timing constraints or acceptance thresholds.
 
 The physical job in [43632152541](https://github.com/Melihakbulut221/nssoc/actions/runs/43632152541) completed full-chip placement and CTS with all 20 SRAM macros and unchanged protected sources. Independent gate boot is still running. Fresh three-corner post-CTS measurements and repair have been dispatched for this exact new database; inherited pre-placement metrics are not a post-CTS timing result.
+
+
+## Guarded repair and targeted input-path ECO
+
+The isolated block's positive register-only margins did not cover all constrained input paths. With unchanged clock and I/O constraints, guarded setup/hold repair (run 43633349306) measured slow all-path setup -0.022251979 ns and fast hold +0.025209585 ns. The remaining slow path starts at `in_sop_i` and ends at `_09986_/D`. This is still a failed block timing screen.
+
+A controlled single-cell experiment (43634351297) resized `_06640_` from `sg13g2_or4_1` to the logically equivalent `_2` master. All three frozen libraries' Boolean pin functions and directions matched; the untouched control reproduced its source database and six corner/mode measurements. Nevertheless the resized cell increased slow setup violation to -0.063389517 ns, with no placement displacement and unchanged fast hold. Its actual stage delay rose from 0.417097926 to 0.460538507 ns. **The resize is rejected.** Bigger drive strength is not an adequate selection criterion at this load.
+
+The safe report also retains electrical fanout violations. Neither this isolated result nor a successful Actions conclusion establishes complete timing, electrical, routed or manufacturing signoff. See `docs/evidence/eop-block-guarded-repair-20261114.json` and `docs/evidence/eop-input-or4-eco-20261114.json`.

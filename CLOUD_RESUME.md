@@ -1,3 +1,13 @@
+## 2026-11-14 — single OR4 upsize rejected; saved guarded candidate retained
+
+Measured run 43634351297 / source 4d5a209adcb35c83075e3df0cad9d6ab77367d4c succeeded as an experiment. Exact control reproduced all six all-path STA values and the ODB hash. The sole _06640_ OR4_1 -> OR4_2 replacement worsened slow setup from -0.022251979 to -0.063389517 ns; typical setup 1.089151502 -> 1.060272336 ns; fast setup 1.733969331 -> 1.715619087 ns. Hold stayed +0.025209585 ns at fast. This ECO is REJECTED and not integrated.
+
+Native legalization moved no cells. The changed stage delay itself increased from 0.417097926 to 0.460538507 ns at its actual load; larger drive is not automatically faster. All three Liberty pin functions/directions were checked equal. Electrical report still contains fanout violations; this experiment cannot support block signoff even if timing had passed. Exact guarded control ODB 8870b2b02e3e1b5e2c690459c348f002b8b56e32362b560492099a748a734c0e is retained. Safe 14129550921 SHA256 64e7d99949213b9fb79bcd537e41a9389e234917730945256ada560cfa004010; native 14129202107 SHA256 a9936362bf29911581b9a1fd3578203ccf8e67b740fc548b4fc14dfe5a9e1272. Receipt docs/evidence/eop-input-or4-eco-20261114.json. Do not merge the experiment workflow or the rejected change.
+
+Old-RTL buf4 route 43610680141 has now finished with overall FAILURE. Its actual detailed route reached zero router DRC after iteration 7, but fresh antenna check reports 368 violating nets / 413 pins (separate route metric 305). Original clocks and timing/antenna acceptance remain mandatory. Routed STA safe artifact 14129471164 SHA256 4e9033aca2d5d1a3cdbf4d9624f2a462f8a1c93ded31e641de5f44a1483bc19b is about 29.6 MB; cloud-only slim extraction 43634587365/source7a491f528275fc218813700fc1e7901de27d3d45 on codex/buf4-routed-results is live. It reads the finished report, it does not rerun routing. Inspect extracted metrics next; never transfer this old RTL evidence to the new EOP chip.
+
+Priority remains new EOP full-chip postCTS 43633451595, new gate boot 43632152541, and paired650 loaded transient 43626358999. They remain live. The small isolated ECO is not a substitute for full-chip optimization. No new native data downloaded locally.
+
 ## 2026-11-14 — targeted input-path OR4 ECO dispatched from guarded saved database
 
 Run 43634351297, branch codex/eop-input-or4-eco, source 4d5a209adcb35c83075e3df0cad9d6ab77367d4c. Native log of the preceding guarded repair explicitly said it could not repair all setup violations despite its final endpoint counter being zero. Cache remaining worst path is in_sop_i -> _09986_/D, slow setup -0.022251979 ns. Its _06640_/X sg13g2_or4_1 stage contributes 0.417097926 ns. Frozen IHP library includes sg13g2_or4_2.
