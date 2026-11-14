@@ -1,3 +1,11 @@
+## 2026-11-15 — actual training hold ECO closes targeted input in all corners
+
+Run43644585495/sourcedea0de872cdbf0fa716d68b597033ac2ab23534f completed SUCCESS. Two native delay cells added, exact original incidence checked, legalized and freshly measured. Training input hold slow/typ/fast **+0.684289992/+0.317939460/+0.149620548ns**; setup **+1.618731022/+2.211832285/+2.521901369ns**. All six exceed50ps. This is a genuine source-specific physical input fix, NOT allchip closure. Exact candidate ODB8f1f22fc156621e4d96872f8eaa9134b11315d5a3a358226767facc57fe5358c. Source DB unchanged. Safe14134275067 SHAb84f9d66b6b988be6e0b8857ce4037c97752eaa39af00e0556085ed99c95517c; native14133434311 SHAb08e5099e538625c4cf30f58e231f62618c58aa6c962cf99f87417d4acfd8b5b. Receipt `docs/evidence/crc-training-hold-eco-20261115.json`.
+
+NEW impact audit **43645375159**, source **f655c3580acff971385968a163b1ef02dd719b02**, branch `codex/crc-training-hold-impact`. Reads authenticated actual native candidate ODB/STA reports in cloud, compares every before/after corner metric against original CRC repaired run43639975405, explicitly reports count/slack/TNS regressions. Requires exact output ODB hash and all propagated clocks. No fresh timing result invented from ideal estimates; uses actual completed independent STA. On result inspect remaining violations and any regressions before adoption. Preserve native ECO for later route/equivalence; apply to newer RX only after identifying its own actual input endpoint and margins.
+
+RX postCTS43643048434 and full packed loaded43642783223 still live. Full goal remains open; cloud-only native work.
+
 ## 2026-11-15 — training input setup headroom measured; physical hold ECO live
 
 Diagnostic43643718087/heade54adacc0ae714b27c1449930cabe9dd3d3708e9 completed SUCCESS. Exact CRC repaired ODB unchanged. Targeted pcie_training_i setup slack slow/typ/fast **+2.872979641/+2.994712114/+3.046618223ns**; hold **-0.389348686/-0.360046655/-0.325918019ns**. Each of6reports contains one actual path. Safe14132724018 SHA6488ef8e34e5031740b5b719bc8300c5d0b5eec8439a6f74cfee13f7b1c5d9c1. Receipt `docs/evidence/crc-training-input-timing-20261115.json`. This is source-specific placement RC, not routed signoff.
