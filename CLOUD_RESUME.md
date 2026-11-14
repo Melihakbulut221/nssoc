@@ -1,3 +1,11 @@
+## RX physical input repair measured — 2026-11-15
+
+ECO43646555578/head6a87c130412d272c700214201820da450f693fad completed successfully. Derived14133708950 SHA30f64d9adeecb122e49fdd218bc144870e6c93f6f7bb5f9985120233a2f5f8b5; native14134159392 SHA92d72fe95c41b068bc255e7f9f7a3b0e7abaa415990ec57e948ccc246e7b2e26. CandidateODB dce675ce9aab6a7833fcb55ded416540b392affb065521ef53e3ce9d33d1d54c. Input hold slow/typ/fast +.661808610/+.275306463/+.087556742 ns; setup +1.604881644/+2.232374668/+2.557558775 ns. Targeted50ps margin passed all six checks.
+
+Wholechip impact43647032009/headac826ac70b0e7b38da19c967ce17f8744c5d7a5c completed. Safe14133763882 SHA7dc117cff52bea357c4ff48def96734c6ea81670a08eef32c6783c5506d61494. Holdcounts3->2,29->28,270->269; remaining wholechip holdWS -.0141112/-.156492/-.227691 ns. Setupcounts unchanged2631/635/0 and WS-3.11156/-.703858/+.46195 ns. SlowsetupTNS worsened -.01ns (-3633.29->-3633.30), explicitly preserved regression. Not wholechip acceptance, not routed closure. Receipts docs/evidence/rx-training-hold-eco-20261115.json and rx-training-hold-impact-20261115.json.
+
+Next derived remaining hold paths run 43647574845, source f67516a6169da71b3841057daee9b8ce73c1b603, branch codex/rx-eco-hold-paths. Native archive remains cloud-only. Read returned actual min-path start/endpoints before next targeted repair. RX bank traffic43646430563 and conditional build43646859306 remain independent; packedPHY43642783223 still pending at last poll.
+
 ## RX bank formal PASS — 2026-11-15
 
 Formal job132604800997/run43646311455 completed SUCCESS. Exact RTL6e8736695b6fe059716fd90b5b8d969ca80a326f6c3a4705325bb5b7ec8831c0: both full-module proofs (4DW1slot,8DW2slots) passed under equal-reset-copy contract, both ready-inversion mutations rejected. Artifact14133878061 SHA25692b362a146853ab4680bbf46fd134d0970701524521077d286383fe57bff6918; four actual logs independently checked against their hashes and proof/unproven messages. Receipt docs/evidence/rx-bank-local-formal-20261115.json. First run overall failure is only pre-simulation traffic harness allowlist error; corrected traffic43646430563 still running at check. Conditional build43646859306 must continue waiting for its exact traffic job. No physical acceptance yet.
