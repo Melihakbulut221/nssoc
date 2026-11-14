@@ -1,3 +1,11 @@
+# Current SP SRAM independently inventoried next; DP evidence is not transferable
+
+**43563284302**, source`b7adb2000f01d80a24532e8dc91ea2057d07fd4e`, branch`codex/sp-sram-original-resistor-owners`: original **RM_IHPSG13_1P_2048x64_c2_bm_bist** GDS/CDL pins restored from package663146895 only in cloud. Script`scripts/diagnose_sp_sram_resistor_owners.py` enumerates original hierarchical generic resistor owners and physical marker-leaf dimensions. Full top polygon expansion intentionally omitted; no LVS/connection/production claim or source edits. Require no unresolved CDL child models. Receipt:`docs/evidence/sp-sram-resistor-owners-launch-20261114.json`.
+
+Do not extend DP bitcell mapping or candidate43562021054 to the four SP macros without independent evidence. Continue the live freshroute43561900502, DPcandidate43562021054, MBIST43558722004, oldroutes43541234973/43538031308 and A/Cbuffers43562981217. No same-input reruns; no local native files. Full product goal remains active and unproven.
+
+---
+
 # Exact reader controls passed; targeted A/C buffer circuit screens running
 
 **43562548073 completed/success**: all10actual-CDL CustomReader positive/layer/W/L/open controls passed, nativeRC0. Safe14100384146 SHA256`2d34f811c1557b044eaaec0436035555bf8466c21cfc6c2880436e01357ac62c`. Candidate reader SHA256`87a75b402b35d7306153a66089c0f0105b4e50c4816c7c553d97219af6c41519` must match actual engineering macro43562021054 result before binding. Receipt:`docs/evidence/sram-reference-reader-controls-result-20261114.json`.
