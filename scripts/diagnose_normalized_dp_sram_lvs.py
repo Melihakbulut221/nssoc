@@ -10,6 +10,14 @@ z=zipfile.ZipFile(io.BytesIO(b));names=[n for n in z.namelist() if n.endswith('.
 with tarfile.open(fileobj=io.BytesIO(z.read(names[0])),mode='r:gz') as t:
  raw=t.extractfile('native/lvs.lvsdb').read();assert hashlib.sha256(raw).hexdigest()=='d712c5238849180c09e9ca7bc09d97b292047b945485d0911d9708f5b2ac5f4b'
  P('lvs.lvsdb').write_bytes(raw)
+ rule_evidence=[]
+ for m in t.getmembers():
+  if not m.isfile() or not m.name.endswith('.lvs'):continue
+  text=t.extractfile(m).read().decode();lines=text.splitlines();hits=set()
+  for i,line in enumerate(lines):
+   if any(k in line for k in ('LVSRES','same_device_classes','res_metal1','equivalent_pins','same_nets','compare_parameter','ignore_parameter')):
+    hits.update(range(max(0,i-4),min(len(lines),i+5)))
+  if hits:rule_evidence.append({'path':m.name,'sha256':hashlib.sha256(text.encode()).hexdigest(),'lines':[{'line':i+1,'text':lines[i]} for i in sorted(hits)]})
 lvs=db.LayoutVsSchematic();lvs.read('lvs.lvsdb');rows=[]
 for pair in lvs.xref().each_circuit_pair():
  if str(pair.status())=='Match':continue
@@ -33,7 +41,13 @@ for pair in lvs.xref().each_circuit_pair():
     if d is None:dr[side]=None;continue
     cls=d.device_class()
     dr[side]={'class':cls.name,'parameters':{field(p,'name'):d.parameter(field(p,'id')) for p in cls.parameter_definitions()}}
+    if 'mos' in cls.name.lower():
+     dr[side]['terminal_net_names']={}
+     for terminal in ('S','G','D','B'):
+      net=d.net_for_terminal(terminal)
+      dr[side]['terminal_net_names'][terminal]=None if net is None else field(net,'name')
    row['nonmatching_device_pairs'].append(dr)
+  row['nonmatching_net_pairs']=[{'status':str(np.status()),'layout':None if np.first() is None else field(np.first(),'name'),'schematic':None if np.second() is None else field(np.second(),'name')} for np in lvs.xref().each_net_pair(pair) if str(np.status())!='Match']
  rows.append(row)
-r={'status':'DIAGNOSTIC_ONLY_NOT_LVS_PASS','source_run_id':43529228292,'source_artifact_id':14087058081,'database_sha256':hashlib.sha256(raw).hexdigest(),'nonmatching_circuits':rows,'lvs_api_methods':[x for x in dir(lvs) if any(k in x for k in ['netlist','schematic','reference','compare'])],'manufacturing_approval':False}
+r={'status':'DIAGNOSTIC_ONLY_NOT_LVS_PASS','source_run_id':43529228292,'source_artifact_id':14087058081,'database_sha256':hashlib.sha256(raw).hexdigest(),'nonmatching_circuits':rows,'rule_evidence':rule_evidence,'lvs_api_methods':[x for x in dir(lvs) if any(k in x for k in ['netlist','schematic','reference','compare'])],'manufacturing_approval':False}
 P('out').mkdir();P('out/device-diagnosis.json').write_text(json.dumps(r,indent=2));print(json.dumps({'status':r['status'],'circuits':len(rows)}))
