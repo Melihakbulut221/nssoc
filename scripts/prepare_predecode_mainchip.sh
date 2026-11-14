@@ -51,6 +51,9 @@ from pathlib import Path
 import sys
 Path(sys.argv[1]).write_text(json.dumps({
     'RF_CORRPRE': 1,
+    'SOC_PCIE_REPLAY_EOP_CACHE': int(os.environ.get('SOC_PCIE_REPLAY_EOP_CACHE','0')),
+    'SOC_PCIE_REPLAY_WRITE_PREDECODE': int(os.environ.get('SOC_PCIE_REPLAY_WRITE_PREDECODE','0')),
+    'SOC_PCIE_REPLAY_CRC_SELECT': int(os.environ.get('SOC_PCIE_REPLAY_CRC_SELECT','0')),
     'SOC_SRAM_MBIST': 1,
     'SOC_ETH_MBIST': 1,
     'mbist_scope': 'Mapped native boot explicitly observes system and both Ethernet MBISTs; RTL firmware preparation itself has no MBIST mode',

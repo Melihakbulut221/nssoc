@@ -142,8 +142,24 @@ module soc_pcie_replay_tx #(
     wire [31:0] next_crc;
     // At a frame end in_sop_i is low (an SOP there is an error anyway).
     wire replay_crc_residue_ok=crc_upper_match && (input_crc[7:0]^in_data_i)==8'hed;
+`ifdef SOC_PCIE_REPLAY_CRC_SELECT
+    // Evaluate the initial and continuing CRC independently. Select after
+    // the XOR networks and residue compares, removing SOP from their input.
+    // CRC state, update enable, residue constant and cycle latency are exact.
+    wire [31:0] replay_crc_start,replay_crc_continue;
+    wire replay_crc_next_upper_match;
+    soc_pcie_crc32_byte input_crc_start(.state_i(32'hffffffff),
+        .data_i(in_data_i),.state_o(replay_crc_start));
+    soc_pcie_crc32_byte input_crc_continue(.state_i(input_crc),
+        .data_i(in_data_i),.state_o(replay_crc_continue));
+    assign next_crc=in_sop_i ? replay_crc_start : replay_crc_continue;
+    assign replay_crc_next_upper_match=in_sop_i ?
+        (replay_crc_start[31:8]==24'h00be26) :
+        (replay_crc_continue[31:8]==24'h00be26);
+`else
     soc_pcie_crc32_byte input_crc_byte(.state_i(in_sop_i ? 32'hffffffff : input_crc),
         .data_i(in_data_i),.state_o(next_crc));
+`endif
     function [PW-1:0] advance;
         input [PW-1:0] pointer;
         input [CW:0] amount;
@@ -389,7 +405,12 @@ module soc_pcie_replay_tx #(
                 halt<=0;retry_exhausted_o<=0;retries<=0;replay_pending<=sent_count!=0;
             end
             if(in_valid_i && in_ready_o) begin
-                input_crc<=next_crc;crc_upper_match<=next_crc[31:8]==24'h00be26;
+                input_crc<=next_crc;
+`ifdef SOC_PCIE_REPLAY_CRC_SELECT
+                crc_upper_match<=replay_crc_next_upper_match;
+`else
+                crc_upper_match<=next_crc[31:8]==24'h00be26;
+`endif
                 if(in_sop_i) begin
                     if(capturing || in_eop_i || in_data_i[7:4]!=0) begin
                         source_error_o<=1;halt<=1;capturing<=0;
