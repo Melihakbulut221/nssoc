@@ -1,3 +1,15 @@
+## 2026-11-14 — full chip engineering transistor LVS PASSED
+
+Original run43602758557 completed native compare &&flag_missing_ports TRUE:108Match,zero extraction diagnostics,354topports,7456816recursive primitives on both sides. Both SRAM interiors included (DP70110/SP1211120). Original strict auditor rejected only our changed success wording ("INFO : Netlists match." instead of "INFO : Congratulations! Netlists match."). No electrical mismatch was reported.
+
+Reaudit43605359900/source1999119e9a22d6e771be3583f09debf8be3106b8 PASSED after exact alternate-success recognition.40positive/negative verdict controls passed, preserving mismatch/warning/must-connect/empty/missing-verdict rejection. Native DB and original log hashes unchanged; no extraction rerun or log editing. Safe14117612941 SHA99a62ccc4f2d4ae190fc25883e9a81ae06fd2a3ccc93a7395614075c52bd4a34. Native14117582646 SHAfd250afa9a2c55ef266149c583d76256dd8dcdd9d5f043cfd892a7043e15979b,innerfull-chip-lvs-native.tgz: native/full-chip.lvsdb SHA3ddd851b8f0d80050bc97aabb6576836eb1d20ef41d0184c239f7840b479ca22. Native stayscloudonly.
+
+Accepted scope is exact old packet-interface chip GDS c6c7df7f... with engineering SRAM CDL and independent reference523438b6... . This does NOT accept the live new diode-legalized route, serial PHY, padframe, final timing or foundry approval. No manufacturing claim. Fullchip LVS helpers and auditor fix retained in integration; experiment workflows not merged. See docs/evidence/full-chip-engineering-lvs-passed-20261114.json and docs/full-chip-engineering-lvs-20261114.md.
+
+Next: follow route43591198141 (fresh route+RCX+allcornerSTA) and PHY43603972722. When new route finishes repeat coherent GDS/fullreference/LVS on its own logical+physical inputs; do not transfer this pass across route hashes. Also consider fullchip native connectivity fault controls using completed DB without re-extraction, retaining proven macro controls and strict no-blackbox boundary.
+
+Live job snapshot: {"43603972722": {"status": "in_progress", "conclusion": null}, "43591198141": {"status": "in_progress", "conclusion": null}}
+
 ## 2026-11-14 — isolated XOR loading candidate launched
 
 Run43603972722/job132474510071 (source389d8b4f2e5782521d5bd779807dce3bb5029a10, branchcodex/cdr-isolated-xor-load1) dispatched and restoring frozen native input. Variantbd10_lowz8_xor1_cdata3_sel15. Compared to completed43596398222, ONLY24XOR_DATA HBT nx2->1. Same C-pairnx3,selectbias1.5mA, all bench sources/solver, original extracted wires/RC unchanged. This is a nominal externally clocked circuit hypothesis, NOT new layout/RC or full PHY.
