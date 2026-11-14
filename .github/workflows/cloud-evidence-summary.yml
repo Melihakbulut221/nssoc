@@ -1,4 +1,4 @@
-name: Extract fresh paired650 MIM-aware RC with both native orders
+name: Extract fresh packed650 MIM-aware RC with both native orders
 on:
   workflow_dispatch:
     inputs:
@@ -94,14 +94,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-metal-rc-derived-${{ github.run_id }}
+          name: packed650-metal-rc-derived-${{ github.run_id }}
           path: mos650-metal-rc/derived
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-metal-rc-native-${{ github.run_id }}
+          name: packed650-metal-rc-native-${{ github.run_id }}
           path: |
             mos650-metal-rc
             paired-terminal-anchors
