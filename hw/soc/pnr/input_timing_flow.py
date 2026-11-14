@@ -3,12 +3,16 @@ from librelane.flows import Flow
 from interface_flow import Interfaces
 from corrpre_postcts_flow import SingleCornerSTA,CORNERS,ElectricalPostCTS
 EXTRA = r"""
-set training [get_ports pcie_training_i]
-if {[llength $training] != 1} {error "Missing exact training input"}
-foreach type {max min} {
- puts "%OL_CREATE_REPORT training-$type.rpt"
- report_checks -from $training -corner $corner_name -path_delay $type -group_path_count 10000 -fields {slew cap input net fanout} -format full_clock_expanded -digits 9
- puts "%OL_END_REPORT"
+set index 0
+foreach name {eth_txd_o[0] eth_txd_o[1] eth_txd_o[2] eth_txd_o[3] eth_txd_o[4] eth_txd_o[5] eth_txd_o[6] eth_txd_o[7] eth_tx_en_o eth_tx_er_o} {
+ set port [get_ports [list $name]]
+ if {[llength $port] != 1} {error "Missing exact Ethernet output $name"}
+ foreach type {max min} {
+  puts "%OL_CREATE_REPORT io-$index-$type.rpt"
+  report_checks -to $port -corner $corner_name -path_delay $type -group_path_count 10000 -fields {slew cap input net fanout} -format full_clock_expanded -digits 9
+  puts "%OL_END_REPORT"
+ }
+ incr index
 }
 """
 class InputSTA(SingleCornerSTA):
@@ -21,11 +25,6 @@ ECO = r"""
 set block [ord::get_db_block]
 set master [[ord::get_db] findMaster sg13g2_dlygate4sd3_1]
 if {$master eq "NULL"} {error "Missing native delay cell"}
-set port [$block findBTerm pcie_training_i]
-if {$port eq "NULL"} {error "Missing training port"}
-set net [$port getNet]
-set sink [[$block findInst hold23727] findITerm A]
-if {$sink eq "NULL" || [$sink getNet] ne $net || [llength [$net getITerms]] != 1 || [llength [$net getBTerms]] != 1} {error "Source training connection changed"}
 set before {}
 foreach inst [$block getInsts] {
  set pins {}
@@ -34,41 +33,55 @@ foreach inst [$block getInsts] {
 }
 set old_count [llength [$block getInsts]]
 set old_nets [llength [$block getNets]]
-set location [[$sink getInst] getLocation]
-set orientation [[$sink getInst] getOrient]
-$sink disconnect
-set last $net
-foreach index {0 1} {
- set name nssoc_training_hold_$index
- if {[$block findInst $name] ne "NULL" || [$block findNet ${name}_out] ne "NULL"} {error "ECO name collision"}
- set inst [odb::dbInst_create $block $master $name]
- set next [odb::dbNet_create $block ${name}_out]
- [$inst findITerm A] connect $last
- [$inst findITerm X] connect $next
- $inst setOrient $orientation
- $inst setLocation {*}$location
- $inst setPlacementStatus PLACED
- set last $next
+set changed {}
+set index 0
+foreach portname {eth_txd_o[0] eth_txd_o[1] eth_txd_o[2] eth_txd_o[3] eth_txd_o[4] eth_txd_o[5] eth_txd_o[6] eth_txd_o[7] eth_tx_en_o eth_tx_er_o} {
+ set port [$block findBTerm $portname]
+ if {$port eq "NULL" || [$port getIoType] ne "OUTPUT"} {error "Missing output $portname"}
+ set net [$port getNet]
+ if {[llength [$net getITerms]] != 1 || [llength [$net getBTerms]] != 1} {error "Unexpected output fanout $portname"}
+ set driver [lindex [$net getITerms] 0]
+ if {[[$driver getMTerm] getIoType] ne "OUTPUT"} {error "Expected single output driver"}
+ set location [[$driver getInst] getLocation]
+ set orientation [[$driver getInst] getOrient]
+ set stem nssoc_eth_hold_${index}
+ foreach name [list ${stem}_0 ${stem}_1] {
+  if {[$block findInst $name] ne "NULL" || [$block findNet ${name}_in] ne "NULL"} {error "ECO name collision"}
+ }
+ set first [odb::dbNet_create $block ${stem}_0_in]
+ set middle [odb::dbNet_create $block ${stem}_1_in]
+ $driver disconnect
+ $driver connect $first
+ dict set changed $driver $first
+ foreach suffix {0 1} {
+  set inst [odb::dbInst_create $block $master ${stem}_${suffix}]
+  if {$suffix==0} {set in $first;set out $middle} else {set in $middle;set out $net}
+  [$inst findITerm A] connect $in
+  [$inst findITerm X] connect $out
+  $inst setOrient $orientation
+  $inst setLocation {*}$location
+  $inst setPlacementStatus PLACED
+ }
+ if {[$port getNet] ne $net} {error "Original port net changed"}
+ incr index
 }
-$sink connect $last
-if {[llength [$block getInsts]] != $old_count+2 || [llength [$block getNets]] != $old_nets+2} {error "Unexpected ECO census"}
+if {$index!=10 || [llength [$block getInsts]]!=$old_count+20 || [llength [$block getNets]]!=$old_nets+20} {error "Wrong ECO census"}
 foreach inst [$block getInsts] {
  set name [$inst getName]
  if {![dict exists $before $name]} {continue}
  lassign [dict get $before $name] cell pins
  if {[[$inst getMaster] getName] ne $cell} {error "Original master changed"}
  foreach pin [$inst getITerms] {
-  set terminal [[$pin getMTerm] getName]
-  set expected [dict get $pins $terminal]
-  if {$pin eq $sink} {set expected $last}
-  if {[$pin getNet] ne $expected} {error "Original incidence changed: $name/$terminal"}
+  set expected [dict get $pins [[$pin getMTerm] getName]]
+  if {[dict exists $changed $pin]} {set expected [dict get $changed $pin]}
+  if {[$pin getNet] ne $expected} {error "Original incidence changed"}
  }
 }
-puts "NSSOC_TWO_NATIVE_DELAY_CELLS_ONLY_ORIGINAL_INCIDENCE_PRESERVED"
+puts "NSSOC_TWENTY_NATIVE_DELAY_CELLS_TEN_ETH_OUTPUTS_ONLY"
 """
 class TrainingHoldECO(ElectricalPostCTS):
  id='NSSOC.TrainingHoldECO'
- name='Two native training input hold delay cells'
+ name='Two native delay cells on each Ethernet data or control output'
  def get_script_path(self):
   p=Path(super().get_script_path());s=p.read_text()
   a=s.index('# Buffer I/O');b=s.index('report_floating_nets -verbose',a)
