@@ -1,3 +1,9 @@
+## 2026-11-15 — input timing diagnostic CLI directory fixed
+
+Targeted diagnostic43643389576/sourcec8b49701b0800591dc951187b56ef5cb954d54ef failed before STA: LibreLane requires the --force-run-dir directory to exist. Actual CTS/postCTS source authentication and extraction had succeeded; CLI rejected missing input-timing/run. Added explicit mkdir before subprocess (same pattern as existing native repair driver). No physical design, input constraints or acceptance change.
+
+NEW diagnostic **43643718087**, source **e54adacc0ae714b27c1449930cabe9dd3d3708e9**, same `codex/crc-training-input-timing` branch. Inspect exact six targeted setup/hold reports and source invariance before any delay ECO. Previous failed run supplies no timing evidence. RX postCTS43643048434/job132594638172 and full packed loaded43642783223/job132593819470 confirmed in progress this turn; no restart. Full goal still open, native work cloud-only.
+
 ## 2026-11-15 — targeted training-input setup/hold diagnosis dispatched
 
 NEW read-only diagnostic **43643389576**, source **c8b49701b0800591dc951187b56ef5cb954d54ef**, branch `codex/crc-training-input-timing`. Restores authenticated CRC CTS and complete repaired postCTS43639975405 outputs, requires repaired ODB568dfa2f110b6813d316087b6249340bedd4c831b95bf13d6224014b49c6afb1, then runs three separate native corner STA processes with explicit `report_checks -from [get_ports pcie_training_i]` for max/min. Original clocks, derates, input delays and physical database remain unchanged; source hashes verified after execution. Each of six targeted reports must contain actual paths. This measures setup headroom before a possible hold delay ECO; it does not itself modify cells or fix timing. Do not infer setup headroom from missing paths in the truncated standard report.
