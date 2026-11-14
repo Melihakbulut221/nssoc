@@ -19,7 +19,7 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y iverilog build-essential pkg-config libprotobuf-c-dev protobuf-c-compiler protobuf-compiler libnl-3-dev libcap-dev libnet1-dev libgnutls28-dev libnftables-dev libaio-dev python3-protobuf libbsd-dev
+          sudo apt-get install -y iverilog build-essential pkg-config libprotobuf-dev uuid-dev python3-yaml libprotobuf-c-dev protobuf-c-compiler protobuf-compiler libnl-3-dev libcap-dev libnet1-dev libgnutls28-dev libnftables-dev libaio-dev python3-protobuf libbsd-dev
           mkdir /tmp/criu-source
           git -C /tmp/criu-source init
           git -C /tmp/criu-source remote add origin https://github.com/checkpoint-restore/criu.git
@@ -58,7 +58,7 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y iverilog build-essential pkg-config libprotobuf-c-dev protobuf-c-compiler protobuf-compiler libnl-3-dev libcap-dev libnet1-dev libgnutls28-dev libnftables-dev libaio-dev python3-protobuf libbsd-dev
+          sudo apt-get install -y iverilog build-essential pkg-config libprotobuf-dev uuid-dev python3-yaml libprotobuf-c-dev protobuf-c-compiler protobuf-compiler libnl-3-dev libcap-dev libnet1-dev libgnutls28-dev libnftables-dev libaio-dev python3-protobuf libbsd-dev
           mkdir /tmp/criu-source
           git -C /tmp/criu-source init
           git -C /tmp/criu-source remote add origin https://github.com/checkpoint-restore/criu.git
