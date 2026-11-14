@@ -1,3 +1,13 @@
+# Ethernet RX6 hold candidate also timed out; separate checkpoint inventory running
+
+43541234973 completed/failure, nativeRCX_STA_RC=124 at330min. IntermediateDRC0 after first antenna repair;39nets/41pins remain, secondrepair82diodes cut off during pinaccess. No final timing, so hold benefit not yet verified. Safe14104080998SHA`79cf09302f5cc660a21d05d0ca5dd6c7105395790bfa498856426e4df88dbfb6`; native14103417683SHA`361ca0f3c8fad45e6c8a8a4b49e828804cb48df8835651acb49932222f6e1c31`cloudonly.
+
+Inventory43569490025 source`0aebe4c70dbf6c5273f23f2c2d821ad5c33ea430`, branch`codex/rx6-hold-route-recovery-inventory`, safe prefix`rx6-hold-recovery-inventory-43569490025`. Inspect exact drt-run-1ODB and candidateSDC hashes; never use electrical-only candidate hashes for this variant. Reuse split-resume method only once native readiness/identity established. First electrical-only resume43567570194 still running; do not duplicate it.
+
+Receipt:`docs/evidence/rx6-hold-route-timeout-recovery-20261114.json`. Otherlive SP43566292104,DP43562021054,newCRCroute43561900502,CDR43562981217,MBIST43558722004. Bothold43538031308/43541234973 terminal, no longerpollaslive. Fullgoalopen.
+
+---
+
 # Saved antenna checkpoint continuation launched with separate RCX/STA budget
 
 43567570194 source`0b0afcacd36d6223e0fba6ce1ddbf18312c955e8`, branch`codex/resume-pinned-antenna-pass`, active. Restore original base14068260482 then nativecandidate14102387358. Exact drt-run-1ODB SHA6613e8102b7a4076f1748b75447ece150ccf86818c06dc89b50ca42cb2b92b7e, candidateSDC SHA5c65218b6106315c71d45c19eb61af09781607f0f438f2c7f99c4427884d24a4. Initial state onlyODB/SDC/NL/PNL, all stale metrics removed; config unchanged.
