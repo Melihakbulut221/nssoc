@@ -1,4 +1,4 @@
-name: SP SRAM native355 ports and evidenced2048 ambiguity bound with strict contents comparison
+name: SP SRAM full macro native identity and physical fault controls with strict contents comparison
 on:
   workflow_dispatch:
 permissions:
@@ -6,11 +6,16 @@ permissions:
   actions: read
 jobs:
   diagnose:
+    strategy:
+      fail-fast: false
+      matrix:
+        mutation: [identity, resistor_width, resistor_layer, mos_gate_open]
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     env:
       GH_TOKEN: ${{ github.token }}
       QT_QPA_PLATFORM: offscreen
+      NSSOC_MUTATION: ${{ matrix.mutation }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -18,7 +23,7 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/replay_sp_sram_hierarchical.py
+            /scripts/replay_sp_sram_full_macro_controls.py
             /scripts/check_lvs_bounded_search.rb
             /hw/soc/flow/audit_klayout_lvs.py
       - name: Restore exact native archive and runtime in cloud
@@ -33,11 +38,26 @@ jobs:
       - name: Verify unchanged rejection of graph and parameter faults
         run: klayout -b -zz -r scripts/check_lvs_bounded_search.rb
       - name: Diagnose preserved full-macro comparison with bounded search
-        run: python3 scripts/replay_sp_sram_hierarchical.py
+        run: python3 scripts/replay_sp_sram_full_macro_controls.py
+      - name: Require actual native identity pass or actual mutation rejection
+        run: |
+          python3 - <<'PYCHECK'
+          import json,os
+          from pathlib import Path
+          result=json.loads(Path('out/derived/bounded-result.json').read_text())
+          audit=json.loads(Path('out/derived/audit.json').read_text())
+          case=os.environ['NSSOC_MUTATION']
+          assert result['status']=='DIAGNOSTIC_COMPARISON_COMPLETE' and result['returncode']==0
+          actual=result['comparison_passed_within_diagnostic_scope']
+          assert actual==(case=='identity'), (case,actual,audit['reasons'])
+          assert result['audit_returncode']==(0 if case=='identity' else 1)
+          if case!='identity':assert any(row['status']=='NoMatch' for row in audit['circuits'])
+          Path('out/derived/full-macro-control-result.json').write_text(json.dumps({'status':'PASS','case':case,'actual_native_comparison_passed':actual,'manufacturing_approval':False},indent=2))
+          PYCHECK
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: sp-sram-hierarchy-bound2048-normalized-derived-${{ github.run_id }}
+          name: sp-sram-full-control-derived-${{ matrix.mutation }}-${{ github.run_id }}
           path: |
             out/derived/*.json
             out/comparison-controls.json
@@ -50,7 +70,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: sp-sram-hierarchy-bound2048-normalized-native-${{ github.run_id }}
+          name: sp-sram-full-control-native-${{ matrix.mutation }}-${{ github.run_id }}
           path: bounded-native.tgz
           if-no-files-found: warn
           retention-days: 30
