@@ -30,6 +30,7 @@ with tarfile.open('metal.tgz','r|gz') as tar:
    selected=[r for r in d['anchors'] if r['label'] in targets];assert len(selected)==4
    components={r['wire_component'] for r in selected};assert len(components)==4
    conductor_anchors=[r for r in d['anchors'] if r['wire_component'] in components]
+   all_anchors=d['anchors']
   if n.endswith('mim-audit.json'):
    raw=tar.extractfile(member).read();out['json_reports'][n]={'sha256':hashlib.sha256(raw).hexdigest(),'summary':small(json.loads(raw))}
 assert out['records'] and out['json_reports']
@@ -75,4 +76,52 @@ out['top_macro_instances']=macro_rows
 assert hashlib.sha256(pathlib.Path('source.gds').read_bytes()).hexdigest()==out['geometry']['sha256']
 
 out['geometry_scope']='Exact native physical terminal anchors and GDS DBU. Manhattan distances are lower bounds, not measured routed lengths. No physical edits or acceptance.'
+# Derive complete current physical macro/net connectivity and propose only
+# macro ordering. No changed GDS: top routing/local additions must be rebuilt.
+import collections,random,math
+macros=[i for i in layout.top_cell().each_inst() if i.cell.name.startswith('pd_child_')]
+assert len(macros)==16 and all(not i.is_regular_array() for i in macros)
+boxes=[i.bbox() for i in macros]
+netpoints=collections.defaultdict(list);coverage=[];unowned=[]
+for row in all_anchors:
+ p=row['point_dbu'];owners=[i for i,b in enumerate(boxes) if b.contains(kdb.Point(*p))]
+ assert len(owners)<=1,(row['label'],owners)
+ owner=owners[0] if owners else None
+ # Explicit public port anchors may remain outside functional macro boxes.
+ if owner is None:unowned.append(row)
+ netpoints[row['wire_component']].append((owner,p[0],p[1],row['label']))
+ coverage.append({'label':row['label'],'macro':owner,'component':row['wire_component']})
+railnets={n for n,pts in netpoints.items() if any(label.lower() in ('avdd','avss','sub') for _,_,_,label in pts)}
+assert len(railnets)==3,railnets
+# Missing device ownership rejects a plan, rather than silently optimizing a
+# partial cone. The source top has exactly25 physical public ports.
+assert len(unowned)==25 and all(not r['label'].startswith(('T','GC_')) for r in unowned),unowned
+critical={by_label[t]['wire_component'] for t in targets}
+original_y=[i.trans.disp.y for i in macros];origin=min(original_y)
+heights=[i.cell.bbox().height() for i in macros]
+def positions(order):
+ y=origin;out={}
+ for i in order:out[i]=y;y+=heights[i]+80000
+ return out
+def measures(ys):
+ out={}
+ for net,pts in netpoints.items():
+  xs=[p[1] for p in pts];yv=[p[2]+(ys[p[0]]-original_y[p[0]] if p[0] is not None else 0) for p in pts]
+  out[net]=(max(xs)-min(xs)+max(yv)-min(yv))*layout.dbu
+ return out
+def objective(values,weight):return sum(v*(weight if n in critical else 1) for n,v in values.items() if n not in railnets)
+baseline=measures(dict(enumerate(original_y)));initial=sorted(range(16),key=lambda i:original_y[i]);plans=[]
+for weight in [1,4]:
+ rng=random.Random(650+weight);order=initial[:];best=order[:];cost=objective(measures(positions(order)),weight);bestcost=cost
+ for step in range(12000):
+  trial=order[:];i,j=rng.sample(range(16),2);trial[i],trial[j]=trial[j],trial[i]
+  value=objective(measures(positions(trial)),weight);temperature=max(1,1200*(1-step/12000)**2)
+  if value<cost or rng.random()<math.exp(min(0,(cost-value)/temperature)):order,cost=trial,value
+  if cost<bestcost:best,bestcost=order[:],cost
+ ys=positions(best);changed=measures(ys)
+ # Check every translated macro box, with all native cell dimensions intact.
+ newboxes=[boxes[i].transformed(kdb.Trans(0,ys[i]-original_y[i])) for i in range(16)]
+ assert all((kdb.Region(newboxes[i])&kdb.Region(newboxes[j])).is_empty() for i in range(16) for j in range(i))
+ plans.append({'critical_weight':weight,'order':best,'positions_y_dbu':ys,'objective_before':objective(baseline,weight),'objective_after':bestcost,'macro_bbox_nonoverlap':True,'net_changes':[{'component':n,'labels':[v[3] for v in netpoints[n]],'supply':n in railnets,'critical':n in critical,'before_hpwl_um':baseline[n],'after_hpwl_um':changed[n],'delta_um':changed[n]-baseline[n]} for n in sorted(netpoints)]})
+out['placement_plans']={'status':'PROPOSED_MACRO_ORDERS_REQUIRES_ROUTING_REBUILD','geometry_changed':False,'coverage':coverage,'unowned_public_ports':unowned,'rail_components':sorted(railnets),'critical_components':sorted(critical),'plans':plans,'scope':'Complete physical anchor graph; fixed external pins; constant X; reordered native macros with80um gaps. HPWL is a placement proxy, not routed wirelength or timing. All signal changes including clocks and upstream sampler paths retained. No LVS/DRC or electrical acceptance.'}
 pathlib.Path('out').mkdir();pathlib.Path('out/capacitor-native-records.json').write_text(json.dumps(out,indent=2))
