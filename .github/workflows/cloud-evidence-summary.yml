@@ -1,4 +1,4 @@
-name: Two native delays per PCIe input preserving training and Ethernet repairs
+name: Repair three SRAM enable hold paths preserving all IO repairs
 on:
   workflow_dispatch:
 permissions:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-pcie-hold-eco-derived-${{ github.run_id }}
+          name: rx-sram-men-hold-eco-derived-${{ github.run_id }}
           path: |
             input-timing/result.json
             input-timing/native.log
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-pcie-hold-eco-native-${{ github.run_id }}
+          name: rx-sram-men-hold-eco-native-${{ github.run_id }}
           path: input-timing/run/
           if-no-files-found: warn
           retention-days: 90

@@ -21,6 +21,18 @@ foreach {direction names} {from {pcie_rx_dllp_i pcie_rx_error_i pcie_rx_eop_i pc
   incr index
  }
 }
+foreach bank {1 2 3} {
+ set name [format {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[%d].u_mem/A_MEN} $bank]
+ set target [get_pins [list $name]]
+ if {[llength $target]!=1} {error "Missing SRAM enable target $name"}
+ foreach type {max min} {
+  puts "%OL_CREATE_REPORT io-$index-$type.rpt"
+  puts "NSSOC_TARGET_PIN $name"
+  report_checks -to $target -corner $corner_name -path_delay $type -group_path_count 10000 -fields {slew cap input net fanout} -format full_clock_expanded -digits 9
+  puts "%OL_END_REPORT"
+ }
+ incr index
+}
 """
 class InputSTA(SingleCornerSTA):
  def get_script_path(self):
@@ -41,17 +53,21 @@ foreach inst [$block getInsts] {
 set old_count [llength [$block getInsts]]
 set old_nets [llength [$block getNets]]
 set changed {}
-set index 0
-foreach portname {pcie_rx_dllp_i pcie_rx_error_i pcie_rx_eop_i pcie_rx_sop_i pcie_rx_data_i[0] pcie_rx_data_i[1] pcie_rx_data_i[2] pcie_rx_data_i[3] pcie_rx_data_i[4] pcie_rx_data_i[5] pcie_rx_data_i[6] pcie_rx_data_i[7] pcie_rx_valid_i pcie_function_id_i[0] pcie_function_id_i[1] pcie_function_id_i[2] pcie_function_id_i[3] pcie_function_id_i[4] pcie_function_id_i[5] pcie_function_id_i[6] pcie_function_id_i[7] pcie_function_id_i[8] pcie_function_id_i[9] pcie_function_id_i[10] pcie_function_id_i[11] pcie_function_id_i[12] pcie_function_id_i[13] pcie_function_id_i[14] pcie_function_id_i[15]} {
- set port [$block findBTerm $portname]
- if {$port eq "NULL" || [$port getIoType] ne "INPUT"} {error "Missing input $portname"}
- set net [$port getNet]
- if {[llength [$net getITerms]]!=1 || [llength [$net getBTerms]]!=1} {error "Unexpected input fanout $portname"}
- set sink [lindex [$net getITerms] 0]
- if {[[$sink getMTerm] getIoType] ne "INPUT"} {error "Expected single input sink"}
- set location [[$sink getInst] getLocation]
- set orientation [[$sink getInst] getOrient]
- set stem nssoc_pcie_input_hold_${index}
+foreach bank {1 2 3} {
+ set instname [format {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[%d].u_mem} $bank]
+ set memory [$block findInst $instname]
+ if {$memory eq "NULL" || [[$memory getMaster] getName] ne "RM_IHPSG13_2P_256x16_c2_bm_bist"} {error "Wrong SRAM target"}
+ set sink [$memory findITerm A_MEN]
+ if {$sink eq "NULL" || [[$sink getMTerm] getIoType] ne "INPUT"} {error "Missing SRAM enable pin"}
+ set net [$sink getNet]
+ if {$net eq "NULL"} {error "Unconnected SRAM enable"}
+ set drivers {}
+ foreach pin [$net getITerms] {if {[[$pin getMTerm] getIoType] eq "OUTPUT"} {lappend drivers $pin}}
+ if {[llength $drivers]!=1 || [llength [$net getBTerms]]!=0} {error "Unexpected SRAM enable source"}
+ set driver [lindex $drivers 0]
+ set location [[$driver getInst] getLocation]
+ set orientation [[$driver getInst] getOrient]
+ set stem nssoc_sram_men_hold_${bank}
  foreach name [list ${stem}_0 ${stem}_1] {
   if {[$block findInst $name] ne "NULL" || [$block findNet ${name}_out] ne "NULL"} {error "ECO name collision"}
  }
@@ -69,10 +85,8 @@ foreach portname {pcie_rx_dllp_i pcie_rx_error_i pcie_rx_eop_i pcie_rx_sop_i pci
  }
  $sink connect $last
  dict set changed $sink $last
- if {[$port getNet] ne $net} {error "Original port net changed"}
- incr index
 }
-if {$index!=29 || [llength [$block getInsts]]!=$old_count+58 || [llength [$block getNets]]!=$old_nets+58} {error "Wrong ECO census"}
+if {[dict size $changed]!=3 || [llength [$block getInsts]]!=$old_count+6 || [llength [$block getNets]]!=$old_nets+6} {error "Wrong ECO census"}
 foreach inst [$block getInsts] {
  set name [$inst getName]
  if {![dict exists $before $name]} {continue}
@@ -84,11 +98,11 @@ foreach inst [$block getInsts] {
   if {[$pin getNet] ne $expected} {error "Original incidence changed"}
  }
 }
-puts "NSSOC_FIFTY_EIGHT_NATIVE_DELAY_CELLS_TWENTY_NINE_PCIE_pcie_rx_dllp_i pcie_rx_error_i pcie_rx_eop_i pcie_rx_sop_i pcie_rx_data_i[0] pcie_rx_data_i[1] pcie_rx_data_i[2] pcie_rx_data_i[3] pcie_rx_data_i[4] pcie_rx_data_i[5] pcie_rx_data_i[6] pcie_rx_data_i[7] pcie_rx_valid_i pcie_function_id_i[0] pcie_function_id_i[1] pcie_function_id_i[2] pcie_function_id_i[3] pcie_function_id_i[4] pcie_function_id_i[5] pcie_function_id_i[6] pcie_function_id_i[7] pcie_function_id_i[8] pcie_function_id_i[9] pcie_function_id_i[10] pcie_function_id_i[11] pcie_function_id_i[12] pcie_function_id_i[13] pcie_function_id_i[14] pcie_function_id_i[15]_ONLY"
+puts "NSSOC_SIX_NATIVE_DELAY_CELLS_THREE_SRAM_ENABLE_PINS_ONLY"
 """
 class TrainingHoldECO(ElectricalPostCTS):
  id='NSSOC.TrainingHoldECO'
- name='Two native delay cells on each remaining PCIe input'
+ name='Two native delay cells on three SRAM enable pins'
  def get_script_path(self):
   p=Path(super().get_script_path());s=p.read_text()
   a=s.index('# Buffer I/O');b=s.index('report_floating_nets -verbose',a)
