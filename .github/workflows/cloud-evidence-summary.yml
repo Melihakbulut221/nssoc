@@ -1,4 +1,4 @@
-name: Diagnose actual failed paired650 waveform without resimulation
+name: Inspect paired650 actual comparator input transfer and headroom
 on:
   workflow_dispatch:
 permissions:
@@ -33,7 +33,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: paired650-wave-diagnosis-${{ github.run_id }}
+          name: paired650-input-transfer-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
