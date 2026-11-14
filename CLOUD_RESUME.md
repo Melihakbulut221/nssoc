@@ -1,3 +1,13 @@
+# Full native MBIST advanced to1.26M cycles; next exact checkpoint continuation launched
+
+43558722004 completed/success as checkpoint infrastructure ONLY: passed=false,completed_boot=false,checkpoint_saved=true,stage_status=checkpointed_pending_boot.10800.323s segment,last_progress_cycle1260000. Safe14105022987SHA`43f3463da142dde3d0e5e9ca57d0292a8bf67286479b00656d69a39d9fb479de`; native14104748996SHA`875955125fb62aa659076191cf87496b58209fd56059d2bc1f38f24cf3aac6cf`cloudonly. Innernext-checkpoint.tgzSHA`8f480f6170a83b41ed1be10ef15ac5beae08b3f77e635575274e6f1ad6632181`; prefix10534bytesSHA`a2b5e52f0f115f5c17249a7eea6528f2b50814d1be91992f5b7b66714f5223e5`; CRIUimage_directory`images-43558722004`. No boot acceptance; uart/flash still0 during observed MBIST phase.
+
+Next43573337312 source`5f4612b7a1aa09f8fafb3a0ffc3548b8c82f84fa`, branch`codex/full-native-boot-continuation-two`, verified in_progress. Exact parent chain/status/source/cycle/hash guards, restore images-43558722004; runtime/kernel/mappedfiles unchanged required. Input next-checkpoint.tgz renamed parent-checkpoint.tgz after restore/unpack verification so unchanged input cannot be uploaded as a fresh output checkpoint. Original full3Mcyclebound and28bootchecks/system+EthernetMBIST retained. Original boot checker/preparer/lock compared with frozen parent and unchanged. Native restore not yet proven by completed result. Safe prefixfull-native-continuation-result-43573337312, nativefull-native-continuation-checkpoint-43573337312; allnative stayscloud.
+
+Receipt:docs/evidence/full-native-1260k-continuation-20261114.json. PollnewMBIST43573337312 plusCDR43571075470,route43569629324/43567570194/43561900502,LVS43566292104/43562021054. OldMBIST43558722004 terminal, do notpollaslive. Fullgoalopen.
+
+---
+
 # Internal clock topology/measurement completed; no missing clock edges in observed candidate
 
 43572236262 source`e260cf027733c35302e1ac375b0d10a80ec69a24` completed/success. Safe14103694704SHA`b96721f2fa7ef446cbcfde835258d25b10d8c7dde97a112e447b742cba8ca8b9`. Prior43571981658 failed solely because one-to-one pairing assumption rejected real parallel clock devices; corrected by all shared-emitter positive/negative branch combinations, not arbitrary matching. Source and report: scripts/diagnose_cdr_internal_clock.py; docs/evidence/cdr-internal-clock-result-20261114.json.
