@@ -1,3 +1,13 @@
+# CDR comparison completed: current-only buffer change is insufficient
+
+Diagnostic43570390846 completed/success; safe14104122995 SHA`f5c99f1b5635a011c56874959815b8d09850b49e518d9c542b7e4ca5d77a40b4`. Result saved in docs/evidence/cdr-ac-buffer-settling-result-20261114.json. Diagnostic success is not a PHY pass.
+
+Exact preserved grid after rising[k],252 interior bits: transition A-buffer failures67/127 baseline,63/127 for BOTH acbuf15/acbuf20 by final117.1875ps grid point; passing transitions still ~101.6..117.2ps. C sampler failures64/252 unchanged, C buffer96/252 baseline and1.5x,89/252 at2x. Original strict sample gates remain authoritative; these conditional grid counts are different windows, not replacements. Stronger buffer modestly improves latency but leaves dominant errors and introduces device-limit failures. Neither candidate accepted.
+
+Next: diagnose C sampler history/clock relationship and XOR selector operating-point violations before another current sweep. Saved captures lack clock vectors: do not infer clock timing from data alone; use actual topology plus a targeted cloud capture if needed. Native archives stay cloud-only. Existing six timing/LVS/MBIST jobs were still active at last poll; retrieve their final evidence before claiming closure. Full goal remains open.
+
+---
+
 # CDR A/C buffer current screens rejected; saved-waveform comparison running
 
 43562981217 completed/failure. Both acbuf15 and acbuf20 simulate successfully and pass phase, but fail data and device limits. X wrong-sign samples383/765 for BOTH; Y below100mV587/588 samples. Failing HBT counts8/14; sampler A/C/D remain failing. No PHY acceptance, no new layout. Do not repeat unchanged current increases.
