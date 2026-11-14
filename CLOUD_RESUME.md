@@ -1,3 +1,13 @@
+## 2026-11-14 — resumed block register timing positive for cache; independent I/O audit dispatched
+
+Run43632711029/source871de823044485fbe7cb7484d930016550c23a94 PASSEDactualsavedDB continuation. Bothresumed six-corner/mode register-path measurements exactlyreproducepreviousstagewithin2fs beforeoptimization. No synthesis/globalplacement restart. Additionalsetup600thenhold1000/40percent, original4nsidealclock+5percentderates/libraries/layerRC unchanged.
+
+Cacheaftercontinuedhold reportedregister-to-register: slowsetup+.001099ns,typicalsetup+1.395881,fastsetup+2.176728; slowhold+.319269,typicalhold+.119948,fasthold+.000090ns. Addedsetup26resizes17buffers20pinswaps/removed2buffers, then8holdbuffers. Margins1.099ps/.09ps areextremelythin, NOTrobustroutedtiming orfullchipclosure. Baseline registerslowsetup still-.009184ns,fasthold+.000130ns. Native resizerbaselineall-pathWNSalso showed-.155ns despitezero endpointcounterinitslastrow: do nottreat resizerintegercounterasallpathpass.
+
+The existingreports restrict -from all_registers clockpins/-to dat apins. Therefore no all-I/O/blocksignoff claim. Independentconstrained-all-path audit dispatchedon codex/eop-block-all-paths/source1609e8efff5523fdb3b19cc717437d8ddee7c61b,run43633057865. Loadsactualcontinued_holdODB; reproducesoriginalregistermeasurements, then removesonlyregisterendpointfilters fromreport_checks with10000paths/group and9digits atslow/typ/fast. No furtheroptimization. Mustinspectinput/outputworstpaths; unconstrainedreset/clock/physicalcoverage remain outsidethisidealclockblockscreen. Allacceptanceflagsfalse.
+
+Safe14128054256 SHA33d20efb90b41337cc6624e64a3e97fe85c589b7c067e7c4d5770c03c32085cb; native14128074215 SHA2ef9df86ee0b3c2863d8c06ecf474cbdb750f6f765711b416c03e00407304c7a cloudonly. Fullreceipt docs/evidence/eop-block-resumed-repair-20261114.json. Newfullchip43632152541 bothnativeCTS/gateboot stillrunning; nooldpasses transferred. Fullmanufacturinggoalopen.
+
 ## 2026-11-14 — exact repaired replay DB continuation dispatched while mainchip CTS runs
 
 Currentblockcontinuation43632711029/source871de823044485fbe7cb7484d930016550c23a94, branchcodex/eop-block-resume-repair. Unlikeearlierpairedscreens, it restoresactualbaseline/cache hold_repair.odb from600iteration43631139914 native14128122304 SHAa997c6d23fe7c5af22a5887830141297f09a3e253da12f86ca2dfde47ff68ae6. Safe14127987571 SHA73154f72f8b9f946118c4fdbea2207a61a1a44167a69d4de1bf64f6cf3ffba39 bindsoriginal measurements. No resynthesis/globalplacement restart.

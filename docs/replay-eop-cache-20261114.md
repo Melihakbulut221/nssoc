@@ -56,3 +56,9 @@ These isolated results do not qualify CTS, routed parasitics, full-chip input/ou
 The first main-chip run completed RTL firmware boot (28 checks, zero failure mask) and synthesis, then failed the checker because source locations were absolute paths. [Revalidation](https://github.com/Melihakbulut221/nssoc/actions/runs/43631950511) authenticated all 60 preserved files and verified the actual cache flip-flop and its PCIe clock, without resynthesizing. The new chip has 115,746 cells and 20 SRAM macros. The original run remains failed; its corrected validation has a separate source and receipt.
 
 Exact-source placement/CTS and independent Icarus gate boot with full system/Ethernet MBIST have now been dispatched on `codex/eop-chip-physical-boot`. Their results remain pending. RTL boot success is not gate boot or physical signoff.
+
+## Continuation from the repaired databases
+
+[Continuation43632711029](https://github.com/Melihakbulut221/nssoc/actions/runs/43632711029) restored the exact repaired databases and reproduced their prior register-path measurements before further optimization. No synthesis or global placement was repeated. After setup and hold repair, the cache candidate's reported register-to-register slow setup is +0.001099 ns and fast hold is +0.000090 ns; the baseline remains at -0.009184 ns slow setup. These extremely thin positive margins do not establish robust closure.
+
+Those reports explicitly filter for register endpoints. An independent audit of constrained input/output as well as register paths is pending on `codex/eop-block-all-paths`. Unconstrained paths, real clock trees, routed RC, electrical limits and full-chip signoff remain separate. The [source-bound receipt](evidence/eop-block-resumed-repair-20261114.json) retains the precise scope and all measurements.
