@@ -53,3 +53,9 @@ An initial parser failure was resolved without altering logic: OpenSTA rejected 
 [43618915765](https://github.com/Melihakbulut221/nssoc/actions/runs/43618915765) passed fresh firmware RTL preparation and full synthesis. The mapped chip has114952cells,10registered write-group bits,16registered low-select bits,16Ethernet SRAMs and4system SRAMs. The default-off define is now forwarded by both source flows. Exact mapping, firmware and source hashes are recorded in `docs/evidence/predecode-mainchip-mapping-20261114.json`.
 
 Mapped boot is a separate gate: [43620739672](https://github.com/Melihakbulut221/nssoc/actions/runs/43620739672) runs the exact new netlist with complete system/Ethernet MBIST and firmware checks in Icarus, plus supplemental randomized Verilator runs. Neither old-chip boot/LVS nor isolated-block timing is transferred to this new source. Placement/CTS/routing, extracted timing and new-layout LVS remain pending.
+
+## Full-chip post-CTS result and next control-path candidate
+
+[Fresh three-corner post-CTS repair](https://github.com/Melihakbulut221/nssoc/actions/runs/43625119515) completed on this new mapped chip. It did not close timing: slow setup is -3.164052 ns with 2,761 violating endpoints; fast hold is -0.496129 ns with 251 violations. Fast setup is positive. These are fresh propagated-clock placement estimates, not the obsolete metrics inherited from pre-placement stages and not routed extraction.
+
+The exact worst slow path goes from the replay read cursor to its one-hot cursor register. The [EOP-cache follow-up](replay-eop-cache-20261114.md) documents the source-bound diagnosis, cycle-preserving RTL candidate, passed equivalence and traffic tests, and measured physical tradeoffs. Its whole-chip implementation is still a candidate; neither optimization is production acceptance.
