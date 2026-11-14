@@ -1,3 +1,15 @@
+# Fresh CRC route failed diode legalization, checkpoint inventory launched; CDR settling diagnosis complete
+
+43561900502 sourceb1626c18095a9a9c7a06b3cb1bd508a4a0ba7f19 terminal/failure, ROUTE_RC2 NOT timeout. Job132347238762 log: initial detailedrouting3h18m08s finishes DRC0; antenna565nets656pins; first repair_antennas fails DPL-0036 on ANTENNA_482,ANTENNA_1342,ANTENNA_457,ANTENNA_458. DependentSTA skipped. Native14107653261 SHAa401c73f139405396cf8afdb0e24e718c1334c09d8c49c3e4774d78e3440f64c stayscloud. Routeartifact14107820079 SHAd88db968c580a65be20a6f92f28f7f4511a23dfffb481103f8a6cf9f3c097a5a includesDRCgeometry, do notdownloadlocally.
+
+New inventory43579197875 sourcedbadad3fb7fbbc40565e65496a6121f9de38d312, branchcodex/crc-route-recovery-inventory, queued at dispatch check. Same prior tested inventory adapted to route-incomplete.tgz; collects only paths/hash/size/state references/metrics, no native bytes locally. Safecrc-route-recovery-inventory-43579197875. Find exact saved drt-run-0 ODB, config/state refs; then diagnose diode legal placement or jumper repair using checkpoint. Do not repeat initial full route. Receipt docs/evidence/crc-route-diode-placement-failure-20261114.json. Stop polling43561900502 aslive.
+
+CDRdiagnosis43579024949 sourceb562486df6d8c15994b355b877bfc80a648d77ac success; safe14107443996 SHA4d9a5206ab7aa3a5d05a7769241058bf3520d308ee87acd5986b2a105b97a895. Exact252interiorbits UI/16grid: neverstable>=100mV by117.1875ps A0/C64 in baseline,load12,load16 all; bufferA67→63/63,bufferC96→96/96. No acceptance threshold/window changes. Csampler history-sensitive margin remains; loads do not fix it. Testedscript integrated, result docs/evidence/cdr-acload-settling-result-20261114.json. Next PHYwork should inspect actual Cmaster/slave gain/data path instead of more load/current sweep. No fullPHY/layoutclaim.
+
+Stilllive43566292104(SP),43562021054(DP),43573697024(MBIST), plusnewinventory43579197875. Fullgoalopen.
+
+---
+
 # Both original-bias collector-load CDR screens fail data; saved-sample diagnosis live
 
 acload16 result from43571075470 verified: simulatorRC0/devicePASS/phasePASS/dataFAIL. X381wrong717below100mV, Y2wrong596below,765samples each. A/C/D lowmargin65/139/96 exactly same counts as acload12;Bpass. Lower collector resistance alone does not fix the data path. No new layout or closed-loop proof. Safe14107393490 SHAd335866dcf7c30ea6e7100f2ba2041b71d64692ee36bc3b3d197a5fa4896ae2e. Native14107159021 SHA5dbfa37bb7560c8b363f6edf179e098c4e2469281b797aba3d0486ebcc389dcc; mixed14106994265 SHAf8b37b573de8ec7608b800a71089896805462a387bd2c3f97cc371f1953ab17e, bothcloudonly. Raw8fb118e2e91346887be64ba06ebd3c9d31bd1b992fbb5adb2d8f8ec97d1a654a,113490points. Receipt docs/evidence/cdr-acload16-rejected-20261114.json.
