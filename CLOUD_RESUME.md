@@ -1,3 +1,11 @@
+## 2026-11-14 — completed old buf4 route/RCX evidence measured; no timing closure
+
+Old candidate 43610680141 completed FAILURE. Authenticated cloud extraction 43634587365/source7a491f528275fc218813700fc1e7901de27d3d45 passed; safe artifact 14129084546 SHA256 97532361b0a04c5774b4c4514bd29ca66b9738ba1b8d80fbbe02c3bf0707709f. Full receipt docs/evidence/buf4-routed-measurements-20261114.json includes all slim evidence and source report hashes.
+
+Fresh nominal OpenRCX plus three-library-corner STA: slow setup 451 violations, worst -1.1162431295 ns; slow hold 0. Typical setup 0, hold 2 with worst -0.0343659555 ns. Fast setup 0, hold 112 with worst -0.1328672765 ns. Aggregate worst slew count 584, capacitance count 106. Router DRC 0, fresh antenna 368 nets / 413 pins. The source SDC and acceptance gates were unchanged. This is NOT qualified RC min/max: one nominal SPEF (583e5df3456e3a59e1a84582ac8cdda57006749cb496c3cfb07d476cb6423c0a), 158097 nets, zero capacitance-conservation inconsistencies within that limited audit.
+
+Worst slow old-RTL PCIe path is retry.write_valid -> retry.bytes[25][4], not the new predecode/EOP source; CPU remains -0.576229 ns and Ethernet TX -0.021050 ns in slow group reports. Therefore do not transfer or optimize old source as though it were the live new EOP fullchip. New postCTS 43633451595, new actual gateboot 43632152541, paired650 transient 43626358999 remain the next live handles. Source-specific isolated OR4 ECO was rejected (previous entry); candidate integration and full product signoff remain open.
+
 ## 2026-11-14 — single OR4 upsize rejected; saved guarded candidate retained
 
 Measured run 43634351297 / source 4d5a209adcb35c83075e3df0cad9d6ab77367d4c succeeded as an experiment. Exact control reproduced all six all-path STA values and the ODB hash. The sole _06640_ OR4_1 -> OR4_2 replacement worsened slow setup from -0.022251979 to -0.063389517 ns; typical setup 1.089151502 -> 1.060272336 ns; fast setup 1.733969331 -> 1.715619087 ns. Hold stayed +0.025209585 ns at fast. This ECO is REJECTED and not integrated.
