@@ -66,9 +66,9 @@ def prepare():
 def repo_api(path):
  return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path],timeout=60))
 def verify_prerequisites():
- for runid,sha in [(43557919707,'104cfcfbe16b589bf3ee5df1b51d0374c1d19eb2'),(43558336660,'292a3313f7c0fca20c3fa65cc5de910003083162'),(43558722004,'7d118a79f0bdfab6aa60b5bccb1cdb9dd836e2b8')]:
+ for runid,sha in [(43557919707,'104cfcfbe16b589bf3ee5df1b51d0374c1d19eb2'),(43558336660,'292a3313f7c0fca20c3fa65cc5de910003083162'),(43558722004,'7d118a79f0bdfab6aa60b5bccb1cdb9dd836e2b8'),(43573697024,'27c496c5649c284e5cc1494792ef103c7fd427c7')]:
   state=repo_api('actions/runs/'+str(runid));assert state['status']=='completed' and state['conclusion']=='success' and state['head_sha']==sha
- r['prerequisite_runs']=[43557919707,43558336660,43558722004]
+ r['prerequisite_runs']=[43557919707,43558336660,43558722004,43573697024]
 def last_cycle(data):
  values=re.findall(rb'^LOGICROM_GL progress cycles=(\d+) ',data,re.M)
  return int(values[-1]) if values else 0
@@ -77,13 +77,13 @@ try:
  r['kernel_preflight']=run(['sudo','criu','check']).stdout
  assert not root.exists()
  dump=json.loads(P('resume-result.json').read_text())
- assert dump['source_sha']=='7d118a79f0bdfab6aa60b5bccb1cdb9dd836e2b8'
+ assert dump['source_sha']=='27c496c5649c284e5cc1494792ef103c7fd427c7'
  assert dump['checkpoint_saved'] is True and dump['completed_boot'] is False and dump['passed'] is False
  assert dump['stage_status']=='checkpointed_pending_boot' and 'error' not in dump
- assert dump['image_directory']=='images-43558722004' and dump['last_progress_cycle']==1260000
- assert dump['checkpoint_tgz_sha256']=='8f480f6170a83b41ed1be10ef15ac5beae08b3f77e635575274e6f1ad6632181'
- assert dump['checkpoint_prefix_sha256']=='a2b5e52f0f115f5c17249a7eea6528f2b50814d1be91992f5b7b66714f5223e5'
- assert dump['parent_checkpoint']=={'run':43557919707,'native_artifact':14099590587,'result_artifact':14099221726,'tgz_sha256':'704cc23ee221ab0d09f5f21b0bee1c2b5f4a7cf250c80c8b4ee90ca0cafced2e'}
+ assert dump['image_directory']=='images-43573697024' and dump['last_progress_cycle']==1900000
+ assert dump['checkpoint_tgz_sha256']=='06e96554e91fd1b956b3c948419a02f7de81c8ba43f75df69e5d6014453d5875'
+ assert dump['checkpoint_prefix_sha256']=='6fc8354e52debce6a7854615f17ef0cce200158d95a819638f58fa6535e85793' and dump['checkpoint_prefix_bytes']==16449
+ assert dump['parent_checkpoint']=={'run':43558722004,'native_artifact':14104748996,'result_artifact':14105022987,'tgz_sha256':'8f480f6170a83b41ed1be10ef15ac5beae08b3f77e635575274e6f1ad6632181'}
  assert r['original_input_hashes']==dump['original_input_hashes'] and r['original_inputs_sha256']==dump['original_inputs_sha256']
  assert digest('next-checkpoint.tgz')==dump['checkpoint_tgz_sha256']
  assert r['runtime']==dump['runtime_manifest'],'Runtime identity changed'
@@ -94,8 +94,8 @@ try:
  libc=ctypes.CDLL(None,use_errno=True);assert libc.prctl(36,1,0,0,0)==0,os.strerror(ctypes.get_errno())
  enabled=ctypes.c_int();assert libc.prctl(37,ctypes.byref(enabled),0,0,0)==0 and enabled.value==1
  r['child_subreaper']=True;r['completed_boot']=False;r['checkpoint_saved']=False
- r['parent_checkpoint']={'run':43558722004,'native_artifact':14104748996,'result_artifact':14105022987,'tgz_sha256':dump['checkpoint_tgz_sha256']}
- initial_cycle=last_cycle((root/'resumed.log').read_bytes());assert initial_cycle==1260000
+ r['parent_checkpoint']={'run':43573697024,'native_artifact':14111635745,'result_artifact':14110894168,'tgz_sha256':dump['checkpoint_tgz_sha256']}
+ initial_cycle=last_cycle((root/'resumed.log').read_bytes());assert initial_cycle==1900000
  restored_pidfile=root/('restored-'+os.environ['GITHUB_RUN_ID']+'.pid')
  assert not restored_pidfile.exists(),'New restore PID destination already exists'
  r['restore_pidfile']=restored_pidfile.name

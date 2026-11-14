@@ -1,4 +1,4 @@
-name: Full native MBIST continuation from verified 1.26M cycle checkpoint
+name: Full native MBIST continuation from verified 1.90M cycle checkpoint
 on:
   workflow_dispatch:
 permissions:
@@ -41,11 +41,11 @@ jobs:
           python3 hw/soc/flow/prepare_ihp_native_boot.py
       - run: |
           set -euo pipefail
-          gh api repos/Melihakbulut221/nssoc/actions/artifacts/14104748996/zip > native.zip
-          echo '875955125fb62aa659076191cf87496b58209fd56059d2bc1f38f24cf3aac6cf  native.zip' | sha256sum -c -
+          gh api repos/Melihakbulut221/nssoc/actions/artifacts/14111635745/zip > native.zip
+          echo '4118593a84fc58be234b22d1fe177626dba8a2a6f973ff10e5effca36b9472a9  native.zip' | sha256sum -c -
           unzip -q native.zip
-          gh api repos/Melihakbulut221/nssoc/actions/artifacts/14105022987/zip > result.zip
-          echo '43f3463da142dde3d0e5e9ca57d0292a8bf67286479b00656d69a39d9fb479de  result.zip' | sha256sum -c -
+          gh api repos/Melihakbulut221/nssoc/actions/artifacts/14110894168/zip > result.zip
+          echo '93d10bd767f486fdc5718cec80d4de1cdd2c1fd453c805bda68e31874bdaf79d  result.zip' | sha256sum -c -
           unzip -q result.zip
           python3 -u scripts/resume_full_native_boot.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
