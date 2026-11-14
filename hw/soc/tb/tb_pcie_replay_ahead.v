@@ -185,6 +185,25 @@ module tb_pcie_replay_ahead;
         if (r_source_error && link_up && link_hold==0 && error_wait==0) error_wait=2+rnd(200);
     end
 
+`ifdef COSIM_WRITE_PREDECODE
+    // Inspect actual memory write strobes and all stored bytes, including
+    // bytes in malformed frames that never reach an output scoreboard.
+    integer write_check;
+    always @(negedge clk) if(cycle>2) begin
+        for(write_check=0;write_check<DEPTH*MAX_BYTES;write_check=write_check+1) begin
+            if((reference.write_valid && reference.write_address==write_check) !==
+               (candidate.write_group[write_check/16] && candidate.write_low[write_check%16])) begin
+                $display("MISMATCH byte write strobe cycle=%0d byte=%0d",cycle,write_check);
+                $fatal(1,"write strobe differs");
+            end
+            if(reference.bytes[write_check] !== candidate.bytes[write_check]) begin
+                $display("MISMATCH stored byte cycle=%0d byte=%0d",cycle,write_check);
+                $fatal(1,"stored byte differs");
+            end
+        end
+    end
+`endif
+
     always @(negedge clk) if (cycle>2) begin
         if (r_out!==c_out) begin
             mismatches=mismatches+1;

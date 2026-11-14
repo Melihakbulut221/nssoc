@@ -29,6 +29,7 @@ BENCH_ARGS=()
   for d in "${DEFINES[@]}"; do
     case "$d" in
       SOC_PCIE_REPLAY_AHEAD|SOC_PCIE_REPLAY_INBANK) ;;
+      SOC_PCIE_REPLAY_WRITE_PREDECODE) BENCH_ARGS+=(-DCOSIM_WRITE_PREDECODE) ;;
       # The candidate has the reset-copy port; the bench drives it with rst_ni.
       SOC_PCIE_RESET_COPIES) BENCH_ARGS+=(-DCOSIM_RESET_COPIES) ;;
       *) echo "unsupported define $d" >&2; exit 2 ;;

@@ -138,7 +138,6 @@
     "run": 43613576934,
     "reason": "Ubuntu packaged old Yosys rejected existing baseline SystemVerilog cast syntax; no functional counterexample"
   },
-  "pending_stronger_storage_and_compiled_fault_controls": 43614166666,
   "timing_accepted": false,
   "manufacturing_approval": false,
   "formal_with_physical_replay_knobs": {
@@ -167,5 +166,105 @@
         }
       ]
     }
-  }
+  },
+  "storage_and_actual_compiled_fault_controls": {
+    "run": 43614166666,
+    "source": "5634da5c513f0ef0ed76df2d68155e8f6d760132",
+    "artifact": 14121404592,
+    "archive_sha256": "25dc8ac9590fe4bd175fc7eae9021ca6232c51e691ebd28c717e1a24d4f340b6",
+    "actual_per_byte_strobes_and_storage_checked": true,
+    "cosim_cases": 12,
+    "cycles": 3600000,
+    "compiled_negative_controls": {
+      "status": "PASS",
+      "actual_compiled_wrong_select_detected_in_seeds": 6
+    },
+    "independent_tests": {
+      "soc_pcie_buffered_flow_packets.xml": 5,
+      "soc_pcie_flow_packets.xml": 3,
+      "soc_pcie_reliable_packets.xml": 4,
+      "soc_pcie_replay_tx.xml": 7
+    },
+    "factorization": {
+      "status": "PASS",
+      "scope": "Boolean factorization and five source-update guards only; sequential behavior tested separately",
+      "rtl_sha256": "374722073fc503a85970748d79daad12fd360fb1edeb58b76250ddf3b967eb35",
+      "cases": [
+        {
+          "bytes": 36,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "097372a33bf82541f8dfe593388d7c814dbe8821585325ca8e312eccb5366171"
+        },
+        {
+          "bytes": 36,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "8b13ac2dc8014161bc2a68317df92c369f3c08549fa97f7876c494359878d799"
+        },
+        {
+          "bytes": 44,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "553df8012e28d7f7d58d7bbcdd36b6abddeefe5b3133d4790e19a362c8ba5ce0"
+        },
+        {
+          "bytes": 44,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "dca0661d967a49fe78b9fbe32c3d4e87f89dd148374daabf48b8d11457f4d923"
+        },
+        {
+          "bytes": 76,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "80b6b05e4eca0fdd2de0635a1ce9c3c189f613db074a52b9307257f989ccd43b"
+        },
+        {
+          "bytes": 76,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "af0c55320b79dd3d1cb0474bb0ae1fe1cbbb0e233acc761577a3d624837b3219"
+        },
+        {
+          "bytes": 152,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "ee40a00b137a9188c650d7ad1ea0b15f3f91e2a05f3df65ef34816586712379c"
+        },
+        {
+          "bytes": 152,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "43bbc869a1344148293f84e3d1040c6c4b70856e869b850d0ac92f97a47f429c"
+        },
+        {
+          "bytes": 608,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "36a2a9a9b90027ef3fb6d81e59e8a1fb11263921ca9a7174ba95c02d82365605"
+        },
+        {
+          "bytes": 608,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "cdba9ee84d26863b1f5ee8ae546b1964d238c6bc5c191e8bcfc199d13f1c0497"
+        },
+        {
+          "bytes": 32768,
+          "mutation": false,
+          "expected_verdict_observed": true,
+          "log_sha256": "616b8576eafd957701f847628753e677bfee11b0f2a1ec3378d8443dff632195"
+        },
+        {
+          "bytes": 32768,
+          "mutation": true,
+          "expected_verdict_observed": true,
+          "log_sha256": "534aa12ec8f8477851d9914113ba275ba01086ac71adea8bf89f82baa3a20fe2"
+        }
+      ]
+    },
+    "timing_accepted": false
+  },
+  "adoption": "Source/test helper integration only; switch default off, no physical timing acceptance"
 }

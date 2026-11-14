@@ -22,8 +22,12 @@ The first full proof attempt used Ubuntu's older Yosys and failed to parse an ex
 
 Machine-readable source, archive and log hashes are in [the functional receipt](evidence/replay-write-predecode-functional-20261114.json).
 
-## Pending before physical adoption
+## Additional storage controls passed; physical adoption pending
 
-[Stronger storage and compiled mutation validation](https://github.com/Melihakbulut221/nssoc/actions/runs/43614166666) checks every actual byte write strobe and stored byte, including malformed frames, and requires an intentionally wrong low-address select to fail with a real strobe mismatch in all six seeds. It also checks that reversing only the opt-in edits recovers the original RTL byte-for-byte.
+[Stronger storage and compiled mutation validation](https://github.com/Melihakbulut221/nssoc/actions/runs/43614166666) passed: another twelve 300,000-cycle cases compare every actual byte write strobe and stored byte, including malformed frames. An intentionally wrong low-address select fails with a real strobe mismatch in all six seeds. Reversing only the opt-in edits recovers the original RTL byte-for-byte. All 19 independent packet tests passed again without skips.
 
-Keep the candidate on its experiment branch until these checks complete. Merge source/tests only, never the experiment replacement workflow. Then map the actual candidate, measure the affected and newly exposed paths, and run coherent full-chip routing, extraction, original-clock all-corner timing and physical verification. Earlier routed/LVS passes do not apply to a new netlist. Full serial PHY and manufacturing qualification remain separate open requirements.
+The tested source and helpers are now integrated, with the switch **default off**. The experiment workflow is excluded. The full proof helper in the integration branch reproduces the physical replay option configuration; the earlier default-option source is pinned in the receipt.
+
+[Identical-library mapping](https://github.com/Melihakbulut221/nssoc/actions/runs/43615106119) passed for both versions. Isolated replay cell counts are 5,900 baseline versus 5,898 predecode; sequential cells increase from 1,605 to 1,622. This is not a clock-load, area-of-chip or timing verdict. Direct write-control sink counts include mapper-created buffer trees and do not establish end-to-end path delay. The first reporting attempt rejected two zero-port Yosys `$scopeinfo` metadata records; the corrected analyzer explicitly checks that these have no connections, and still rejects every unknown hardware cell type. See [mapping receipt](evidence/replay-write-predecode-mapping-20261114.json).
+
+Next measure the affected and newly exposed paths after physical implementation, then run coherent full-chip routing, extraction, original-clock all-corner timing and physical verification. Earlier routed/LVS passes do not apply to a new netlist. Full serial PHY and manufacturing qualification remain separate open requirements.
