@@ -1,3 +1,15 @@
+## 2026-11-14 — actual paired650 metal/MIM RC PASSED both native orders
+
+Run43623877135/sourceca7922a41bb122ec714a23cd2ca5b7ea63d197ba completed successfully. New actual GDS285760f3930a1cc142b45a3c43866202f1ea4694f468fb1603f286cb546cd514 yielded28634resistors,18488capacitors and7separate intrinsic MIM devices. Both native extraction orders produce identical complete R/C/device records; original13raw wire +9MIM identity fault cases rejected in EACH order. Actual650devices,2046terminals,1428anchors,200gatecontacts remained bound. No oldRC reused/scaled. Numerical methods, qualified Magic binary, raw conservation checks unchanged; MIM masks/access points derived from actual new GDS/native identities.
+
+Safe14125052605 SHA26bccc7db4231b610aa780e128fea159424bafdf5b3cc32da3a3a4474f0d506c. Native14125201998 SHA1443428cee3752ae7c9b14aa65d01e614520ca5547e79abf8e406ff3c56617fb (386133458bytes), CLOUD ONLY. Native archive includes mos650-metal-rc/native/mim-precise/wire/rc03/{wires.spice,pump_wires.ext,pump_wires.res.ext} and precise_reversed, plus complete restored paired-terminal-anchors. Receipt docs/evidence/cdr650-paired-metal-mim-rc-20261114.json retains original full result and both complete variant reports.
+
+**Next PHY work:** fresh gate-poly access RC on new geometry/anchors, proper MIM/metal/poly/full650 intrinsic composition, then unchanged loaded electrical checks. Do not call this full RF PEX or full PHY/electrical acceptance: gate_poly_RC_extracted=false,full_loaded_composition_executed=false,substrate_r_modeled=false,full_pex_qualified=false remain explicit. Use actual native650 device parameters and new native IDs; do NOT carry forward rejected nx1 transistor what-if or old RC. Keep frozen retimed-D selector semantics/windows and original transistor SOA gates.
+
+**Newchip CTS diagnosis:** dispatched branchcodex/predecode-cts-path-diagnostics/source3c21f988de3987aec473c2f2ee74a620a688eab0 to select source-hash-checked run/27-openroad-cts text reports from native14124619734, without downloading native files locally. Current run snapshot below. Read worstpaths/clock/slew reports and repair the exact newcandidate; huge placement/CTS delay values are NOT timing acceptance. Actual GDS/ODB assets remain hosted.
+
+[{"id": 43624148622, "head_sha": "3c21f988de3987aec473c2f2ee74a620a688eab0", "status": "completed", "conclusion": "success"}]
+
 ## 2026-11-14 — new full-chip predecode CTS completed, timing NOT accepted
 
 Run43622573415/sourcea3a79275ea42940b3c319c7c15cab2ae75f15109 completed placement/CTS in537.19s, returncode0, all protected inputs unchanged. Actual20SRAMs and141520instances, CTS ODB SHAfc4400278ce81212ca7b30bf2d02aa7356f23e512336020e201e98839cd9beab, state run/27-openroad-cts/state_out.json. This means physical stage completion only. functional_boot_accepted=false, accepted=false, final_timing_complete=false remain explicit.
