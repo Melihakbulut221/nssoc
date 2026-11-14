@@ -22,6 +22,7 @@ jobs:
             /scripts/retry_driver_buf4_placement.tcl
             /scripts/verify_retry_driver_buf4.py
             /scripts/prepare_retry_driver_buf4.py
+            /scripts/restore_retry_driver_placement.py
       - name: Restore pinned runtime and native database in cloud
         run: |
           set -euo pipefail
@@ -29,9 +30,12 @@ jobs:
           curl -fsSL --retry 5 -o /mnt/s/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
           echo 'd6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  /mnt/s/librelane.AppImage' | sha256sum -c -
           chmod +x /mnt/s/librelane.AppImage
-          gh api repos/${{ github.repository }}/actions/artifacts/14112212387/zip > native.zip
-      - name: Size exactly one driver and require native legal placement
-        run: python3 scripts/run_retry_driver_buf4_placement.py
+          gh api repos/${{ github.repository }}/actions/artifacts/14120090635/zip > native.zip
+      - name: Inspect existing placement without rerunning or editing it
+        run: |
+          set -euo pipefail
+          python3 scripts/restore_retry_driver_placement.py
+          env -u GH_TOKEN -u GITHUB_TOKEN /mnt/s/librelane.AppImage openroad -exit -python scripts/verify_retry_driver_buf4.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -39,13 +43,3 @@ jobs:
           path: out/derived
           if-no-files-found: error
           retention-days: 90
-      - name: Preserve native state in cloud only
-        if: always()
-        run: tar -czf retry-buf4-native.tgz -C out native
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: retry-buf4-placement-native-${{ github.run_id }}
-          path: retry-buf4-native.tgz
-          if-no-files-found: error
-          retention-days: 30

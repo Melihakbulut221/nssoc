@@ -11,6 +11,8 @@ def snapshot(path):
 before,bnet,bports=snapshot('out/native/source.odb');after,anet,aports=snapshot('out/native/buf4-legalized-unrouted.odb')
 assert len(before)==159934 and before.keys()==after.keys() and bnet==anet and bports==aports
 assert before['place31551']['master']=='sg13g2_buf_1' and after['place31551']['master']=='sg13g2_buf_4'
+delta={name:{key:{'before':before[name][key],'after':after[name][key]} for key in before[name] if before[name][key]!=after[name][key]} for name in before if before[name]!=after[name]}
+P('out/derived/native-delta.json').write_text(json.dumps({'accepted':False,'changes':delta,'connectivity_equal':bnet==anet,'ports_equal':bports==aports},indent=2))
 for name in before:
  a=dict(before[name]);b=dict(after[name])
  if name=='place31551':
