@@ -28,32 +28,46 @@ def vector(node):
  node=aliases.get(node,node).lower();key='v('+node+')'
  assert key in lookup,(node,'voltage not captured')
  return samples[lookup[key]],key
-pairs={
- 'sampler_a':('xpd.aqp','xpd.aqn','current','rising'),
- 'sampler_b':('xpd.bqp','xpd.bqn','edge','falling'),
- 'sampler_c':('xpd.cqp','xpd.cqn','previous','rising'),
- 'sampler_d':('xpd.dqp','xpd.dqn','edge','rising'),
- 'buffer_a_input':('xpd.w_t273_b','xpd.w_t275_b','current','rising'),
- 'buffer_a_output':('xpd.w_t275_c','xpd.w_t273_c','current','rising'),
- 'buffer_c_input':('xpd.w_t278_b','xpd.w_t280_b','previous','rising'),
- 'buffer_c_output':('xpd.w_t280_c','xpd.w_t278_c','previous','rising'),
- 'select0_input':('xpd.w_t281_b','xpd.w_t282_b','edge','rising'),
- 'select0_output':('xpd.w_t282_c','xpd.w_t281_c','edge','rising'),
- 'select1_input':('xpd.w_t299_b','xpd.w_t300_b','edge','rising'),
- 'select1_output':('xpd.w_t300_c','xpd.w_t299_c','edge','rising'),
- 'xor_x':('xp','xn','x','rising'),'xor_y':('yp','yn','y','rising')}
-idx=np.arange(1,255);current=bits[idx];previous=bits[idx-1];following=bits[idx+1];edge=previous
-expect={'current':current,'previous':previous,'edge':edge,'x':current^edge,'y':previous^edge}
-phases=sorted(set([k/16 for k in range(16)]+[.3,.6,.75,.9]));patterns=[''.join(map(str,v)) for v in zip(previous,current,following)]
-def stats(v):
- return dict(samples=int(len(v)),minimum_signed_v=float(v.min()),median_signed_v=float(np.median(v)),p05_signed_v=float(np.quantile(v,.05)),wrong_sign=int(np.count_nonzero(v<=0)),below_100mv=int(np.count_nonzero(v<.1)))
-stages={}
-for name,(p,n,expectation,clockedge) in pairs.items():
- vp,pn=vector(p);vn,nn=vector(n);delta=vp-vn;edges=START+(idx+(.5 if clockedge=='rising' else 0))*UI;rows=[]
- for phase in phases:
-  signed=np.interp(edges+phase*UI,grid,delta)*(2*expect[expectation]-1)
-  grouped={pattern:stats(signed[np.array([q==pattern for q in patterns])]) for pattern in sorted(set(patterns))}
-  rows.append(dict(phase_ui=phase,all_patterns=stats(signed),patterns_previous_current_next=grouped))
- stages[name]=dict(nodes=[pn,nn],expected=expectation,clock_edge=clockedge,phases=rows)
-r=dict(status='SAMPLED_PHASE_PATTERN_DIAGNOSIS',source_run=43497945915,source_native_artifact=14078587671,source_capture_artifact=14078352603,source_metadata_sha256=hashlib.sha256(meta_raw).hexdigest(),source_bits_sha256=meta['source_bits_sha256'],capture_sha256=hashlib.sha256(capture).hexdigest(),data_offset_s=meta['data_offset_s'],bit_indices=[1,254],grid_step_s=UI/16,stages=stages,scope='Diagnostic interpolation from 16 samples/UI; not continuous extrema, actual clock-to-valid timing, causal delay proof or new acceptance. Original full-wave verdict remains rejected. Stage input/output expectations are diagnostic hypotheses; analog polarity and delays must be interpreted before changes.',accepted=False,new_simulation=False,new_layout=False)
-(out/'phase-pattern.json').write_text(json.dumps(r,indent=2));print(json.dumps({'stages':len(stages),'phases':len(phases),'source_bits_sha256':r['source_bits_sha256'],'accepted':False}))
+
+UI=125e-12;START=2e-9
+# Crossing classification retains left-censoring, missing and ambiguous events.
+def crossing(t,y,threshold):
+ assert len(t)==len(y) and len(t)>2 and np.all(np.diff(t)>0) and np.isfinite(y).all()
+ hits=np.flatnonzero((y[:-1]<threshold)&(y[1:]>=threshold))
+ times=[float(t[i]+(threshold-y[i])*(t[i+1]-t[i])/(y[i+1]-y[i])) for i in hits]
+ if y[0]>=threshold:status='left_censored'
+ elif len(times)==0:status='missing'
+ elif len(times)>1:status='ambiguous'
+ else:status='unique'
+ return {'status':status,'crossings_s':times,'left_boundary_v':float(y[0]),'right_boundary_v':float(y[-1])}
+# Known offset, never-crossing and nonunique cases must remain distinct.
+t=np.array([0.,1.,2.,3.]);assert crossing(t,t-1.,0.)['crossings_s']==[1.]
+assert crossing(t,np.ones(4),0.)['status']=='left_censored'
+assert crossing(t,-np.ones(4),0.)['status']=='missing'
+assert crossing(np.arange(5.),np.array([-1.,1.,-1.,1.,1.]),0.)['status']=='ambiguous'
+rows=[]
+for label,ip,inn,op,on,lag in [
+ ('buffer_a','xpd.w_t273_b','xpd.w_t275_b','xpd.w_t275_c','xpd.w_t273_c',0),
+ ('buffer_c','xpd.w_t278_b','xpd.w_t280_b','xpd.w_t280_c','xpd.w_t278_c',1)]:
+ vi=vector(ip)[0]-vector(inn)[0];vo=vector(op)[0]-vector(on)[0]
+ stage=[]
+ for k in range(2,254):
+  # Restrict response measurements to an actual transition in expected data.
+  if bits[k-lag]==bits[k-lag-1]:continue
+  edge=START+(k+.5)*UI;left=edge-.25*UI;right=edge+.95*UI
+  times=np.concatenate(([left],grid[(grid>left)&(grid<right)],[right]));sign=2*int(bits[k-lag])-1
+  values={'input':np.interp(times,grid,vi)*sign,'output':np.interp(times,grid,vo)*sign}
+  thresholds={}
+  for threshold in (0.,.1):
+   result={key:crossing(times,value,threshold) for key,value in values.items()}
+   delay=None
+   if all(v['status']=='unique' for v in result.values()):delay=result['output']['crossings_s'][0]-result['input']['crossings_s'][0]
+   thresholds[str(threshold)]={'signals':result,'output_minus_input_s':delay}
+  stage.append({'bit_index':k,'history_previous2_current_next':''.join(map(str,bits[k-2:k+2])),'expected_bit':int(bits[k-lag]),'original_rising_edge_s':edge,'thresholds':thresholds})
+ summaries={}
+ for threshold in ('0.0','0.1'):
+  delays=[x['thresholds'][threshold]['output_minus_input_s'] for x in stage if x['thresholds'][threshold]['output_minus_input_s'] is not None]
+  summaries[threshold]={'unique_input_output_pairs':len(delays),'all_transition_bits':len(stage),'status_counts':{side:{status:sum(x['thresholds'][threshold]['signals'][side]['status']==status for x in stage) for status in ['unique','missing','ambiguous','left_censored']} for side in ['input','output']},'delay_ps':{'min':float(min(delays)*1e12),'median':float(np.median(delays)*1e12),'max':float(max(delays)*1e12)} if delays else None}
+ rows.append({'stage':label,'nodes':[ip,inn,op,on],'summaries':summaries,'transition_rows':stage})
+r={'status':'SAMPLED_BUFFER_RESPONSE_DIAGNOSIS','source_run':43497945915,'metadata_sha256':hashlib.sha256(meta_raw).hexdigest(),'capture_sha256':hashlib.sha256(capture).hexdigest(),'source_bits_sha256':meta['source_bits_sha256'],'sample_step_s':UI/16,'original_edge_window_ui':[-.25,.95],'stages':rows,'controls':'known crossing, left-censored, missing and ambiguous classifications checked','scope':'Diagnostic interpolation only, not continuous waveform proof or causal transistor-delay attribution. Original 0.3/0.6/0.9 UI gates unchanged. Out-of-window and ambiguous crossings remain unresolved; no ideal input replacement or signal realignment. Analog polarity expectations require original topology interpretation.','accepted':False,'new_simulation':False,'new_layout':False}
+(out/'buffer-response.json').write_text(json.dumps(r,indent=2));print(json.dumps({x['stage']:x['summaries'] for x in rows}))

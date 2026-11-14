@@ -1,4 +1,4 @@
-name: CDR lowz8 bit-pattern and clock-phase diagnosis
+name: CDR lowz8 sampled buffer response diagnosis
 on:
   workflow_dispatch:
 permissions:
@@ -27,7 +27,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-lowz8-phase-pattern-${{ github.run_id }}
+          name: cdr-lowz8-buffer-response-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
