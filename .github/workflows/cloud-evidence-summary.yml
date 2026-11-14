@@ -1,4 +1,4 @@
-name: Diagnose saved XOR input and output margins at unchanged phases
+name: Trace physical A B buffers into XOR interfaces at frozen phases
 on:
   workflow_dispatch:
 permissions:
@@ -16,10 +16,6 @@ jobs:
             native: '14112762376'
             result: '14112882059'
             digest: 8aab59e3437f6c4e6e4ec97448679d45a7b652af8f5a623bd5c63c9ec96f2610
-          - variant: bd10_lowz8_xor2_cslave3
-            native: '14112317745'
-            result: '14112233130'
-            digest: ce095c2ced48cd5b78a7f036e538f0737fae994ffa925c51ff89c76a0cb47d5e
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -29,7 +25,7 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/diagnose_cdr_xor_interfaces.py
+            /scripts/diagnose_cdr_xor_physical_path.py
             /scripts/cdr_mos650_full650_loaded.py
             /scripts/cdr_n1_divider_whatif.py
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3
@@ -40,11 +36,11 @@ jobs:
           gh api repos/${{ github.repository }}/actions/artifacts/${{ matrix.result }}/zip > result.zip
           echo '${{ matrix.digest }}  result.zip' | sha256sum -c -
           unzip -q result.zip result.json
-      - run: python3 scripts/diagnose_cdr_xor_interfaces.py ${{ matrix.variant }}
+      - run: python3 scripts/diagnose_cdr_xor_physical_path.py ${{ matrix.variant }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cdr-xor-interfaces-derived-${{ matrix.variant }}-${{ github.run_id }}
+          name: cdr-xor-physical-path-derived-${{ matrix.variant }}-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
