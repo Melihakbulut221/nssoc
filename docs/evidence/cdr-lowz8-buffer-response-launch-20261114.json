@@ -1,0 +1,27 @@
+{
+  "run": 43542098184,
+  "source": "f9e3e4807f2cffb2a4e8e230786905d3c4cf0947",
+  "branch": "codex/cdr-lowz8-buffer-response",
+  "scope": "Diagnostic analysis of existing nominal-late sampled CDR capture only; no new simulation, no new layout, no PHY acceptance",
+  "basis": {
+    "phase_pattern_run": 43512592914,
+    "artifact": 14078863265,
+    "source_capture_run": 43497945915,
+    "observations": [
+      "Sampler A has no wrong-sign samples at 0.3 UI but 65 samples below 100mV.",
+      "At 0.6 UI sampler A has no samples below 100mV; buffer A output still has 106 wrong-sign and 128 sub-100mV samples.",
+      "Buffer A error concentrates in previous/current transition patterns 010, 011, 100, 101; buffer C requires longer bit-history classification."
+    ],
+    "limitation": "Sampled/interpolated stage expectations are diagnostic hypotheses, not continuous extrema or causal transistor delay proof."
+  },
+  "new_measurement": "Input/output zero and 100mV upward crossings in fixed original edge window [-0.25,+0.95] UI, only expected-data transition bits. Classify left-censored, missing, ambiguous and unique events separately. Delay computed only when both crossings unique. Record previous2/current/next history.",
+  "invariants": [
+    "SHA-bound native metadata and capture",
+    "Original sample values and phase not changed",
+    "Original acceptance gates not changed",
+    "No ideal waveform replacement",
+    "Known crossing/censored/missing/ambiguous synthetic controls"
+  ],
+  "accepted": false,
+  "production_accepted": false
+}
