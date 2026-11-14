@@ -47,5 +47,33 @@ for kind,method,describe in [('devices','each_device_pair',device),('nets','each
   bucket=groups.setdefault(key,[])
   if len(bucket)<20:bucket.append({'layout':describe(p.first()),'reference':describe(p.second())})
  r['warnings'][kind]={'group_counts':dict(counts),'first_20_per_group':groups}
+# Compare hierarchy-expanded inventories: direct top counts are not comparable
+# while unmatched child boundaries remain on either side. No netlist exported.
+def expanded_inventory(circuit, cache, active):
+ name=field(circuit,'name')
+ if name in cache:return cache[name].copy()
+ assert name not in active, ('recursive hierarchy',name)
+ active.add(name);counts=collections.Counter()
+ for d in circuit.each_device():
+  info=device(d);par=info['parameters']
+  counts[(info['class'].casefold(),round(par.get('L',0),12),round(par.get('W',0),12))]+=1
+ for s in circuit.each_subcircuit():
+  counts.update(expanded_inventory(field(s,'circuit_ref'),cache,active))
+ active.remove(name);cache[name]=counts.copy();return counts
+def rows(counts):
+ return [{'class':k[0],'L':k[1],'W':k[2],'count':v} for k,v in sorted(counts.items())]
+r['hierarchy_expanded_inventories']={}
+r['direct_child_inventories']={}
+for label,circuit in [('layout',pair.first()),('reference',pair.second())]:
+ cache={};counts=expanded_inventory(circuit,cache,set())
+ r['hierarchy_expanded_inventories'][label]={'total':sum(counts.values()),'classes_dimensions':rows(counts)}
+ children=collections.Counter(field(field(s,'circuit_ref'),'name') for s in circuit.each_subcircuit())
+ r['direct_child_inventories'][label]=dict(sorted(children.items()))
+r['cell_pair_inventory_differences']=[]
+for cp in xref.each_circuit_pair():
+ if cp.first() is None or cp.second() is None:continue
+ left=expanded_inventory(cp.first(),{},set());right=expanded_inventory(cp.second(),{},set())
+ if left!=right:
+  r['cell_pair_inventory_differences'].append({'layout_cell':field(cp.first(),'name'),'reference_cell':field(cp.second(),'name'),'status':str(cp.status()),'layout_only':rows(left-right),'reference_only':rows(right-left)})
 pathlib.Path('out').mkdir();pathlib.Path('out/top-mismatch.json').write_text(json.dumps(r,indent=2))
 print(json.dumps({k:v['status_counts'] for k,v in r.items() if isinstance(v,dict) and 'status_counts' in v}))
