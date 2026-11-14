@@ -1,3 +1,11 @@
+## Shared SRAM geometry inspected; trace actual reference usage next
+
+Geometry preflight43595848957/source13bfe72c6a5e26d81515d130a02dee3f59f08d05 completed. OriginalGDS hashes verified. Conflicting CDL RSC_IHPSG13_MET3RES hasDP width.24um vsSP.26um,length.6um; this named cell is absent from both originalGDS hierarchies. Many unused CDL library cells also absent; corrected observer after43595752035 failed on unusedAND2X4. Do not treat absent unused library definitions as extraction failure or infer electrical corruption from direct shape hash differences. Thirty shared present cell names have differing raw shape hashes (including labels/instance text); this is NOT an equivalence verdict.
+
+Reachability preflight run43595961882,source196ce7b01d5858dd36dabeaa29d8b69b77bd36e0,branchcodex/sram-reference-library-preflight: resolve original CDL X references from each actual macro top; report whether conflictingMET3RES is reachable, reference counts and any unresolvedXinstances. Inspect before building merged chip library. If reachable, preserve both definitions with deterministic macro-specific namespaces and prove unchanged contents/connections; never silently first/last-definition-wins. If unreachable, prove it before excluding unused definitions. No full-chip LVS has passed yet.
+
+SP andDP engineering comparisons andfullmacro fault controls passed; bootpassed; PHY connectivity mapped but electrical marginsfail; legalized-diode route43591198141stillin_progress. Evidence docs/evidence/sram-library-geometry-and-reachability-launch-20261114.json. All nativefilescloudonly.
+
 ## Full-chip integration preflight found a shared SRAM reference name conflict
 
 43595567300/source088ee293f07db0611dbd4c6dac103bd4f63c8f11 completed. Exact passed DP/SP engineering CDL libraries each145subcircuits,42sharednames:41identicalcanonicaldefinitions,1different RSC_IHPSG13_MET3RES. Do NOT concatenate/include both with a first/last-definition-wins merge. Individual macro LVS pass does not prove a merged library is equivalent.
