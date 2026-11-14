@@ -67,8 +67,9 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
     reg [31:0] prefix_crc;
     always @(posedge clk_i)
         prefix_crc<=crc_byte(crc_byte(32'hffffffff,{4'b0,next_sequence_o[11:8]}),next_sequence_o[7:0]);
-    reg fold_valid,fold_first,fold_msb_first;
-    reg [31:0] fold_word;
+    reg fold_valid,fold_first;
+    // Register transmission byte order so CRC output parity needs no byte-order mux.
+    reg [31:0] fold_ordered_word;
     // The DWORD update is linear in the CRC state and the word, so each next
     // state bit is the parity of the state and word bits selected by
     // constant masks (columns of crc_word applied to unit vectors). Written
@@ -78,17 +79,15 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
     wire [31:0] fold_next;
     genvar fold_bit,fold_input;
     generate for(fold_bit=0;fold_bit<32;fold_bit=fold_bit+1) begin: fold_parity
-        wire [31:0] state_mask,msb_mask,lsb_mask;
+        wire [31:0] state_mask,lsb_mask;
         for(fold_input=0;fold_input<32;fold_input=fold_input+1) begin: fold_mask
             wire [31:0] state_column=crc_word(32'd1<<fold_input,32'd0,1'b1);
-            wire [31:0] msb_column=crc_word(32'd0,32'd1<<fold_input,1'b1);
             wire [31:0] lsb_column=crc_word(32'd0,32'd1<<fold_input,1'b0);
             assign state_mask[fold_input]=state_column[fold_bit];
-            assign msb_mask[fold_input]=msb_column[fold_bit];
             assign lsb_mask[fold_input]=lsb_column[fold_bit];
         end
         assign fold_next[fold_bit]=(^(fold_state & state_mask)) ^
-            (fold_msb_first ? ^(fold_word & msb_mask) : ^(fold_word & lsb_mask));
+            (^(fold_ordered_word & lsb_mask));
     end endgenerate
     always @(posedge clk_i) if (fold_valid) crc<=fold_next;
     assign tlp_ready_o=rst_ni && (state==IDLE || state==COLLECT || state==DROP);
@@ -199,7 +198,7 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                 if (tlp_sop_i) begin
                     if (state==COLLECT) packet_bad_o<=1;
                     write_word<=transmit_order(tlp_data_i,1'b1);write_at<={{(MAX_TLP_DWORDS-1){1'b0}},1'b1};count<=1;header_words<=tlp_data_i[29] ? 4 : 3;
-                    fold_valid<=1;fold_first<=1;fold_word<=tlp_data_i;fold_msb_first<=1;
+                    fold_valid<=1;fold_first<=1;fold_ordered_word<=transmit_order(tlp_data_i,1'b1);
                     if (tlp_eop_i || tlp_error_i) begin
                         packet_bad_o<=1;state<=tlp_eop_i ? IDLE : DROP;
                     end else state<=COLLECT;
@@ -212,7 +211,7 @@ module soc_pcie_lcrc_tx #(parameter integer MAX_TLP_DWORDS=8) (
                 end else begin
                     write_word<=transmit_order(tlp_data_i,32'(count)<32'(header_words));count<=count+1'b1;
                     for(wj=0;wj<MAX_TLP_DWORDS;wj=wj+1) if(count==CW'(wj)) write_at[wj]<=1;
-                    fold_valid<=1;fold_first<=0;fold_word<=tlp_data_i;fold_msb_first<=32'(count)<32'(header_words);
+                    fold_valid<=1;fold_first<=0;fold_ordered_word<=transmit_order(tlp_data_i,32'(count)<32'(header_words));
                     if (tlp_eop_i) begin
                         if (count+1>=header_words) begin
                             length<=count+1'b1;state<=PREFIX0;byte_index<=0;
