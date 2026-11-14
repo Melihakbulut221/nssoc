@@ -1,19 +1,16 @@
-name: Boot exact predecode chip with system and Ethernet MBIST
+name: Place exact predecode full-chip candidate through CTS
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  boot:
-    runs-on: ubuntu-24.04
+  candidate:
+    runs-on: ubuntu-22.04
     timeout-minutes: 355
-    strategy:
-      fail-fast: false
-      matrix:
-        simulator: [iverilog, verilator]
     env:
       GH_TOKEN: ${{ github.token }}
+      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -21,35 +18,45 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
-        with:
-          version: '2026-08-04'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore exact mapped chip and firmware only on runner
+      - name: Restore exact newly mapped candidate without inherited boot acceptance
         run: |
           set -euo pipefail
           gh api repos/${{ github.repository }}/actions/artifacts/14123718652/zip > source.zip
           gh api repos/${{ github.repository }}/actions/artifacts/14123429089/zip > mapping.zip
           python3 scripts/restore_predecode_chip_boot.py
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends binutils-riscv64-linux-gnu
-          python3 hw/soc/flow/prepare_ihp_native_boot.py
-      - name: Native boot with complete memory self tests and all firmware checks
+          python3 -m py_compile scripts/cloud_predecode_chip_placement.py
+      - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
-          python3 hw/soc/flow/sim_logic_boot_gl.py             --pcie-profile packet-async --mbist-profile system-ethernet             --cycles 2000000 --timeout 19000             --synthesis hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis             --firmware hw/soc/out/corrpre-pcie-mbist-native-boot/rtl             --pdk hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2             --simulator ${{ matrix.simulator }} --tool "$(command -v ${{ matrix.simulator }})"             --nm /usr/bin/riscv64-linux-gnu-nm             --output hw/soc/out/predecode-gates | tee out/boot-driver.log
-      - name: Preserve native diagnostics without changing source evidence
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
+      - name: Native floorplan placement and CTS of new candidate
+        run: python3 scripts/cloud_predecode_chip_placement.py
+      - name: Collect derived diagnostics
         if: always()
         run: |
-          mkdir -p out
-          if [ -d hw/soc/out/predecode-gates ]; then
-            cp hw/soc/out/predecode-gates/*.json out/ || true
-            cp hw/soc/out/predecode-gates/*.log out/ || true
-          fi
+          python3 - <<'PYCODE'
+          import pathlib,shutil
+          root=pathlib.Path('hw/soc/out/cloud-predecode-chip-placement');out=pathlib.Path('placement-derived');out.mkdir()
+          if root.exists():
+            for name in ['result.json','run.log','prepared/preparation.json','prepared/inventory.json']:
+              p=root/name
+              if p.is_file():
+                q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
+          PYCODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: predecode-chip-boot-${{ matrix.simulator }}-${{ github.run_id }}
-          path: out/
+          name: predecode-chip-placement-derived-${{ github.run_id }}
+          path: placement-derived/
           if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: predecode-chip-placement-native-${{ github.run_id }}
+          path: hw/soc/out/cloud-predecode-chip-placement/
+          if-no-files-found: warn
           retention-days: 90
