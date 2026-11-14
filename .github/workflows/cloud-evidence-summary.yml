@@ -17,11 +17,11 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: /scripts/diagnose_dp_search_messages.py
-      - run: gh api repos/${{ github.repository }}/actions/artifacts/14111500413/zip > native.zip
+      - run: gh api repos/${{ github.repository }}/actions/artifacts/14111429578/zip > native.zip
       - run: python3 scripts/diagnose_dp_search_messages.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: dp-sram-search-messages-derived-${{ github.run_id }}
+          name: dp-sram-block-search-messages-derived-${{ github.run_id }}
           path: out/*.json
           if-no-files-found: error
           retention-days: 90
