@@ -47,3 +47,9 @@ Next measure the affected and newly exposed paths after physical implementation,
 The targeted path improves by 1.015146 ns after electrical repair in this isolated screen. Overall timing still fails because other paths remain. Ideal-clock placement estimates do not prove a corresponding full-chip improvement. The experiment switch remains default off pending whole-chip implementation and extracted timing. [Receipt](evidence/replay-write-predecode-placement-20261114.json) binds both native placements and all report hashes.
 
 An initial parser failure was resolved without altering logic: OpenSTA rejected `wire signed` on the retained CRC loop-index metadata. The adapter checks the mapped JSON proves this wire is a nonnegative constant, removes only that declaration qualifier, and verifies reversing the edit restores the original netlist byte-for-byte. Signed data/state wires are not permitted through that adapter.
+
+## Fresh main-chip mapping
+
+[43618915765](https://github.com/Melihakbulut221/nssoc/actions/runs/43618915765) passed fresh firmware RTL preparation and full synthesis. The mapped chip has114952cells,10registered write-group bits,16registered low-select bits,16Ethernet SRAMs and4system SRAMs. The default-off define is now forwarded by both source flows. Exact mapping, firmware and source hashes are recorded in `docs/evidence/predecode-mainchip-mapping-20261114.json`.
+
+Mapped boot is a separate gate: [43620739672](https://github.com/Melihakbulut221/nssoc/actions/runs/43620739672) runs the exact new netlist with complete system/Ethernet MBIST and firmware checks in Icarus, plus supplemental randomized Verilator runs. Neither old-chip boot/LVS nor isolated-block timing is transferred to this new source. Placement/CTS/routing, extracted timing and new-layout LVS remain pending.
