@@ -20,7 +20,34 @@
     "branch": "codex/ethernet-full-path-delay-budget",
     "native_artifact": 14088684253,
     "archive_sha256": "809a2a994149ddf95ca42d0deaa5f89a8a4692c47df9186cb0bd1a2ef2d714f2",
-    "goal": "Extract full all-corner max/min reports for exact RX bank6 A_ADDR6 SRAM endpoint in cloud; never download native implementation locally."
+    "goal": "Extract full all-corner max/min reports for exact RX bank6 A_ADDR6 SRAM endpoint in cloud; never download native implementation locally.",
+    "initial_run_status": "Failed only in Python streamed tar TextIOWrapper seekability; no timing result",
+    "corrected_run": 43540240339,
+    "corrected_source": "817eaa0165170cabe7f5bdb9b96829d09d6611ab",
+    "result": "Completed successfully",
+    "derived_artifact": 14090509769,
+    "derived_artifact_sha256": "f2fc0104751375fa5b38ef3646d723c9070ffb75d5ea4b0bc2f76944f26e0d7c"
   },
-  "production_accepted": false
+  "production_accepted": false,
+  "exact_endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem/A_ADDR[6]",
+  "full_report_slack_ns": {
+    "nom_slow_1p08V_125C": {
+      "setup": 5.23103,
+      "hold": -0.210333
+    },
+    "nom_typ_1p20V_25C": {
+      "setup": 6.186152,
+      "hold": -0.348375
+    },
+    "nom_fast_1p32V_m40C": {
+      "setup": 6.76241,
+      "hold": -0.427385
+    }
+  },
+  "report_coverage": {
+    "setup_paths_per_corner": 4479,
+    "hold_paths_per_corner": 4264,
+    "matching_exact_endpoint_paths_each": 1
+  },
+  "next_action": "Prepare endpoint-specific RX bank6 A_ADDR6 delay ECO; verify net connectivity and delay/load from actual library, then fresh routing and all-corner STA. Do not consume setup margin on other fanout branches without checking them. These budgets belong only to four-driver source run 43505737740, not the still-running antenna/five-driver candidates."
 }
