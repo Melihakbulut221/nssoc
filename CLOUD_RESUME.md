@@ -1,3 +1,15 @@
+## 2026-11-14: native MBIST/boot complete; SP mismatch narrowed; PHY observer repaired
+
+Boot run43588310054 completed with native_returncode=0, completed_boot=true, passed=true, sources_unchanged=true. Both system/Ethernet MBIST and packet-async PCIe idle boot profiles passed. Source1c0d103c64f040543106b2a3e9265fe580f4d289; original simulation3fd0fded2d874efa0109d8558a213380de1f36a7. No checkpoint continuation needed. This is not SDF timing, serial PCIe traffic or manufacturing acceptance.
+
+SP run43593832917 completed diagnosis in77s; strict LVS FAILED:26Match and2NoMatch (matrix512x128 and top).1211120 primitive devices conserved on both sides;355 native ports. Do not mistake green diagnostic workflow for LVS pass. Read-only SP matrix/top native inventory run43594622132 source9024017cf28506bb0fd546495a47abf8d595ddb9 is running; its safe artifact is sp-matrix-top-derived-43594622132. Compare hierarchy/direct devices before any additional flattening. Native archive14113282480 SHA2c7f88ea31c2e515c84b4664a1f2d99bf5cf06da2c753077a16154c065430ddb remains cloud only.
+
+PHY observer43593968180 failed at assert selected: connectivity tracing omitted logical-to-native binding aliases. Fixed in4274eeb93e2a17c519cd189f0e754e01ce17437b, retry43594550414 running. Inspect actual result before accepting the fix; frozen waveforms, device gates and sampling phases unchanged. No new circuit/layout acceptance.
+
+Legalized-diode full route43591198141 remains in_progress. Do not restart. Fresh DRC/antenna and three-corner timing must still pass. DP engineering macro pass and fault controls remain recorded below; original vendor/full-chip/manufacturing approval remains open.
+
+Receipt: docs/evidence/boot-complete-sp-mismatch-phy-retry-20261114.json. All CAD/native waveforms/checkpoints remain on GitHub; no local project artifacts created.
+
 ## SP full macro hierarchy replay and PHY physical buffer diagnosis live
 
 SP43593832917/sourcec0f792bc59c418edaae2bb5f7dfd4bb082fd589b,branchcodex/sp-sram-hierarchy-bound512. Restores exactSPtimeoutnative14111284849 SHAdd437de8cfc8f81ffe504a5555608eebf3b6f3d401ce9cd4c49d87e362e4e58c. SPspecific32cell/column512/matrix512x128pairs,355nativeportnamesbeforealign,1211120primitiveconservation,ownprevioussixflattenboundaries,512boundedsearch+15controls. NO DP-onlyINVX2/NAND2X2/CINVX4extraflatten. Safe sp-sram-hierarchy-bound512-derived-*;nativecloudonly. Strictauditstillrequired,greenjobdiagnosisonly. Do notrestartwhilelive.
