@@ -1,3 +1,13 @@
+# Electrical candidate routed with zero router DRC/antenna; exact routed STA now running
+
+43567570194 source`0b0afcacd36d6223e0fba6ce1ddbf18312c955e8`: routejob132364639141 completed/success. Pinnedresume reproduced28antenna nets31pins, then2/2, then0/0. Fresh finalmetrics route__drc_errors=0,antenna__violating__nets=0,pins=0,flowerrors=0. Confirmed stale metrics removed/config unchanged. Final159612instances,20SRAMmacros,1018antennacells. Routepass elapsed~1h19m. Safe14105204176SHA`54cad8e84c4e919fc471203c4a43ef1000d52e53d628fc629f6394ba4dd453c8`; native14105074398SHA`7704bd4afb10dab17e6d15b1abc7290d80ca0663b55af6193a0802a4620f123f` stayscloud.
+
+Same-run dependent routed-stajob132384337030 verified in_progress restoring exact routedDB. Await3corner extracted STA: zero setup/hold/cap/slew/fanout gates unchanged,clocks20/4/8/8ns. No timing pass yet. TenDRT-0349warnings: router skips LEF58_ENCLOSURE withoutCUTCLASS on Cont/Via/TopVia layers. RouterDRC0 does not cover those rules or independent foundry/full-chipDRC. No padcells in this core candidate. This is older five-driver electricalcandidate, NOT freshCRC43561900502 orRX6hold43569629324; do not transplant evidence.
+
+Receipt:docs/evidence/electrical-route-zero-antenna-result-20261114.json. Poll43567570194 STA plus43569629324,43561900502,CDR43571075470,LVS43566292104/43562021054,MBIST43573697024. Fullgoalopen.
+
+---
+
 # MBIST second restore PID collision fixed; same1.26M checkpoint retry active
 
 43573337312 failed in CRIU restore; followup43573539211 collected exact native diagnostic: `criu/log.c:430 pidfile: Can't open .../restored.pid: File exists`, followed by Cannot write pidfile/Restoring FAILED. Original dump includes the previous restore PID file. No simulator error or boot completion. Safe14104814119SHA`fb27a96d108a0feff659ce84e77637199a1318b68506429523592786cd2e2b8f`. FullCRIUlog14105725472SHA`a03213b9615963aff1b3c67b25a1d29d3e7513db062230f9e09b6dbd9e75b961`cloudonly. First failure safe14104843822SHA`a3641939cdf17db5eb2d76620ac9ff4aa0efe807a7d87d0a89fb50280ddd2eab` lacks detailedCRIUlog.
