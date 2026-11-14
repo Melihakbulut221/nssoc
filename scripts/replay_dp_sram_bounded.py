@@ -64,6 +64,14 @@ try:
  assert revised.count(compare_anchor)==1
  extra_block='\n'.join(indent+line for line in extra_ruby.splitlines())+'\n'
  revised=revised.replace(compare_anchor,extra_block+compare_anchor,1)
+ # Preserve native external pin creation before align can promote internal labels.
+ port_lines=['netlist.make_top_level_pins if TOP_LVL_PINS\n','schematic.make_top_level_pins if TOP_LVL_PINS\n']
+ for port_line in port_lines:
+  assert revised.count(port_line)==1
+  revised=revised.replace(port_line,'',1)
+ assert revised.count(addition)==1
+ revised=revised.replace(addition,''.join(port_lines)+addition,1)
+ r['top_port_construction_stage']='Before align; native named-net creation unchanged, avoiding promotion of child internal labels to external pins.'
  deck.write_text(revised)
  r['deck_before_sha256']=hashlib.sha256(text.encode()).hexdigest();r['deck_after_sha256']=sha(deck)
  r['comparison_settings']={'max_branch_complexity':16,'max_depth':'unchanged default','native_timeout_seconds':1800}
