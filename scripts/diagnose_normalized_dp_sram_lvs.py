@@ -22,6 +22,18 @@ for pair in lvs.xref().each_circuit_pair():
    values=tuple((field(p,'name'),d.parameter(field(p,'id'))) for p in cls.parameter_definitions())
    params[(cls.name,values)]+=1
   row[side]={'name':c.name,'direct_device_classes':dict(counts),'parameter_groups':[{'class':k[0],'parameters':dict(k[1]),'count':v} for k,v in params.most_common(60)],'unique_parameter_groups':len(params),'subcircuits':dict(collections.Counter(s.circuit_ref().name for s in c.each_subcircuit()))}
+ row['device_pair_status_counts']=dict(collections.Counter(str(p.status()) for p in lvs.xref().each_device_pair(pair)))
+ row['net_pair_status_counts']=dict(collections.Counter(str(p.status()) for p in lvs.xref().each_net_pair(pair)))
+ if str(pair.status())!='Skipped':
+  row['nonmatching_device_pairs']=[]
+  for dp in lvs.xref().each_device_pair(pair):
+   if str(dp.status())=='Match':continue
+   dr={'status':str(dp.status())}
+   for side,d in [('layout',dp.first()),('schematic',dp.second())]:
+    if d is None:dr[side]=None;continue
+    cls=d.device_class()
+    dr[side]={'class':cls.name,'parameters':{field(p,'name'):d.parameter(field(p,'id')) for p in cls.parameter_definitions()}}
+   row['nonmatching_device_pairs'].append(dr)
  rows.append(row)
 r={'status':'DIAGNOSTIC_ONLY_NOT_LVS_PASS','source_run_id':43529228292,'source_artifact_id':14087058081,'database_sha256':hashlib.sha256(raw).hexdigest(),'nonmatching_circuits':rows,'lvs_api_methods':[x for x in dir(lvs) if any(k in x for k in ['netlist','schematic','reference','compare'])],'manufacturing_approval':False}
 P('out').mkdir();P('out/device-diagnosis.json').write_text(json.dumps(r,indent=2));print(json.dumps({'status':r['status'],'circuits':len(rows)}))
