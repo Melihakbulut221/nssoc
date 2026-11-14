@@ -45,10 +45,15 @@ try:
  mapping='same_circuits("RM_IHPSG13_2P_BITKIT_16x2_SRAM", "RM_IHPSG13_256x16_c2_2P_BITKIT_16x2_SRAM")'
  guard='raise "Missing physical 32cell_block" unless netlist.circuit_by_name("RM_IHPSG13_2P_BITKIT_16x2_SRAM")\nraise "Missing reference 32cell_block" unless schematic.circuit_by_name("RM_IHPSG13_256x16_c2_2P_BITKIT_16x2_SRAM")'
  addition='\n'.join(indent2+l for l in (guard+'\n'+mapping).splitlines())+'\n'
+ pairs=[('RM_IHPSG13_2P_COLUMN_64','RM_IHPSG13_256x16_c2_2P_COLUMN_pcell_0'),('RM_IHPSG13_2P_MATRIX_64x32','RM_IHPSG13_256x16_c2_2P_MATRIX_pcell_1')]
+ for layout_name,reference_name in pairs:
+  ruby=[f'raise "Missing layout circuit {layout_name}" unless netlist.circuit_by_name("{layout_name}")',f'raise "Missing reference circuit {reference_name}" unless schematic.circuit_by_name("{reference_name}")',f'same_circuits("{layout_name}", "{reference_name}")']
+  addition+='\n'.join(indent2+line for line in ruby)+'\n'
+ r['additional_explicit_pairs']=pairs
  revised=revised[:m.start()]+addition+revised[m.start():]
  assert revised.replace(addition,'',1).replace(insertion,'',1)==text
  r['explicit_cell_pair']=['RM_IHPSG13_2P_BITKIT_16x2_SRAM','RM_IHPSG13_256x16_c2_2P_BITKIT_16x2_SRAM']
- r['correspondence_scope']='Name pairing before align only. Both cell contents still compared; no blanking, nil mapping, net or pin equivalence.'
+ r['correspondence_scope']='Three hierarchy-name pairs before align only. Both cell contents still compared; no blanking, nil mapping, net or pin equivalence.'
 
  deck.write_text(revised)
  r['deck_before_sha256']=hashlib.sha256(text.encode()).hexdigest();r['deck_after_sha256']=sha(deck)
