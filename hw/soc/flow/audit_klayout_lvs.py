@@ -74,7 +74,10 @@ def assess(rows, top, deck_log, extraction_diagnostics=()):
         reasons.append('Non-matching, skipped, missing or warning circuit')
     # flag_missing_ports may fail after compare(), so the database alone is
     # insufficient. Require the strict deck's explicit final success as well.
-    if 'INFO : Congratulations! Netlists match.' not in deck_log:
+    verdicts = ('INFO : Congratulations! Netlists match.', 'INFO : Netlists match.')
+    successful_verdict = any(line.strip() == verdict or line.rstrip().endswith(' : ' + verdict)
+                             for line in deck_log.splitlines() for verdict in verdicts)
+    if not successful_verdict:
         reasons.append('Missing explicit successful deck verdict')
     if "ERROR : Netlists don't match" in deck_log:
         reasons.append('Deck explicitly reported a mismatch')
