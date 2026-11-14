@@ -111,19 +111,35 @@ def measures(ys):
  return out
 def objective(values,weight):return sum(v*(weight if n in critical else 1) for n,v in values.items() if n not in railnets)
 baseline=measures(dict(enumerate(original_y)));initial=sorted(range(16),key=lambda i:original_y[i]);plans=[]
-for weight in [1,4]:
- rng=random.Random(650+weight);order=initial[:];best=order[:];cost=objective(measures(positions(order)),weight);bestcost=cost
- for step in range(12000):
-  trial=order[:];i,j=rng.sample(range(16),2);trial[i],trial[j]=trial[j],trial[i]
-  value=objective(measures(positions(trial)),weight);temperature=max(1,1200*(1-step/12000)**2)
-  if value<cost or rng.random()<math.exp(min(0,(cost-value)/temperature)):order,cost=trial,value
-  if cost<bestcost:best,bestcost=order[:],cost
- ys=positions(best);changed=measures(ys)
- # Check every translated macro box, with all native cell dimensions intact.
- newboxes=[boxes[i].transformed(kdb.Trans(0,ys[i]-original_y[i])) for i in range(16)]
- assert all((kdb.Region(newboxes[i])&kdb.Region(newboxes[j])).is_empty() for i in range(16) for j in range(i))
- plans.append({'critical_weight':weight,'order':best,'positions_y_dbu':ys,'objective_before':objective(baseline,weight),'objective_after':bestcost,'macro_bbox_nonoverlap':True,'net_changes':[{'component':n,'labels':[v[3] for v in netpoints[n]],'supply':n in railnets,'critical':n in critical,'before_hpwl_um':baseline[n],'after_hpwl_um':changed[n],'delta_um':changed[n]-baseline[n]} for n in sorted(netpoints)]})
-out['placement_plans']={'status':'PROPOSED_MACRO_ORDERS_REQUIRES_ROUTING_REBUILD','geometry_changed':False,'coverage':coverage,'unowned_public_ports':unowned,'rail_components':sorted(railnets),'critical_components':sorted(critical),'plans':plans,'scope':'Complete physical anchor graph; fixed external pins; constant X; reordered native macros with80um gaps. HPWL is a placement proxy, not routed wirelength or timing. All signal changes including clocks and upstream sampler paths retained. No LVS/DRC or electrical acceptance.'}
+# Preserve all six frontend macro transforms and complete divider/buffer
+# pairs. The earlier unconstrained weighted plan lengthened the C divider
+# outputs by1355um and is not adopted.
+import itertools
+prefix=initial[:6];assert set(prefix)==set(range(6))
+units=[(6,7),(9,10),(8,),(11,),(12,),(13,),(14,),(15,)]
+protected={n for n,pts in netpoints.items() if {p[0] for p in pts if p[0] is not None} in ({6,7},{9,10})}
+assert len(protected)>=4,protected
+def paired_positions(order):
+ ys={i:original_y[i] for i in prefix};y=original_y[6]
+ for i in order[6:]:ys[i]=y;y+=heights[i]+80000
+ return ys
+best=None;evaluated=0;eligible=0
+for permutation in itertools.permutations(units):
+ order=prefix+[i for unit in permutation for i in unit];assert len(set(order))==16
+ ys=paired_positions(order);v=measures(ys);evaluated+=1
+ if any(v[n]>baseline[n]+1e-6 for n in protected):continue
+ eligible+=1
+ # Equal extra weight on all intermacro signal nets discourages moving delay
+ # into another analog stage; targeted data/select nets get weight4.
+ score=objective(v,4)
+ if best is None or (score,order)<(best[0],best[1]):best=(score,order,ys,v)
+assert evaluated==40320 and eligible and best is not None
+score,order,ys,changed=best
+newboxes=[boxes[i].transformed(kdb.Trans(0,ys[i]-original_y[i])) for i in range(16)]
+assert all((kdb.Region(newboxes[i])&kdb.Region(newboxes[j])).is_empty() for i in range(16) for j in range(i))
+assert all(ys[i]==original_y[i] for i in prefix)
+plans.append({'critical_weight':4,'order':order,'positions_y_dbu':ys,'objective_before':objective(baseline,4),'objective_after':score,'macro_bbox_nonoverlap':True,'fixed_frontend_macros':prefix,'preserved_divider_buffer_pairs':[[6,7],[9,10]],'protected_components':sorted(protected),'evaluated':evaluated,'eligible':eligible,'net_changes':[{'component':n,'labels':[v[3] for v in netpoints[n]],'supply':n in railnets,'critical':n in critical,'before_hpwl_um':baseline[n],'after_hpwl_um':changed[n],'delta_um':changed[n]-baseline[n]} for n in sorted(netpoints)]})
+out['placement_plans']={'status':'PROPOSED_MACRO_ORDERS_REQUIRES_ROUTING_REBUILD','geometry_changed':False,'coverage':coverage,'unowned_public_ports':unowned,'rail_components':sorted(railnets),'critical_components':sorted(critical),'plans':plans,'scope':'Complete physical anchor graph; fixed external pins and six frontend macros; constant X; contiguous divider/buffer pairs; exhaustive40320 macro-unit permutations with80um gaps. HPWL is a placement proxy, not routed wirelength or timing. All signal changes including clocks and upstream sampler paths retained. No LVS/DRC or electrical acceptance.'}
 out['top_shape_inventory']={}
 for li in layout.layer_indexes():
  counts=collections.Counter();bounds=[]
