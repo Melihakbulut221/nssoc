@@ -23,7 +23,7 @@ def assemble(identity,anchors,legacy,wiretext,capture,reductions,fixture,n):
  need(len(parsed[0][2:])==1428 and set(parsed[0][2:])==set(physical),"all actual metal ports")
  rc=[r for r in parsed[1:-1]if r[0].startswith(("R","C"))]
  native_caps=[r for r in parsed[1:-1]if r[0].startswith("X")]
- need(Counter(r[0][0]for r in parsed[1:-1])==dict(R=28634,C=18476,X=7),"actual MIM-aware native census")
+ need(Counter(r[0][0]for r in parsed[1:-1])==dict(R=28634,C=18488,X=7),"actual MIM-aware native census")
  need(len({r[0].lower()for r in parsed[1:-1]})==len(parsed)-2,"unique native element names")
  public={a["label"]:a["detail"]["public_port"]for a in physical.values()if "public_port"in a["detail"]}
  need(len(public)==25 and set(public.values())=={p["name"]for p in identity["ports"]},"all actual public pin names")
@@ -141,7 +141,7 @@ def assemble(identity,anchors,legacy,wiretext,capture,reductions,fixture,n):
  contract=dict(model=model,interface=interface,partition=n,devices=records,gate_macros=gate_bindings,body_partition=body,
   metal_node_map=wire_map,native_mim_cards_preserved=capture["native_mim_devices"],physical_devices=650,physical_terminals=2046,
   actual_intrinsic_MOS_instances=200*n,other_intrinsic_instances=450,gate_macros_instantiated=50,physical_gate_contacts=200,
-  metal_R=28634,metal_C=18476,actual_MIM_native_attachment_points_preserved=True,intrinsic_total_multiplicity_per_physical_device=1,
+  metal_R=28634,metal_C=18488,actual_MIM_native_attachment_points_preserved=True,intrinsic_total_multiplicity_per_physical_device=1,
   full_loaded_simulation_passed=False,full_phy_accepted=False,final_timing_complete=False,substrate_r_modeled=False,gate_extrinsic_C_included=False)
  return text,contract
 
