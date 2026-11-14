@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Mutual CRC retiming proof; purge unused wires, retain all live equivalence points.
-No RTL changes, assumptions, output masks, or waived equivalence cells.
+No RTL changes, input assumptions, output masks, or waived equivalence cells.
+Forward structural merging adds candidate internal equivalences; every remaining
+equivalence, including those added, must be proven by final equiv_status -assert.
 """
 import pathlib,subprocess,sys,json,hashlib,time,re
 BASE='4726df32f2833d1c0ac2d6096ce0160ff7c07995'
@@ -15,7 +17,7 @@ top='soc_pcie_lcrc_tx'
 def design(name):
  return f'read_verilog -defer -sv -D SYNTHESIS out/{name}.v; hierarchy -check -top {top} -chparam MAX_TLP_DWORDS {capacity}; proc; flatten; opt -keepdc; memory_map; opt -keepdc; async2sync; opt -keepdc; opt_clean -purge; rename {top} {name}; design -stash {name};'
 pair='gold gate' if direction=='forward' else 'gate gold'
-ys=design('gold')+design('gate')+f'design -copy-from gold -as gold gold; design -copy-from gate -as gate gate; equiv_make {pair} equiv; hierarchy -top equiv; equiv_simple -undef -seq 2; equiv_status; opt_clean; equiv_induct -undef -seq 8; equiv_status -assert;'
+ys=design('gold')+design('gate')+f'design -copy-from gold -as gold gold; design -copy-from gate -as gate gate; equiv_make {pair} equiv; hierarchy -top equiv; equiv_struct -icells -fwd -maxiter 10; opt_clean; equiv_status; equiv_simple -undef -seq 2; equiv_status; opt_clean; equiv_induct -undef -seq 8; equiv_status -assert;'
 (out/'proof.ys').write_text('\n'.join(x.strip() for x in ys.split(';') if x.strip())+'\n')
 start=time.monotonic()
 with (out/'proof.log').open('w') as log:
