@@ -1,3 +1,13 @@
+# RX6 hold checkpoint verified and split continuation launched
+
+Inventory43569490025 completed/success. Safe14104151119SHA`0d974e1bec75005424ef7e0ac94b81bd52587b9234245dc5e07c2a989ae965bb`; candidate drt-run-1ODB221904411bytes,SHA`329e6ef42702320243b595ab56554d5fc3fd3c63e93ff452faad0a206df36c82`. SDCsame5c65218b6106315c71d45c19eb61af09781607f0f438f2c7f99c4427884d24a4 but path`rcx/1-nssoc-cut10jrx6holdthree/soc_top.sdc`. Native14103417683SHA`361ca0f3c8fad45e6c8a8a4b49e828804cb48df8835651acb49932222f6e1c31`cloudonly.
+
+Resume43569629324 source`12101bb1da5f82420b08b363ef707d2d08e55933`, branch`codex/resume-rx6-hold-antenna-pass`, dispatched. Same exactruntimeDRTscriptguard/skipinitialfullroute approach as43567570194, but MUST reproduce39antenna nets for this specificholdcandidate. Clears inherited metrics, originalconfig/clockunchanged. Route and RCX/STA split jobs, original strict zero gates. Artifacts`route-cut10j_rx6_ant_resume-RUN`,`routed-db-cut10j_rx6_ant_resume-RUN`,`routed-sta-cut10j_rx6_ant_resume-RUN`; nativefailprefixantenna-resume-incomplete-native-RUN. Neither continuation yet validated as success.
+
+Receipt:`docs/evidence/rx6-hold-checkpoint-resume-launch-20261114.json`. Poll7live handles:43569629324,43567570194,43566292104,43562021054,43561900502,43562981217,43558722004. Old43538031308/43541234973 terminalfailure. Fullgoalopen.
+
+---
+
 # Ethernet RX6 hold candidate also timed out; separate checkpoint inventory running
 
 43541234973 completed/failure, nativeRCX_STA_RC=124 at330min. IntermediateDRC0 after first antenna repair;39nets/41pins remain, secondrepair82diodes cut off during pinaccess. No final timing, so hold benefit not yet verified. Safe14104080998SHA`79cf09302f5cc660a21d05d0ca5dd6c7105395790bfa498856426e4df88dbfb6`; native14103417683SHA`361ca0f3c8fad45e6c8a8a4b49e828804cb48df8835651acb49932222f6e1c31`cloudonly.
