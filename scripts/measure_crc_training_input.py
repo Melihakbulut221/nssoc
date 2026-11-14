@@ -29,6 +29,12 @@ state=json.loads((SOURCE/report['repaired_state']).read_text());odb=Path(state['
 initial=OUT/'initial.json';initial.write_text(json.dumps(state))
 config=SOURCE/'trial-config.json';cfg=json.loads(config.read_text());assert cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5.0
 app=Path(os.environ['CLOUD_APPIMAGE']);prior.verify(app,'x86_64')
+# Verify the exact native delay model is a two-port identity buffer.
+import base64
+model=json.loads(subprocess.check_output(['gh','api','repos/IHP-GmbH/IHP-Open-PDK/contents/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v?ref=c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c']))
+raw=base64.b64decode(model['content']);assert digest(raw)=='28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4'
+module=re.search(r'module sg13g2_dlygate4sd3_1\b.*?endmodule',raw.decode(),re.S)[0]
+assert re.search(r'buf\s*\(X, A\);',module) and 'output X;' in module and 'input A;' in module
 protected={str(p):prior.sha(p)for p in [odb,config,prior.SOURCE/'prepared/physical.sdc',ROOT/'hw/soc/pnr/input_timing_flow.py',Path(__file__)]}
 cmd=[str(app),'python',str(ROOT/'hw/soc/pnr/input_timing_flow.py'),'--flow','InputTiming','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(config)]
 (OUT/'run').mkdir()
@@ -41,4 +47,8 @@ for p in (OUT/'run').glob('*/training-*.rpt'):
  text=p.read_text();v=re.findall(r'([-+]?[0-9]+\.[0-9]+)\s+slack\s+\((?:MET|VIOLATED)\)',text);assert v
  rows[str(p.relative_to(OUT))]={'worst_slack_ns':min(map(float,v)),'reported_paths':len(v),'sha256':prior.sha(p)}
 assert len(rows)==6
-(OUT/'result.json').write_text(json.dumps({'source_run':r['id'],'source_head':r['head_sha'],'source_odb_sha256':report['repaired_odb_sha256'],'source_unchanged':True,'reports':rows,'accepted':False,'scope':'Exact CRC repaired placement-estimated input setup/hold diagnosis only; no ECO, no routed or full-chip signoff.'},indent=2))
+states=list((OUT/'run').glob('*-nssoc-trainingholdeco/state_out.json'));assert len(states)==1
+eco_state=json.loads(states[0].read_text());eco_odb=Path(eco_state['odb']);assert eco_odb.is_file()
+assert len(rows)==6
+input_closed=all(v['worst_slack_ns']>=0.05 for v in rows.values())
+(OUT/'result.json').write_text(json.dumps({'source_run':r['id'],'source_head':r['head_sha'],'source_odb_sha256':report['repaired_odb_sha256'],'source_unchanged':True,'two_delay_cells_inserted':True,'native_delay_is_identity_buffer':True,'input_setup_hold_margin_50ps_passed':input_closed,'candidate_odb_sha256':prior.sha(eco_odb),'reports':rows,'accepted':False,'scope':'Exact CRC two-delay-cell physical candidate; original incidence protected, fresh placement RC, no routed or full-chip signoff.'},indent=2))
