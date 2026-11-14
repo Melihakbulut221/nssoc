@@ -84,21 +84,25 @@ endmodule
   pid=int(run(['sudo','cat',str(root/'restored.pid')]).stdout)
   parent=int(next(line.split()[1] for line in P('/proc/'+str(pid)+'/status').read_text().splitlines() if line.startswith('PPid:')))
   assert parent==os.getpid(),'Restored simulator not adopted by status collector'
-  mode=os.environ['EXIT_CONTROL'];assert mode in ('normal','sigterm')
-  if mode=='sigterm':os.kill(pid,signal.SIGTERM)
+  mode=os.environ['EXIT_CONTROL'];assert mode in ('normal','sigterm','sigkill')
+  if mode!='normal':os.kill(pid,signal.SIGTERM if mode=='sigterm' else signal.SIGKILL)
   end=time.monotonic()+600
   while True:
    child,status=os.waitpid(pid,os.WNOHANG)
    if child==pid:break
    assert time.monotonic()<end,'Restored process exit not observed';time.sleep(.2)
   code=os.waitstatus_to_exitcode(status);r['restored_returncode']=code;r['exit_control']=mode
-  if mode=='sigterm':
-   assert code==-signal.SIGTERM,'Forced-stop control returned unexpected status'
-   r['nonzero_exit_rejected']=True;r['passed']=True
+  observed=(root/'resumed.log').read_bytes();reference=(root/'baseline.log').read_bytes()
+  complete=b'CHECKPOINT_CONTROL_FINISHED' in observed
+  accepted=code==0 and complete and observed==reference
+  r['completion_marker']=complete;r['trace_equal']=observed==reference;r['simulation_accepted']=accepted
+  if mode!='normal':
+   assert not accepted and not complete,'Premature termination was incorrectly accepted'
+   if mode=='sigkill':assert code==-signal.SIGKILL,'SIGKILL exit status was not captured'
+   r['premature_exit_rejected']=True;r['passed']=True
   else:
-   assert code==0,'Native simulator failed after restore'
-   assert (root/'resumed.log').read_bytes()==(root/'baseline.log').read_bytes(),'Restored native trace differs'
-   r['trace_sha256']=digest(root/'resumed.log');r['trace_lines']=len((root/'resumed.log').read_text().splitlines());r['passed']=True
+   assert accepted,'Native execution did not finish successfully with identical trace'
+   r['trace_sha256']=hashlib.sha256(observed).hexdigest();r['trace_lines']=len(observed.splitlines());r['passed']=True
  else:raise ValueError(stage)
 except Exception as e:
  r['error']=repr(e)
