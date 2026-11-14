@@ -1,0 +1,7 @@
+# RX cursor reset distribution experiment (2026-11-14)
+
+The source-bound EOP-only postCTS run43633451595 has a slow setup path of -3.316962ns from the parent up_rx registered reset copy through six serial fanout buffers and RX handshake logic to r2_lane_d. This experiment changes only the READ2 cursor/pick handshake qualifier to the existing rst_copy_ni tree. The external out_valid/reset qualification is unchanged. The existing parent contract requires rst_copy_ni == rst_ni at all times. No false path, period, input/output delay, reset gating removal, new latency or acceptance window changes.
+
+SOC_PCIE_RX_CURSOR_LOCAL_RESET is default OFF and requires SOC_PCIE_RESET_COPIES and the READ2 implementation. It is not enabled in mainchip synthesis. Full actual-module proofs explicitly bind the documented reset-copy equality in both versions; arbitrary data/link/ready/training/verdict inputs stay unconstrained. Semantic ready-inversion mutations must be rejected. The existing eight-seed 300000-cycle RX testbench compares against the original default implementation, checks lane copies, and must also reject all eight mutated cases. Runner failures are propagated.
+
+Even a passing proof/traffic suite does not establish better timing. A source-bound mapping and physical comparison must demonstrate improvement without worsening hold or electrical limits before adoption. Current CRC fullchip run43635824821 is separate and must not be restarted or attributed to this experiment.
