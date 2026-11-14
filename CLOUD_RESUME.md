@@ -1,3 +1,13 @@
+## 2026-11-14 — saved LVS replay loses SPICE case semantics; restoration under test
+
+Diagnosis43606966719/sourceb90cfd743752d1cf92cfe74a296dc4a105e59970 completed: graph compare TRUE/108Match; port check FALSE even on original saved cross-reference before replay. Safe14119210172 port-inventory.json proves both deserialized netlists case_sensitive=True; 354pins each, only2exact-case matches (supplies) but all354match case-folded with no collisions. Layout ports lower-case, SPICE reference uppercase. This is not evidence of electrical mismatch in original accepted extraction.
+
+Official KLayout v0.30.13 src/db/db/dbNetlistSpiceReader.cc line1325 explicitly netlist.set_case_sensitive(false) because SPICE is case-insensitive. New experiment restores reference.case_sensitive=False, retains layout sensitivity, unchanged port/net names, collision/count guards, strict flag_missing_ports, full device graphs and original DB SHA. No pin/net equivalences or missing-port waiver.
+
+Follow identity-only43607296971/source1c3f8363705a03c0e9d254a44b47d85ef5f4bcc7 oncodex/full-chip-native-fault-controls. If identity passes run actual signal_open, sram_mos_width controls and add a port-name mutation to demonstrate port rejection remains effective. Aggregate acceptance must require identity pass and all negatives rejected. Experimental helpers not yet integrated. Native files stay cloud-only.
+
+Route43591198141 and PHY43603972722 still IN_PROGRESS at latest API check. Goal remains active: full serial PHY, final coherent route/LVS/timing and production approval are not complete.
+
 ## 2026-11-14 — native graph identity matches; port replay still unresolved
 
 Identity replay43606609559/sourcecceb261dfd98ace5aa3e741df1d3d83d4d05005a completed native compare TRUE with108Match in79.95s after clearing stale xref and explicit model correspondence. However flag_missing_ports returnedfalse: control remains FAILED, no negative-controls acceptance. Safe artifact14118413876 containsresult.json. Original DB hashunchanged.
