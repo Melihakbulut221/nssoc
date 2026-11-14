@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: Apache-2.0
+"""Replay frozen DP inputs with bounded ambiguity search; diagnostic only."""
+import hashlib,json,zipfile,tarfile,io,pathlib,subprocess,os,time,sys
+P=pathlib.Path
+out=P('out');out.mkdir(exist_ok=True);derived=out/'derived';derived.mkdir(exist_ok=True)
+native=out/'native'
+def sha(p):
+ with P(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
+r={'source_run':43562021054,'accepted':False,'manufacturing_approval':False,'full_chip_lvs_passed':False,'scope':'Resource-bounded comparison diagnosis. All native devices, connections, dimensions and strict port checks retained. Limit exhaustion is failure, never a match waiver.'}
+rc=2
+try:
+ controls=json.loads((out/'comparison-controls.json').read_text());assert controls['status']=='PASS' and len(controls['cases'])==10
+ r['controls']=controls
+ assert sha('/tmp/klayout.deb')=='0bb6b913fd6a32581d50b08be744b522a2a477baa1ed7e253c97cc18ce248a24'
+ assert subprocess.check_output(['klayout','-b','-v'],text=True).strip()=='KLayout 0.30.13'
+ assert sha('/usr/bin/klayout')=='288ed7a513436fac79255686914ff71b1d351fd79bd98f2eb6f9fecd14e149f7'
+ assert sha('native.zip')=='d0109ba41e2d146d25a90f7dcaeba2602b87168cbe9b0d01a175b57b1734658e'
+ z=zipfile.ZipFile('native.zip');assert z.namelist()==['native-dp.tgz']
+ with tarfile.open(fileobj=io.BytesIO(z.read('native-dp.tgz')),mode='r:gz') as t:
+  for m in t.getmembers():
+   assert not P(m.name).is_absolute() and '..' not in P(m.name).parts and P(m.name).parts[0]=='native'
+   assert m.isfile() or m.isdir()
+  t.extractall(out,filter='data')
+ assert sha(native/'command.json')=='db39410a14ac3266146756e757afcf8538e60817843a81700fee1ab6438a5fd1'
+ cmd=json.loads((native/'command.json').read_text());assert cmd[:4]==['/usr/bin/klayout','-b','-zz','-r']
+ deck=P(cmd[4]);assert deck.is_file() and deck.is_relative_to(P.cwd()/'out/native')
+ assert sha(deck)=='48fb77c91708f55121d9d801b917eab1364b778fd3b49deb944ba29a0cbc527c'
+ assert sha(deck.parent/'rule_decks/custom_reader.lvs')=='87a75b402b35d7306153a66089c0f0105b4e50c4816c7c553d97219af6c41519'
+ assert sha(native/'engineering-reference-v1.cdl')=='1b8f2b6d11af2956fa0caf074b8329bf2e49722a4c5ce954c2119ad9ae4992b0'
+ options=dict(v.split('=',1) for v in cmd[5:] if '=' in v)
+ assert options['allow_unmatched_ports']=='false' and options['no_simplify']=='true' and options['no_series_res']=='true' and options['no_parallel_res']=='true'
+ assert sha(options['input'])=='420b5223d14e2f873a2464849e3decbbec2b5b16b3c6a0f8cd2bb21b0d52365b'
+ assert not P(options['report']).exists()
+ text=deck.read_text();lines=text.splitlines(keepends=True)
+ hits=[i for i,l in enumerate(lines) if 'logger.info' in l and 'Starting SG13G2 LVS Comparison with flag_missing_ports' in l]
+ assert len(hits)==1,hits
+ i=hits[0];indent=lines[i][:len(lines[i])-len(lines[i].lstrip())]
+ insertion=indent+'max_branch_complexity(16) # diagnostic search bound, no acceptance change\n'
+ assert 'max_branch_complexity' not in text
+ revised=''.join(lines[:i])+insertion+''.join(lines[i:]);assert revised.replace(insertion,'',1)==text
+ deck.write_text(revised)
+ r['deck_before_sha256']=hashlib.sha256(text.encode()).hexdigest();r['deck_after_sha256']=sha(deck)
+ r['comparison_settings']={'max_branch_complexity':16,'max_depth':'unchanged default','native_timeout_seconds':1800}
+ env=dict(os.environ);env.pop('GH_TOKEN',None);env.pop('GITHUB_TOKEN',None);env['QT_QPA_PLATFORM']='offscreen'
+ start=time.monotonic()
+ try:
+  with (native/'bounded-run.log').open('w') as f:proc=subprocess.run(cmd,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=1800)
+  r['returncode']=proc.returncode;r['elapsed_seconds']=time.monotonic()-start
+ except subprocess.TimeoutExpired:
+  r['elapsed_seconds']=time.monotonic()-start;raise
+ if proc.returncode!=0:raise RuntimeError('Native run failed')
+ audit=[sys.executable,'hw/soc/flow/audit_klayout_lvs.py',options['report'],'--top',options['topcell'],'--deck-log',options['log'],'--output',str(derived/'audit.json')]
+ with (native/'bounded-audit.log').open('w') as f:a=subprocess.run(audit,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=300)
+ r['audit_returncode']=a.returncode
+ assert (derived/'audit.json').is_file()
+ report=json.loads((derived/'audit.json').read_text())
+ r['comparison_passed_within_diagnostic_scope']=a.returncode==0 and report['status']=='PASS within comparison scope' and not report['reasons']
+ r['status']='DIAGNOSTIC_COMPARISON_COMPLETE';rc=0
+except Exception as e:r['status']='ERROR_OR_INCOMPLETE_DIAGNOSIS';r['error']=type(e).__name__+': '+str(e)
+finally:
+ r['native_outputs']={p.name:{'bytes':p.stat().st_size,'sha256':sha(p)} for p in native.glob('*') if p.is_file()}
+ r['log_tail']={name:(native/name).read_text(errors='replace').splitlines()[-100:] for name in ['bounded-run.log','deck.log','bounded-audit.log'] if (native/name).is_file()}
+ (derived/'bounded-result.json').write_text(json.dumps(r,indent=2));print(r['status']);sys.exit(rc)
