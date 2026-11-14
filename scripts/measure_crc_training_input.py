@@ -31,6 +31,7 @@ config=SOURCE/'trial-config.json';cfg=json.loads(config.read_text());assert cfg[
 app=Path(os.environ['CLOUD_APPIMAGE']);prior.verify(app,'x86_64')
 protected={str(p):prior.sha(p)for p in [odb,config,prior.SOURCE/'prepared/physical.sdc',ROOT/'hw/soc/pnr/input_timing_flow.py',Path(__file__)]}
 cmd=[str(app),'python',str(ROOT/'hw/soc/pnr/input_timing_flow.py'),'--flow','InputTiming','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(config)]
+(OUT/'run').mkdir()
 with (OUT/'native.log').open('w')as log:code=subprocess.call(cmd,stdout=log,stderr=subprocess.STDOUT)
 if code:print((OUT/'native.log').read_text()[-6000:])
 assert code==0
