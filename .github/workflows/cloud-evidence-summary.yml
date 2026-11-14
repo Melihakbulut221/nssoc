@@ -38,6 +38,7 @@ jobs:
         run: |
           set -euo pipefail
           OUT=$PWD/hw/soc/out/namespaced-streamout
+          mkdir -p "$OUT/run"
           timeout 3600 env -u GH_TOKEN -u GITHUB_TOKEN /mnt/s/librelane.AppImage python hw/soc/pnr/namespaced_sram_streamout_flow.py --flow NamespacedSRAMStreamOut             --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/run             --with-initial-state $OUT/state.json $OUT/config.json > $OUT/streamout.log 2>&1
       - name: Collect reviewable results and preserve native layout separately
         if: always()
