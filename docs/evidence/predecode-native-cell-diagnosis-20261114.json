@@ -1,0 +1,92 @@
+{
+  "scope": "Unchanged native cell compatibility diagnosis only; no chip or timing acceptance",
+  "source_sha256": "98000b24fe3f7283c50e1bd967af37be3baafa8ebf76beff3fe142c6b336eaf0",
+  "models_unchanged": true,
+  "simulators": {
+    "iverilog": {
+      "library": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "compile": {
+        "command": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_native_cell_gate",
+          "-o",
+          "probe-iverilog/sim.vvp",
+          "probe-iverilog/tb_native_cell_gate.v",
+          "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.06411078399999326
+      },
+      "runs": [
+        {
+          "command": [
+            "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+            "-i",
+            "probe-iverilog/sim.vvp"
+          ],
+          "returncode": 0,
+          "elapsed_s": 0.015787463999998863,
+          "pass_banner": true
+        }
+      ],
+      "passed": true
+    },
+    "verilator": {
+      "library": "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "compile": {
+        "command": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/verilator",
+          "--binary",
+          "--timing",
+          "-Wno-fatal",
+          "--top-module",
+          "tb_native_cell_gate",
+          "--Mdir",
+          "probe-verilator/obj_dir",
+          "-j",
+          "2",
+          "--x-initial",
+          "unique",
+          "--x-assign",
+          "unique",
+          "probe-verilator/tb_native_cell_gate.v",
+          "hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 4.727726047000004
+      },
+      "runs": [
+        {
+          "command": [
+            "probe-verilator/obj_dir/Vtb_native_cell_gate",
+            "+verilator+rand+reset+2",
+            "+verilator+seed+1"
+          ],
+          "returncode": 1,
+          "elapsed_s": 0.003550656000001595,
+          "pass_banner": false
+        },
+        {
+          "command": [
+            "probe-verilator/obj_dir/Vtb_native_cell_gate",
+            "+verilator+rand+reset+2",
+            "+verilator+seed+29"
+          ],
+          "returncode": 1,
+          "elapsed_s": 0.0013130169999868713,
+          "pass_banner": false
+        }
+      ],
+      "passed": false
+    }
+  },
+  "logs": {
+    "iverilog-run-0.log": "NATIVE_CELL_GATE PASS\nprobe-iverilog/tb_native_cell_gate.v:17: $finish called at 95000 (1ps)\n",
+    "verilator-run-0.log": "[66000] %Fatal: tb_native_cell_gate.v:14: Assertion failed in tb_native_cell_gate: Native asynchronous reset reassertion failed\n%Error: probe-verilator/tb_native_cell_gate.v:14: Verilog $stop\nAborting...\n",
+    "verilator-run-1.log": "[55000] %Fatal: tb_native_cell_gate.v:10: Assertion failed in tb_native_cell_gate: Native positive-edge data capture failed\n%Error: probe-verilator/tb_native_cell_gate.v:10: Verilog $stop\nAborting...\n"
+  }
+}
