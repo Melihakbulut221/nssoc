@@ -1,0 +1,23 @@
+{
+  "run": 43542698325,
+  "source": "7f99d8ab41e19951fb94bff78cfece7ec3c5172c",
+  "branch": "codex/cdr-lowz8-xor-load-reduction",
+  "variants": [
+    "bd10_lowz8_xor2",
+    "bd10_lowz8_xor3"
+  ],
+  "reference_variant": "bd10_slave_parallel2_lowz8",
+  "basis": {
+    "topology_run": 43542394881,
+    "topology_source": "a2eb78bf576a66a18e91c15ae53797433bd94927",
+    "derived_artifact": 14092472835,
+    "derived_sha256": "e4b96b9ed5ea0cfc3dd44269c1b1e19be755857fa5c483aced0d4ae19e6e04e9",
+    "finding": "Each collector of the A/C buffer pairs XD0273/XD0275/XD0278/XD0280 (nx=2) directly drives six npn13g2 XOR bases (each nx=4), plus its collector resistor. Exact top-subcircuit wire connectivity inspected, PDK resistors not collapsed.",
+    "response_run": 43542098184
+  },
+  "mutation_contract": "Against reference variant, precisely 24 XOR_DATA instance nx parameters change from 4 to 2 or 3. Per-line identity guard rejects all other differences. Bench sources, clocks, data and solver options unchanged.",
+  "verification": "Frozen measure_wave checks data, phase and device limits; final workflow gate also requires simulator return zero. Reduced emitter area may fail current-density or timing limits and is not presumed safe.",
+  "scope": "Circuit screen only with existing layout interconnect RC. A passing result is not a new extracted layout, DRC/LVS result, full serial PHY, PVT/jitter qualification or production approval.",
+  "new_layout": false,
+  "production_accepted": false
+}
