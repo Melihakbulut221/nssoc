@@ -1,3 +1,9 @@
+## 2026-11-14 — retry driver screen infrastructure fix
+
+Firstplacement43609541720 failed BEFORE nativeCAD: Ubuntu24 AppRun cannotwriteuid_map(Operationnotpermitted), returncode127. SourceODBhash verified unchanged; no placement/electrical outcome. Safe14119618668; native14119434428cloudonly. Do not interpret as designfailure.
+
+Follow replacement43609730238/sourceb1bfdc7664b8b6ba02e5ca77c31bda68e9955948 oncodex/retry-driver-buf4-placement. Uses provenubuntu22AppImageenvironment; hostsha helper now explicit chunkedSHA256 forPython3.10 (samehash checks). ExactsameODB,buf1->buf4target,nativeTcl/independentconnectivityverifier,placementlimits and acceptance boundaries. Previousjobterminal; originalroute43591198141 and PHY43603972722 not restarted. Native outputs onlycloud.
+
 ## 2026-11-14 — exact overloaded replay driver placement experiment live
 
 Follow43609541720/sourcea3487a2f42e87c3425db2573856838f7f77434af oncodex/retry-driver-buf4-placement. Targets ONLYplace31551 sg13g2_buf_1->sg13g2_buf_4 on verified159934-instance legalizedODB. Other159933instances LOCKED during detailed_placement, then exactoriginalstatusesrestored. max_displacement1000/1000, no legality waiver. Originaldriver/netnet31551, unique internal SIGNAL output, protection flags and pin-schema checked before swap. Native independent Python inventory compares ALL instance pinconnections, allnetmemberships, ports, nonselectedmaster/location/orientation/status and selectedorientation/status. Source/hash/runtime pinned. No simulationclock/SDC/RTL modifications.
