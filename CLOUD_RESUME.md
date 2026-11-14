@@ -1,3 +1,13 @@
+# MBIST second restore PID collision fixed; same1.26M checkpoint retry active
+
+43573337312 failed in CRIU restore; followup43573539211 collected exact native diagnostic: `criu/log.c:430 pidfile: Can't open .../restored.pid: File exists`, followed by Cannot write pidfile/Restoring FAILED. Original dump includes the previous restore PID file. No simulator error or boot completion. Safe14104814119SHA`fb27a96d108a0feff659ce84e77637199a1318b68506429523592786cd2e2b8f`. FullCRIUlog14105725472SHA`a03213b9615963aff1b3c67b25a1d29d3e7513db062230f9e09b6dbd9e75b961`cloudonly. First failure safe14104843822SHA`a3641939cdf17db5eb2d76620ac9ff4aa0efe807a7d87d0a89fb50280ddd2eab` lacks detailedCRIUlog.
+
+Fixed43573697024 source`27c496c5649c284e5cc1494792ef103c7fd427c7`, branchcodex/full-native-boot-continuation-two, in_progress at restore/simulation step. New outputPID`restored-RUN_ID.pid` must not exist; old files retained. CRIU detailed errors now extracted into safe result, full log retained cloudonly. SAME original1.26Mcheckpoint/input/runtime/hash/image identity, original28gates and3Mcyclebound, no restartfromzero. Actual restore progress/boot acceptance still requires result, not inferred from live step. Script on experiment branch; copied to integration only as dedicated source snapshot to avoid replacing older entrypoint.
+
+Receipt:docs/evidence/full-native-restore-pid-fix-20261114.json; snapshot:scripts/resume_full_native_boot_from1260k.py. Poll43573697024 instead of failed43573337312/43573539211. Otherlive43571075470,43569629324,43567570194,43566292104,43562021054,43561900502. Fullgoalopen.
+
+---
+
 # Full native MBIST advanced to1.26M cycles; next exact checkpoint continuation launched
 
 43558722004 completed/success as checkpoint infrastructure ONLY: passed=false,completed_boot=false,checkpoint_saved=true,stage_status=checkpointed_pending_boot.10800.323s segment,last_progress_cycle1260000. Safe14105022987SHA`43f3463da142dde3d0e5e9ca57d0292a8bf67286479b00656d69a39d9fb479de`; native14104748996SHA`875955125fb62aa659076191cf87496b58209fd56059d2bc1f38f24cf3aac6cf`cloudonly. Innernext-checkpoint.tgzSHA`8f480f6170a83b41ed1be10ef15ac5beae08b3f77e635575274e6f1ad6632181`; prefix10534bytesSHA`a2b5e52f0f115f5c17249a7eea6528f2b50814d1be91992f5b7b66714f5223e5`; CRIUimage_directory`images-43558722004`. No boot acceptance; uart/flash still0 during observed MBIST phase.
