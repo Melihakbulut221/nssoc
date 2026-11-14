@@ -1,3 +1,15 @@
+# Exact CDR failure recovered; independent collector-load screen running
+
+Native diagnosis43570807730 completed/success: original sampler/comparison and device gates reproduced exactly from full raw. acbuf15 eight HBT violations are active minimumVce0.2186..0.3017V vs0.4V floor, NOT excessive current. acbuf20 lowers selectorVce to0.0734..0.1273V and adds buffer/tail headroom violations plus three startupVce peaks1.603..1.609V vs1.6V ceiling. Do not relax those bounds. C sampler low-margin samples occur only when bits[k-2]!=bits[k-1] in the diagnosed interior history; not a proven clock-topology explanation. No internal clock measurement inferred.
+
+Safe artifacts14103968849SHA6552ec7b2f30e515ffd107678c5ac5545ec6ca4f2257377eec2743a6f9ca1389,14103859118SHA48a9d9ea9ee5f656dc539a2507b7af58e1f4da3e0a93447d24a10faaaae5bfab. Results and next-run receipt:docs/evidence/cdr-native-failure-result-and-load-screen-20261114.json. Tested diagnosis source preserved scripts/diagnose_cdr_native_failures.py; needs frozen helper source ec52087 for reproduction.
+
+Next screen43571075470 source`7e7b32d746ef5b19e7ed72ac23af2368b8fea624`, branch`codex/cdr-ac-load-original-bias`, observedin_progress. Two variantsacload12/acload16 keep ALL originalbench/bias sources byte-identical and only change four A/C collector widths8u→12u/16u relative to xor2 baseline (bd10_lowz8_xor2). Native topology and fourline-only guards retained. Pure source patch checks passed before dispatch. Original device/data/phase gates unchanged. This separates collector-load reduction from harmful bias increase; lower swing is a risk requiring actual measurement. ExistingRC/externalclock means no newlayout/PHYpass. Safe resultprefix`cdr-ac-load-result-only-VARIANT-43571075470`; mixed/native archives cloudonly. Read result-only first.
+
+Six other live handles43569629324,43567570194,43566292104,43562021054,43561900502,43558722004. Fullgoalopen.
+
+---
+
 # Full saved CDR device/history diagnosis launched
 
 43570807730 source`ec52087e74b97d707236035938df178180f27378`, branch`codex/cdr-native-device-history-diagnosis`, verified in_progress. Two cloud jobs restore original full raw waveforms for rejected acbuf15/acbuf20; no simulator rerun. Exact archive/raw hashes, candidate nx=2 binding, unchanged gates must reproduce saved results. Reports exact failing HBT metric/time/terminal voltages and four-bit history at original sampler phases. Safe artifacts`cdr-native-failure-derived-VARIANT-43570807730`. Native archives remain cloud-only. Implementation on experiment branch; integrate only after successful result. Receipt:docs/evidence/cdr-native-failure-diagnosis-launch-20261114.json.
