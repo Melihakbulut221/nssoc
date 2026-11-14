@@ -3,7 +3,7 @@ from pathlib import Path
 P='repos/Melihakbulut221/nssoc/'
 OUT=Path('out');OUT.mkdir()
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s],timeout=60))
-inputs=[(43633451595, '2c515a0bfb946ef244cc9e94e2f6af8a7e22e2fe', 14129917895, '2f7429aa34519372129c4a272e381799bfee5a37aefc5b07495b9901e493110b')]
+inputs=[(43643048434, 'db35595f13bc3eb63890086789b93e252fbb4cb6', 14133259949, 'f508cef6faf940e32aea7ab50f8ac83e8ce158e2bd3789c86c46633c6ed29c9b')]
 for run,head,aid,digest in inputs:
  r=api('actions/runs/'+str(run));assert r['status']=='completed'and r['head_sha']==head
  meta=api('actions/artifacts/'+str(aid));assert meta['workflow_run']['id']==run and meta['workflow_run']['head_sha']==head and meta['digest']=='sha256:'+digest and not meta['expired']
@@ -41,14 +41,14 @@ for run,head,aid,digest in inputs:
 
 # Bind worst after-repair endpoints to the exact independently revalidated mapping.
 import io,tarfile,collections
-valid=api('actions/runs/43631950511');assert valid['conclusion']=='success'and valid['head_sha']=='a238c421772e0f1ccd8a8e4ef64e7d5aad1cb894'
-meta=api('actions/artifacts/14128012721');assert meta['workflow_run']['id']==43630345267 and meta['workflow_run']['head_sha']=='bdd7cc588490425ff98c4718ea8986ecc06a128a'
-b=subprocess.check_output(['gh','api',P+'actions/artifacts/14128012721/zip']);assert hashlib.sha256(b).hexdigest()=='d32dd9bb9e0cc1d25f34e29cfbec4bb71908bef7bcaaa577327719602dcd3570'
+valid=api('actions/runs/43638771489');assert valid['conclusion']=='success'and valid['head_sha']=='e92350d314fd8c04c9c06f2aa7d198f02b000cd1'
+meta=api('actions/artifacts/14132027737');assert meta['workflow_run']['id']==43638771489 and meta['workflow_run']['head_sha']=='e92350d314fd8c04c9c06f2aa7d198f02b000cd1'
+b=subprocess.check_output(['gh','api',P+'actions/artifacts/14132027737/zip']);assert hashlib.sha256(b).hexdigest()=='5b92b8ded91a9d8b2d0042457d09f8473dd99064cb7a509644c08d47fe6f1586'
 nz=zipfile.ZipFile(io.BytesIO(b));tar=tarfile.open(fileobj=io.BytesIO(nz.read('build.tgz')),mode='r:gz')
 found=[]
 for member in tar:
  if member.isfile()and member.name.endswith('soc_top.mapped.json'):
-  raw=tar.extractfile(member).read();assert hashlib.sha256(raw).hexdigest()=='1c03ec19a0f8afc2384d92f8974be6cce48ff189e7e1a06e138a69f8754dd8f9';found.append(json.loads(raw))
+  raw=tar.extractfile(member).read();assert hashlib.sha256(raw).hexdigest()=='0924c5a8d60ff347f9d3673f09cdf53736c69fc9159de63391a52f483c2b1e2a';found.append(json.loads(raw))
 assert len(found)==1
 m=found[0]['modules']['soc_top'];cells=m['cells'];netnames=m['netnames']
 def norm(n):return n.replace('\\','').replace('\\','')
@@ -64,6 +64,12 @@ for name,groups in data['reported_path_groups'].items():
   for side in ['Startpoint','Endpoint']:
    match=re.search(side+r':\s*(\S+)',block);assert match
    targets.setdefault(match[1],[]).append({'report':name,'group':group,'side':side,'slack':row['worst_slack']})
+# Bind the complete new worst PCIe setup cone as well as group endpoints.
+for name,groups in data['reported_path_groups'].items():
+ if 'afterslow' in name and name.endswith('/max.rpt') and 'pcie_clk_i' in groups:
+  row=groups['pcie_clk_i']
+  for inst in re.findall(r'\s(\S+)/[A-Za-z0-9]+ \(',row['worst_path']):
+   targets.setdefault(inst,[]).append({'report':name,'group':'pcie_clk_i','side':'worst_path_cell','slack':row['worst_slack']})
 rows=[]
 for requested,uses in targets.items():
  matches=lookup.get(canonical(requested),[])
@@ -79,4 +85,4 @@ for requested,uses in targets.items():
     if isinstance(bit,int)and bit in bits:aliases.append({'net':net,'index':i+v.get('offset',0),'bit':bit})
   pins[pin]={'bits':bits,'rtl_aliases':aliases}
  rows.append({'requested':requested,'cell':n,'original_mapped_type':c['type'],'src':c.get('attributes',{}).get('src'),'pins':pins,'uses':uses,'status':'EXACT_ORIGINAL_MAPPING_ALIAS_NOT_POST_ECO_MASTER_CLAIM'})
-(OUT/'critical-mapping.json').write_text(json.dumps({'timing_run':43633451595,'mapping_producer':43630345267,'mapping_validation':43631950511,'mapped_sha256':'1c03ec19a0f8afc2384d92f8974be6cce48ff189e7e1a06e138a69f8754dd8f9','targets':rows,'accepted':False},indent=2))
+(OUT/'critical-mapping.json').write_text(json.dumps({'timing_run':43643048434,'mapping_producer':43638771489,'mapping_validation':43638771489,'mapped_sha256':'0924c5a8d60ff347f9d3673f09cdf53736c69fc9159de63391a52f483c2b1e2a','targets':rows,'accepted':False},indent=2))
