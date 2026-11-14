@@ -1,3 +1,46 @@
+## 2026-11-14 — EOP-cache physical screen current handle and alias diagnosis
+
+Current physical trial43629920068/source d25b831d07ae9f3444fec0b78656bcd5c02bee37 on codex/replay-eop-cache-placement. First43629515583 failed at missing replay_eop_q alias; second43629722934/source9ba674777abc814c6691cf2f077178d928943d58 proved both replay_eop_q/core_eop names optimized away (only external EOP names retained), then failed the alias guard. These are mapping-validator failures before placement, not measured timing failures. Original candidate RTL unchanged e478d785... and clock constraints unchanged.
+
+Current mapper emits pre-synthesis lowered JSON after proc, identifies the unique $adff Q driving replay_eop_q, and follows its exact src range to exactly one sg13g2_df mapped cell. No keep attributes, no aliases manufactured, no bypass of cached-state survival check. Both baseline and candidate use the same added lowering step. Entire native artifacts remain hosted. Only after state-survival check passes can placement and before/after electrical-repair reports execute. Do not reuse first two failed handles.
+
+Simulation43629411055/source00113c97cc04fc41551e45e1efa9c0499aa2bc17 remains separate:12positive300kcycles plus12compiled wrong-increment controls. Actual formal43629312391 already passed bothphysical-option sizes. No candidate integration or fullchip timing closure claimed. Next inspect complete actual simulation report; inspect physical report or exact mapping assertion if it fails. Then target wholechip implementation if candidate measurements justify it, preserving all originalclock/hold/inputoutput constraints and verifying actual gateboot/routing/RCX/LVS for newnetlist.
+
+Live snapshot at this checkpoint:
+
+[
+  {
+    "id": 43629920068,
+    "head_sha": "d25b831d07ae9f3444fec0b78656bcd5c02bee37",
+    "status": "in_progress",
+    "conclusion": null
+  },
+  {
+    "id": 43629411055,
+    "head_sha": "00113c97cc04fc41551e45e1efa9c0499aa2bc17",
+    "status": "in_progress",
+    "conclusion": null
+  },
+  {
+    "id": 43626358999,
+    "head_sha": "73b781d77b169a4c270bb635197540d3c8f96a9c",
+    "status": "in_progress",
+    "conclusion": null
+  },
+  {
+    "id": 43620739672,
+    "head_sha": "98281a5792ac15ed28f5ecd001b0cff462e95f99",
+    "status": "in_progress",
+    "conclusion": null
+  },
+  {
+    "id": 43610680141,
+    "head_sha": "d42836ac2566de769473973bb15625e27f788f8d",
+    "status": "in_progress",
+    "conclusion": null
+  }
+]
+
 ## 2026-11-14 — replay EOP-cache candidate implemented; full RTL equivalence PASSED
 
 Actual new mapped JSON diagnosis43629195905/source023bc757bd46e6130afa1092e0dc927137a0d76d proves worst slow setup goes retry.read_pos[1] -> replay_read_onehot[33], not byte storage. Exact source mapping532a165624564dcc0f1b1bd7904e697b244afcdadde7d289b2bd9fb07e01d59a. Fast hold endpoint slice365153 is functionID bit5, confirmed. Safe14126803650 SHA f75ba0cdd33c84f0879670b13e2e04ad378cd3ba2d1d4cb277073f8ac786e378. Do not infer endpoint names from nearby old candidates.
