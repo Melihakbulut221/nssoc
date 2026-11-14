@@ -1,0 +1,66 @@
+{
+  "observed_at": "2026-11-14T04:15:37.657725+00:00",
+  "objective": "Avoid native MBIST wall-time limit without reducing memory/firmware checks, changing SRAM models or dropping four-state semantics.",
+  "candidate_run": 43555672343,
+  "candidate_source": "78e99d71c98793c35eeaabf0e764beaf786aa065",
+  "branch": "codex/native-vvp-cloud-checkpoint-proof",
+  "prior_run": 43555513918,
+  "prior_failure": "Ubuntu24.04 package indexes offered no installation candidate for criu; no simulator or checkpoint test ran.",
+  "official_criu_revision": "3ce556b7e8291c1bfdca974962f6282d7802b69f",
+  "official_criu_tag": "v4.3.1",
+  "official_documentation": "https://github.com/checkpoint-restore/criu/blob/3ce556b7e8291c1bfdca974962f6282d7802b69f/Documentation/criu.txt",
+  "test_scope": "Synthetic native Icarus/VVP process with rotating X/Z bits, nonblocking assignments and delayed events. Full uninterrupted trace must match the trace resumed on a separate runner byte-for-byte. Native dump/restore must succeed with cpu-cap=all and exact kernel/runtime library identity. No capability bypass or filesystem/security weakening.",
+  "not_proven": [
+    "Runner CRIU kernel support",
+    "Native process checkpoint/restore success",
+    "Cross-runner runtime compatibility",
+    "Full native SRAM MBIST process checkpoint correctness",
+    "Completed native MBIST and firmware boot"
+  ],
+  "chip_accepted": false,
+  "snapshots": [
+    {
+      "id": 43555672343,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "78e99d71c98793c35eeaabf0e764beaf786aa065"
+    },
+    {
+      "id": 43553707234,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "c077726eb378897ef2bf2b2e10bb8c6333195111"
+    },
+    {
+      "id": 43550440744,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "ecbcf43200413fc63844bbd20a7532f87af54216"
+    },
+    {
+      "id": 43541234973,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "f83a2f29afc00626688942b2ce663a4b844eeb3c"
+    },
+    {
+      "id": 43538031308,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "6c5d8de09c0fd88b0daa57e669b3b6fc2bf67bbb"
+    },
+    {
+      "id": 43529228292,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "13d88396f2be3a7823981be6ffe5e67df7b9ed32"
+    },
+    {
+      "id": 43534692191,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "2b9714c3c9c9ffb6e47313c7b96d09f74435dd98"
+    }
+  ],
+  "next_action": "Inspect capability result first. Never apply to full native boot merely because dump succeeds. Require restore and exact trace equality, then validate original native PDK simulator workload and artifact/binary/environment restoration. Do not replace full event state with RAM-only preload. Native checkpoint images remain cloud-only."
+}
