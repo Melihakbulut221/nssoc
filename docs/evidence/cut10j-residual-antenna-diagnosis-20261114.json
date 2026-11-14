@@ -1,0 +1,44 @@
+{
+  "observed_at": "2026-11-14T03:56:44.682210+00:00",
+  "run": 43528773096,
+  "source": "e8d24c8d92dbec192db84115d8c8110f82a1812c",
+  "artifact": 14096209969,
+  "artifact_sha256": "060df5b533bae871a584bc37254816ee44637337a527b3b04ea5daea193ed790",
+  "source_reports": [
+    "5-openroad-checkantennas/openroad-checkantennas.log",
+    "4-openroad-detailedrouting/openroad-detailedrouting.log",
+    "3-openroad-repairantennas/config.json"
+  ],
+  "production_accepted": false,
+  "violating_net": "u_spw.u_link.v_tmprxroom[1]",
+  "violating_pin": "$auto$ff.cc:337:slice$174505/D",
+  "master": "sg13g2_dfrbpq_1",
+  "layer": "Metal3",
+  "cumulative_area_ratio": 229.98,
+  "limit": 200.0,
+  "native_repair_iterations": [
+    {
+      "iteration": 1,
+      "violations_before": 252,
+      "diodes_inserted": 514
+    },
+    {
+      "iteration": 2,
+      "violations_before": 43,
+      "diodes_inserted": 80
+    },
+    {
+      "iteration": 3,
+      "violations_before": 9,
+      "diodes_inserted": 16
+    }
+  ],
+  "final_antenna_nets": 1,
+  "final_antenna_pins": 1,
+  "ratio_margin": 10,
+  "diode_cell": "sg13g2_antennanp/A",
+  "interpretation": "The residual sink fails Metal3 while higher-metal diode credit is present. This is not evidence of a missing diode on the entire net.",
+  "next_action": "Check five-driver candidates first. For fresh CRC detailed route consider additional repair iterations while preserving acceptance ratios, with per-iteration progress evidence. If the residual persists, diagnose sink-to-diode metal-stage connectivity. Never copy old instance names into fresh synthesis.",
+  "scope": "Derived native antenna report, not physical power continuity, full LVS, signoff DRC or timing acceptance.",
+  "observation_note": "Reports were successfully read and artifact hash verified in this turn. A redundant subsequent artifact download stalled and only that local read-only transfer was terminated; no native cloud job was cancelled."
+}
