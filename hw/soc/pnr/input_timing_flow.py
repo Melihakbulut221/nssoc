@@ -33,6 +33,18 @@ foreach name {{$abc$734844$auto$blifparse.cc:397:parse_blif$770181/A} {$abc$7348
  incr index
 }
 
+foreach bank {1 2 3} {
+ set name [format {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[%d].u_mem/A_MEN} $bank]
+ set target [get_pins [list $name]]
+ if {[llength $target]!=1} {error "Missing SRAM enable target $name"}
+ foreach type {max min} {
+  puts "%OL_CREATE_REPORT io-$index-$type.rpt"
+  puts "NSSOC_TARGET_PIN $name"
+  report_checks -to $target -corner $corner_name -path_delay $type -group_path_count 10000 -fields {slew cap input net fanout} -format full_clock_expanded -digits 9
+  puts "%OL_END_REPORT"
+ }
+ incr index
+}
 """
 class InputSTA(SingleCornerSTA):
  def get_script_path(self):
