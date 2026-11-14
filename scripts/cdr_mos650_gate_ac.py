@@ -3,9 +3,9 @@
 import hashlib,json,os,re,subprocess,sys,tarfile,traceback,time,signal,math
 from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
-OUT=ROOT/"mos650-gate-ac";NATIVE=OUT/"native";DERIVED=OUT/"derived"
+OUT=ROOT/"paired650-full-composition";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr-mos650-full-composition"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/cdr650-paired-full-composition"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -262,7 +262,7 @@ def current_cases(identity,access):
 
 def intrinsic_variant(models):
  import shutil
- fixture=read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json");geometries={}
+ fixture=read(DERIVED/"current-physical-cases.json");geometries={}
  for unit in fixture["devices"]:
   p=unit["parameters"];key=tuple(p[k]for k in("W","L","AS","AD","PS","PD"))
   geometries.setdefault(key,[]).append(unit["native_id"])
@@ -294,15 +294,15 @@ def characterize(models):
  import cdr_mos650_full650 as full
  import cdr_mos650_full650_loaded as loaded
  cfg=read(ROOT/CFG)
- mim=NATIVE/"mim-current";mim.mkdir();acquire(cfg["mim"],mim,lambda n:n in cfg["mim"]["selected"])
- reduction=NATIVE/"gate-reduction";reduction.mkdir();acquire(cfg["reduction"],reduction,lambda n:n in cfg["reduction"]["selected"])
+ mim=NATIVE/"mim-current";mim.mkdir();new_metal(mim)
+ reduction=NATIVE/"gate-reduction";reduction.mkdir();new_reduction(reduction)
  identity=read(NATIVE/"current-wire/derived/lvs_flat-identity.json")
  anchors=read(mim/"native/mim-precise/wire/anchors08.json")
  legacy=read(NATIVE/"magic/binding/binding.json")
  metal=(mim/"native/mim-precise/wire/rc03/wires.spice").read_text()
  mimproof=read(mim/"derived/precise-mim-result.json")
  capture=mimproof["result"]["capture"]
- fixture=read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")
+ fixture=read(DERIVED/"current-physical-cases.json")
  results={}
  for n in(1,2,4,8,16):
   parts=[]
@@ -318,7 +318,7 @@ def characterize(models):
   results[n]=(target,contract,bound)
   save(f"composition-n{n}.json",dict(partition=n,model=pin(target/"model.cir"),contract=pin(target/"contract.json"),
     probes=pin(target/"probes.json"),physical_devices=650,actual_intrinsic_MOS_instances=200*n,
-    metal_R=28634,metal_C=18476,native_MIM=7,physical_tail_units=bound["physical_mos_tail_count"],
+    metal_R=28634,metal_C=18488,native_MIM=7,physical_tail_units=bound["physical_mos_tail_count"],
     original_tail_families=bound["original_mos_tail_families"],stage_groups=len(bound["mos_tail_groups"]),
     all_actual_terminal_bindings_checked=True,**FLAGS))
   print("ASSEMBLED_ACTUAL650_PARTITION",n,flush=True)
@@ -331,6 +331,62 @@ def characterize(models):
  save("selected-whole-loaded-summary.json",dict(case=case,partition=n,status=result["status"],
     all256bits_executed=True,unchanged_original_electrical_gates=True,**FLAGS))
  return n
+
+
+def paired_current(dest):
+ import zipfile
+ def artifact(aid,digest,run,head,name):
+  r=api('actions/runs/'+str(run));need(r['status']=='completed' and r['conclusion']=='success' and r['head_sha']==head,'qualified paired producer')
+  meta=api('actions/artifacts/'+str(aid));need(meta['workflow_run']['id']==run and meta['workflow_run']['head_sha']==head and meta['digest']=='sha256:'+digest and not meta['expired'],'paired artifact identity')
+  path=NATIVE/name
+  with path.open('xb')as out:subprocess.run(['gh','api','repos/'+REPO+'/actions/artifacts/'+str(aid)+'/zip'],stdout=out,check=True)
+  need(pin(path)['sha256']==digest,'paired archive content')
+  return zipfile.ZipFile(path)
+ geometry=artifact(14124521775,'84bbb918af34605e7c6f14598fc68e7d5bb811a3d32d6c22bb294c0a51623ac6',43621748603,'0d90e18e09678eb1733123d97f41942dace720b3','paired-geometry.zip')
+ anchors=artifact(14124672969,'a3e3b980b8d03f8ef38d854b414649a40496711d532f4824957184fc9082c199',43623472892,'54a4766e9256d2cd0a3f93f5441ca5d1c238c7ce','paired-anchors.zip')
+ identity=artifact(14125295448,'d8376d4009da54acbe52569fd119add9f07f4f13d8120ebc65bd5fa193c899ac',43622884786,'e0a87989915cb7d65a20176de33649859f013393','paired-identity.zip')
+ rows={'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds':geometry.read('candidate.gds'),
+       'derived/gate-poly-access.json':anchors.read('gate-poly-access.json'),
+       'derived/terminal-anchors.json':anchors.read('terminal-anchors.json'),
+       'derived/lvs_flat-identity.json':identity.read('lvs_flat-identity.json')}
+ for name,raw in rows.items():
+  path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+ save('paired-current-acquisition.json',dict(files={n:pin(dest/n)for n in rows},geometry_run=43621748603,anchors_run=43623472892,identity_run=43622884786,**FLAGS))
+ return {n:pin(dest/n)for n in rows}
+
+def new_archive(aid,digest,run,source,name):
+ import zipfile
+ r=api('actions/runs/'+str(run));need(r['status']=='completed' and r['conclusion']=='success' and r['head_sha']==source,'qualified current native producer')
+ meta=api('actions/artifacts/'+str(aid));need(meta['workflow_run']['id']==run and meta['workflow_run']['head_sha']==source and meta['digest']=='sha256:'+digest and not meta['expired'],'current native archive identity')
+ path=NATIVE/name
+ with path.open('xb')as out:subprocess.run(['gh','api','repos/'+REPO+'/actions/artifacts/'+str(aid)+'/zip'],stdout=out,check=True)
+ need(pin(path)['sha256']==digest,'complete native archive digest')
+ return zipfile.ZipFile(path)
+
+def new_metal(dest):
+ z=new_archive(14125201998,'1443428cee3752ae7c9b14aa65d01e614520ca5547e79abf8e406ff3c56617fb',43623877135,'ca7922a41bb122ec714a23cd2ca5b7ea63d197ba','paired-metal-native.zip')
+ s=new_archive(14125052605,'26bccc7db4231b610aa780e128fea159424bafdf5b3cc32da3a3a4474f0d506c',43623877135,'ca7922a41bb122ec714a23cd2ca5b7ea63d197ba','paired-metal-safe.zip')
+ save('new-metal-archive-members.json',dict(members=z.namelist(),**FLAGS))
+ report=json.loads(s.read('precise-mim-result.json'))
+ for name in ('native/mim-precise/wire/anchors08.json','native/mim-precise/wire/rc03/wires.spice'):
+  path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(z.read('mos650-metal-rc/'+name))
+ path=dest/'derived/precise-mim-result.json';path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(s.read('precise-mim-result.json'))
+ need(pin(dest/'native/mim-precise/wire/rc03/wires.spice')==report['result']['native_spice'],'exact current native metal netlist')
+ need(report['result']['capture']['R']==28634 and report['result']['capture']['C']==18488,'actual current R C census')
+ save('current-metal-acquisition.json',dict(run=43623877135,files={str(p.relative_to(dest)):pin(p)for p in dest.rglob('*')if p.is_file()},**FLAGS))
+
+def new_reduction(dest):
+ z=new_archive(14125304132,'60749878a9146a9115289993ba0b3227ba3952678a3e2a0200ed0eb6e33476c1',43625754764,'0308a08571969e629fb567c811414edb925a0dbc','paired-reduction-native.zip')
+ s=new_archive(14125119960,'b49bb48108f0a6499016092c5ccfd83795bd25af1b88773fbcc55d22ff8d258f',43625754764,'0308a08571969e629fb567c811414edb925a0dbc','paired-reduction-safe.zip')
+ report=json.loads(s.read('physical-gate-port-reduction.json'))
+ need(report['native_simulator_executions']==503 and report['port_networks']==250 and report['native_fault_controls']==2 and report['nominal_R_network_port_reduction_qualified'],'complete native reduction qualification')
+ need(len(report['groups'])==250,'all physical partition records')
+ files={}
+ for row in report['groups']:
+  for leaf,key in [('ports-and-matrices.json','matrices'),('reduced-positive-resistors.cir','reduced')]:
+   name=f"native/reduction-g{row['group']}-n{row['copies']}/{leaf}"
+   need(name not in files,'unique physical reduction member');path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(z.read(name));need(pin(path)==row[key],'exact qualified reduction member');files[name]=pin(path)
+ save('current-reduction-acquisition.json',dict(run=43625754764,files=files,**FLAGS))
 
 
 def main():
@@ -347,10 +403,10 @@ def main():
    save("source-controls.json",dict(context=ctx,source_files_verified=True,**FLAGS));return
   need(sys.argv[1:]==["--extract"],"explicit cloud characterization")
   current=NATIVE/"current-wire";current.mkdir()
-  acquire(cfg["current_wire"],current,lambda n:n in cfg["current_wire"]["selected"])
+  paired_source=paired_current(current)
   observed=current_cases(read(current/"derived/lvs_flat-identity.json"),read(current/"derived/gate-poly-access.json"))
-  need(observed==read(ROOT/"docs/evidence/mos650-current-gate-model-cases.json")["devices"],"complete native current fixture readback")
-  save("current-physical-cases.json",dict(devices=observed,source=cfg["current_wire"],**FLAGS))
+  need(len(observed)==200,"complete new native current fixture")
+  save("current-physical-cases.json",dict(devices=observed,source=paired_source,**FLAGS))
   models=acquire_models(cfg["runtime"]);model_report(models)
   magic=NATIVE/"magic";magic.mkdir()
   acquire(cfg["magic"],magic,lambda n:n in cfg["magic"]["selected"])
