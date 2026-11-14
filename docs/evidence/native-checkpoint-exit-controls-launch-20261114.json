@@ -1,0 +1,45 @@
+{
+  "observed_utc": "2026-11-14T04:46:00.935128+00:00",
+  "run": 43558139164,
+  "source": "241ecd5640abc2a2f4e83f139faf76924ff858f9",
+  "scope": "Restored native process exit status collection. Normal native simulation must exit0 and retain exact full trace; SIGTERM control must yield -15, proving forced stop is rejected as simulation success. Neither control is full chip acceptance.",
+  "method": "Python PR_SET_CHILD_SUBREAPER, verify restored process PPid, waitpid and waitstatus_to_exitcode; no inferred exit code from a PASS banner.",
+  "native_input_artifact": {
+    "id": 14098718708,
+    "sha256": "86ba2a4bc205323d37b1abfb847fb6d3966dec426a7c303fed570b469b173c00",
+    "cloud_only": true
+  },
+  "dump_result_artifact": {
+    "id": 14098409951,
+    "sha256": "90584a32cad911078701b19f67919a6e0edd2376151752b3fb60c1d76e8c5bd0"
+  },
+  "jobs": [
+    {
+      "run": 43557919707,
+      "jobs": [
+        {
+          "id": 132334875910,
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 43558139164,
+      "jobs": [
+        {
+          "id": 132335564397,
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "id": 132335564601,
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    }
+  ],
+  "chip_acceptance": false,
+  "next": "Require successful full-chip prefix43557919707 and native exit controls43558139164 before long multi-job continuation. Preserve original netlist/firmware/models, full MBIST/28-check boot gates, all source/runtime hashes and actual process exit status. Checkpointed chunks are pending, never final boot passes."
+}
