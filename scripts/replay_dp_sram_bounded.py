@@ -6,10 +6,10 @@ out=P('out');out.mkdir(exist_ok=True);derived=out/'derived';derived.mkdir(exist_
 native=out/'native'
 def sha(p):
  with P(p).open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
-r={'source_run':43562021054,'accepted':False,'manufacturing_approval':False,'full_chip_lvs_passed':False,'scope':'Resource-bounded comparison diagnosis. All native devices, connections, dimensions and strict port checks retained. Limit exhaustion is failure, never a match waiver.'}
+r={'source_run':43562021054,'accepted':False,'manufacturing_approval':False,'full_chip_lvs_passed':False,'scope':'Explicit bitcell correspondence and resource-bounded comparison diagnosis. All native devices, connections, dimensions and strict port checks retained. Limit exhaustion is failure, never a match waiver.'}
 rc=2
 try:
- controls=json.loads((out/'comparison-controls.json').read_text());assert controls['status']=='PASS' and len(controls['cases'])==10
+ controls=json.loads((out/'comparison-controls.json').read_text());assert controls['status']=='PASS' and len(controls['cases'])==15
  r['controls']=controls
  assert sha('/tmp/klayout.deb')=='0bb6b913fd6a32581d50b08be744b522a2a477baa1ed7e253c97cc18ce248a24'
  assert subprocess.check_output(['klayout','-b','-v'],text=True).strip()=='KLayout 0.30.13'
@@ -38,6 +38,18 @@ try:
  insertion=indent+'max_branch_complexity(16) # diagnostic search bound, no acceptance change\n'
  assert 'max_branch_complexity' not in text
  revised=''.join(lines[:i])+insertion+''.join(lines[i:]);assert revised.replace(insertion,'',1)==text
+ import re
+ matches=list(re.finditer(r'(?m)^(\s*)align\s*$',revised))
+ assert len(matches)==1,[(m.start(),m.group()) for m in matches]
+ m=matches[0];indent2=m.group(1)
+ mapping='same_circuits("RM_IHPSG13_2P_BITKIT_CELL", "RM_IHPSG13_256x16_c2_2P_BITKIT_CELL")'
+ guard='raise "Missing physical bitcell" unless netlist.circuit_by_name("RM_IHPSG13_2P_BITKIT_CELL")\nraise "Missing reference bitcell" unless schematic.circuit_by_name("RM_IHPSG13_256x16_c2_2P_BITKIT_CELL")'
+ addition='\n'.join(indent2+l for l in (guard+'\n'+mapping).splitlines())+'\n'
+ revised=revised[:m.start()]+addition+revised[m.start():]
+ assert revised.replace(addition,'',1).replace(insertion,'',1)==text
+ r['explicit_cell_pair']=['RM_IHPSG13_2P_BITKIT_CELL','RM_IHPSG13_256x16_c2_2P_BITKIT_CELL']
+ r['correspondence_scope']='Name pairing before align only. Both cell contents still compared; no blanking, nil mapping, net or pin equivalence.'
+
  deck.write_text(revised)
  r['deck_before_sha256']=hashlib.sha256(text.encode()).hexdigest();r['deck_after_sha256']=sha(deck)
  r['comparison_settings']={'max_branch_complexity':16,'max_depth':'unchanged default','native_timeout_seconds':1800}

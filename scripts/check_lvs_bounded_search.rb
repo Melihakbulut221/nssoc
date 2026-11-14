@@ -23,5 +23,17 @@ rows=[]
     raise "Control failed #{label}/#{limit}" unless actual==expected
   end
 end
+cases.each do |label,(candidate,expected)|
+  a=build(base.sub('circuit INV(', 'circuit PHYSICAL('))
+  b=build(candidate.sub('circuit INV(', 'circuit REFERENCE('))
+  comparer=RBA::NetlistComparer.new
+  comparer.max_branch_complexity=16
+  raise 'Expected initially unmatched name' unless comparer.unmatched_circuits_a(a,b).any? { |c| c.name=='PHYSICAL' }
+  comparer.same_circuits(a.circuit_by_name('PHYSICAL'),b.circuit_by_name('REFERENCE'))
+  raise 'Mapped cell must survive alignment' unless comparer.unmatched_circuits_a(a,b).empty? && comparer.unmatched_circuits_b(a,b).empty?
+  actual=comparer.compare(a,b)
+  rows << {'limit'=>16,'label'=>'explicit_pair_'+label,'expected'=>expected,'actual'=>actual}
+  raise "Mapped control failed #{label}" unless actual==expected
+end
 Dir.mkdir('out') unless Dir.exist?('out')
 File.write('out/comparison-controls.json',JSON.pretty_generate({'status'=>'PASS','scope'=>'Native comparer identity and graph/parameter mutations only, not full macro or foundry acceptance','cases'=>rows}))
