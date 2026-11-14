@@ -1,3 +1,29 @@
+## Current checkpoint: fast exact restore verified; main-chip integration advancing
+
+The previous turn made concrete progress. The archive bottleneck was measured and fixed; the coherent main-chip preparation now succeeds. Full-chip LVS and manufacturing approval remain **unproven**.
+
+### Verified input restoration
+
+Run **43598890723**, source `f1145703b7280773670ded41e46638fdaa906413`, verified all **5,030 files / 1,173,231,506 bytes** against the frozen contract, including disk readback hashes. Header scan took 3.33 s and sequential restore 5.89 s. The former lookup order caused 2,539 backward seeks in gzip. Manifest hash: `fe773024abb77b2c184be52ca26eb1028eba228e0a784cfdd78f4175e92f98d0`.
+
+Only the two jobs still in input restoration, **43598072420 and43598415001**, were deliberately canceled after this proof; no routing or PHY calculation was canceled. Their replacements preserve all input hashes. The actual pinned AppImage replay then restored and verified all files in about11 s.
+
+### Coherent main-chip inputs now prepared
+
+Run **43599303587**, source `1d9748bf0bd6436e1bcaddd8a403f90cce6d71f3`, passed preparation. It binds **16 DP and4 SP SRAM instances** to the verified namespaced GDS files. Every other configuration field is unchanged. Archived logical views are `def,nl,odb,pnl,sdc`, and their hashes are in safe artifact **14115961267**. The prior `pdk_dir::` path failure was fixed by resolving the exact file through the pinned input contract; hash checks were retained.
+
+This run stopped at the CLI because `--force-run-dir` requires an existing directory. The workflow now creates it. Current streamout run: **43599532225**, source `879fb01d6680375de93b18618705ebd38f58b97d`, branch `codex/namespaced-chip-streamout`. Inspect its actual terminal result before claiming GDS completion. Safe artifact prefix: `namespaced-chip-streamout-derived-`; native files stay cloud-only.
+
+### Independent schematic interface inventory
+
+Run **43599316243** successfully parsed the archived **powered Verilog netlist** with Yosys, without synthesis or optimization. Its first inventory stopped on a differing connection signature for `SG13G2_BUF_8` instance `clkload0`. This is not yet classified as an intended open output or a defect.
+
+The observer now records every interface variant, its count/examples, and every missing/extra/width issue rather than stopping on the first difference. No unresolved pin is accepted or filled in. Current run: **43599635907**, source `c04f30d7696e1a3bb2550c5192ed65f125b351e1`, branch `codex/chip-full-cdl-pinmap`. Safe artifact prefix: `chip-full-cdl-pinmap-derived-`. Read `pinmap-inventory.json`; unknown cell types and ambiguous power/bus mappings must be resolved before emitting a full independent transistor schematic. The old `verilog_to_spice.py` remains blackbox-only and must not establish full LVS.
+
+The streamout/pinmap work uses the **prior completed CRC route43579643337**, which failed timing/antenna acceptance, solely to qualify the integration process. Repeat on the final accepted candidate. Current legalized-diode route43591198141 and PHY select-bias simulation43596398222 remain separate running calculations.
+
+Evidence: `docs/evidence/fast-restore-and-coherent-chip-preflight-20261114.json`. The tested sequential-restore helper is retained in integration; in-progress streamout/pinmap helpers remain on their experimental branches.
+
 ## Coherent main-chip streamout and independent full-CDL interface preparation live
 
 NamespacedSRAM library itself passed bothmacroLVS+losslessmerge (below). Now streamoutqualification43598072420/source85d29262c1048e00e82621dba61af94a61090400,branchcodex/namespaced-chip-streamout. Usescompleted priorCRCjumperroute43579643337 native14111958544 SHA0c61942e79e1c94aceedd757e5d4cc298af6cbbe90480612c72bfed2fcbf18b0 (timing/antenna FAILED; qualificationonly). DoesNOTreplace/interfere withlive legalizeddiode43591198141. Restores exactPDK/design package663146895 SHA822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4 andnative library14114456981 SHA647008a959be8601aeb762f5ba238c7864ad0bcde0ef807f3e1dcae3324d8d25. ChangesONLY2MACROS.gds fields toproven dp.gds/sp.gds, verifiesoldmacrohashes, allotherconfigfieldsequal, retainsoriginalDEF/ODB/netlist/SDC views withhashes. Native KLayout.StreamOut insidepinnedLibreLane3.0.5AppImage. GuardchecksconfiguredmacroGDS hashes andalloriginalviewshashesbefore/after. Requiresactualoutput; skippedstepfails. Safe namespaced-chip-streamout-derived-*;nativenamespaced-chip-streamout-native-* stayscloud.
