@@ -1,114 +1,49 @@
-name: Diagnose CRC diode placement failure without repeating routing
+name: Four-diode legalization screen with all other cells fixed
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  route:
+  diagnose:
     runs-on: ubuntu-22.04
-    timeout-minutes: 65
-    strategy:
-      fail-fast: false
-      matrix:
-        name: [crc_diode_diagnostic]
+    timeout-minutes: 55
     env:
       GH_TOKEN: ${{ github.token }}
-      APPIMAGE_SHA: d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466
-      PACKAGE_SHA: 822dab7067d901fa79dabffffff784baf5c9965f0a5091eba67acdc48b9956f4
-      RUN: 'true'
       APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        if: env.RUN == 'true'
         with:
           persist-credentials: false
-      - name: LibreLane AppImage, the verified PDK and the repaired database
-        if: env.RUN == 'true'
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /scripts/diagnose_four_diode_legalization.py
+            /scripts/diagnose_four_diode_legalization.tcl
+      - name: Restore exact runtime and failed native state in cloud
         run: |
           set -euo pipefail
-          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends libfuse2 || echo "Using AppImage extract-and-run fallback"
-          W=/mnt/s; sudo mkdir -p $W; sudo chown $USER $W
-          curl -fsSL --retry 5 -o $W/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
-          echo "$APPIMAGE_SHA  $W/librelane.AppImage" | sha256sum -c -; chmod +x $W/librelane.AppImage
-          for attempt in 1 2 3 4 5 6; do
-            gh api repos/${{ github.repository }}/releases/assets/663146895 -H "Accept: application/octet-stream" > $W/pkg.tgz && echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c - && break
-            sleep 60
-          done
-          echo "$PACKAGE_SHA  $W/pkg.tgz" | sha256sum -c -
-          mkdir -p $W/pkg && tar -xzf $W/pkg.tgz -C $W/pkg && rm $W/pkg.tgz
-          P=$(dirname "$(find $W/pkg -name input-contract.json | head -1)")
-          python3 - "$P" <<'PY'
-          import hashlib,json,shutil,sys
-          from pathlib import Path
-          p=Path(sys.argv[1]);c=json.loads((p/'input-contract.json').read_text());n=0
-          for name,row in c['input_files'].items():
-              if not name.startswith('hw/soc/tools/'):continue
-              src=p/'files'/name;dst=Path(name)
-              assert hashlib.sha256(src.read_bytes()).hexdigest()==row['sha256']
-              if not dst.exists():dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst);n+=1
-          print('restored PDK and tool files',n)
-          PY
-          rm -rf $W/pkg
-      - name: Capture exact diode insertion failure and preserve native state
-        if: env.RUN == 'true'
-        run: |
-          set -euo pipefail
-          W=/mnt/s; OUT=$PWD/hw/soc/out/impl-probe
-          mkdir -p $W/h
-          gh api repos/${{ github.repository }}/actions/artifacts/14100640319/zip > $W/h/base.zip
-          echo 'f724a289dc08812190d1aac64bfd1b4fafceeaca71c734ed578ca41d96a62f7c  /mnt/s/h/base.zip' | sha256sum -c -
-          unzip -q $W/h/base.zip -d $W/h
-          tar -xzf $W/h/handoff.tgz -C /
-          rm -rf $W/h; mkdir -p $W/h
-          gh api repos/${{ github.repository }}/actions/artifacts/14107653261/zip > $W/h/candidate.zip
-          echo 'a401c73f139405396cf8afdb0e24e718c1334c09d8c49c3e4774d78e3440f64c  /mnt/s/h/candidate.zip' | sha256sum -c -
-          unzip -q $W/h/candidate.zip -d $W/h
-          tar -xzf $W/h/route-incomplete.tgz -C "$PWD"
-          rm -rf $W/h
-          mv $OUT/route $OUT/recovered-route
-          python3 scripts/prepare_antenna_resume.py
-          set +e
-          mkdir -p $OUT/route
-          timeout 3000 env -u GH_TOKEN -u GITHUB_TOKEN $W/librelane.AppImage python hw/soc/pnr/resume_pinned_antenna_flow.py --flow ResumePinnedAntenna \
-            --pdk-root $PWD/hw/soc/tools/ciel-corrpre --pdk ihp-sg13g2 --scl sg13g2_stdcell --force-run-dir $OUT/route \
-            --with-initial-state $OUT/route-initial.json $OUT/prepared/config-routed.json > $OUT/route.log 2>&1; rc=$?
-          set -e
-          echo "ROUTE_RC=$rc"; tail -40 $OUT/route.log
-          grep -a -E "Number of violations|DRT-0199|DRT-0198|Completing|elapsed" $OUT/route/*detailedrouting*/*.log | tail -40 || true
-          [ $rc = 0 ]
-          mkdir -p routed
-          X=; [ -f $OUT/flop-map.tsv ] && X=$OUT/flop-map.tsv
-          python3 -B scripts/routed_handoff.py pack $OUT/route $OUT/routed-state.json routed/routed.tgz \
-            $OUT/prepared $X | tail -8
-          ls -la routed
-      - name: Collect
-        if: always() && env.RUN == 'true'
-        run: |
-          OUT=hw/soc/out/impl-probe; mkdir -p out
-          cp $OUT/route.log $OUT/routed-state.json out/ 2>/dev/null || true
-          for d in $OUT/route/*; do [ -d "$d" ] || continue; b=$(basename $d); mkdir -p out/$b; cp $d/*.log $d/state_out.json $d/*proof.json out/$b/ 2>/dev/null || true; done
-          ls -la out | head -40
+          sudo mkdir -p /mnt/s; sudo chown "$USER" /mnt/s
+          curl -fsSL --retry 5 -o /mnt/s/librelane.AppImage https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage
+          echo 'd6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  /mnt/s/librelane.AppImage' | sha256sum -c -
+          chmod +x /mnt/s/librelane.AppImage
+          gh api repos/${{ github.repository }}/actions/artifacts/14112241785/zip > native.zip
+      - name: Try only four failed diodes without routing or relaxed legality
+        run: env -u GH_TOKEN -u GITHUB_TOKEN python3 scripts/diagnose_four_diode_legalization.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always() && env.RUN == 'true'
+        if: always()
         with:
-          name: route-${{ matrix.name }}-${{ github.run_id }}
-          path: out
-          retention-days: 30
+          name: four-diode-derived-${{ github.run_id }}
+          path: out/derived/*.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Preserve all native results on cloud
+        if: always()
+        run: tar -czf four-diode-native.tgz -C out native
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: env.RUN == 'true'
+        if: always()
         with:
-          name: routed-db-${{ matrix.name }}-${{ github.run_id }}
-          path: routed
-          retention-days: 14
-      - name: Preserve native route state on failure
-        if: failure()
-        run: |
-          mkdir -p /mnt/s/native
-          tar -czf /mnt/s/native/route-incomplete.tgz hw/soc/out/impl-probe/route hw/soc/out/impl-probe/prepared hw/soc/out/impl-probe/route-initial.json hw/soc/out/impl-probe/recovered-route
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: failure()
-        with:
-          name: antenna-resume-incomplete-native-${{ github.run_id }}
-          path: /mnt/s/native
+          name: four-diode-native-${{ github.run_id }}
+          path: four-diode-native.tgz
+          if-no-files-found: error
           retention-days: 30
