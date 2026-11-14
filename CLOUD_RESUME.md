@@ -1,3 +1,11 @@
+## 2026-11-14 — baseline routed, antenna improved but FAILED; RCX/STA live
+
+Run43591198141 routejob132436088101 COMPLETEDSUCCESS. Routing3h56m26s, finalrouterDRC0 atiteration5, wirelength11001517. Strict antenna result377violatingnets/424pins (route__antenna_violation__count303); previousroute565nets/656pins. Improvement is NOTzeroacceptance. StandardunsupportedLEF58warnings remain; routerDRC0notfoundryDRC. Parentworkflowoverallnotterminal: RCX/STAjob132497306850 started. Follow samehandlefor3cornerresults; do notrerunrouting.
+
+Safe14119918415 SHAd5d20e5af32453218931ada6aec41e14d4551fe3d14d3907f831be01b1031114 containsroute.log,stateouts,routed-state.json,proofs. Native14119848983 SHA3c9346bd008313c5f50f85e6f4798935bb01c487131fa0d802502c37707e3e60, innerrouted.tgz stayscloudonly. Receipt docs/evidence/diode-legalized-route-20261114.json withexactviews/metrics. No full-chipGDS/LVS pass transferred tothisroute.
+
+Next antennarepair must targetthis completedroute/currentGRTguides and exact377-netreport. EarlierpostDRTjumper-onlyrepair wasno-op: OpenROADjumpers belong beforeDRT. Inspectexistingantennaflowhelper beforetryingpreDRTjumper/diode strategy; avoidrepeatingfailedpostroutecall or silentlyaccepting remainingviolations. Existingbuf4trial43610680141 continuesindependently, PHY43603972722 stilllive. Fullscope remainsopen.
+
 ## 2026-11-14 — exact three-corner buffer Boolean equivalence PASSED
 
 Run43611046213/source19ac096b9594e6854399ff2c2554e97b59224715 PASSED all3positiveSATproofs and3actualinversioncounterexamples. Models hash-match frozenimplementationpackage822dab... inputcontract: fast547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e; slowed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d; typ968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4. RealYosysread_liberty/flatten/check/SAT, no-libblackboxes. Safe14119783596 SHA260c7f413529e9acc3eb84dedcaedae3eef2f788689b9d4cf555df00278395d9. Allsixloghashes/verdictsrechecked. Tested scripts/qualify_retry_buffer_liberty.py retainedbyteidentically, experimentworkflowexcluded. Receipt docs/evidence/retry-buffer-liberty-equivalence-20261114.json.
