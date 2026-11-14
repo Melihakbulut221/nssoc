@@ -49,7 +49,10 @@ geometry={}
 for name in common:
  geometry[name]={}
  for kind,layout in layouts.items():
-  hits=[c for c in layout.each_cell() if c.name.upper()==name];assert len(hits)==1,(kind,name)
+  hits=[c for c in layout.each_cell() if c.name.upper()==name];assert len(hits)<=1,(kind,name)
+  if not hits:
+   geometry[name][kind]={'present':False}
+   continue
   c=hits[0];layers=[];canonical=[]
   for li in layout.layer_indexes():
    info=layout.get_info(li);shapes=sorted(shape.to_s() for shape in c.shapes(li).each())
@@ -57,8 +60,8 @@ for name in common:
     layers.append({'layer':info.layer,'datatype':info.datatype,'shape_count':len(shapes)})
     canonical.append((info.layer,info.datatype,shapes))
   instances=sorted((layout.cell(i.cell_index).name,i.to_s()) for i in c.each_inst())
-  geometry[name][kind]={'dbu':layout.dbu,'bbox_dbu':c.bbox().to_s(),'layers':layers,'instances':len(instances),'direct_geometry_sha256':hashlib.sha256(json.dumps([sorted(canonical),instances]).encode()).hexdigest()}
- geometry[name]['same_direct_geometry']=geometry[name]['dp']['dbu']==geometry[name]['sp']['dbu'] and geometry[name]['dp']['direct_geometry_sha256']==geometry[name]['sp']['direct_geometry_sha256']
+  geometry[name][kind]={'present':True,'dbu':layout.dbu,'bbox_dbu':c.bbox().to_s(),'layers':layers,'instances':len(instances),'direct_geometry_sha256':hashlib.sha256(json.dumps([sorted(canonical),instances]).encode()).hexdigest()}
+ geometry[name]['same_direct_geometry']=(geometry[name]['dp']['dbu']==geometry[name]['sp']['dbu'] and geometry[name]['dp']['direct_geometry_sha256']==geometry[name]['sp']['direct_geometry_sha256']) if all(geometry[name][kind]['present'] for kind in ['dp','sp']) else None
 reference_differences={name:{kind:libs[kind][name] for kind in ['dp','sp']} for name in different}
 r={'status':'REFERENCE_LIBRARY_COLLISION_PREFLIGHT','accepted':False,'full_chip_lvs_passed':False,'manufacturing_approval':False,'libraries':evidence,'common_cell_geometry':geometry,'reference_difference_records':reference_differences,'identical_shared_cells':identical,'different_shared_cells':different,'scope':'Pinned original GDS direct shared-cell geometry and case/whitespace/continuation-normalized subcircuit records; geometry hashes include labels and are not electrical equivalence proof; differing definitions cannot be merged by name. No geometry or circuit edits, no electrical equivalence claim.'}
 P('out').mkdir();P('out/reference-library-preflight.json').write_text(json.dumps(r,indent=2))
