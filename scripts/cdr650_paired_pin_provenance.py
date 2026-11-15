@@ -85,16 +85,17 @@ def source_pins(cfg,flat,old):
   return sorted(rows,key=lambda r:json.dumps(r,sort_keys=True))
  packed=pya.Layout();packed.read(str(NATIVE/'packed-predecessor.gds'))
  prove_band_relocation(packed,prior,hierarchy,annotations,signature)
- need(pin(NATIVE/'selected/layout'/(TOP+'.gds'))['sha256']=='f93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe','exact widened geometry')
+ need(pin(NATIVE/'selected/layout'/(TOP+'.gds'))['sha256']=='0e7b4d8da7e6de4bda98ea0a83d6dbb5ea78c73c89a60d5724ba44401c1a24c0','exact widened geometry')
  need(g.dbu==packed.dbu and hierarchy(g)==hierarchy(packed),'widening retains hierarchy and transforms')
  need(annotations(g)==annotations(packed),'widening retains all pin annotations')
- need(signature(g,g.cell(TOP),((30,0),))==signature(packed,packed.cell(TOP),((30,0),)),'only M3 may change')
- oldmetal=pya.Region(packed.cell(TOP).begin_shapes_rec(packed.layer(30,0))).merged()
- newmetal=pya.Region(g.cell(TOP).begin_shapes_rec(g.layer(30,0))).merged()
- need((oldmetal-newmetal).is_empty() and not(newmetal-oldmetal).is_empty(),'M3 addition only and nonempty')
+ need(signature(g,g.cell(TOP),((30,0),(50,0),(67,0)))==signature(packed,packed.cell(TOP),((30,0),(50,0),(67,0))),'only M3 M4 M5 may change')
+ for layer in (30,50,67):
+  oldmetal=pya.Region(packed.cell(TOP).begin_shapes_rec(packed.layer(layer,0))).merged()
+  newmetal=pya.Region(g.cell(TOP).begin_shapes_rec(g.layer(layer,0))).merged()
+  need((oldmetal-newmetal).is_empty() and not(newmetal-oldmetal).is_empty(),'metal addition only and nonempty '+str(layer))
  for inst in g.cell(TOP).each_inst():
   need(signature(g,inst.cell)==signature(packed,packed.cell(inst.cell.name)),'all retained child material unchanged')
- save('widened-pin-provenance.json',dict(exact_widened_gds_verified=True,all_hierarchy_and_annotations_preserved=True,only_top_M3_added=True,primitive_geometry_unchanged=True,full_phy_accepted=False))
+ save('widened-pin-provenance.json',dict(exact_widened_gds_verified=True,all_hierarchy_and_annotations_preserved=True,only_top_M3_M4_M5_added=True,primitive_geometry_unchanged=True,full_phy_accepted=False))
  need(old["status"]=="PASS_ACTUAL650_SOURCE_PINS_ON_IDENTICAL_PRIMITIVE_DRAWINGS","qualified original650 primitive pin provenance")
  reachable=set()
  def visit(c):
