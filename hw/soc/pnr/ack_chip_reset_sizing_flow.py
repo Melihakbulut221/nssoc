@@ -12,14 +12,12 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- fanout9519 {sg13g2_buf_1 sg13g2_buf_4}
- fanout9492 {sg13g2_buf_1 sg13g2_buf_4}
- fanout9485 {sg13g2_buf_1 sg13g2_buf_4}
- fanout2680 {sg13g2_buf_1 sg13g2_buf_4}
- fanout2194 {sg13g2_buf_1 sg13g2_buf_4}
+ fanout9351 {sg13g2_buf_4 sg13g2_buf_8}
+ fanout9344 {sg13g2_buf_1 sg13g2_buf_4}
+ fanout2394 {sg13g2_buf_1 sg13g2_buf_4}
 }
 set targets [dict keys $choices]
-if {[llength $targets]!=5} {error "Wrong measured resize census"}
+if {[llength $targets]!=3} {error "Wrong measured resize census"}
 if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
 foreach name $targets {
  set inst [$block findInst $name]
@@ -47,11 +45,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_FIVE_NEW_RX_RESET_BUFFERS_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_THREE_LINKUP_BUFFERS_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size five measured quarantine-path buffers on existing reset-sized placement"
+    name = "Size three measured critical link-up path buffers"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
