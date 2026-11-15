@@ -6,7 +6,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -14,6 +14,7 @@ jobs:
           sparse-checkout: |
             scripts
             hw/soc/rtl/pcie
+            hw/soc/tb
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
           version: '2026-08-04'

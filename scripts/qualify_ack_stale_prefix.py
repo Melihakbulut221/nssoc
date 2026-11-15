@@ -26,7 +26,24 @@ try:
   p=subprocess.run(['iverilog','-g2012',*defines,'-s','soc_pcie_replay_tx','-o',str(out/(name+'.vvp')),*map(str,sorted(Path('hw/soc/rtl/pcie').glob('*.v')))],capture_output=True,text=True,timeout=120)
   (out/(name+'-compile.log')).write_text(p.stdout+p.stderr)
   assert p.returncode==0,p.stderr
- result=dict(status='PASS_COMBINATIONAL_24BIT_EQUIVALENCE_AND_TWO_MUTANTS',source_head=os.environ['GITHUB_SHA'],rtl_sha256=hashlib.sha256(src.read_bytes()).hexdigest(),cases=results,accepted=False,scope='All 2^24 binary sequence pairs; exact combinational substitution at unchanged capture edge. Both actual RTL modes compile. Not full-module sequential traffic, four-state equivalence, mapped timing, route, or full PHY acceptance.',yosys=subprocess.check_output(['yosys','-V'],text=True).strip())
+
+ # Same full replay bench, six configurations, every output compared each cycle.
+ reference=re.sub(r'\bsoc_pcie_replay_tx\b','soc_pcie_replay_tx_ref',s)
+ reference=re.sub(r'\bsoc_pcie_stream_skid\b','soc_pcie_stream_skid_ref',reference)
+ (out/'reference.v').write_text(reference)
+ (out/'candidate.v').write_text(chr(96)+'define SOC_PCIE_ACK_STALE_PREFIX\n'+s+'\n'+chr(96)+'undef SOC_PCIE_ACK_STALE_PREFIX\n')
+ traffic=[]
+ for depth,size,timeout,seed in [(4,38,256,1),(4,38,256,2),(4,38,1024,3),(4,38,256,4),(2,22,128,5),(2,22,128,6)]:
+  name=f'traffic-d{depth}-b{size}-t{timeout}-s{seed}';exe=out/(name+'.vvp')
+  cmd=['iverilog','-g2012','-s','tb_pcie_replay_ahead','-o',str(exe),f'-Ptb_pcie_replay_ahead.DEPTH={depth}',f'-Ptb_pcie_replay_ahead.MAX_BYTES={size}',f'-Ptb_pcie_replay_ahead.TIMEOUT_CYCLES={timeout}','hw/soc/rtl/pcie/soc_pcie_crc32_byte.v',str(out/'reference.v'),str(out/'candidate.v'),'hw/soc/tb/tb_pcie_replay_ahead.v']
+  p=subprocess.run(cmd,capture_output=True,text=True,timeout=120)
+  (out/(name+'-compile.log')).write_text(p.stdout+p.stderr);assert p.returncode==0,p.stderr
+  p=subprocess.run(['vvp','-n',str(exe),f'+seed={seed}','+cycles=300000'],capture_output=True,text=True,timeout=600)
+  text=p.stdout+p.stderr;(out/(name+'.log')).write_text(text)
+  assert p.returncode==0 and re.search(r'^RESULT PASS',text,re.M) and not re.search(r'MISMATCH|FATAL|RESULT FAIL',text),text[-3000:]
+  traffic.append(dict(depth=depth,max_bytes=size,timeout=timeout,seed=seed,cycles=300000,status='PASS',summary=[l for l in text.splitlines()if l.startswith(('SUMMARY','RESULT'))]))
+
+ result=dict(status='PASS_24BIT_EQUIVALENCE_TWO_MUTANTS_AND_REPLAY_TRAFFIC',source_head=os.environ['GITHUB_SHA'],rtl_sha256=hashlib.sha256(src.read_bytes()).hexdigest(),cases=results,traffic=traffic,accepted=False,scope='All 2^24 binary sequence pairs; exact combinational substitution at unchanged capture edge. Both actual RTL modes compile; six full-module co-simulations compare every output with unchanged coverage gates for 1.8M cycles. Not exhaustive sequential or arbitrary-X/Z equivalence, mapped timing, route, or full PHY acceptance.',yosys=subprocess.check_output(['yosys','-V'],text=True).strip())
 except BaseException as e:
  result=dict(status='FAIL',error=repr(e),cases=results,accepted=False);raise
 finally:
