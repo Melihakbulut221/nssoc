@@ -1,16 +1,15 @@
-name: Full650 select width2 native physical checks
+name: Read independently bound select width2 full650 native identities
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  verify:
+  binding:
     runs-on: ubuntu-22.04
-    timeout-minutes: 180
+    timeout-minutes: 45
     env:
       GH_TOKEN: ${{ github.token }}
-      APPIMAGE_EXTRACT_AND_RUN: '1'
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -20,19 +19,11 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 klayout==0.30.4.post1
-      - name: Prepare checksum pinned native runtime and unmodified decks
-        run: |
-          set -euo pipefail
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2
-          python3 scripts/bootstrap_flow.py
-          python3 hw/soc/flow/prepare_ihp_drc.py
-          python3 hw/soc/flow/prepare_ihp_lvs.py
-      - run: python3 -B scripts/check_select650_candidate.py
+      - run: python3 -B scripts/read_select650_identity.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: select650-native-checks-${{ github.run_id }}
-          path: select650-checks/
+          name: select650-identity-${{ github.run_id }}
+          path: select650-identity/
           if-no-files-found: error
           retention-days: 90
