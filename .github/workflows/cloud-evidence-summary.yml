@@ -1,4 +1,4 @@
-name: Native IHP four-state CVC compiler preflight against Icarus
+name: Derived zero-delay CVC alias model preflight against untouched Icarus
 on:
   workflow_dispatch:
 permissions:
@@ -35,7 +35,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: native-cvc-preflight-${{ github.run_id }}
+          name: cvc-functional-alias-preflight-${{ github.run_id }}
           path: |
             cvc-probe/**/*.json
             cvc-probe/**/*.log
