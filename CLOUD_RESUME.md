@@ -1,3 +1,13 @@
+## 2026-11-15 — width-filtered clock candidate dispatched to full physical checks
+
+Most recent live physical run: **43694128865**, head **eb1308d99a2b830160c419bab34162e27500ccd6**, branch codex/current650-clock-metal-physical. Same frozen full560 DRC/deep+flat650 LVS/fault checker, no waived rules. At checkpoint source-controls passed and native tool acquisition in progress.
+
+Generation **43693981547/e2779c919b770c4c89d9b83190154052151cf406 passed**. New GDS **aeaf8e4fcc33d06f7198d2a837a8b2cd13c9b902e5083ca9ceff4759e755e9b7**; native artifact14153486599 SHA c669d3ab01dbff33bb3b30aa4b54d3f3ce724c293d839edac9570e16fbc203e2; derived14153028432 SHA f6bbf6b5b9f15348f2ed9651c27692473b258c4103b5fcabc0427640e46fca54. Proof clock-metal-widening-proof.json authenticated RAM-only; original geometry, macro bbox and via incidence retained, all5metal layers changed. Bound cfg and physical hash manifest atomically updated. DRC success remains unknown until native result.
+
+Combined timing43693300169/9ebc5aaeec99b2303b6c3e74439370a2588b94d8 and observedboot43691795620/91a4dea0322172b853b0450d153ebaefd380ee6f still active. Do not restart. Separate zero-hold candidate near-zero fast path identified from authenticated derived14153535376/min.rpt: Ibex prefetch FIFO FF176887(Q rdata_q[72]) -> NAND811030/B -> O21AI811031/B1 -> MUX811032/A0 -> FF176920/D, clockgroupclk_i through gatedu_ibex.clk. Worst margin +.000544009ns is CPU path, not selectedPCIe target. Await same combinedODB metrics; measure its actual setup headroom before any further delay. Full prefixes as existing scripts; no blindly reusing old selected-pin margins.
+
+Next fresh RC template inspected, NOT dispatched: scripts/extract_cdr650_paired_wire_graph.py at17297fd48eb45504f19c15f517c7ba69fdd017af (old graph43680974890). If current fullphysical passes, clone to new experimentbranch, bind exact newphysicalrun/head/nativearchive/report/GDS hashes, update branch guard and scripts/cdr650-paired-wire-pins.json. It authenticates full16phase result,650device/2046terminal/25port census, actualLVS ownership and unchangedoriginal probe with only50->200NMOS adaptation. Never bypass physical status or reuse oldRC. Then fresh anchors/metal/gatemesh/reduction/loaded frozen electrical.
+
 ## 2026-11-15 — combined timing candidate active; bounded clock geometry LVS passes, DRC repair active
 
 This entry supersedes older active handles below. No full PHY, routed timing or production acceptance. Cloud-only source/native execution retained.
