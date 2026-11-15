@@ -1,3 +1,11 @@
+## Native SRAM slew / RC coverage probe dispatched
+
+Run43753338857 branchcodex/sram-slew-native-probe head7b495e31a7721a72e373e073ab0890aac475722b verifiedIN_PROGRESS. Read-only probe uses authenticated3972 source43751933582 (same full derived/native ZIP/member/ODB safeguards as next inverter trial), verifies checks.rpt hash and exactly36unique slew pins plus1285unique unannotated driver pins. Tcl performs native instance/ITerm/net lookups and writes TSV pin/net/signal_type/ITermcount/BTermcount/actualOUTPUT-or-INOUTdriver instance+pin+master/inputports. No replace_cell/detailed_placement and no clock/SDC edits. Flow runs only the initial native step to load the real design and inspect it; no repeated allcornerSTA and no timing acceptance. Original source inputs protected, result remains acceptedfalse/timing_remeasuredfalse/fullPHYfalse. PythonAST validated; native execution pending, not presumed valid.
+
+Expected artifacts sram-slew-native-probe-derived/native-43753338857. Derived includes native-driver-probe.tsv, probe-pins.json/tcl, native.log/result. Verify TSV hash and1321unique(kind,pin)records, then map offending SRAM control pins to real driver masters. Classify unannotated nets using native incidence; unloaded/constant candidates need explicit proof, do not waive loaded signal nets. If parser/nativeAPI fails inspect actual terminal failure before fixing, no blind restart.
+
+43752942052/b6ee2fa6 inverter sizing and43751034595/71c9e887 full256bit electrical both recheckedIN_PROGRESS. Do not restart them. Goalactive; this turn implements a concrete native probe needed to repair remaining electrical violations. No localcheckout/nativeCADfiles created.
+
 ## Broader timing checks audited: SRAM slew, reset recovery, parasitic coverage
 
 Authenticated 43751933582 derived artifact14176744096 SHA687b1a28 and all three checks.rpt hashes. Structured findings: docs/timing/shared-driver-electrical-audit.json. Slow36/typ6/fast3 slew violations are SRAM pins; worst slow TXFIFO bank6/7 B_WEN slew.997196/.995556 vs.595200ns limit; these same pins violate fast limits. Need native driver/net/load lookup in next physical trial before sizing, not guesses from names. Current PCIe inverter repair alone will not resolve these SRAM endpoint violations.
