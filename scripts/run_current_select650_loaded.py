@@ -31,16 +31,18 @@ for d in candidate_contract['devices']:
  if d['native_id']not in approved:continue
  length,width=approved[d['native_id']];assert d['model']=='rppd'and d['native_parameters']['l']==length and d['native_parameters']['w']==width
  assert len(d['instances'])==1
- inst=d['instances'][0];old=inst['parameters']['w'];assert old==str(int(width))+'u'
+ inst=d['instances'][0];old=inst['parameters']['l'];assert float(old.removesuffix('u'))==length
+ new_length=length*width/4.;new=format(new_length,'.12g')+'u'
+ assert new_length>=.9 and new_length<length
  lines=text.splitlines();hits=[i for i,line in enumerate(lines)if line.split()and line.split()[0]==inst['name']];assert len(hits)==1
- tokens=lines[hits[0]].split();assert tokens.count('w='+old)==1;tokens[tokens.index('w='+old)]='w=4u';lines[hits[0]]=' '.join(tokens);text='\n'.join(lines)+'\n'
- inst['parameters']['w']='4u';d['native_parameters']['w']=4.;changes.append(dict(native_id=d['native_id'],old_width_um=width,new_width_um=4.,length_um=length))
+ tokens=lines[hits[0]].split();assert tokens.count('l='+old)==1;tokens[tokens.index('l='+old)]='l='+new;lines[hits[0]]=' '.join(tokens);text='\n'.join(lines)+'\n'
+ inst['parameters']['l']=new;d['native_parameters']['l']=new_length;changes.append(dict(native_id=d['native_id'],width_um=width,old_length_um=length,new_length_um=new_length,nominal_l_over_w=new_length/width))
 assert len(changes)==12
 candidate_contract['physical_geometry_matches']=False
-candidate_contract['scope']='Exploratory twelve divider resistor width changes with OLD baseline metal/gate RC. Not a physically extracted candidate, not layout or PHY acceptance.'
+candidate_contract['scope']='Exploratory twelve divider resistor length changes at original widths with OLD baseline metal/gate RC. Not a physically extracted candidate, not layout or PHY acceptance.'
 candidate=target/'candidate-model.cir';candidate.write_text(text)
 (target/'candidate-contract.json').write_bytes(source.enc(candidate_contract))
-source.save('divider-width4-experiment.json',dict(changes=changes,baseline_model_sha256=source.pin(target/'model.cir'),candidate_model=source.pin(candidate),physical_geometry_matches=False,full_phy_accepted=False,scope=candidate_contract['scope']))
+source.save('divider-short-length-experiment.json',dict(changes=changes,baseline_model_sha256=source.pin(target/'model.cir'),candidate_model=source.pin(candidate),physical_geometry_matches=False,full_phy_accepted=False,scope=candidate_contract['scope']))
 bound=full.probes(candidate_contract)
 result=loaded.run_loaded(source,models,variant,engine,candidate,candidate_contract,bound,case)
 source.gate();source.save('selected-whole-loaded-summary.json',dict(case=case,partition=n,status=result['status'],all256bits_executed=True,unchanged_original_electrical_gates=True,full_phy_accepted=False,final_timing_complete=False))
