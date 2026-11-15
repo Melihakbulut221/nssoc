@@ -12,11 +12,11 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- fanout9410 {sg13g2_buf_1 sg13g2_buf_8}
- fanout9409 {sg13g2_buf_2 sg13g2_buf_8}
- fanout9384 {sg13g2_buf_1 sg13g2_buf_4}
- fanout9379 {sg13g2_buf_1 sg13g2_buf_4}
- fanout9378 {sg13g2_buf_1 sg13g2_buf_4}
+ fanout9519 {sg13g2_buf_1 sg13g2_buf_4}
+ fanout9492 {sg13g2_buf_1 sg13g2_buf_4}
+ fanout9485 {sg13g2_buf_1 sg13g2_buf_4}
+ fanout2680 {sg13g2_buf_1 sg13g2_buf_4}
+ fanout2194 {sg13g2_buf_1 sg13g2_buf_4}
 }
 set targets [dict keys $choices]
 if {[llength $targets]!=5} {error "Wrong measured resize census"}
@@ -51,7 +51,7 @@ puts "NSSOC_FIVE_NEW_RX_RESET_BUFFERS_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size five measured new RX reset-tree buffers"
+    name = "Size five measured quarantine-path buffers on existing reset-sized placement"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
