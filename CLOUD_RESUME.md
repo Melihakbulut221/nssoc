@@ -1,3 +1,19 @@
+## 2026-11-15: fresh RC composition and measured hold-margin repair dispatched
+
+Production readiness, full serial Gen3 x4 PHY, integrated routed mainchip and final setup/hold remain OPEN. All native work remains hosted; no local CAD or artifacts. Do not merge experimental workflows into timing/combined.
+
+- Fresh metal RC **43696429827 / 51f8af2cb8cf867e7fc15233096e2d31df9a12c0** passed: 28414 R, 18356 C, two extraction orders and fault controls. Native14154956301 SHA217c4e367210a1f7de27b8820b5497c787bef1e89ad57104b56f23e60200c705; derived14154482289 SHAbdd6243a89b1394e46ed8fd948f1dd6842e40b88459b6c467a9db4b5b41cbc4f.
+- Fresh gate mesh **43696757962 / e6fb3b967a732baca602b2323f79c81027a90703** passed four native mesh resolutions. Native14154901883 SHAd48c05270beda1f01a2466ee01e7e8039ffba12d67b2a4af8647f7f805c2e62f; derived14155021465 SHA8b309be64accf34a9bd6442edb3f167aba224835bfd777c160c5b27eb1fd228c.
+- Fresh gate reduction **43697011992 / 385dcedd4c42a5353c5fd930e5e882c94e7378c7** independently checked: 503 native executions,250 port networks,2 fault controls, nominal_R_network_port_reduction_qualified true. Native14155092029 SHAce0ba53fab63b8a952d9d0c8f6a5542f9b5cc95cfaf946ef0c4f591d9c240d80; derived14154732668 SHAa59051eea20ed2a9bec8a4fcc47b74071396bc9466bb717568d393a79cecd50e. Material corners, full PEX/electrical/full PHY acceptance remain false.
+- **LIVE loaded composition43697553951 / 30d59883a29c0c64f5855884a26aeb39783900ae**, branch codex/current650-clock-full-composition. Exact fresh6023cf16271d3d49307b3967b056b4b11bfaa5534254dc89ba60f3dc21b6f82a GDS chain; both assembler and acquisition census guards updated to measured28414/18356. Original256bit nominal_late stimulus, load, solver, device and electrical gates unchanged. Old historical metal retained only for explicitly named comparison, not composed model. Consume result before claiming clock-geometry improvement.
+- Near-zero measurement **43696332872 / c5681cc5d85a5d67adc81465a21835aeb94b534a** passed without changing ODB254b1e467fbdd6a94ce274a2c58a32168ff145b99cb54b4cb60faeab80ac5d33. 189 reported paths,507 alternative pins,3042 branch reports. Derived14154788203 SHAd4126f65abc2210d7664a1d769fe65291fc1ef1a01c2c4084e79b6f5a86eb729; native14154334768 SHA20ea10f376ae8e0e966094d9fd6f0a6bffaa227c322e974cfc8c7a7157b740a6. See docs/evidence/rx-lane-nearzero-measured-plan-20261115.json.
+- **LIVE repair43697752210 / c5affedb31cd1b2e02d8234d073525a3be94f571**, branch codex/rx-lane-nearzero-repair.174 distinct measured branches cover183 paths, all with >=1ns worst setup in all3corners. Six paths excluded, not waived. One native noninverting delay per selected branch; exact unchanged baseline, original master/incidence/placement guards; fresh all-corner/global/boundary reports. Overlapping paths may accumulate delay; do not accept before comparing ALL results. No final routing or fullPHY claim.
+- Still track ACK mainchip43696515079 /56f97b8744d2dcd92821a79a7dd63168aacefa9c and observed boot43691795620 /91a4dea0322172b853b0450d153ebaefd380ee6f. New synthesis IDs must not reuse old ODB cell selections.
+
+Next: consume repair and loaded results; handle six remaining margins with measured path alternatives; consume ACK synthesis and rebuild placement/CTS with fresh identities; diagnose boot observer; continue serial PHY/integration and full release blockers. Preserve failed measurements, never relax clocks or acceptance gates.
+
+---
+
 ## 2026-11-15 — current-source ACK chip build, full near-zero margin batch, and fresh clock RC active
 
 The full production goal remains active. No final chip/PHY acceptance. All native CAD and source work stays in GitHub; only small derived reports are processed in local RAM.
