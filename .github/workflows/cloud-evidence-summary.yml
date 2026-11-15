@@ -1,4 +1,4 @@
-name: Exact lane-next supplemental four-state CVC functional gate boot
+name: Diagnose exact whole-chip boot with read-only mapped PC and exception observations
 on:
   workflow_dispatch:
 permissions:
@@ -43,11 +43,11 @@ jobs:
       - name: Exhaustive affected-cell four-state transition comparison
         run: python3 scripts/qualify_cvc_cells.py
       - name: Supplemental whole-chip functional boot with unchanged firmware PCIe and MBIST gates
-        run: python3 scripts/run_cvc_functional_chip_boot.py
+        run: python3 scripts/run_cvc_observed_chip_boot.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-local-lane-cvc-functional-boot-${{ github.run_id }}
+          name: rx-local-lane-cvc-observed-boot-${{ github.run_id }}
           path: |
             cvc-probe/**/*.json
             cvc-probe/**/*.log
