@@ -1,4 +1,4 @@
-name: Fresh three-corner STA and repair on exact RX local lane next-state mainchip CTS
+name: Fast separate three-corner baseline on exact lane-next CTS; no repair
 on:
   workflow_dispatch:
 permissions:
@@ -30,7 +30,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native before and after STA with electrical and setup hold repair
+      - name: Read-only native baseline STA in three corners
         run: python3 scripts/cloud_predecode_postcts.py
       - name: Collect derived diagnostics
         if: always()
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-local-lane-chip-postcts-derived-${{ github.run_id }}
+          name: rx-local-lane-cts-baseline-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-local-lane-chip-postcts-native-${{ github.run_id }}
+          name: rx-local-lane-cts-baseline-native-${{ github.run_id }}
           path: hw/soc/out/cloud-predecode-postcts/
           if-no-files-found: warn
           retention-days: 90

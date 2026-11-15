@@ -12,8 +12,7 @@ class BankedTimingRepair(GuardedPropagated, BoundedPostCTS):
 
 @Flow.factory.register()
 class CorrpreBankedPostCTS(Interfaces):
-    Steps = (measurements("BankedBefore") + [ElectricalPostCTS, BankedTimingRepair]
-             + measurements("BankedAfter"))
+    Steps = measurements("BankedBefore")
 
 
 if __name__ == "__main__":

@@ -103,7 +103,7 @@ def main():
                   final_timing_complete=False, full_phy_accepted=False, qualified_pex=False,
                   scope="NEW RX distributed lane next-state CRC-select EOP-cache candidate; boot validation remains independent and pending. "
                         "Exact CTS DB, three separate propagated-clock placement-estimate "
-                        "STA processes before/after native electrical/setup/hold repair. "
+                        "STA processes before repair. This diagnostic performs no repair. "
                         "Not routed, extracted timing, logic equivalence or full PHY acceptance.")
     def save():
         (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\n")
@@ -142,7 +142,7 @@ def main():
                    "--pdk-root", str(ROOT / "hw/soc/tools/ciel-corrpre"), "--pdk", "ihp-sg13g2",
                    "--scl", "sg13g2_stdcell", "--force-run-dir", str(OUT / "run"),
                    "--with-initial-state", str(initial), str(trial)]
-        result.update(status="RUNNING_NATIVE_BANKED_POSTCTS", protected_inputs=protected,
+        result.update(status="RUNNING_NATIVE_LANE_CTS_BASELINE", protected_inputs=protected,
                       config_changes=overrides, command=command)
         save()
         (OUT / "run").mkdir()
@@ -156,7 +156,7 @@ def main():
         assert code == 0, "Native repair failed; all completed states and diagnostics retained"
         assert all(sha(p) == digest for p, digest in protected.items())
         measurements = {}
-        for phase in ("before", "after"):
+        for phase in ("before",):
             measurements[phase] = {}
             for short, corner in CORNERS:
                 dirs = list((OUT / "run").glob("*-nssoc-corrprebanked" + phase + short))
@@ -174,12 +174,10 @@ def main():
                                "high-fanout.rpt", "clock.rpt", "ws.max.rpt", "ws.min.rpt"):
                     assert (folder / report).is_file()
                 measurements[phase][corner] = dict(metrics=metrics, directory=str(folder.relative_to(OUT)))
-        states = list((OUT / "run").glob("*-openroad-resizertimingpostcts/state_out.json"))
-        assert len(states) == 1
-        repaired = json.loads(states[0].read_text())
-        result.update(status="COMPLETE_PREDECODE_POSTCTS_REQUIRES_BOOT_EQUIVALENCE_ROUTING_EXTRACTED_STA",
-                      measurements=measurements, repaired_state=str(states[0].relative_to(OUT)),
-                      repaired_odb_sha256=sha(repaired["odb"]), sources_unchanged=True)
+        assert sha(odb)==source["cts_odb_sha256"],"Baseline measurement altered CTS database"
+        result.update(status="COMPLETE_EXACT_CTS_BASELINE_THREE_CORNERS_NO_REPAIR",
+                      measurements=measurements, measured_odb_sha256=sha(odb),
+                      sources_unchanged=True, repair_executed=False)
     except BaseException as error:
         result.update(status="FAIL_OR_ERROR", error=repr(error))
         raise
