@@ -1,3 +1,9 @@
+## Final short-branch global impact dispatched — 2026-11-15
+
+Impact43658254135/head76f420cb751e986b3caff9e07330aba6c9f997f3 on codex/rx-final-short-hold-impact awaits exactECO43658104828/headbe37a6115e72e3571f78e4b5f839ba6672dcd90d. Compares against verifiedlatefeedbackbaseline43656972871/native14138618413/76ac393d.../ODB1af420... . Existing all-corner setup/hold/slew/cap metricsandpropagatedclockchecksunchanged. No closureclaimed beforeactualtargeted+globalresults. Producer43658104828 stilllive atlastcheck.
+
+NewbankpostCTS43656292239, independentnativeboot43653859525, widenedPHYfull650loaded43657193496 allstilllive withno completedresults. Do notduplicateorrestart. Next inspect finals; ifholdzero confirmallcornersandsetupnonregression, then continue setup/routing closure withouttransferring oldnetlistproof to newbankRTL. FullserialPHY/qualifiedPEX/PVT/productionremainopen.
+
 ## Globalhold3->1 verified; last measured short branch repair launched — 2026-11-15
 
 Lateimpact43657092967/head38fb30e3c725cbdb44069357a69a24398ccae12c SUCCESS. Authenticatedsafe14138693271 SHA945d582f1e142c54521a3b762ad1261c89b634f8189196b4980da6d1152f25ed. NOregressions,targetedtrue. Fasthold3->1,WS/TNS-.00158362ns; setupunchanged. TypWS+.0940192->+.10981ns. Receipt rx-late-feedback-hold-impact-20261115.json. ExactacceptedengineeringODB1af420...; stillplacementRC, setupstillnegative, notsignoff.
