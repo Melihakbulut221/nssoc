@@ -25,7 +25,10 @@ cfg=source.read(source.ROOT/source.CFG);magic=source.NATIVE/'magic';magic.mkdir(
 legacy=source.read(magic/'binding/binding.json');oldlegacy=copy.deepcopy(legacy);changes=[]
 for pair in identity['pairs']:
  origin=pair['original_source']
- if origin['model']!='rppd' or origin['layout_parameters']['w']!=2:continue
+ if origin['model']!='rppd' or origin['origin_native_id']not in (234,235,236,237):continue
+ approved={234:('DQP','USP',6.0),235:('USP','AVSS',8.6),236:('DQN','USN',6.0),237:('USN','AVSS',8.6)}
+ plus,minus,length=approved[origin['origin_native_id']]
+ assert origin['terminals']==dict(RPPD_1=plus,RPPD_2=minus,RPPD_SUB='BULK')and origin['layout_parameters']['l']==length and origin['layout_parameters']['w']==2
  old=next(d for d in legacy['devices']if d['native_id']==origin['origin_native_id'])
  # Only the four independently LVS-qualified width edits may change canonical cards.
  assert pair['layout']['parameters']['w']==2 and old['model']=='rppd'and old['instance']==origin['loaded_instance']
