@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43740394021");assert run["head_sha"]=="a21affd587931ff1b2aa84f891184f2ef485bd7b"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43741495046");assert run["head_sha"]=="493dd486a1cbc72cd7039c18066c671bc04c6cea"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14172641068,"e11d6e5f0eed80f02facb6cbcb718d0bf17f30a2fcaae50583c2985db3f04aee","derived")
- native=archive(14172790245,"3da87458d6ad89a431c1de0853161ae0332a9d6cf19bbd5db3ba18b43157dfe6","native")
+ safe=archive(14172737097,"cba6a638cd46fdfc688a5d4bf96b8cd0587e3c9f2f3361c5d75ecdf909cee784","derived")
+ native=archive(14173355383,"a2aabc95c1ecdbd2bdbd2e925daf1725607f3b4e9ab8a2cb446fb8f2ca50b5d4","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43739336608
- assert report["candidate_odb_sha256"]=="43fc6b1318b92727bf8803950125686246bd55698015069d98b3247fdabde230"
+ assert report["source_run"]==43740394021
+ assert report["candidate_odb_sha256"]=="d5a6079932837e36ed8d6dbe6daaaff5ffaeb6cbfea0bbaa8b1eaeb02b935e51"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -34,12 +34,12 @@ try:
  member='run/2-nssoc-sizedslow/max.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
  first=data.decode().split('Startpoint:')[1]
- assert 'u_pcie.flow.packets.link_dllp (net)' in first
- for cell,master in [('$abc$734931$auto$blifparse.cc:397:parse_blif$739727','sg13g2_nor2_1'),('$abc$734931$auto$blifparse.cc:397:parse_blif$739732','sg13g2_nor3_1')]:
-  assert cell+'/Y ('+master+')' in first
+ assert 'u_pcie.flow.credits.rst_ni (net)' in first
+ for cell,master in [('fanout5419','sg13g2_buf_1'),('fanout6528','sg13g2_buf_1'),('$abc$734931$auto$blifparse.cc:397:parse_blif$770811','sg13g2_buf_1')]:
+  assert cell+'/X ('+master+')' in first
  r['critical_path_report_sha256']=report['outputs'][member]
  safe.close();native.close()
- r['source_archives']=[dict(id=14172641068,sha256='e11d6e5f0eed80f02facb6cbcb718d0bf17f30a2fcaae50583c2985db3f04aee'),dict(id=14172790245,sha256='3da87458d6ad89a431c1de0853161ae0332a9d6cf19bbd5db3ba18b43157dfe6')]
+ r['source_archives']=[dict(id=14172737097,sha256='cba6a638cd46fdfc688a5d4bf96b8cd0587e3c9f2f3361c5d75ecdf909cee784'),dict(id=14173355383,sha256='a2aabc95c1ecdbd2bdbd2e925daf1725607f3b4e9ab8a2cb446fb8f2ca50b5d4')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -66,7 +66,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="DLLP_TWO_NOR_GATES_SIZING_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source43fc: measured DLLP critical gates739727 nor2_1->2 and739732 nor3_1->2. Both head-last bypasses and prior sizing retained;346delay lineage has zero holds at all corners; RX EOP buffers retained. Fresh allcorner global/branch STA, no routing/fullPHY acceptance.")
+ r.update(status="CREDIT_RESET_BUFFERS_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Sourced5a6: credits reset distribution fanout5419 buf1->8, fanout6528 buf1->4 and ABC734931770811 buf1->4. Retains346delays, both bypasses, all prior sizing and zero-hold source. Requires fresh allcorner timing; no routed or PHY acceptance.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
