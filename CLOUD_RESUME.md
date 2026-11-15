@@ -1,3 +1,11 @@
+## Widened gate mesh complete; native port reduction launched — 2026-11-15
+
+Mesh43656489981/headb102cbfba2f92a61931ff4933e044cf2e6d0a918 SUCCESS. Authenticatedderived14139035003 SHA82727a08dace09c13efdaf97a64d50c639532308d12225491e35323f5402ea8e; native14138596148 SHAd141a35ef2b83ff433b0cfed7fcc4b52cb7db4af6d2de1e91b7ab28f24b85747. Fouranalyticreferences+fouractualmeshDC/currentconservation passed,50groups200gates200contacts. Refinementrelativechanges .00343038/.0217839/.00429767; nonuniform nonlinearconvergence NOTqualified. Nominalmaterial only. Receipt packed650-shared-widening-gate-mesh-20261115.json.
+
+Reduction43656724764/head273fc4523ce4534b909d935f72296595575ce3ac queued atlastcheck, branchcodex/shared650-widened-gate-reduction. Uses exactnewgeometry/currentanchors/identity acquisition copied fromverifiedmeshsource; newmesh75nm native+safe digests. Existing250portnetworks(50groups*1/2/4/8/16partitions),503nativeDC/AC/noiseexecutions andfaultcontrols retained. No reductionpassyet. Next freshfull650composition with currentmetalRC43655950942 and frozenloaded test; old electricalfailurestillopen.
+
+Timing107branchECO43655839647+impact43655889301, later2branchmeasurement43656054797, newbankpostCTS43656292239 remain live, no retries. Do not infer success from lackofartifacts. FullPHY/finaltiming/productiongoal stillactive.
+
 ## Current widened PHY gate/contact mesh launched — 2026-11-15
 
 Gate mesh43656489981/headb102cbfba2f92a61931ff4933e044cf2e6d0a918 live on codex/shared650-widened-gate-mesh. Fresh actual GDS1640350bytes SHA f93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe from authenticatedgenerator43654184010/native14137186920, currentanchors43655485838/derived14138025358, currentidentity43655245035/derived14136829675. Sourceclosurepins refreshed. Existing actual200contacts/200MOS/50groups,600/300/150/75nm mesh,analytic70ohm rectangle and native currentconservationchecks unchanged. Material7ohm/square and15ohm/contact remain nominal, NOT PVT/signoffqualified. No currentmeshpassclaimed yet. Next inspect output then fresh portreduction/full650composition with newmetalRC43655950942 and frozen loaded transient; do not reuse oldgeometry acceptance.
