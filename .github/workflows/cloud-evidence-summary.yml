@@ -1,4 +1,4 @@
-name: Measure actual ACK chip hold and critical setup branch margins
+name: Size seven actual new ACK chip critical RX buffers and measure all corners
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/measure_ack_chip_branches.py
+          python3 -m py_compile scripts/size_ack_chip_seven_buffers.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -30,8 +30,8 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Read-only per-branch all-corner STA on actual new chip
-        run: python3 scripts/measure_ack_chip_branches.py
+      - name: Seven buffer master replacements and fresh all-corner branch STA
+        run: python3 scripts/size_ack_chip_seven_buffers.py
       - name: Collect derived diagnostics
         if: always()
         run: |
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-chip-branches-derived-${{ github.run_id }}
+          name: ack-chip-sized-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-chip-branches-native-${{ github.run_id }}
+          name: ack-chip-sized-native-${{ github.run_id }}
           path: ack-chip-branches/
           if-no-files-found: error
           retention-days: 90
