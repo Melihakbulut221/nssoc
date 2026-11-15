@@ -9,7 +9,7 @@ lib=root/'hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcel
 sha=lambda p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
 original=lib.read_text();derived,changed=adapt(original);model=out/'derived-zero-delay.v';model.write_text(derived)
 cvc=root/'cvc-source/build64/cvc64';records=[]
-r=dict(source_head=os.environ['GITHUB_SHA'],source_sha256=SOURCE_SHA,derived_sha256=sha(model),compiler_sha256=sha(cvc),scope='Exhaustive four-state single-input transitions over every other input combination, with deterministic initialization; original and derived Icarus vs derived CVC. Not arbitrary simultaneous-edge formal proof, timing/SDF or whole-chip acceptance.',native_model_compatible=False,chip_accepted=False,cells=records)
+r=dict(source_head=os.environ['GITHUB_SHA'],source_sha256=SOURCE_SHA,derived_sha256=sha(model),compiler_sha256=sha(cvc),scope='Exhaustive four-state single-input transitions over every other input combination, with sequentially settled initialization and context pin transitions; original and derived Icarus vs derived CVC. Not arbitrary simultaneous-edge formal proof, timing/SDF or whole-chip acceptance.',native_model_compatible=False,chip_accepted=False,cells=records)
 def save():(out/'result.json').write_text(json.dumps(r,indent=2))
 def run(command,folder,filename,timeout):
  start=time.monotonic()
@@ -30,8 +30,8 @@ def bench(name,body):
  text='`timescale 1ns/1ps\nmodule cell_probe;\n'+f'reg [{n-1}:0] i; wire [{len(outputs)-1}:0] o; integer a,p,v,b;\n'+name+' dut('+ports+');\n'
  text+='function val; input integer x; begin case(x) 0:val=0;1:val=1;2:val=1\'bx;3:val=1\'bz;endcase end endfunction\ninitial begin\n'
  text+=f'for(a=0;a<{num};a=a+1) for(p=0;p<{n};p=p+1) for(v=0;v<4;v=v+1) begin\n'
- text+=' '.join(initial)+' #2; '+' '.join(release)+' #2; '+' '.join(capture)+' #2; '+' '.join(hold)+' #2;\n'
- text+=f'for(b=0;b<{n};b=b+1)i[b]=val((a>>(2*b))&3);\n#2; $display("TRACE %0d %0d %0d 0 %b",a,p,v,o); i[p]=val(v); #2; $display("TRACE %0d %0d %0d 1 %b",a,p,v,o);\nend\n$display("CELL_TRANSITIONS_COMPLETE");$finish;end\nendmodule\n'
+ text+=' #1; '.join(initial)+' #2; '+' #1; '.join(release)+' #2; '+' #1; '.join(capture)+' #2; '+' #1; '.join(hold)+' #2;\n'
+ text+=f'for(b=0;b<{n};b=b+1)begin i[b]=val((a>>(2*b))&3); #1; end\n#2; $display("TRACE %0d %0d %0d 0 %b",a,p,v,o); i[p]=val(v); #2; $display("TRACE %0d %0d %0d 1 %b",a,p,v,o);\nend\n$display("CELL_TRANSITIONS_COMPLETE");$finish;end\nendmodule\n'
  return text,2*num*n*4,inputs,outputs
 def execute(name,kind,src,library,expected):
  folder=out/(name+'-'+kind);folder.mkdir();exe=folder/'sim'
