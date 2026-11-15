@@ -1,3 +1,11 @@
+## 2026-11-15 — fresh clock graph verified; terminal extraction dispatched
+
+Freshgraph43695470421/d58ae1163bf3ba50206437c5c17cf63e299414a9 PASSED and derivedresultinspected:650devices,2046terminals,25ports,113actualconductorcomponents, exactGDS6023cf16271d3d49307b3967b056b4b11bfaa5534254dc89ba60f3dc21b6f82a; sourcephysical43695046876; old_RC_reusedfalse,wire_rc_extractedfalse. Native14154355704 SHAa7c6e05d6c251e025359cfd0170596bb55c9eb6b2625b35c253f35fec8ebfe29; derived14154183456 SHA864aa69a2c72e061126c25841f46abfc17d4d2422a4e6a8b6fcdd5b604f8026a. Graph113componentsalone isnotRC/extractedtiming.
+Newterminalanchorsbranchcodex/current650-clock-terminal-anchors, heade8144cd4f5c97a498af43ac7b91aa90b358f3c7b. Exactada333... provenmethods, newgraphsource/native+derived/GDShashesandbranchguard; fullfilepinsupdated; originalpackedbaselineusedonlyprovenance, neverascurrentgeometry. NativeartifactmissingERROR. Mustvalidatefreshactualgatecontacts/terminals, thennextmetal/gatemesh/reduction/loadedtest.
+{'run': 43695646721, 'head': 'e8144cd4f5c97a498af43ac7b91aa90b358f3c7b', 'status': 'in_progress', 'conclusion': None}
+
+Combined-margin43695359714/5e29b46e34c21a0fca6396aac7eeaac4aefd662b andobservedboot43691795620/91a4dea0322172b853b0450d153ebaefd380ee6f remainliveatlastpoll. Do not restart. PhysicalPASSreceipt+ACKmapped~17%gainreceipt committed54870852a40df26d398fa13cd6c08021a1d95bd1; fullproductgoalunchanged.
+
 ## 2026-11-15 — actual clock650 full physical PASS; fresh extraction and combined headroom active
 
 **Clock650 physical43695046876 /7c253a13438932af701b33f6c9d6c76f2ddfa6b5 PASSED.** Exact new GDS6023cf16271d3d49307b3967b056b4b11bfaa5534254dc89ba60f3dc21b6f82a (1691454bytes). ALL560DRCcategories,0markers; deepLVS+flatLVS PASS; all13faultsREJECTED_EXPECTED_FAULT includingoffgrid. This closes the clock-metal candidate physical failures52->5->0, NOT loaded electrical/fullPHY/mainchip timing. Qualification explicitlynew_RC_executed:false,electrical_accepted:false,full_phy_accepted:false,final_timing_complete:false. No rules weakened.
