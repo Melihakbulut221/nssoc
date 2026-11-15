@@ -59,6 +59,7 @@ try:
  app=Path(os.environ["CLOUD_APPIMAGE"]);prior.verify(app,"x86_64")
  protected={str(p):prior.sha(p)for p in [odb,initial,cfg,OUT/"targets.json",ROOT/"hw/soc/pnr/ack_chip_branches_flow.py"]}
  command=[str(app),"python",str(ROOT/"hw/soc/pnr/ack_chip_branches_flow.py"),"--flow","AckChipBranches","--pdk-root",str(ROOT/"hw/soc/tools/ciel-corrpre"),"--pdk","ihp-sg13g2","--scl","sg13g2_stdcell","--force-run-dir",str(OUT/"run"),"--with-initial-state",str(initial),str(cfg)]
+ (OUT/"run").mkdir()
  with(OUT/"native.log").open("w")as log:code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
  r["returncode"]=code;assert code==0
  assert all(prior.sha(Path(p))==h for p,h in protected.items())
