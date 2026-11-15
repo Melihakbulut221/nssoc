@@ -14,11 +14,11 @@ ROOT = Path(__file__).resolve().parents[1]
 RTL = 'hw/soc/rtl/pcie/soc_pcie_tlp_regs.v'
 BENCH = ROOT/'hw/soc/tb/cocotb'
 MUTATIONS = {
-    'zero_length_count': ('dw1[15:8],1,addr[6:0]);', 'dw1[15:8],4,addr[6:0]);'),
+    'zero_length_count': ('d_tag,1,d_low_addr);', 'd_tag,4,d_low_addr);'),
     'bar_decode': ('wire target_ok=addr[31:12]==bar0[31:12]',
                    "wire target_ok=1'b1"),
-    'byte_strobes': ("pstrb_o<=has_data ? first_be : 4'b0;",
-                     "pstrb_o<=has_data ? 4'hf : 4'b0;"),
+    'byte_strobes': ("pstrb_o<=d_has_data ? d_first_be : 4'b0;",
+                     "pstrb_o<=d_has_data ? 4'hf : 4'b0;"),
     'abort_status': ('complete(3\'d4,0,0,completer,requester,tag,0,0);',
                      'complete(3\'d1,0,0,completer,requester,tag,0,0);'),
     'completion_tag': ('cid,status,1\'b0,bytes_left,rid,req_tag,1\'b0,low_addr,32\'b0}',
