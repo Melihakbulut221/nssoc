@@ -1,3 +1,15 @@
+## New RX candidate achieves postCTS hold0/0/0; final routed closure NOT established
+
+Native43727102369/headce2c27eed959fbcd9ff893cc0f945d94edd24185 completedSUCCESS. Derived14166884065 fullZIP SHAa46aa0f60322cdb1aa0884afe2bd432a6bd8aa3cad4a0d2f1614671d428b7301 and each3corner stateSHA independently verified. CandidateODB **fd91b14417dae22edf59097e7d36dc284882e303e02f3e145ea2a37bc2909634**, source441ff;7new delays/7selected targets,214existing preserved (221total added). Native14167435762 SHA9cbf9ede3c62d4411859b48885ab9dc7a000e66b4bbf8278ae371fd0e0f831cb,1683637984B remainscloud. Sourceunchangedtrue,return0.
+
+Slow/typ/fast hold counts **0/0/0**, WS **+.222705/+.0917479/+.000415001ns**. The worst fast margin is ONLY0.415001ps, not robust final-route acceptance. Setup unchanged **2276/0/0**, WS **-1.86168/+.0185629/+.965397ns**. Slew36/6/3,cap0. All original clocks20/4/8/8ns,derating5percent preserved. This is newRX physical candidate, unlike old mapped735174 histories. Final routing/extractedRC/fullPHY still open.
+
+Independent214delay+fivebuffer combined43726840782/heada164dab measured: candidate7c850577a9c39f4e72383169ce0faa63c07422786ffbc6e5b8570d041b04d95f. Derived14167680049 fullZIP SHA506044747cf8aba10888ab14ff07402a354c6ce3253b23fabebb98e0f4829b9b and percornerstateSHAs verified. Setup2233/0/0,WS-1.84451/+.0185629/+.965397ns;hold0/0/7,WS+.222705/+.0846121/-.0299224ns;slew36/6/3cap0. Thus fivebuffer sizing helps43setup violations without fixing7holds; do not mix its metrics with fd91.
+
+Dispatched actual combined221delay+fivebuffer trial **43728240498 /b2ddf379726944957839e4e3755cc72e199df230**, branchcodex/new-rx-holdzero-quarantine. Worker scripts/size_rx_holdzero_quarantine.py restores exact successfulfd91 producer/native/derived with fullhashes; requires physicalsource43720921041,measurement43725515099,7selected/no unresolved;564targets. Applies measured quarantine fanout9519/9492/9485/2680/2194 buf1->4 with firstcriticalpath andnativeincidence guards, thenfresh3cornerSTA. All221hold cells preserved. New state may worsen tinyhold margin after legalization; outcome pending, not assumedzero. ASTpassed.
+
+CanonicalCI43727638507 now pythonqualitySUCCESS,memoryparitySUCCESS; mainchecks,RTL,formalpilot/soc,formal-and-boot stilllive. Formal-and-boot advanced beyond preparedguards to real-codec contracts, so original dependencyblock cleared in canonicaljob. Nativebootexplicitlyskipped byrequestinputfalse, not a bootpass. PHY43727364585 stilllive in full256bit native step. Fullobjectiveactive.
+
 ## Canonical integration CI running on refreshed prepared sources
 
 Integration commit7e046d88dcede61b92f2a96601fa40004ce24bb7 includes authenticated metadata/notice, fixture and no-skip Ibex boundary test, plus scoped evidence receipt. Explicit canonical checks run43727638507 is IN_PROGRESS with full_interfaces=true and native_boot=false. This is the actual integration run, not the experimental validator. Long native mapped boot remains a separate unresolved issue; no claim of boot/timing/fullPHY acceptance.
