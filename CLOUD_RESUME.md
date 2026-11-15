@@ -1,3 +1,13 @@
+## Short-length divider experiment dispatched with actual model inspection
+
+Run43776904300/ec96ca571a3da651658a92c85eff9490afba012f on codex/data-select-divider-short-length is live in full256bit nominal_late electrical simulation. Derived/native prefix divider-short-length-exploration-. Base eb91; only candidate generator, owned-branch guard, workflow and three changed source pins updated. All acceptance thresholds, source bits, case, Nx5 clock driver, runtime and baseline RC unchanged.
+
+Twelve dividers keep ORIGINAL widths (A/C1um, select2um); lengths scale by original_width/4: select6/8.6->3/4.3um; A/C3.6/21.6->0.9/5.4um. Nominal L/W matches prior width4 trial but total resistance is NOT identical because model effective width and contact resistance change. Candidate contract/model records remain separate; physical_geometry_matches=false and old metal/gate RC retained. Not a layout-qualified or accepted PHY.
+
+Actual frozen runtime model inspected from release asset650315768, complete archiveSHA256cd993e4d1eb02f900488450bb1ac3880c67a5e5c34fbac06565c7db85667a821 verified in RAM; resistors_mod.lib SHA25698fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51 verified. rppd uses effective width w+0.006um, leff=(b+1)*l+(2/kappa*weff+ps)*b; intrinsic area0.5*(leff+0.86um)*w and perimeter leff+0.86um+w, ca90aF/cp25aF model coefficients, rz35e-6/w (postsim corrections retained). This supports separating geometry/loading from nominal L/W; no claim of validated fabrication minimum length. The intrinsic model variant edits only MOS RF rgo/rshg, not this resistor model. Full device/model numerical gates remain active.
+
+Digital driver-sizing43776325443, queue postCTS43775507971 and mapped boot43771666469 authoritatively still running. Await results; do not restart or declare timing/PHY completion.
+
 ## Width4 waveform diagnosis authenticated: phase improvement does not close data timing
 
 Diagnostic43776484521/fe07047226597d49c093d46f6c3e16d34eeb5008 SUCCESS; artifact14187040004 SHA256a2bfb0ff501236e962f6fe1aa8fb44ce1af94285b9789d8754ddbbfbb4e65afd verified. Full report archived at docs/timing/divider-width4-wave-diagnosis-43776484521.json. Actual loaded device binding used, original full113490x1791 raw authenticated, no SPICE rerun.
