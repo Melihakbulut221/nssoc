@@ -1,74 +1,12 @@
-name: Exact RX-bank local handshake CRC-select EOP-cache chip placement CTS and independent gate boot
+name: Native IHP four-state CVC compiler preflight against Icarus
 on:
   workflow_dispatch:
 permissions:
   contents: read
-  actions: read
 jobs:
-  candidate:
+  preflight:
     runs-on: ubuntu-22.04
-    timeout-minutes: 355
-    env:
-      GH_TOKEN: ${{ github.token }}
-      APPIMAGE_EXTRACT_AND_RUN: '1'
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - name: Restore exact newly mapped candidate without inherited boot acceptance
-        run: |
-          set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/14136672988/zip > source.zip
-          gh api repos/${{ github.repository }}/actions/artifacts/14137116552/zip > mapping.zip
-          python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/cloud_predecode_chip_placement.py
-      - name: Prepare pinned native physical runtime
-        run: |
-          set -euo pipefail
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2
-          python3 scripts/bootstrap_flow.py
-          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native floorplan placement and CTS of new candidate
-        run: python3 scripts/cloud_predecode_chip_placement.py
-      - name: Collect derived diagnostics
-        if: always()
-        run: |
-          python3 - <<'PYCODE'
-          import pathlib,shutil
-          root=pathlib.Path('hw/soc/out/cloud-predecode-chip-placement');out=pathlib.Path('placement-derived');out.mkdir()
-          if root.exists():
-            for name in ['result.json','run.log','prepared/preparation.json','prepared/inventory.json']:
-              p=root/name
-              if p.is_file():
-                q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
-          PYCODE
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: rx-bank-chip-placement-derived-${{ github.run_id }}
-          path: placement-derived/
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: rx-bank-chip-placement-native-${{ github.run_id }}
-          path: hw/soc/out/cloud-predecode-chip-placement/
-          if-no-files-found: warn
-          retention-days: 90
-  boot:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 355
-    strategy:
-      fail-fast: false
-      matrix:
-        simulator: [iverilog]
-    env:
-      GH_TOKEN: ${{ github.token }}
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -80,31 +18,30 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Restore exact mapped chip and firmware only on runner
+      - name: Build pinned compiler and acquire unchanged IHP models
         run: |
           set -euo pipefail
-          gh api repos/${{ github.repository }}/actions/artifacts/14136672988/zip > source.zip
-          gh api repos/${{ github.repository }}/actions/artifacts/14137116552/zip > mapping.zip
-          python3 scripts/restore_predecode_chip_boot.py
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends binutils-riscv64-linux-gnu
+          sudo apt-get install -y --no-install-recommends build-essential zlib1g-dev
+          git init cvc-source
+          git -C cvc-source remote add origin https://github.com/cambridgehackers/open-src-cvc.git
+          git -C cvc-source fetch --depth=1 origin 1c5e043ec33ef6f1fdbf38565501c944893a83cf
+          git -C cvc-source checkout --detach FETCH_HEAD
+          test "$(git -C cvc-source rev-parse HEAD)" = 1c5e043ec33ef6f1fdbf38565501c944893a83cf
+          make -C cvc-source/src -j2 cvc64 > cvc-build.log 2>&1
           python3 hw/soc/flow/prepare_ihp_native_boot.py
-      - name: Native boot with complete memory self tests and all firmware checks
-        run: |
-          set -euo pipefail
-          python3 hw/soc/flow/sim_logic_boot_gl.py             --pcie-profile packet-async --mbist-profile system-ethernet             --cycles 2000000 --timeout 19000             --synthesis hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis             --firmware hw/soc/out/corrpre-pcie-mbist-native-boot/rtl             --pdk hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2             --simulator ${{ matrix.simulator }} --tool "$(command -v ${{ matrix.simulator }})"             --nm /usr/bin/riscv64-linux-gnu-nm             --output hw/soc/out/predecode-gates | tee out/boot-driver.log
-      - name: Preserve native diagnostics without changing source evidence
-        if: always()
-        run: |
-          mkdir -p out
-          if [ -d hw/soc/out/predecode-gates ]; then
-            cp hw/soc/out/predecode-gates/*.json out/ || true
-            cp hw/soc/out/predecode-gates/*.log out/ || true
-          fi
+      - name: Strict native reset data and X propagation probes plus mutations
+        run: python3 scripts/probe_native_cvc.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-bank-chip-boot-${{ matrix.simulator }}-${{ github.run_id }}
-          path: out/
-          if-no-files-found: error
+          name: native-cvc-preflight-${{ github.run_id }}
+          path: |
+            cvc-probe/**/*.json
+            cvc-probe/**/*.log
+            cvc-probe/**/*.v
+            cvc-build.log
+            cvc-source/OSS-CVC-MODIFIED-ARTISTIC-LIC.TXT
+            cvc-source/CHANGES.md
           retention-days: 90
+          if-no-files-found: error
