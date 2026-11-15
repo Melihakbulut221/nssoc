@@ -35,7 +35,11 @@ foreach kind {slew unannotated} {
   }
   if {$pin eq "NULL"} {error "Missing pin $pin_name"}
   set net [$pin getNet]
-  if {$net eq "NULL"} {error "Unconnected pin $pin_name"}
+  if {$net eq "NULL"} {
+   if {$kind ne "unannotated" || [$pin getIoType] ni {OUTPUT INOUT}} {error "Unexpected unconnected target $pin_name"}
+   puts $fh [join [list $kind $pin_name "" UNCONNECTED 0 0 [list [list [$inst getName] [[$pin getMTerm] getName] [[$inst getMaster] getName]]] {}] "\t"]
+   continue
+  }
   set drivers {};set inputs {}
   foreach term [$net getITerms] {
    if {[$term getIoType] in {OUTPUT INOUT}} {
