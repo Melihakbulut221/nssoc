@@ -26,14 +26,14 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Exact measured output branches and global STA
-        run: python3 scripts/run_combined_hold_trial.py
+        run: python3 scripts/run_combined_margin_trial.py
       - name: Collect derived reports
         if: always()
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import shutil
-          root=Path("combined-hold-trial");out=Path("combined-hold-derived")
+          root=Path("combined-margin-trial");out=Path("combined-margin-derived")
           for p in root.rglob("*"):
               rel=p.relative_to(root)
               if p.is_file() and (str(rel) in ("result.json","native.log") or (rel.parts[0]=="run" and p.suffix in (".rpt",".json"))):
@@ -42,14 +42,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-lane-combined-hold-derived-${{ github.run_id }}
-          path: combined-hold-derived/
+          name: rx-lane-combined-margin-derived-${{ github.run_id }}
+          path: combined-margin-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-lane-combined-hold-native-${{ github.run_id }}
-          path: combined-hold-trial/run/
+          name: rx-lane-combined-margin-native-${{ github.run_id }}
+          path: combined-margin-trial/run/
           if-no-files-found: error
           retention-days: 90
