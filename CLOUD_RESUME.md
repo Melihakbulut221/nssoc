@@ -1,3 +1,20 @@
+## Additional integration guard failure confirmed while native timing jobs continue
+
+General CI43710889358/job132813745683 and43709881841/job132813779486 both failed formal-and-boot at "Prepared upstream compatibility and whole-SoC elaboration". Actual job logs show prepared_sources fixture rejects outdated transform snapshot before elaboration (1passed5errors); native-boot dependency skipped. This does not invalidate independently source-restored native timing measurements, but no green full integration CI claim is allowed.
+
+The current timing/combined transform drift against docs/evidence/prepared-sources-eth-mbist-20260926.json was checked directly:
+
+{
+  "hw/soc/flow/adapt_eth_mbist.py": {
+    "recorded": "1a3a9a0a734eb41d5886d05a08592b8062c58de074a9d086be9f76097489e576",
+    "current": "6a2c0c1edf87d1673bea63519ed170b4f54c8e905dd5393afb20fc8231ea1508"
+  }
+}
+
+Correct follow-up is regenerate/replay current prepared dependencies via scripts/collect_prepared_sources.py, preserving historical evidence, update fixture to new authenticated release metadata only after byte-identical independent Ibex/base/full interface replays. Do NOT merely edit expected transform hashes or remove stale-source guard. Relevant fixture sw/tests/conftest.py; generation script compares soc/gen/*.v with independent sv2v replay and four base/full interface bundle files; metadata/notice/tar immutable output. This is a source-snapshot CI issue, not the separate mapped gate-boot failure.
+
+Native priority jobs43715682174 (newRX branches) and43715930015 (newRX reset sizing) rechecked IN_PROGRESS; valid-Nx PHY43716130683 queued. No producer restarted because waiting. Full goal active; pending exact-result evaluation remains next.
+
 ## Old RX margin repair complete; new RX setup/hold native experiments running
 
 **43714299681/8b72c3e96e93a3cc38902e5649f5493d2c900ca0 SUCCESS**. Derived **14162840855 /d8e43d4cf1f86d452b9231d72b6ead705a7324d4d7b0fc1a84ca762cca372bd3**, native **14162482681 /20409cbb2268c1f157e008b6811d7199ad6753cc252e6b01a5a6a353b4c90384** (1.72GB cloud only). Candidate ODB **9626a02146f01a57b32b85c035c384370ee3cb3a5edf5bedf31b99143653e754**, state run/4-nssoc-holdfast/state_out.json. Derived ZIP plus all3state/max/min hashes verified. Hold0/0/0,WS+.288109/+.136266/+.00457756ns; setup2716/25/0,WS-2.24368/-.351183/+.755945ns. Slew16/4/3,cap0. Fast reported sub50pspaths157 -> **27** (4264reportedpaths percorner); othercorners0. Not50psreserveclosure, notfinaltiming. Actual141additionalDLY stage preserves old271; candidate remains OLD RX2a345, do not transplant IDs or claim NEW RX holds closed. Receipt docs/evidence/ack-chip-margin-repair-result-20261115.json.
