@@ -16,6 +16,10 @@ for leaf,key in [('model.cir','model'),('contract.json','contract'),('probes.jso
 assert record['model']['sha256']=='7aa759f68d570eb0bbbecef16dea6f9d7877c558fd3b53c2fcd892a841c39072'
 contract=source.read(target/'contract.json');bound=source.read(target/'probes.json');assert full.probes(contract)==bound
 source.save('loaded-source-binding.json',dict(context=context,composition_run=r['id'],artifact=m['id'],archive_sha256=m['digest'][7:],selected_partition=record,physical_devices=650,source_gds_sha256='5f66ce0cb46acfb580b517ba02b10f66560ba4200d9cfbba0b633a839cc59c5a',full_phy_accepted=False))
+fixture_bytes=z.read('derived/current-physical-cases.json');fixture=json.loads(fixture_bytes)
+mos={d['native_id']:d['native_parameters']for d in contract['devices']if d['model']=='sg13_lv_nmos'}
+assert len(mos)==len(fixture['devices'])==200 and {d['native_id']:d['parameters']for d in fixture['devices']}==mos
+(source.DERIVED/'current-physical-cases.json').write_bytes(fixture_bytes)
 cfg=source.read(source.ROOT/source.CFG);models=source.acquire_models(cfg['runtime']);source.model_report(models);variant=source.intrinsic_variant(models)
 engine=source.NATIVE/'models/source/runtime/patched-ngspice';engine.chmod(0o755)
 result=loaded.run_loaded(source,models,variant,engine,target/'model.cir',contract,bound,case)
