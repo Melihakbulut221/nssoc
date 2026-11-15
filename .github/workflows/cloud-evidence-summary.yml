@@ -1,13 +1,13 @@
-name: Build qualified credit CRC and queue count mainchip candidate
+name: Recheck actual queue register mapping without repeating synthesis
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  build:
+  recheck:
     runs-on: ubuntu-24.04
-    timeout-minutes: 240
+    timeout-minutes: 45
     env:
       GH_TOKEN: ${{ github.token }}
       SOC_PCIE_CREDIT_DATA_SIGN_REG: '1'
@@ -47,64 +47,22 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Require exact formal and traffic qualification artifacts
-        run: python3 scripts/require_rx_cursor_qualification.py
-      - name: Require exact ACK source and six-switch replay qualification
-        run: python3 scripts/require_ack_prefix_qualification.py
-      - name: Require exact credit and CRC proofs plus rejected negative controls
-        run: python3 scripts/require_credit_crc_qualification.py
-      - name: Prepare pinned source and tool inputs
-        run: |
-          set -euo pipefail
-          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
-          python3 -m pip install -r sw/requirements.txt
-          make soc-prepare
-          bash -n scripts/prepare_predecode_mainchip.sh hw/soc/flow/syn_soc_top.sh hw/soc/flow/sim_soc.sh
-          python3 -m pytest -q sw/tests/test_logic_boot_gl.py sw/tests/test_native_boot_preparation.py
-      - name: Replay positive and semantic mutation regressions before whole-chip synthesis
-        run: python3 scripts/qualify_replay_crc_select.py
-      - name: Fresh firmware RTL boot and complete chip synthesis with twenty SRAMs
-        run: bash scripts/prepare_predecode_mainchip.sh
-      - name: Preserve native source even on failed measurement
-        if: always()
-        run: |
-          mkdir -p native out
-          if [ -d hw/soc/out/corrpre-pcie-mbist-native-boot ]; then
-            tar -czf native/build.tgz hw/soc/out/corrpre-pcie-mbist-native-boot
-          fi
+      - run: python3 scripts/recheck_queue_count_mapping.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-count-mainchip-source-native-${{ github.run_id }}
+          name: queue-count-rechecked-mapping-${{ github.run_id }}
+          path: out/*.json
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: queue-count-rechecked-native-${{ github.run_id }}
           path: native/build.tgz
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: credit-crc-count-mainchip-mapping-${{ github.run_id }}
-          path: |
-            out/mapping.json
-            out/credit-crc-qualification.json
-            out/queue-count-qualification.json
-            out/rx-qualification-gate.json
-            out/ack-prefix-qualification-gate.json
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: credit-crc-count-replay-regressions-${{ github.run_id }}
-          path: |
-            out/qualification.json
-            out/case-*.log
-            out/case-*/*.log
           if-no-files-found: error
           retention-days: 90

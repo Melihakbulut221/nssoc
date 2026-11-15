@@ -80,15 +80,27 @@ result['credit_crc_qualification']=q
 queue_q=json.loads(P('out/queue-count-qualification.json').read_text())
 assert queue_q['source_sha256']==sha('hw/soc/rtl/pcie/soc_pcie_rx_credit.v')
 assert os.environ['SOC_PCIE_RX_COUNT_FLAGS']=='1' and '-DSOC_PCIE_RX_COUNT_FLAGS'in ys
+# Reset-to-one predicates are complemented by opt_dff; public aliases can
+# disappear in ABC. Bind all three native registers to the actual RTL block.
+rx_text=P('hw/soc/rtl/pcie/soc_pcie_rx_credit.v').read_text()
+start=rx_text.index('    always @(posedge clk_i or negedge rst_ni)',rx_text.index('reg count_empty_q,count_one_q,count_room_q;'))
+end=rx_text.index('    wire queue_room=',start)
+first_line=rx_text[:start].count('\n')+1
+last_line=rx_text[:end].rstrip().count('\n')+1
+pattern=r'soc_pcie_rx_credit\.v:'+str(first_line)+r'\.\d+-'+str(last_line)+r'\.\d+(?:$|\|)'
 queue_registers={}
-for suffix in ['.count_empty_q','.count_one_q','.count_room_q']:
- selected=[(n,v)for n,v in m['netnames'].items()if n.endswith(suffix)];assert len(selected)==1,(suffix,selected)
- name,net=selected[0];assert len(net['bits'])==1 and isinstance(net['bits'][0],int)
- bit=net['bits'][0];drivers=[(n,c)for n,c in m['cells'].items()if c['port_directions'].get('Q')=='output'and c['connections'].get('Q')==[bit]]
- assert len(drivers)==1 and drivers[0][1]['type'].startswith('sg13g2_df'),(name,drivers)
- assert drivers[0][1]['connections']['CLK']==m['ports']['pcie_clk_i']['bits']
- queue_registers[name]={'bit':bit,'cell':drivers[0][0],'type':drivers[0][1]['type']}
-assert len({r['bit']for r in queue_registers.values()})==3
+for name,cell in m['cells'].items():
+ if not(cell['type'].startswith('sg13g2_df')and re.search(pattern,cell.get('attributes',{}).get('src',''))):continue
+ assert cell['connections']['CLK']==m['ports']['pcie_clk_i']['bits']
+ assert cell['port_directions'].get('Q')=='output'and len(cell['connections']['Q'])==1
+ bit=cell['connections']['Q'][0];assert isinstance(bit,int)
+ aliases=[n for n,v in m['netnames'].items()if v['bits']==[bit]]
+ consumers=[n for n,c in m['cells'].items()if any(c['port_directions'][p]=='input'and bit in bs for p,bs in c['connections'].items())]
+ assert aliases and consumers
+ queue_registers[name]={'bit':bit,'cell':name,'type':cell['type'],'source':cell['attributes']['src'],'aliases':aliases,'consumer_count':len(consumers)}
+assert len(queue_registers)==3 and len({r['bit']for r in queue_registers.values()})==3
+assert sum(any(n.endswith('.count_one_q')for n in r['aliases'])for r in queue_registers.values())==1
+assert sum(any('flip_bits'in n for n in r['aliases'])for r in queue_registers.values())==2
 result['queue_count_registers']=queue_registers
 result['queue_count_qualification']=queue_q
 
