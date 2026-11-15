@@ -4,7 +4,7 @@ ref=root/'formal/credit_sign/reference.v';src=root/'hw/soc/rtl/pcie/soc_pcie_cre
 s=src.read_text();assert s.count('module soc_pcie_credit_tx (')==1
 # Do not introduce an internal cut at the retimed admission predicate.
 # Reprove its full cone through the public outputs; no assumption/waiver.
-assert len(re.findall(r'\bd_ok\b',s))==3
+assert len(re.findall(r'\bd_ok\b',s))==4  # three code uses plus one source comment
 s=re.sub(r'\bd_ok\b','candidate_data_ok',s)
 (out/'gate.v').write_text(s.replace('module soc_pcie_credit_tx (','module gate ('))
 (out/'gold.v').write_bytes(ref.read_bytes())
