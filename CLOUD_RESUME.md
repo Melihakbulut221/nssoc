@@ -1,3 +1,11 @@
+## RX full traffic qualified; actual next mainchip build dispatched
+
+43707359187/d7719ea5449f3c61102f9a633692beaa19aa66be bothjobsSUCCESS. Trafficjob132791216392 artifact14159124888 SHA782de6a69e9796a879db0f2ce1cc52bcb092f9862abdda0ab854c04bb9d2ad36: exactRX865d687a272faf4a5077f79af21ace3b4afbe5085b640dd20f3512c8a43ff7d5, eight300kcycle positives andeightactualcomparison-inversion mutationrejections. All16nativecase log hashes verified. Formalartifact14158424919 andtwofullmoduleproofs/twomutants alreadyverified. Receipt docs/evidence/rx-dllp-full-traffic-20261115.json. No mappedboot/routing/timing/fullPHY claimfromthis.
+
+**43709259323/2dcbd7f9cedd8c9a70ee60b0adbc1cb5e2c96fd2**, codex/ack-rx-dllp-mainchip-build, NOW DISPATCHED afterbothproof/traffic gates. Sourceandconfigurationdetailsinpreviouscheckpoint unchanged. NewnativefirmwareRTLboot+wholechipsynthesis20SRAMs; nativeartifact ack-rx-dllp-mainchip-source-native-RUN, mapping ack-rx-dllp-mainchip-mapping-RUN. Exactlegacy+newRXandACKqualificationrequired beforeCAD; correctedACKmappingverifierfromeedc4f retained. Whenactualbuildpasses, bindnewmappedsource/outputs andusefreshplacement/CTS/allcorners. Do NOTapplyold97f316buffer/holdECO cellIDs tonewmapper. Need measure shiftedDLLPlength paths aswellasindexcriticalpath.
+
+43708228938 exact-STA-to-physical-pin holdrepair,43708501996 allstatus-ANDinputbypass,43708067466 PLLboundaryanalysis allremainliveatlastpoll. No previousnativeproducerrestarted or gateweakened. Completeproductscope stillopen.
+
 ## RX full-module formal passed; exact next-chip build prepared but not dispatched
 
 43707359187/d7719ea5449f3c61102f9a633692beaa19aa66be formaljob132791216269 succeeded. Artifact14158424919 SHA8b258dba14526dcea5c9efc26f1c875f661ddabc5a0a87e2882ded4836ff8daf; allfourlogSHAverified. Positive(dw4,slots1),(dw8,slots2)fullmoduleequivalenceproven; actualDLLPcompareinversionmutantsbothrejected. Existingequal-resetcopycontractonly. Trafficjob132791216392 stilllive; no wholechip qualification claim. Receipt docs/evidence/rx-dllp-full-formal-20261115.json.
