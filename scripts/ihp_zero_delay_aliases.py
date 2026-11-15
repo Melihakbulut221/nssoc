@@ -22,7 +22,9 @@ def adapt(source):
   assert aliases and set(re.findall(r'\bdelayed_\w+\b',text))==set(aliases)
   addition='\n// NSSOC derived functional-only zero-delay aliases, 2026-11-15.\n'
   addition+='// No SDF, nonzero timing limits, timing conditions or pin overrides.\n'
+  addition+='`ifdef NSSOC_CVC_ZERO_DELAY\n'
   addition+=''.join('assign '+pin+' = '+actual+';\n'for pin,actual in sorted(aliases.items()))
+  addition+='`endif\n'
   changed.append({'module':name,'aliases':aliases})
   return text[:-len('endmodule')]+addition+'endmodule'
  derived=re.sub(r'module\s+(\w+)\s*\([^;]*;.*?endmodule',module,source,flags=re.S)

@@ -35,7 +35,7 @@ def bench(name,body):
  return text,2*num*n*4,inputs,outputs
 def execute(name,kind,src,library,expected):
  folder=out/(name+'-'+kind);folder.mkdir();exe=folder/'sim'
- command=([str(cvc),'-sv','-o',str(exe),str(src),'-v',str(library)]if kind.startswith('cvc')else['iverilog','-g2005-sv','-s','cell_probe','-o',str(exe),str(src),str(library)])
+ command=([str(cvc),'-sv','+define+NSSOC_CVC_ZERO_DELAY','-o',str(exe),str(src),'-v',str(library)]if kind.startswith('cvc')else['iverilog','-g2005-sv','-s','cell_probe','-o',str(exe),str(src),str(library)])
  result={'compile':run(command,folder,'compile.log',300)};assert result['compile']['returncode']==0 and exe.is_file(),result
  result['run']=run([str(exe)]if kind.startswith('cvc')else['vvp','-i',str(exe)],folder,'run.log',300)
  log=(folder/'run.log').read_text();assert result['run']['returncode']==0 and 'CELL_TRANSITIONS_COMPLETE'in log
@@ -45,7 +45,7 @@ try:
  bodies={name:body for name,body in re.findall(r'module\s+(\w+)\s*\([^;]*;(.*?)endmodule',original,re.S)}
  for change in changed:
   name=change['module'];text,expected,ins,outs=bench(name,bodies[name]);src=out/(name+'.v');src.write_text(text)
-  item=dict(module=name,inputs=ins,outputs=outs,expected_trace_rows=expected,bench_sha256=sha(src),runs={});gold=None
+  item=dict(module=name,inputs=ins,outputs=outs,expected_trace_rows=expected,bench_sha256=sha(src),runs={});records.append(item);gold=None
   for kind,library in [('iverilog-original',lib),('iverilog-derived',model),('cvc-derived',model)]:
    result,lines=execute(name,kind,src,library,expected);item['runs'][kind]=result
    if gold is None:gold=lines
@@ -54,7 +54,7 @@ try:
     item[kind+'_mismatch_count']=len(mismatches)
     if mismatches:(out/(name+'-'+kind+'-mismatches.json')).write_text(json.dumps(mismatches[:100],indent=2))
     assert not mismatches,(name,kind,mismatches[:3])
-  records.append(item);save()
+  save()
  # A single functional D alias inversion must fail against the original trace.
  first=changed[0]['module'];needle='assign delayed_D = D;';assert needle in derived
  mutant=out/'mutant-zero-delay.v';mutant.write_text(derived.replace(needle,'assign delayed_D = ~D;',1))

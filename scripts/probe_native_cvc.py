@@ -24,7 +24,7 @@ try:
   for fault in [False,True]:
    folder=out/(engine+('-mutant'if fault else'-positive'));folder.mkdir()
    src=folder/'probe.v';src.write_text(bench.replace('if(q!==1)', 'if(q!==0)')if fault else bench)
-   exe=folder/'sim';cmd=([str(cvc),'-sv','-o',str(exe),str(src),'-v',str(model)]if engine=='cvc'else['iverilog','-g2005-sv','-s','tb_native_cell_gate','-o',str(exe),str(src),str(lib)])
+   exe=folder/'sim';cmd=([str(cvc),'-sv','+define+NSSOC_CVC_ZERO_DELAY','-o',str(exe),str(src),'-v',str(model)]if engine=='cvc'else['iverilog','-g2005-sv','-s','tb_native_cell_gate','-o',str(exe),str(src),str(lib)])
    item={'engine':engine,'mutation':fault,'bench_sha256':sha(src),'compile':run(cmd,folder,'compile',300)}
    if item['compile']['returncode']==0 and exe.is_file():
     item['run']=run([str(exe)]if engine=='cvc'else['vvp','-i',str(exe)],folder,'run',30)
