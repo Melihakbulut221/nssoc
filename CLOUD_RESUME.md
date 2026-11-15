@@ -1,3 +1,11 @@
+## Native probe resolves SRAM names; disconnected output classification fixed
+
+43753849699/a7b8b33a8a717870f4840070a68c536ff160c3e2 terminal FAILURE, not restarted on observationtimeout. Derived14177207075 SHA0fd388ef654dc192e3ca6ba0315f279a8e5b862f7e39a27254c9b00a49db7993 verifiedRAM; actualnative.log error "Unconnected pin clkload0/X". Canonicalinstance/terminal mapping now works; partialTSV143rows includes all36SRAMslew pins and107unannotated before failure. PartialTSV hash verifiedagainstresult.outputs, NOTfullprobeacceptance.
+Native preliminary drivers: TXFIFO bank6+7 B_WEN both ABC734931757409/Y sg13g2_inv_1 (net4ITerms); mainSRAMb0 A_MEN ABC763417/Y nor2_1 (2ITerms); TXbank5 B_MEN ABC760981/Y nor2_1; RXbank6 A_MEN ABC763372/X a21o_1; RXbank2 B_MEN ABC766536/Y nor2_1. RXbank6 A_DIN[9] ABC747988/Y o21ai_1, A_ADDR[3] ABC747973/Y o21ai_1. Use fullnative guards when changing any of these, not report-name inference. Most severe2SRAMslew pins shareoneweakinvdriver, a clear nextcandidate once currentsetupresult isavailable.
+
+Fix427c5fe596cb8dc4633885cb893d22b175e305b5: explicitly emit UNCONNECTED rows only for native OUTPUT/INOUT pins in unannotatedcategory, withoriginalinstance/terminal/master. StillerrorforanyunconnectedSRAMslewpin. This isclassification, not waiverorignoringpins; final1321-rowcheck remainsrequired. Newrun43754262798 codex/sram-slew-native-probe verifiedIN_PROGRESS. Readonlysource3972/fullarchivesguardsunchanged. Previous143rowsarenotcompleteevidence.
+43753912727/fb459530 sharedsixdrivertrial recheckedIN_PROGRESS. Full650electrical43751034595 lastverifiedIN_PROGRESS. Allgoalsremainopen; thisturnnativeevidence+probefixisprogress. No localCAD/checkouts.
+
 ## Inverter sizing improves setup; shared six-buffer trial and corrected probe live
 
 43752942052/b6ee2fa6c79bdbe3b89c7b2c7dd56d8ef8bc1089 SUCCESS. Derived14176914006 SHAabe3b5d3eab555f04e5d53b26ebfd5a4ba08f858005c2b7178e2f0d6a365dd35 and all included inventoried members verifiedRAM. Native14176998026 advertised SHAd93451b44ad916b21f3223dba07b25909e76921101940128ab06fc4367cfff77; next worker verifiesfullarchive. NewbestODBfabb5f1be0ac4306c3caada4cfc07410f6087504f1fc5ec8c0c9fb5111d9b56d. Setup2069/0/0 WS-1.57743/+0.235356/+1.11161ns slowTNS-1503.47. Hold0/0/0 WS+.222705/+.143183/+.00520262ns unchanged. Slew36/6/3 cap0. Not routed/extracted finalsignoff.
