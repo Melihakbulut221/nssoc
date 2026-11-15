@@ -1,3 +1,11 @@
+## Current650 read-only failure localization completed
+
+43705504612 / c7f2e37792525b4ad45abb1474dec6299ea7576e PASS_DIAGNOSTIC only. Artifact14157553316 SHA98dd50bc56b195de5f1c90dc5fec0d47bf9efd202d34340c236d5e622391d36e. Exact original failed native waveform and all six original sample failure counts reproduced; circuit acceptance remains false. Receipt docs/evidence/current650-loaded-localization-20261115.json.
+
+Sampler A129/B128/D128 below100mV observations occur ONLY at0.3UI (37.5ps) after sampleedge. C128 at0.3UI plus16 at0.9UI; X and Y failures span all measured phases. A failures only source transitions; B/C/D include unchanged previous/current data, so cannot attribute all failure to input-transition settling. Detailed perbit previous/current data, physical data/select differentials and sourceclock context retained in artifact sampling-localization.json. Native HBT211/212 both worstVCE at20.81421875ns, row68871; .396984/.395426V,325/658violatingrows. This diagnoses headroom, not fullterminalcurrent equivalence or complete rootcause. Do not relax37.5ps/100mV/.4V/30mV gates or change expectedbit alignment to pass.
+
+Next analog task: map failing HBT pair and sampler data/select paths back to current650 physical graph, quantify clock/input/output settling delay before choosing circuit change; keep widened clock-only geometry experiment rejected. Timing newchip778reports, seven-buffer sizing, and PLL130ns capture are still active atlastpoll. FullPHY/finaltiming stillopen.
+
 ## Current650 loaded case rejected; native failure localization and new-chip sizing live
 
 Actual loaded producer 43697553951 / 30d59883a29c0c64f5855884a26aeb39783900ae completed native simulation (return 0, no diagnostics, sources unchanged) but FAILED electrical gates. This is not an observation timeout. Derived artifact 14157917034 SHA4f428b30a1a757556c425e5abddf4a3cf1ad1ca1af4d4e68ad486d69632bd854; native 14158082074 SHA1f6167012365bc7bffcc85bad084d0824021ec6d1c963d1dc3a5537f22b114c3 (3.45GB, stays cloud). Exact receipt docs/evidence/current650-loaded-rejection-20261115.json.
