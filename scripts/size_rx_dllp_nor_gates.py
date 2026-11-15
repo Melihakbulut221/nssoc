@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43755093967");assert run["head_sha"]=="3ebd69bb9a4f272305acc658a99642d940c1fe87"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43758008035");assert run["head_sha"]=="7253dc5e17f72458722a2677af401cec042528eb"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14177169414,"75770f52539865b66372418fd9b5edc80495b8476dddf3f6d44d39334391abaa","derived")
- native=archive(14178450414,"bb798d7c98a5183a242cafb0acf09040f3482553a76e466dac733436833fd234","native")
+ safe=archive(14179995025,"83ec06bc3499886347b082eef69098444160c136b93b5d1b221861eedd12b519","derived")
+ native=archive(14179397749,"7e410ebd5699ec1755cedbf76bc77509611a00d7730846371656f44893eeb071","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43753912727
- assert report["candidate_odb_sha256"]=="61ebb6ae25a7502c135880aa5d65fc53a08a8b625b734184c3addb5f39610379"
+ assert report["source_run"]==43756546386
+ assert report["candidate_odb_sha256"]=="166610a71dac9d34b10de8b328a0bdb1577cab5df4ee736ea406b2e6ca4f944e"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -34,36 +34,37 @@ try:
  member='run/2-nssoc-sizedslow/checks.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
  slew=data.decode().split('\nmax slew\n')[1].split('\nmax fanout\n')[0]
- controls=[('$abc$734931$auto$blifparse.cc:397:parse_blif$763417', 'Y', 'sg13g2_nor2_1', 'sg13g2_nor2_2', 'u_ram.g_ram_2048x64_ecc.u_b0', 'A_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$760981', 'Y', 'sg13g2_nor2_1', 'sg13g2_nor2_2', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[5].u_mem', 'B_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$763372', 'X', 'sg13g2_a21o_1', 'sg13g2_a21o_2', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem', 'A_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$766536', 'Y', 'sg13g2_nor2_1', 'sg13g2_nor2_2', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem', 'B_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$763419', 'Y', 'sg13g2_nor2b_1', 'sg13g2_nor2b_2', 'u_ram.g_ram_2048x64_ecc.u_b1', 'A_MEN')]
+ controls=[('$abc$734931$auto$blifparse.cc:397:parse_blif$749437', 'X', 'sg13g2_mux2_1', 'sg13g2_mux2_2', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem', 'B_DIN[11]'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$749437', 'X', 'sg13g2_mux2_1', 'sg13g2_mux2_2', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[3].u_mem', 'B_DIN[11]'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$760815', 'X', 'sg13g2_mux2_1', 'sg13g2_mux2_2', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[2].u_mem', 'B_DIN[11]'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$760815', 'X', 'sg13g2_mux2_1', 'sg13g2_mux2_2', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[3].u_mem', 'B_DIN[11]'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$766482', 'X', 'sg13g2_a21o_1', 'sg13g2_a21o_2', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem', 'A_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$760931', 'Y', 'sg13g2_nor2_1', 'sg13g2_nor2_2', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[2].u_mem', 'B_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$760974', 'Y', 'sg13g2_nor2_1', 'sg13g2_nor2_2', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[4].u_mem', 'B_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$763373', 'Y', 'sg13g2_nand2b_1', 'sg13g2_nand2b_2', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem', 'A_WEN')]
+ counts={'$abc$734931$auto$blifparse.cc:397:parse_blif$749437': 5, '$abc$734931$auto$blifparse.cc:397:parse_blif$760815': 5, '$abc$734931$auto$blifparse.cc:397:parse_blif$766482': 2, '$abc$734931$auto$blifparse.cc:397:parse_blif$760931': 2, '$abc$734931$auto$blifparse.cc:397:parse_blif$760974': 2, '$abc$734931$auto$blifparse.cc:397:parse_blif$763373': 3}
  for driver,dp,old,new,instance,terminal in controls:
   pin=instance+'/'+terminal
   lines=[line for line in slew.splitlines()if line.split() and line.split()[0]==pin]
   assert len(lines)==1 and '(VIOLATED)' in lines[0]
  # Independently authenticate the completed native connectivity probe.
- probe_run=prior.api('actions/runs/43754262798')
- assert probe_run['head_sha']=='427c5fe596cb8dc4633885cb893d22b175e305b5' and probe_run['conclusion']=='success' and probe_run['run_attempt']==1
- meta=prior.api('actions/artifacts/14177192726')
- digest='36cfb6730d8615d718e2bce222c3c3ad71f9de54809cf8a81730b5e1ce325df3'
- assert meta['workflow_run']['id']==43754262798 and meta['digest']=='sha256:'+digest and not meta['expired']
+ probe_run=prior.api('actions/runs/43759360621')
+ assert probe_run['head_sha']=='d2039424cd0091c7959df8482e1d32d51782501a' and probe_run['conclusion']=='success' and probe_run['run_attempt']==1
+ meta=prior.api('actions/artifacts/14179308129')
+ digest='5a643183aaf118c070b3ed1e8b50fc82d26dc0284c18e8d672ccc9c598d0faed'
+ assert meta['workflow_run']['id']==43759360621 and meta['digest']=='sha256:'+digest and not meta['expired']
  probe_zip=OUT/'probe.zip'
- with probe_zip.open('xb')as dest:subprocess.run(['gh','api',prior.REPO+'actions/artifacts/14177192726/zip'],stdout=dest,check=True)
+ with probe_zip.open('xb')as dest:subprocess.run(['gh','api',prior.REPO+'actions/artifacts/14179308129/zip'],stdout=dest,check=True)
  assert prior.sha(probe_zip)==digest
  import csv,io
  with zipfile.ZipFile(probe_zip)as pz:
   pr=json.loads(pz.read('result.json'));tsv=pz.read('native-driver-probe.tsv')
   assert pr['returncode']==0 and pr['sources_unchanged'] and hashlib.sha256(tsv).hexdigest()==pr['native_driver_probe_sha256']
   rr=list(csv.DictReader(io.StringIO(tsv.decode()),delimiter='\t'))
-  assert len(rr)==1321 and len(set((v['kind'],v['pin'])for v in rr))==1321
+  assert len(rr)==9 and len(set((v['kind'],v['pin'])for v in rr))==9
   for driver,dp,old,new,instance,terminal in controls:
    pin=instance+'/'+terminal
    match=[v for v in rr if v['kind']=='slew'and v['pin']==pin];assert len(match)==1
    expected='{{'+driver+'} '+dp+' '+old+'}'
-   assert match[0]['output_drivers']==expected and match[0]['iterms']=='2' and match[0]['bterms']=='0'
+   assert match[0]['output_drivers']==expected and int(match[0]['iterms'])==counts[driver] and match[0]['bterms']=='0'
  probe_zip.unlink()
- r['native_probe_binding']={'run':43754262798,'archive_sha256':digest,'tsv_sha256':pr['native_driver_probe_sha256']}
+ r['native_probe_binding']={'run':43759360621,'archive_sha256':digest,'tsv_sha256':pr['native_driver_probe_sha256']}
  r['critical_path_report_sha256']=report['outputs'][member]
  safe.close();native.close()
- r['source_archives']=[dict(id=14177169414,sha256='75770f52539865b66372418fd9b5edc80495b8476dddf3f6d44d39334391abaa'),dict(id=14178450414,sha256='bb798d7c98a5183a242cafb0acf09040f3482553a76e466dac733436833fd234')]
+ r['source_archives']=[dict(id=14179995025,sha256='83ec06bc3499886347b082eef69098444160c136b93b5d1b221861eedd12b519'),dict(id=14179397749,sha256='7e410ebd5699ec1755cedbf76bc77509611a00d7730846371656f44893eeb071')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -90,7 +91,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="SRAM_CONTROL_DRIVERS_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source61eb: five native-proven SRAM control drivers size1to2, no buffering. Same baseline as independent DIN buffer trial; not combined yet. Fresh allcorner timing required; no final signoff.")
+ r.update(status="SRAM_CONTROL_DRIVERS_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source1666 retains22buffers and prior control sizing: six remaining size1 drivers to2 with complete exact sink sets; eight currently violated pins targeted. Allcorner STA, no final routing claim.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
