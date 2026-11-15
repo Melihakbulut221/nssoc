@@ -17,3 +17,18 @@ source.native_material_and_anchors(view/'view/wire',None)
 assert all(hashlib.sha256(Path(p).read_bytes()).hexdigest()==h for p,h in protected.items())
 gates=json.loads((out/'gate-poly-access.json').read_text());assert gates['count']==200 and len({g['device']for g in gates['gates']})==200
 (out/'result.json').write_text(json.dumps(dict(status='PASS_CURRENT650_SERIALIZED_MATERIAL_AND_GATE_ACCESS_READBACK',source_run=r['id'],artifact=m['id'],source_gds_sha256=hashlib.sha256((root/'selected/layout/nssoc_cdr_pd500_resistor_v59.gds').read_bytes()).hexdigest(),actual_gates=200,gate_poly_RC_extracted=False,full_phy_accepted=False),indent=2))
+
+# Work on a separate copy: the authenticated producer archive remains immutable.
+working=root/'contact-view';shutil.copytree(view/'view',working)
+method=Path('scripts/select650_physical_gate_contacts_method.py')
+assert hashlib.sha256(method.read_bytes()).hexdigest()=='26796d78961d5873b84f21fc6084e8f309645bdda38c96f9db833e5fc8997a1b'
+worker=working/'wire/physical_gate_contacts.py';worker.write_bytes(method.read_bytes())
+p=subprocess.run(['python3','-B',str(worker)],capture_output=True,text=True,timeout=600)
+(out/'contacts.stdout').write_text(p.stdout);(out/'contacts.stderr').write_text(p.stderr)
+assert p.returncode==0, 'physical gate contact extraction failed; inspect native diagnostics'
+anchors=json.loads((working/'wire/anchors03.json').read_text())
+assert anchors['physical_gate_contact_count']==200 and not anchors['intrinsic_gate_metal_shortcuts']
+assert len(anchors['rows'])==2046 and len(anchors['anchors'])==1428 and len(anchors['gate_groups'])==50
+assert all(hashlib.sha256(Path(p).read_bytes()).hexdigest()==h for p,h in protected.items())
+shutil.copy2(working/'wire/anchors03.json',out/'physical-gate-anchors.json')
+(out/'contact-result.json').write_text(json.dumps(dict(status='PASS_CURRENT650_PHYSICAL_GATE_CONTACT_ANCHORS',source_run=r['id'],source_gds_sha256=hashlib.sha256((working/'parent/layout/nssoc_cdr_pd500_resistor_v59.gds').read_bytes()).hexdigest(),method_sha256='26796d78961d5873b84f21fc6084e8f309645bdda38c96f9db833e5fc8997a1b',actual_gate_contacts=200,gate_groups=50,physical_anchors=1428,metal_rc_regeneration_required=True,gate_poly_RC_extracted=False,full_phy_accepted=False),indent=2))

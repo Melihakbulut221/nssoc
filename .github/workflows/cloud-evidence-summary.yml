@@ -1,4 +1,4 @@
-name: Read actual modified650 gate access geometry
+name: Resolve current650 physical gate contacts
 on:
   workflow_dispatch:
 permissions:
@@ -23,7 +23,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: select650-gate-access-${{ github.run_id }}
+          name: select650-physical-gate-contacts-${{ github.run_id }}
           path: select650-gate-access/
           if-no-files-found: error
           retention-days: 90
