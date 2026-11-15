@@ -32,8 +32,21 @@ set new_net_name nssoc_sram_din9_buf_net
 if {[$block findInst $buffer_name] ne "NULL" || [$block findNet $new_net_name] ne "NULL"} {error "ECO names already exist"}
 if {[llength [info commands insert_buffer]]!=1 || [llength [info commands rsz::insert_buffer_after_driver_cmd]]!=1} {error "Pinned insertion API missing"}
 insert_buffer -buffer_cell sg13g2_buf_4 -net [$original_net getName] -buffer_name $buffer_name -net_name $new_net_name
-set added [$block findInst $buffer_name]
-if {$added eq "NULL" || [[$added getMaster] getName] ne "sg13g2_buf_4"} {error "Named noninverting buffer missing"}
+# Native insertion uniquifies requested base names. Identify the exact delta.
+set added_instances {};set added_nets {}
+foreach candidate [$block getInsts] {
+ if {![dict exists $before [$candidate getName]]} {lappend added_instances $candidate}
+}
+foreach candidate [$block getNets] {
+ if {![dict exists $nets_before [$candidate getName]]} {lappend added_nets $candidate}
+}
+if {[llength $added_instances]!=1 || [llength $added_nets]!=1} {error "Insertion did not add exactly one cell and net"}
+set added [lindex $added_instances 0]
+set buffer_name [$added getName]
+set created [lindex $added_nets 0]
+set new_net_name [$created getName]
+if {[[$added getMaster] getName] ne "sg13g2_buf_4"} {error "New cell is not the requested noninverting buffer"}
+puts "NSSOC_BUFFER_ACTUAL_NAMES [list $buffer_name $new_net_name]"
 set ai [$added findITerm A];set xo [$added findITerm X]
 if {$ai eq "NULL" || $xo eq "NULL" || [$ai getIoType] ne "INPUT" || [$xo getIoType] ne "OUTPUT"} {error "Wrong buffer interface"}
 set upstream [$source_pin getNet];set downstream [$sink getNet]
