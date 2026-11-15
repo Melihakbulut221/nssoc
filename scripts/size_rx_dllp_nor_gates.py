@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43756546386");assert run["head_sha"]=="7ce9a64c4948534323731c88d537ac11a6746712"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43759054271");assert run["head_sha"]=="a65d5a78ee3710c3b243d4978921615746acc015"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14179250243,"7d94769c10ad429f7c704448ea98b2ffaf9d94bbf16ed8868e479230b702a741","derived")
- native=archive(14178727716,"42b1618023962fb787387a4dd711535006b4ffcfd6fc31fb54154015efc8efc5","native")
+ safe=archive(14179887000,"abc353ccccfc53bb0a322b08c32ba3cf18dcca1bfc28c48a0fcd25fca488425f","derived")
+ native=archive(14179428832,"139566cadb7d322b8a7b6a77668536deac133013ae4d9aceb49a7122c9972190","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43755093967
- assert report["candidate_odb_sha256"]=="5d9d77bfea375bde121ec1930f3faec0918270563834cc81742493af4cdbd32b"
+ assert report["source_run"]==43756546386
+ assert report["candidate_odb_sha256"]=="fd61c2cda59e035f90b58ea4ecf5ed9558b82a35111102dc2d24b8dddc7acac9"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -34,10 +34,10 @@ try:
  member='run/2-nssoc-sizedslow/checks.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
  recovery=[p for p in data.decode().split('Startpoint:') if 'Endpoint: $auto$ff.cc:337:slice$310738' in p and 'recovery check' in p]
- assert recovery and all('pcie_retrain_done_i' in p and '$767656/Y (sg13g2_nor2_1)' in p and 'slack (VIOLATED)' in p for p in recovery)
+ assert recovery and all('pcie_retrain_done_i' in p and '$767656/Y (sg13g2_nor2_2)' in p and 'input49/X (sg13g2_buf_1)' in p and 'slack (VIOLATED)' in p for p in recovery)
  r['critical_path_report_sha256']=report['outputs'][member]
  safe.close();native.close()
- r['source_archives']=[dict(id=14179250243,sha256='7d94769c10ad429f7c704448ea98b2ffaf9d94bbf16ed8868e479230b702a741'),dict(id=14178727716,sha256='42b1618023962fb787387a4dd711535006b4ffcfd6fc31fb54154015efc8efc5')]
+ r['source_archives']=[dict(id=14179887000,sha256='abc353ccccfc53bb0a322b08c32ba3cf18dcca1bfc28c48a0fcd25fca488425f'),dict(id=14179428832,sha256='139566cadb7d322b8a7b6a77668536deac133013ae4d9aceb49a7122c9972190')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -64,7 +64,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="RESET_RECOVERY_DRIVER_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source5d9d: reset NOR767656 size1to2 only. Preserve all hold cells, reset semantics, clocks and timing checks. Independent of SRAM OAI batch. Fresh allcorner STA; not routed signoff.")
+ r.update(status="RESET_RECOVERY_DRIVER_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Sourcefd61 with NOR2 retained: input49 buf1to2 only; same graph and exact driver-to-hold23828 net. Preserve hold cells, reset semantics and all timing checks. Independent of SRAM buffer batch, fresh allcorner STA.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()

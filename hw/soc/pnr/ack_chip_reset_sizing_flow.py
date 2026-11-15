@@ -12,7 +12,7 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {$abc$734931$auto$blifparse.cc:397:parse_blif$767656} {sg13g2_nor2_1 sg13g2_nor2_2}
+ {input49} {sg13g2_buf_1 sg13g2_buf_2}
 }
 set targets [dict keys $choices]
 if {[llength $targets]!=1} {error "Wrong measured resize census"}
@@ -34,6 +34,13 @@ foreach {pin expected} {Q {u_pcie_cdc.destination_release[0]} D net20216 RESET_B
  set term [$release findITerm $pin]
  if {$term eq "NULL" || [$term getNet] eq "NULL" || [[ $term getNet] getName] ne $expected} {error "Reset release connectivity changed"}
 }
+set inp [$block findInst input49]
+set ip [$inp findITerm X]
+set delay [$block findInst hold23828]
+if {$ip eq "NULL" || $delay eq "NULL" || [[$delay getMaster] getName] ne "sg13g2_dlygate4sd3_1"} {error "Input recovery chain missing"}
+set sink [$delay findITerm A]
+set inet [$ip getNet]
+if {$inet eq "NULL" || $sink eq "NULL" || [$sink getNet] ne $inet || [$inet getName] ne "net49" || [llength [$inet getITerms]]!=2 || [llength [$inet getBTerms]]!=0} {error "Input recovery chain mismatch"}
 set ports_before {}
 foreach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}
 foreach name $targets {
@@ -56,11 +63,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_RESET_RECOVERY_NOR_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_RESET_RECOVERY_INPUT_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size measured reset recovery NOR driver"
+    name = "Size measured reset recovery input buffer"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
