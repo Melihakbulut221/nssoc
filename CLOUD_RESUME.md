@@ -1,3 +1,11 @@
+## Widened gate reduction verified; fresh full650 loaded case dispatched — 2026-11-15
+
+Reduction43656724764/head273fc4523ce4534b909d935f72296595575ce3ac SUCCESS. Authenticatedsafe14139110010 SHA82d9f0dd0500d462c3c759c2d39134bda6c2e948b4a7be1ac6fb64297c249a8f; native14138466871 SHAc2b2a9a471c6a619d331341c653600b00b94d8d9357c3cc4091cdf50913b485c.250networks503nativeexecutions2faultcontrols; nominalRportreductiononly. Source75nmmesh74660407bytes SHAa9f431888484de7883ff3a6cc9cd2b15286368214ecc25620ee52689205adcf8. Receipt packed650-shared-widening-gate-reduction-20261115.json. ExtrinsicpolyC/materialcornerqualification/fullnonlinearintegration remainfalse.
+
+Fullcomposition43657193496/head5af3482a5382ec42f3d66694eea9f4f7c5887c2a queued atlastcheck on codex/shared650-widened-full-composition. ExactnewGDS/currentanchors/identity, freshmetalRC43655950942 native14138785042/dbba... safe14137894183/7dae..., newreduction43656724764 native14138466871/c2b... safe14139110010/82d... . Assemblesallfivepartitions, then unchangedGATE_PARTITION1 LOADED_CASEnominal_late256bits originalfrozengates/UI/step/stop andfull650devices. Original oldfailedwaveNOTreused. Needactualelectricalresult; no passclaimed. FullPHYclosedloop/PVT stilloutsidecurrenttestscope.
+
+Latefeedbackwholechipimpact43657092967/head38fb30e3c725cbdb44069357a69a24398ccae12c live on codex/rx-late-feedback-hold-impact; awaits exactproducer43656972871 and comparesbcc33... residualbaseline. Candidate43656972871 andnewbankpostCTS43656292239 stilllive. AfterlateECOglobalcheck identifythirdfast hold viaactualnewmin.rpt/census; prior107repairhad3fastviolations, not2. Keepallremainingproductionrequirementsopen.
+
 ## Residual hold repair verified109->3; two late feedback repair launched — 2026-11-15
 
 ECO43655839647/head08d99bb8bc95db8629648202c37e7a17c8121840 complete. ALL1566targetreports hashesverified and >=50ps; originalplacement/statuses/incidencepreserved. CandidateODB bcc33fa1a7c936d1e97ebea796a918fb86835307d4238f8d0a8deaaf2f61c407. Native14138157525 SHAee48d106b424c4557f87a774411cc2465496cbd116b149c69c9ae5a19cd6b8fe; derived14139075159 SHA91e40fb04509749b2487cb693e8486a2eae1b571d375f8e8652e2122d84e2511. Receipt rx-residual-short-hold-eco-20261115.json.
