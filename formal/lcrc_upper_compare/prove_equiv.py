@@ -4,8 +4,11 @@ ref=root/'formal/lcrc_upper_compare/reference.v';src=root/'hw/soc/rtl/pcie/soc_p
 s=ref.read_text();assert s.count('module soc_pcie_lcrc_rx_ref #(')==1
 (out/'gold.v').write_text(s.replace('module soc_pcie_lcrc_rx_ref #(','module gold #('))
 s=src.read_text();assert s.count('module soc_pcie_lcrc_rx #(')==1
+# Inline retimed predicate into its consumers for equivalence; no cut assumption.
+assert len(re.findall(r'\bcrc_residue_ok\b',s))==3
+s=re.sub(r'\bcrc_residue_ok\b','candidate_crc_residue_ok',s)
 (out/'gate.v').write_text(s.replace('module soc_pcie_lcrc_rx #(','module gate #('));(out/'crc.v').write_bytes(crc.read_bytes())
-recipe='read_verilog -sv -DSYNTHESIS -DSOC_PCIE_SEQ_RX_REG gold.v crc.v; read_verilog -sv -DSYNTHESIS -DSOC_PCIE_SEQ_RX_REG -DSOC_PCIE_CRC_UPPER_COMPARE_REG gate.v; proc; memory_map; opt; flatten; clk2fflogic; opt; equiv_make gold gate equiv; hierarchy -top equiv; equiv_simple; equiv_induct -seq 4; equiv_status -assert'
+recipe='read_verilog -sv -DSYNTHESIS -DSOC_PCIE_SEQ_RX_REG gold.v crc.v; read_verilog -sv -DSYNTHESIS -DSOC_PCIE_SEQ_RX_REG -DSOC_PCIE_CRC_UPPER_COMPARE_REG gate.v; proc; memory_map; opt; flatten; clk2fflogic; opt; equiv_make gold gate equiv; hierarchy -top equiv; equiv_simple; equiv_induct -seq 4; equiv_status; equiv_status -assert'
 (out/'proof.ys').write_text(recipe);(out/'version.txt').write_bytes(subprocess.check_output(['yosys','-V']))
 error=None;code=None
 try:
