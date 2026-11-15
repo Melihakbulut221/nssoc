@@ -1,3 +1,11 @@
+## Clock-buffer first native launch path fixed; corrected experiment live
+
+Initial43713082943/87e2568c155bd4b818f626b3155132883e5fae4f FAILED before anytransient: direct-100ff command exited1 because cornerHBT.lib pathmissedone models/level. Authenticatedderived14160409803 SHAe75062509efc182a861aba863f457bb095337be13ae9201a6a1e9d50966f478a containsstderr/failure/runtimeacquisition; native14161451631 SHA34fc8292cab44a497ae9d0e530832446375bda9e504254561175ed2082cc1fb8. Runtime acquisitionselectedlistproves actualmember source/model-sources/models/models/cornerHBT.lib. No electricalpass/failure inferred fromlaunchpatherror.
+
+**43713326015/9d2c5d9d360d9ac3d79aa321eeea985ebcb040ec**, samecodex/cdr-cascode-clock-buffer-screen, DISPATCHED. Only corrected .lib path to models/models/cornerHBT.lib relativetomodel-sources and addedis_filepreflightbeforeSPICE. Nativeengine/modelpins/circuit/sizes/clock/sourceR/loadcases/solver/timing/envelopeobservations unchanged. Inspectderived/nativeartifactsbeforeanyfull650integration. Source87 design documentationremainsdescriptive butcurrentexecutorhead9d2. Allclock-bufferresults remainexploratory and unaccepted untilfullphysical/full-load gates; no realrppd/layoutimplementedbythisexperiment.
+
+43711850416 marginSTA and43712102946 freshRXpostCTSconfirmedIN_PROGRESS atlastpoll. No reruns ofhealthyCAD. NewRXCTSsource92371b remainscompletedimmutable. Fullgoalactive andunachieved.
+
 ## Fresh RX CTS complete; transistor clock-buffer development experiment launched
 
 43710149740/185526ac2e0dda69118962290e3288c1f13546f7 completedSUCCESS. Authenticatedderived14161257474 SHA3c60bf1b82f58aa92f86a9ac2f6b0bd133d9c4dc24053a847b14e5ee36b6efe0; native14161681305 SHA473e93bedc7f7b5090577153d244c1b380d37e8554f9477db27af970a692a064. ActualCTSODB**92371b1b21268ba97e109a6650683f1e9512612d06133d03295101d8c71a2d98**,state run/27-openroad-cts/state_out.json,native771.875s. Sourcebinding43709259323/2dc,63files,newnetlist91e322 andJSONd5c1verified. Receipt docs/evidence/ack-rx-dllp-chip-cts-20261115.json. AccumulatedCTSmetricsincludeinheritedearlierstagevalues (e.g.hugeoldcornerWS); doNOTcomparethemwitholdrepaired2718/25counts. IndependentpostCTS43712102946/efa6clearsmetricsanddoesfresh3cornersbefore/afterrepair; itis live. Marginmeasurement43711850416 also live atlastpoll.
