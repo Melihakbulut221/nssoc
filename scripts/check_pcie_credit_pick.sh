@@ -17,11 +17,11 @@ mkdir -p "$OUT"
 grep -q '^module soc_pcie_credit_tx ($' "$RTL" || { echo "unexpected module header in $RTL" >&2; exit 1; }
 grep -q 'SOC_PCIE_CREDIT_PICK' "$RTL" || { echo "the source has no SOC_PCIE_CREDIT_PICK block" >&2; exit 1; }
 sed 's/^module soc_pcie_credit_tx ($/module soc_pcie_credit_tx_ref (/' "$RTL" > "$OUT/reference.v"
-{ echo '`define SOC_PCIE_CREDIT_PICK'; cat "$RTL"; echo '`undef SOC_PCIE_CREDIT_PICK'; } > "$OUT/candidate.v"
+{ echo '`define SOC_PCIE_CREDIT_PICK'; echo '`define SOC_PCIE_CREDIT_DATA_SIGN_REG'; cat "$RTL"; echo '`undef SOC_PCIE_CREDIT_DATA_SIGN_REG'; echo '`undef SOC_PCIE_CREDIT_PICK'; } > "$OUT/candidate.v"
 fail=0
 iverilog -g2012 -o "$OUT/cosim.vvp" "$OUT/reference.v" "$OUT/candidate.v" "$ROOT/hw/soc/tb/tb_pcie_credit_pick.v"
 for seed in 1 2 3 4; do
-  vvp -n "$OUT/cosim.vvp" +seed=$seed +cycles=$CYCLES > "$OUT/seed$seed.log" 2>&1 || true
+  if ! vvp -n "$OUT/cosim.vvp" +seed=$seed +cycles=$CYCLES > "$OUT/seed$seed.log" 2>&1; then fail=1; fi
   grep -E "^(SUMMARY|RESULT|MISMATCH)" "$OUT/seed$seed.log" | head -12 | sed "s/^/seed$seed: /"
   grep -q "^RESULT PASS" "$OUT/seed$seed.log" || fail=1
 done
