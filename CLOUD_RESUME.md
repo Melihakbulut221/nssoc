@@ -1,3 +1,11 @@
+## Remaining setup report analysis moved to cloud after observer-only download timeouts
+
+LocalRAM observer68834 exhausted180s on SAME24MBderived14162873930 after prior120stimeout43270. Bothobserverhandles finished; no localartifactpersisted and successfulphysicalproducer43715930015 wasNOTrestarted. OriginalwholeZIPpreviouslyauthenticated andsetup2276/hold1/2/210 remainverified.
+
+**43718375160 /a026fdb2ce7ff954c743294fe626d3c94f64b462**, branch **codex/new-rx-reset-critical-audit**, QUEUED atlastpoll. New **scripts/cloud_audit_reset_critical.py** authenticates43715930015/head797c/attempt1/success, exactderived14162873930/e97aedd4 andcandidate0451f211. Reads/SHAlocks existingrun/2-nssoc-sizedslow/max.rpt, noCADrerun/mutation. Emits compactJSON with20worstpaths,launch-net census,initialbufferchains,firstfullpath,and100resetpaths. Artifact **new-rx-reset-critical-audit-RUN**, result.json only. ASTpassed. Useactualreportedchainsfornexttargetselection; fullreportpathcounts are reportcoverage, not magically allpaths.
+
+Nativeactual650clockbuffer43717632809 remains IN_PROGRESS atlastlivepoll. Preparedsourcepublication43717961699 QUEUED. No terminal failure observed for either, no redundantrestarts. Thisturnprogress: executable cloud-side existingreport audit toavoid repeatedobserverdownloadstalls; goalfullscope unchanged/active.
+
 ## Current replay publication dispatched; actual-load PHY worker live
 
 **43717961699 /374b0cc6dd4548c9f7f3d79d0a22985c65a5d695**, **codex/publish-prepared-source-refresh**, queued. Worker scripts/cloud_publish_prepared_sources.py restores native14162773969 with exact19e58df digest and producer43716663208/head589/success/attempt1; authenticates originalmetadata768a29 andtar08e629/notice, verifies38tar members. Publishes NEW tag **prepared-sources-20261115-43716663208** targeting589540, no overwrite/clobber. Downloads bothpublishedassets again viaauthenticatedAPI and verifiesfullhash+size before producingnewmetadata release_assets. Artifacts **prepared-source-publication-derived-RUN** containnewmetadata/notice/result. Hostedworkflow contentswriteonlyforthisauthorizedrepositoryevidencepublication. PythonASTpassed. Publicationnotyetobserved; fixturechange andunchanged elaborationtests stillpending. Do notclaimCIclosedbeforeactualtest.
