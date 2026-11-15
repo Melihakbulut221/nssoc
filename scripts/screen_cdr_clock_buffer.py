@@ -28,7 +28,7 @@ def main():
  specs={name+'_'+str(i):(c,b,e,4) for name,(c,b,e,nx) in specs.items() if nx>10 for i in range(nx//4)}|{name:x for name,x in specs.items() if x[3]<=10}
  assert len(specs)==30 and all(1<=x[3]<=10 for x in specs.values())
  cards=list(models.rglob('sg13g2_hbt_mod.lib'));assert len(cards)==1
- model=cards[0].read_text();section=model.split('.subckt npn13G2 c b e bn')[1].split('.ends npn13G2')[0]
+ model=cards[0].read_bytes().decode('latin-1');section=model.split('.subckt npn13G2 c b e bn')[1].split('.ends npn13G2')[0]
  assert 'Valid numbers: NX = 1 - 10' in model and "2.30E-14-(1.50E-15*Nx)" in section
  assert all(2.30e-14-1.50e-15*x[3]>0 for x in specs.values())
  save('model-domain-preflight.json',dict(model_sha256=sha(cards[0]),valid_nx=[1,10],devices={n:x[3]for n,x in specs.items()},old_nx16_substrate_cap_f=2.30e-14-1.50e-15*16,accepted=False))
