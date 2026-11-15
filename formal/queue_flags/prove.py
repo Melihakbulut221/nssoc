@@ -23,7 +23,7 @@ endmodule
         with tempfile.TemporaryDirectory()as td:
             wd=pathlib.Path(td);(wd/'candidate.v').write_text(candidate);(wd/'wrapper.v').write_text(wrapper)
             (out/(name+'-candidate.v')).write_text(candidate);(out/(name+'-wrapper.v')).write_text(wrapper)
-            recipe='read_verilog -formal -sv '+flags+' candidate.v wrapper.v; prep -top lemma -flatten; clk2fflogic; memory_map; opt; sat -seq 4 '+(''if mutant else '-tempinduct -maxsteps 4 ')+'-set-assumes -set-init-zero -prove-asserts -verify'
+            recipe='read_verilog -formal -sv '+flags+' candidate.v wrapper.v; setattr -mod -unset keep_hierarchy; prep -top lemma -flatten; hierarchy -top lemma; select -module lemma; clk2fflogic; memory_map; opt; sat -seq 4 '+(''if mutant else '-tempinduct -maxsteps 4 ')+'-set-assumes -set-init-zero -prove-asserts -verify'
             (out/(name+'.ys')).write_text(recipe);code=None;error=None
             try:
                 with(out/(name+'.log')).open('w')as log:run=subprocess.run(['yosys','-Q','-T','-p',recipe],cwd=wd,stdout=log,stderr=subprocess.STDOUT,timeout=900)
