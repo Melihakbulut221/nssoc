@@ -69,7 +69,7 @@ variant=pya.Layout();variant.read('hw/soc/out/select-width-rwidth2/nssoc_cdr_sel
 for cell in variant.each_cell():
  for layer,datatype in [(8,2),(67,2),(67,25)]:cell.shapes(variant.layer(layer,datatype)).clear()
 assert vt.bbox()==c.bbox() and variant.dbu==g.dbu
-vt.flatten(True)
+# Preserve explicit native primitive hierarchy for terminal location and RC.
 replacement=g.create_cell('pd_child_rc_select_rwidth2_candidate');assert replacement.cell_index()not in original
 replacement.copy_tree(vt)
 equal(regions(g,replacement),regions(variant,vt))
@@ -81,6 +81,19 @@ options=pya.SaveLayoutOptions();options.select_cell(top.cell_index());options.wr
 gds=out/'candidate650-select-width2.gds';g.write(str(gds),options)
 reread=pya.Layout();reread.read(str(gds));assert reread.dbu==g.dbu and [x.name for x in reread.top_cells()]==[top.name]
 equal(before,regions(reread,reread.top_cell()))
+from collections import Counter
+leaves=[]
+def census(cell):
+ children=list(cell.each_inst())
+ if not children:
+  kind=cell.name.split('$')[0]
+  if kind in ['npn13G2','rppd','ptap1','cmim','nmos']:leaves.append(kind)
+ for child in children:
+  assert not child.is_regular_array()
+  census(child.cell)
+census(reread.top_cell())
+assert Counter(leaves)==dict(npn13G2=124,rppd=98,ptap1=221,cmim=7,nmos=200)
+(out/'primitive-census.json').write_text(json.dumps(dict(physical_primitives=650,counts=dict(Counter(leaves)),hierarchy_preserved=True),indent=2))
 assert all(not x.is_pcell_variant()and not x.is_library_cell()for x in reread.each_cell())
 import re
 reference=schematic
