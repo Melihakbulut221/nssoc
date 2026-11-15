@@ -1,3 +1,15 @@
+## Residual hold repair verified109->3; two late feedback repair launched — 2026-11-15
+
+ECO43655839647/head08d99bb8bc95db8629648202c37e7a17c8121840 complete. ALL1566targetreports hashesverified and >=50ps; originalplacement/statuses/incidencepreserved. CandidateODB bcc33fa1a7c936d1e97ebea796a918fb86835307d4238f8d0a8deaaf2f61c407. Native14138157525 SHAee48d106b424c4557f87a774411cc2465496cbd116b149c69c9ae5a19cd6b8fe; derived14139075159 SHA91e40fb04509749b2487cb693e8486a2eae1b571d375f8e8652e2122d84e2511. Receipt rx-residual-short-hold-eco-20261115.json.
+
+Wholechipimpact43655889301 SUCCESS; safe14137569320 SHA154e07160c16909548384e94a5f1da7790c40249ecc31f2dcb9aa7f68ef4b047. NOregressions, targetedtrue; fast hold109->3,WS-.0528166->-.0202371ns,TNS-3.11025->-.0345596ns. Setupunchanged. TypWS+.0476559->+.0940192ns. Receipt rx-residual-short-hold-impact-20261115.json. PlacementRConly NOTsignoff. Thirdfastendpoint remains toidentify; do notclaimonlytwoholds.
+
+Latebranchmeasurement43656054797 SUCCESS;12reporthashesverified. Safe14138301042 SHA9f98fd3e026e6580d8d1314c1eb3777caf3e684a21c7a26b82cb48c95c3c4895; slowsetup isolated772052/A=+2.918188334ns,772804/A1=+2.928355217ns; fast hold-.020237146/-.012738810ns. Receipt rx-two-feedback-late-branch-timing-20261115.json.
+
+Newtwo-branchECO43656972871/head83c740023a5b95f390c0d3923a6c5cafd398fbb0 live on codex/rx-late-feedback-hold-eco. Restoresverified107repairODB bcc33... then4nativeidentitydelays: sink772052/A from737260/X, sink772804/A1 from761429/Y. Fixedalloriginalplacement/statusrestore retained. Measures1578reports inclall261previoustargets+2latepins,50psgate. No passyet. NEXT dispatchwholechipcomparator based9aa1f0... replacingproducerwith43656972871 andbaselinewith43655839647/native14138157525/ee48.../ODBbcc33... . Targetboolean unchangedall_previous_and_residual_setup_hold_margin_50ps_passed. Inspect residualthirdhold fromlatestcandidatewholechip min.rpt/census beforeadditionalECO.
+
+PHYreduction43656724764 andnewbankpostCTS43656292239 stillpending atlastcheck; goalnotcomplete.
+
 ## Widened gate mesh complete; native port reduction launched — 2026-11-15
 
 Mesh43656489981/headb102cbfba2f92a61931ff4933e044cf2e6d0a918 SUCCESS. Authenticatedderived14139035003 SHA82727a08dace09c13efdaf97a64d50c639532308d12225491e35323f5402ea8e; native14138596148 SHAd141a35ef2b83ff433b0cfed7fcc4b52cb7db4af6d2de1e91b7ab28f24b85747. Fouranalyticreferences+fouractualmeshDC/currentconservation passed,50groups200gates200contacts. Refinementrelativechanges .00343038/.0217839/.00429767; nonuniform nonlinearconvergence NOTqualified. Nominalmaterial only. Receipt packed650-shared-widening-gate-mesh-20261115.json.
