@@ -1,3 +1,13 @@
+## Three-driver sizing measured: small improvement, no timing closure
+
+Trial43776325443/50475641846a50fcbb919ff9e218208079515008 SUCCESS. Authenticated summary43777270614/79889f277aad59c8e5bdcf504719c510b02d42f0 summary artifact14187320287 SHA256a1c1c43586f5438e5da0b66140c767a976e3af784a33f884a05054f131beadbe verified. Original derived14186344549 SHA256e6ef8008841e9d18436cb75f79326f3620b230b60a3b8b39df691d2f3a0e460e; native14186184994 SHA2560df7ae6963aa1f9e4024fb82a7ad3d028e6a40cb22d0403d1d3f74fa1b396de8. Summary worker verifies full archive and all included member hashes.
+
+Candidate ODB5e8a4713b84b285206616f524f73b01ff0d7d9f4f82932e38dbb5cf10bbed714. Slow setup WS -2.14972 -> -2.12643ns (~23ps); counts unchanged2543/1/0. Hold unchanged3/28/282, WS-.636595/-.539264/-.464779ns. Slew30/8/0 and cap0. New worst slow path FF175775 -> read_bank[4].r2_slot[2].lane_copy FF552011, -2.126425ns. Previous commit path no longer top; only three source-specific data-driver master changes, legal placement and exact graph guards, no full mapped logic qualification/route acceptance. Preserve result as measured trial, not final adopted chip. Do not keep blindly resizing identical old-source paths while new queue candidate is being measured.
+
+New queue mapped boot43777168665/15ac263da5fa68a62d8c329cf0dfeff1c7f032c2, branch codex/queue-credit-crc-mapped-boot, dispatched with exact f20 rechecked netlist/JSON and original a233 synthesis binding. Copies proven cell qualification/observer runtime, only new map hash and producer identities change. Same4Mcycle firmware/PCIe/system-Ethernet MBIST gates. This is supplemental derived-standard-cell functional gate boot, not native/SDF signoff. Prior e59 boot43771666469 does not qualify the queue netlist.
+
+Queue postCTS43775507971, old mapped boot43771666469, new mapped boot43777168665 and short-length analog43776904300 are current pending lines. Full product objective remains OPEN.
+
 ## Short-length divider experiment dispatched with actual model inspection
 
 Run43776904300/ec96ca571a3da651658a92c85eff9490afba012f on codex/data-select-divider-short-length is live in full256bit nominal_late electrical simulation. Derived/native prefix divider-short-length-exploration-. Base eb91; only candidate generator, owned-branch guard, workflow and three changed source pins updated. All acceptance thresholds, source bits, case, Nx5 clock driver, runtime and baseline RC unchanged.
