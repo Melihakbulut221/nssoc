@@ -5,7 +5,7 @@ from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"paired650-gate-mesh";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/shared650-widened-gate-mesh"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/shared650-upper-gate-mesh"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -265,7 +265,7 @@ def characterize(models):
  current=NATIVE/"current-wire"
  access=read(current/"derived/gate-poly-access.json");anchors=read(current/"derived/terminal-anchors.json")
  gds=current/"native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds"
- need(pin(gds)==dict(bytes=1640350,sha256="f93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe"),"exact current DRC/LVS-passing geometry")
+ need(pin(gds)["sha256"]=="0e7b4d8da7e6de4bda98ea0a83d6dbb5ea78c73c89a60d5724ba44401c1a24c0","exact current DRC/LVS-passing geometry")
  layout=db.Layout();layout.read(str(gds));top=layout.top_cell();need(top.name=="nssoc_cdr_pd500_resistor_v59"and layout.dbu==.001,"actual GDS coordinates")
  def layer(n):return db.Region(top.begin_shapes_rec(layout.layer(n,0))).merged()
  allpoly=layer(5);allcuts=layer(6);salblock=layer(28);psd=layer(14);metal=layer(8)
@@ -436,7 +436,7 @@ def characterize(models):
  for coarse,fine in zip(summaries,summaries[1:]):
   a=coarse["actual_uniform_injection_observation"]["voltages"];b=fine["actual_uniform_injection_observation"]["voltages"];need(set(a)==set(b),"same actual200 intrinsic gate averages")
   changes.append(dict(coarse_pitch_nm=coarse["pitch_nm"],fine_pitch_nm=fine["pitch_nm"],max_relative_gate_average_change=max(abs(a[k]-b[k])/abs(b[k])for k in a)))
- need(pin(gds)==dict(bytes=1640350,sha256="f93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe"),"actual geometry unchanged")
+ need(pin(gds)["sha256"]=="0e7b4d8da7e6de4bda98ea0a83d6dbb5ea78c73c89a60d5724ba44401c1a24c0","actual geometry unchanged")
  save("physical-gate-resistance-network.json",dict(pitches_nm=list(pitches),gate_groups=50,intrinsic_gates=200,physical_contacts=200,
   native_rectangle_references_passed=len(pitches),native_actual_mesh_DC_runs_passed=len(pitches),refinement_observations=changes,
   material_parameters=parameters,physical_gate_resistance_network_generated=True,full_metal_network_integrated=False,
@@ -453,16 +453,16 @@ def paired_current(dest):
   with path.open('xb')as out:subprocess.run(['gh','api','repos/'+REPO+'/actions/artifacts/'+str(aid)+'/zip'],stdout=out,check=True)
   need(pin(path)['sha256']==digest,'paired archive content')
   return zipfile.ZipFile(path)
- geometry=artifact(14137186920,'343b6f236d8d61683488dba3590727bbe5220c6c973da8af49fc89b6161bfd29',43654184010,'c765e2c7548d3e9a57c591b058a0b768208e2dff','paired-geometry.zip')
- anchors=artifact(14138025358,'9edacef48d4e10df6e857dcff5e424b6e1e18ba8c7b72f158e88fa3ef4ab88c2',43655485838,'2df206f2f4b66cd6bb9bd6a7529c9eeedea37298','paired-anchors.zip')
- identity=artifact(14136829675,'f7b62b079a2f8359ffcbdda903498567d7f082969e71cd4632733d364d0edee2',43655245035,'0a3f9c8527c9aa7244bb1e97fc68ea85801d0b7e','paired-identity.zip')
- rows={'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds':geometry.read('candidate.gds'),
+ geometry=artifact(14148172598,'8325673484fce71cbbd9d2103e910d0e33810f2357cfc3e47db1d3cb3df5acc4',43680484913,'97150588f7cf9df96d32f61f32dd63ec4aa5c7e3','paired-geometry.zip')
+ anchors=artifact(14148053860,'dd1a823739509bffac9a9296223908e5bbdca2a92377d638b1cf26feba3da2a3',43681114908,'ada33327319b35ec53eea1b3cba17a30060b8c00','paired-anchors.zip')
+ identity=artifact(14148128097,'1b9b54eb2a11922da14262574c75a12b63fa6872ca667e29335d824648f05381',43680974890,'17297fd48eb45504f19c15f517c7ba69fdd017af','paired-identity.zip')
+ rows={'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds':geometry.read('hw/soc/out/cloud-cdr-wire-shortcuts-physical/layout/nssoc_cdr_pd500_resistor_v59.gds'),
        'derived/gate-poly-access.json':anchors.read('gate-poly-access.json'),
        'derived/terminal-anchors.json':anchors.read('terminal-anchors.json'),
        'derived/lvs_flat-identity.json':identity.read('lvs_flat-identity.json')}
  for name,raw in rows.items():
   path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
- save('paired-current-acquisition.json',dict(files={n:pin(dest/n)for n in rows},geometry_run=43654184010,anchors_run=43655485838,identity_run=43655245035,**FLAGS))
+ save('paired-current-acquisition.json',dict(files={n:pin(dest/n)for n in rows},geometry_run=43680484913,anchors_run=43681114908,identity_run=43680974890,**FLAGS))
  return {n:pin(dest/n)for n in rows}
 
 def main():
