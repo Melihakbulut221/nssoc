@@ -1,18 +1,18 @@
 * Exploratory pre-layout clock buffer; sizing resistors are ideal, NOT PEX.
 * Input differential pair, cascodes, crossed emitter followers, native current mirrors.
 * Same 2.5 V supply and original external 10 ohm clock source resistance.
-Xip_0 ep inp tail 0 npn13G2 Nx=4
-Xip_1 ep inp tail 0 npn13G2 Nx=4
-Xip_2 ep inp tail 0 npn13G2 Nx=4
-Xin_0 en inn tail 0 npn13G2 Nx=4
-Xin_1 en inn tail 0 npn13G2 Nx=4
-Xin_2 en inn tail 0 npn13G2 Nx=4
-Xcp_0 cp cas ep 0 npn13G2 Nx=4
-Xcp_1 cp cas ep 0 npn13G2 Nx=4
-Xcp_2 cp cas ep 0 npn13G2 Nx=4
-Xcn_0 cn cas en 0 npn13G2 Nx=4
-Xcn_1 cn cas en 0 npn13G2 Nx=4
-Xcn_2 cn cas en 0 npn13G2 Nx=4
+Xip_0 ep inp tail 0 npn13G2 Nx=2
+Xip_1 ep inp tail 0 npn13G2 Nx=2
+Xip_2 ep inp tail 0 npn13G2 Nx=2
+Xin_0 en inn tail 0 npn13G2 Nx=2
+Xin_1 en inn tail 0 npn13G2 Nx=2
+Xin_2 en inn tail 0 npn13G2 Nx=2
+Xcp_0 cp cas ep 0 npn13G2 Nx=2
+Xcp_1 cp cas ep 0 npn13G2 Nx=2
+Xcp_2 cp cas ep 0 npn13G2 Nx=2
+Xcn_0 cn cas en 0 npn13G2 Nx=2
+Xcn_1 cn cas en 0 npn13G2 Nx=2
+Xcn_2 cn cas en 0 npn13G2 Nx=2
 Xfp_0 avdd cn outp 0 npn13G2 Nx=4
 Xfp_1 avdd cn outp 0 npn13G2 Nx=4
 Xfp_2 avdd cn outp 0 npn13G2 Nx=4
