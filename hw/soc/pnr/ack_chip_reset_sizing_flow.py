@@ -12,15 +12,11 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {fanout3452} {sg13g2_buf_2 sg13g2_buf_4}
- {fanout3451} {sg13g2_buf_4 sg13g2_buf_8}
- {fanout3450} {sg13g2_buf_2 sg13g2_buf_4}
- {fanout3449} {sg13g2_buf_2 sg13g2_buf_4}
- {fanout2700} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout2021} {sg13g2_buf_1 sg13g2_buf_4}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$739727} {sg13g2_nor2_1 sg13g2_nor2_2}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$739732} {sg13g2_nor3_1 sg13g2_nor3_2}
 }
 set targets [dict keys $choices]
-if {[llength $targets]!=6} {error "Wrong measured resize census"}
+if {[llength $targets]!=2} {error "Wrong measured resize census"}
 if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
 foreach name $targets {
  set inst [$block findInst $name]
@@ -48,11 +44,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_SIX_RX_EOP_BUFFERS_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_TWO_DLLP_NOR_GATES_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size six measured RX-EOP buffers"
+    name = "Size two measured high-load DLLP NOR gates"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
