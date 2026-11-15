@@ -55,6 +55,7 @@ Path(sys.argv[1]).write_text(json.dumps({
     'SOC_PCIE_REPLAY_WRITE_PREDECODE': int(os.environ.get('SOC_PCIE_REPLAY_WRITE_PREDECODE','0')),
     'SOC_PCIE_REPLAY_CRC_SELECT': int(os.environ.get('SOC_PCIE_REPLAY_CRC_SELECT','0')),
     'SOC_PCIE_RX_CURSOR_LOCAL_RESET': int(os.environ.get('SOC_PCIE_RX_CURSOR_LOCAL_RESET','0')),
+    'SOC_PCIE_RX_LOCAL_LANE_NEXT': int(os.environ.get('SOC_PCIE_RX_LOCAL_LANE_NEXT','0')),
     'SOC_SRAM_MBIST': 1,
     'SOC_ETH_MBIST': 1,
     'mbist_scope': 'Mapped native boot explicitly observes system and both Ethernet MBISTs; RTL firmware preparation itself has no MBIST mode',
