@@ -7,11 +7,13 @@ class BranchSTA(SingleCornerSTA):
  def get_script_path(self):
   p=Path(super().get_script_path());s=p.read_text();assert s.rstrip().endswith("write_libs")
   rows=json.loads((Path(__file__).resolve().parents[3]/"ack-chip-branches/targets.json").read_text())
-  extra=[]
+  extra=['set pin_by_name {}','foreach pin [get_pins -hierarchical *] {set name [get_full_name $pin]; if {[dict exists $pin_by_name $name]} {error "Duplicate pin name"}; dict set pin_by_name $name $pin}', 'set port_by_name {}','foreach port [get_ports *] {dict set port_by_name [get_full_name $port] $port}']
   for i,row in enumerate(rows):
    name=row["name"];assert not any(c in name for c in "{}\n\r")
-   getter="get_pins"if row["kind"]=="pin"else"get_ports"
-   extra+=['set target ['+getter+' [list {'+name+'}]]','if {[llength $target]!=1} {error "Target not uniquely resolved"}']
+   table="pin_by_name"if row["kind"]=="pin"else"port_by_name"
+   aliases=list(dict.fromkeys([name,name.replace(chr(92)*2,chr(92))]))
+   choices=' '.join('{'+n+'}'for n in aliases)
+   extra+=['set matches {}','foreach alias {'+choices+'} {if {[dict exists $'+table+' $alias]} {dict set matches [dict get $'+table+' $alias] 1}}','if {[dict size $matches]!=1} {error {Unresolved or ambiguous exact target '+name+'}}','set target [dict keys $matches]']
    for mode in ["max","min"]:
     extra+=['puts "%OL_CREATE_REPORT branch-'+str(i)+'-'+mode+'.rpt"','puts {NSSOC_TARGET '+name+'}','report_checks -through $target -corner $corner_name -path_delay '+mode+' -group_path_count 1 -fields {slew cap input net fanout} -format full_clock_expanded -digits 9','puts "%OL_END_REPORT"']
   q=Path(self.step_dir)/"branch_sta.tcl";q.write_text(s+"\n"+"\n".join(extra)+"\n");return str(q)
