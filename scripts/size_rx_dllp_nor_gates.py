@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43743709060");assert run["head_sha"]=="fc9f5d3e2754854637745547e567e2e57ba4fa29"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43745217520");assert run["head_sha"]=="402a07daa7cd490292ac82acf04de030803ecbfe"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14173900646,"ab8f43554440d20d38377b16594dd3b0b595ab8452d1be3cdd3a16515855b187","derived")
- native=archive(14173224947,"bccaa0dc3a1c130cc3c4c3102563c90304918a1bc88a26b0207ce27281631320","native")
+ safe=archive(14174172014,"725494537b87883abecc2166da70830c4e4df418ca25fbbed91617d4a8ebadf5","derived")
+ native=archive(14174296936,"ff3899ac78ce4e89bac3d155597cd4eee7f64beb647974a240c8ef41326675c5","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43742559610
- assert report["candidate_odb_sha256"]=="427693d6d43b2ec6826943e941fee356075c0fd7b7ca07d0068658251d25c9ee"
+ assert report["source_run"]==43743709060
+ assert report["candidate_odb_sha256"]=="8ad9779e285faa9ac12cd8d02306b4efae2c44f638601c396715d420225a99a2"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -34,12 +34,12 @@ try:
  member='run/2-nssoc-sizedslow/max.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
  first=data.decode().split('Startpoint:')[1]
- assert 'u_pcie.flow.packets.endpoint.endpoint.receive_packet.quarantine.rx_data_i[5] (net)' in first
- for cell,master in [('fanout8733', 'sg13g2_buf_1'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$761462', 'sg13g2_buf_1'), ('fanout2699', 'sg13g2_buf_1')]:
+ assert 'u_pcie.flow.packets.endpoint.endpoint.receive_packet.quarantine.rst_ni (net)' in first
+ for cell,master in [('fanout9562', 'sg13g2_buf_1'), ('fanout9560', 'sg13g2_buf_2'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$761694', 'sg13g2_buf_1'), ('fanout3349', 'sg13g2_buf_1'), ('fanout2201', 'sg13g2_buf_1'), ('fanout1853', 'sg13g2_buf_1')]:
   assert cell+'/X ('+master+')' in first
  r['critical_path_report_sha256']=report['outputs'][member]
  safe.close();native.close()
- r['source_archives']=[dict(id=14173900646,sha256='ab8f43554440d20d38377b16594dd3b0b595ab8452d1be3cdd3a16515855b187'),dict(id=14173224947,sha256='bccaa0dc3a1c130cc3c4c3102563c90304918a1bc88a26b0207ce27281631320')]
+ r['source_archives']=[dict(id=14174172014,sha256='725494537b87883abecc2166da70830c4e4df418ca25fbbed91617d4a8ebadf5'),dict(id=14174296936,sha256='ff3899ac78ce4e89bac3d155597cd4eee7f64beb647974a240c8ef41326675c5')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -66,7 +66,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="RX_QUARANTINE_BUFFERS_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source4276: three measured RX quarantine path buffers buf1->4; all prior ECOs and hold24793 retained. Requires fresh allcorner timing; no routed or fullPHY acceptance.")
+ r.update(status="RX_QUARANTINE_RESET_BUFFERS_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source8ad9: six measured quarantine reset path buffers sized to4; all prior ECOs and hold delays retained. Requires fresh allcorner timing; no routed or fullPHY acceptance.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
