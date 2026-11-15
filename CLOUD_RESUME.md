@@ -1,3 +1,5 @@
+Additional live read-only run **43697869651 /162c746d4cd214aee03ce421f1dd56d3438330f2**, branch codex/rx-lane-six-path-alternatives: every data input on the six excluded paths, unchanged254b1e baseline, all three corners. Re-measure on the repaired ODB before applying subsequent changes; combined effects are not established.
+
 ## 2026-11-15: fresh RC composition and measured hold-margin repair dispatched
 
 Production readiness, full serial Gen3 x4 PHY, integrated routed mainchip and final setup/hold remain OPEN. All native work remains hosted; no local CAD or artifacts. Do not merge experimental workflows into timing/combined.
