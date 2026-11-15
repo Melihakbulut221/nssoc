@@ -1,3 +1,13 @@
+## Native select-width2 checks dispatched; timing NOR trial confirmed running
+
+New run43741684472/head d522bb6902e891ae5787c982cf2bc81fba56f6d4, branch codex/select-width2-native-checks confirmed IN_PROGRESS. scripts/check_select_width_candidate.py asserts exact four2umrppd/sixcore/sixsubstrate geometry and invokes existing unmodified check_pcie_cdr_feedforward_v1.run with explicit candidate TOP nssoc_cdr_select_feedforward_layout_v1_rwidth2_candidate, KINDselect,12devices. Workflow regenerates original baseline and candidate with full geometry replay, prepares pinned LibreLane3.0.5 SHA d6a349ec and unmodified IHP decks5e6d592 using lock verifiers. Runs all560 DRC categories, deep+flat12device transistor LVS and five faults: wrongresistor/missingcap/open/short/offgrid. All prior acceptance conditions retained. Artifact select-width2-native-checks-RUN contains native reports and candidate proof. Await actual results; no DRC/LVS pass claimed. No experimental workflow merged.
+
+Timing43741495046 confirmed IN_PROGRESS in native sizing/allcorner measurement step. Do not restart.
+
+Separate214delay lineage compact43741316572 SUCCESS now inspected; artifact14171584884 SHA4f3068937f20e91a0d0edd42d7cd2db0d5865086e7793b3959541a162cc3a1a9 verified RAM. ODB0338ee8b0c84289d3ac83f67c0d2033a00d033548e83e92154bebd655a36eae8,setup2154/0/0,slowWS-1.77885ns,hold0/0/7 withfastWS-.0299224ns,slew36/6/3cap0. NOT preferable to current346delay holdzero43fc; retain as separate experiment only.
+
+Previous goal turn made concrete timing/physical generation progress. This turn adds native physical qualification execution and verifies live timing work. Full objective remains active/unclosed.
+
 ## 2026-11-15: RX-EOP hold-clean result verified; physical passive width candidate generated
 
 GitHub push/admin permission verified. No persistent local checkout or CAD files created.
