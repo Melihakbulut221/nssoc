@@ -3,9 +3,9 @@ from pathlib import Path,PurePosixPath
 import cdr_mos650_identity as identity
 P='repos/Melihakbulut221/nssoc/'
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
-r=api('actions/runs/43744181108');assert r['conclusion']=='success' and r['head_sha']=='ba72787f258e153e9d4070974b8558c817e6171d' and r['run_attempt']==1
-m=api('actions/artifacts/14173825484');assert m['workflow_run']['id']==r['id'] and m['digest']=='sha256:ba416ff202c6bbd9706952fad3215120573a4c544890ec9eab1fb8d4a1040fc2' and not m['expired']
-b=subprocess.check_output(['gh','api',P+'actions/artifacts/14173825484/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];z=zipfile.ZipFile(io.BytesIO(b));assert len(z.namelist())==len(set(z.namelist()))
+r=api('actions/runs/43748270188');assert r['conclusion']=='success' and r['head_sha']=='4a37a0285be11fc7d424daa830887ec7bde5654b' and r['run_attempt']==1
+m=api('actions/artifacts/14175765192');assert m['workflow_run']['id']==r['id'] and m['digest']=='sha256:a1381011a37b531184deedcca9e57e6bdba3ce18ac9d7a280ff0f00c1747504a' and not m['expired']
+b=subprocess.check_output(['gh','api',P+'actions/artifacts/14175765192/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];z=zipfile.ZipFile(io.BytesIO(b));assert len(z.namelist())==len(set(z.namelist()))
 identity.NATIVE=Path('select650-identity-native');identity.NATIVE.mkdir();identity.DERIVED=Path('select650-identity');identity.DERIVED.mkdir()
 base=identity.NATIVE/'selected/physical';base.mkdir(parents=True)
 for info in z.infolist():
@@ -28,7 +28,7 @@ import shutil
 view=identity.NATIVE/'view';wire=view/'wire';wire.mkdir(parents=True)
 layout=view/'parent/layout';layout.mkdir(parents=True)
 physical=view/'parent/physical/lvs_flat';physical.mkdir(parents=True)
-gds=base/'candidate650-select-width2.gds';assert hashlib.sha256(gds.read_bytes()).hexdigest()=='8c42f6785d0b7ebac0a6d1b8f01d72943828a09ecf89b11f9ca05a3b4e771c77'
+gds=base/'candidate650-select-width2.gds';assert hashlib.sha256(gds.read_bytes()).hexdigest()=='5f66ce0cb46acfb580b517ba02b10f66560ba4200d9cfbba0b633a839cc59c5a'
 shutil.copyfile(gds,layout/'nssoc_cdr_pd500_resistor_v59.gds')
 shutil.copyfile(base/'lvs_flat/result.lvsdb',physical/'result.lvsdb')
 method=Path('docs/evidence/cdr-v59-tail-exact-wire-methods-20261026/locate01.py').read_text()
