@@ -26,14 +26,14 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Exact measured output branches and global STA
-        run: python3 scripts/run_combined_post174_margin.py
+        run: python3 scripts/run_combined_post174_repair.py
       - name: Collect derived reports
         if: always()
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import shutil
-          root=Path("combined-post174-margin-trial");out=Path("combined-post174-margin-derived")
+          root=Path("combined-post174-repair-trial");out=Path("combined-post174-repair-derived")
           for p in root.rglob("*"):
               rel=p.relative_to(root)
               if p.is_file() and (str(rel) in ("result.json","native.log") or (rel.parts[0]=="run" and p.suffix in (".rpt",".json"))):
@@ -42,14 +42,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-lane-combined-post174-margin-derived-${{ github.run_id }}
-          path: combined-post174-margin-derived/
+          name: rx-lane-combined-post174-repair-derived-${{ github.run_id }}
+          path: combined-post174-repair-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-lane-combined-post174-margin-native-${{ github.run_id }}
-          path: combined-post174-margin-trial/run/
+          name: rx-lane-combined-post174-repair-native-${{ github.run_id }}
+          path: combined-post174-repair-trial/run/
           if-no-files-found: error
           retention-days: 90
