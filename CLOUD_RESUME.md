@@ -1,3 +1,7 @@
+## Exact-switch count traffic terminal verification
+
+43770275976/4f381f31caf8bc761301ac98012837701890b3c7 SUCCESS. Artifact14184109103 full ZIP verified SHA2566c6ba4912c724c1b6803a7b2f4cc07cd5ffb8d8b60c9d5ca6b5cdfad1f1bf8ad. Eight configurations each300000cycles (2.4M), all RESULT PASS, mismatches0/copy_mismatches0. Wrong-empty real RTL mutation returns1/detectedtrue. Sourceea123da56f450bdde9183b43083ca6c8df3086494feff54be7bf9a201ecbc391. Together with compositional proof43770004136 qualifies queue candidate for new guarded synthesis, NOT physical closure. Currente59placement must remain independent. Divider experiment43771339958 confirmed running full256bit native case, freshCTS43771256588 active. No local persistent artifacts.
+
 ## New mapping SUCCESS, fresh CTS dispatched, divider lag measured
 
 - **43768772862/e59e693a0a2a86d4e0edb71cf3c8ae4e07c05a88 SUCCESS**. Mapping artifact14183762961 ZIP verified SHA1b24d8847825b51f74dcc37a61b328d06a872cdddbbafc98351aee12b1a54b49. Native14183269751 SHAfd62b50ec843689ffd0fe1dca6ae0111db8024699fe192205fb1f8b6f96f8209; replay14183603628 SHA19801358a3529084533ef28412c2e2889f7e90495b71dd27da912f4fed2ddda4. New115594cells,20SRAMs (16dual/4single),3newnative flops: b_di_negative FF160623,b_dd_negative FF160624,crc_upper_ok FF161469. Netlist15f996437ae5c74079fcb77f48fc8fe55b8517f784744e9c0b9a609e562f00fc, mappedJSON13f96b84486caff79ce53b1e183d98443875208b26d962dfe9d95e62878d40d5. RTL boot success is NOT mapped boot.
