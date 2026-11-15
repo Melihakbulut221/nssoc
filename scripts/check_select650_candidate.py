@@ -6,11 +6,12 @@ from check_ihp_drc import record_result,digest
 from prepare_ihp_drc import validate_lock,verify
 P='repos/Melihakbulut221/nssoc/'
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
-r=api('actions/runs/43743203337');assert r['conclusion']=='success' and r['head_sha']=='e3ac927c84628d03c79bdf70c2df5b2684b0945a' and r['run_attempt']==1
-a=api('actions/artifacts/14172613348');assert a['workflow_run']['id']==r['id'] and a['digest']=='sha256:466c34b92850652261a6ae44f7ffde388d0c0caf1edffec84aabae8271f7bb57' and not a['expired']
-b=subprocess.check_output(['gh','api',P+'actions/artifacts/14172613348/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==a['digest'];z=zipfile.ZipFile(io.BytesIO(b))
+r=api('actions/runs/43744074899');assert r['conclusion']=='success' and r['head_sha']=='6ce9e9ad7df918a5163dba2cefaf084f63c97220' and r['run_attempt']==1
+a=api('actions/artifacts/14172679027');assert a['workflow_run']['id']==r['id'] and a['digest']=='sha256:9e991786eaec22cca6268d31968d12309e24b4960cc0e82b374872f2d987df19' and not a['expired']
+b=subprocess.check_output(['gh','api',P+'actions/artifacts/14172679027/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==a['digest'];z=zipfile.ZipFile(io.BytesIO(b))
+assert json.loads(z.read('primitive-census.json'))==dict(physical_primitives=650,counts=dict(rppd=98,ptap1=221,npn13G2=124,nmos=200,cmim=7),hierarchy_preserved=True)
 out=Path('select650-checks').resolve();out.mkdir()
-for n,h in [('candidate650-select-width2.gds','dad4392ac73315ae12d7d18ad660ef98da3ae5781fab07169bd752741ed637ac'),('schematic650-select-width2.cir','1cef658f121e0ab0dc33a2c0cacd2dd564ff440413e4a0ab6a4b91de66fca239')]:
+for n,h in [('candidate650-select-width2.gds','8c42f6785d0b7ebac0a6d1b8f01d72943828a09ecf89b11f9ca05a3b4e771c77'),('schematic650-select-width2.cir','1cef658f121e0ab0dc33a2c0cacd2dd564ff440413e4a0ab6a4b91de66fca239')]:
  data=z.read(n);assert hashlib.sha256(data).hexdigest()==h;(out/n).write_bytes(data)
 app=Path('hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage').resolve();assert digest(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
 pins={app:digest(app)}
