@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/repair_rx_sized_hold.py
+          python3 -m py_compile scripts/repair_rx_hold_margin.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -31,7 +31,7 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Repair only all-corner setup-qualified hold inputs of the new RX sized candidate
-        run: python3 scripts/repair_rx_sized_hold.py
+        run: python3 scripts/repair_rx_hold_margin.py
       - name: Collect derived diagnostics
         if: always()
         run: |
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: new-rx-sized-hold-derived-${{ github.run_id }}
+          name: new-rx-hold-margin-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: new-rx-sized-hold-native-${{ github.run_id }}
+          name: new-rx-hold-margin-native-${{ github.run_id }}
           path: ack-chip-branches/
           if-no-files-found: error
           retention-days: 90
