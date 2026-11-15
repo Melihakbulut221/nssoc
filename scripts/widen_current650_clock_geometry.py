@@ -74,7 +74,11 @@ assert original_bbox.left==0 and original_bbox.bottom==0
 macro_extent=kdb.Region(original_bbox)
 additions={};proof=[]
 # Candidate clearances; native full DRC must confirm all actual foundry rules.
-for m,growth,clearance in [(30,300,600),(50,600,600),(67,600,600),(126,2000,2000),(134,3000,5000)]:
+# Actual five TM2.bR edge pairs in run43694128865 have 2.8um gaps.
+# Restrict TM2 growth to1um per edge (previously3um), retaining5um
+# foreign-conductor clearance. Same-net folded routes also need spacing;
+# ownership is not a DRC waiver. Full checker must validate the new geometry.
+for m,growth,clearance in [(30,300,600),(50,600,600),(67,600,600),(126,2000,2000),(134,1000,5000)]:
  total=kdb.Region();adjacent=[v for lo,v,hi in links if m in (lo,hi)]
  for component,sels in sorted(owned.items()):
   own=sels[m]
