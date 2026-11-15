@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/repair_ack_chip_hold.py
+          python3 -m py_compile scripts/measure_ack_chip_residual.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -30,8 +30,8 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Repair254 measured hold branches and measure all corners
-        run: python3 scripts/repair_ack_chip_hold.py
+      - name: Measure four residual hold paths and current setup margins
+        run: python3 scripts/measure_ack_chip_residual.py
       - name: Collect derived diagnostics
         if: always()
         run: |
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-chip-hold-derived-${{ github.run_id }}
+          name: ack-chip-residual-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-chip-hold-native-${{ github.run_id }}
+          name: ack-chip-residual-native-${{ github.run_id }}
           path: ack-chip-branches/
           if-no-files-found: error
           retention-days: 90
