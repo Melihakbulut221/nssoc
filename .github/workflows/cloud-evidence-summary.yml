@@ -1,4 +1,4 @@
-name: Actual PLL4ns native current capture and original bit-prefix gate
+name: Read-only localization of native PLL current pilot prefix difference
 on:
   workflow_dispatch:
 permissions:
@@ -19,18 +19,11 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install numpy==2.3.3
-      - run: python3 -B scripts/pll_current_prefix4ns.py
+      - run: python3 -B scripts/pll_current_prefix_difference.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pll-current-prefix4ns-derived-${{ github.run_id }}
-          path: pll-current-prefix4ns/
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: pll-current-prefix4ns-native-${{ github.run_id }}
-          path: cloud-pll-rhi120-c8-native/case/
+          name: pll-current-prefix-difference-derived-${{ github.run_id }}
+          path: pll-current-prefix-difference/
           if-no-files-found: error
           retention-days: 90
