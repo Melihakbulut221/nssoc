@@ -1,16 +1,15 @@
-name: Exact credit-sign and CRC-upper mainchip placement and CTS; gate boot pending
+name: Observe new credit CRC mapped boot with fresh cell qualification and exact signal map
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  candidate:
+  preflight:
     runs-on: ubuntu-22.04
     timeout-minutes: 355
     env:
       GH_TOKEN: ${{ github.token }}
-      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -18,43 +17,48 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Restore exact newly mapped candidate without inherited boot acceptance
-        run: |
-          set -euo pipefail
-          python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/cloud_predecode_chip_placement.py
-      - name: Prepare pinned native physical runtime
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build pinned compiler and acquire unchanged IHP models
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2
-          python3 scripts/bootstrap_flow.py
-          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native floorplan placement and CTS of new candidate
-        run: python3 scripts/cloud_predecode_chip_placement.py
-      - name: Collect derived diagnostics
-        if: always()
+          sudo apt-get install -y --no-install-recommends build-essential zlib1g-dev binutils-riscv64-linux-gnu
+          git init cvc-source
+          git -C cvc-source remote add origin https://github.com/cambridgehackers/open-src-cvc.git
+          git -C cvc-source fetch --depth=1 origin 1c5e043ec33ef6f1fdbf38565501c944893a83cf
+          git -C cvc-source checkout --detach FETCH_HEAD
+          test "$(git -C cvc-source rev-parse HEAD)" = 1c5e043ec33ef6f1fdbf38565501c944893a83cf
+          make -C cvc-source/src -j2 cvc64 > cvc-build.log 2>&1
+          python3 hw/soc/flow/prepare_ihp_native_boot.py
+      - name: Restore exact successful mapped candidate and prepare unchanged functional bench
         run: |
-          python3 - <<'PYCODE'
-          import pathlib,shutil
-          root=pathlib.Path('hw/soc/out/cloud-predecode-chip-placement');out=pathlib.Path('placement-derived');out.mkdir()
-          if root.exists():
-            for name in ['result.json','run.log','prepared/preparation.json','prepared/inventory.json']:
-              p=root/name
-              if p.is_file():
-                q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
-          PYCODE
+          set -euo pipefail
+          python3 scripts/restore_predecode_chip_boot.py
+          python3 hw/soc/flow/sim_logic_boot_gl.py --prepare-only --simulator iverilog --cycles 4000000 --timeout 14400 --pcie-profile packet-async --mbist-profile system-ethernet --nm /usr/bin/riscv64-linux-gnu-nm --synthesis hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis --firmware hw/soc/out/corrpre-pcie-mbist-native-boot/rtl --pdk hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2 --output out/cvc-boot-preparation
+      - name: Strict native reset data and X propagation probes plus mutations
+        run: python3 scripts/probe_native_cvc.py
+      - name: Exhaustive affected-cell four-state transition comparison
+        run: python3 scripts/qualify_cvc_cells.py
+      - name: Supplemental whole-chip functional boot with unchanged firmware PCIe and MBIST gates
+        run: python3 scripts/run_cvc_observed_chip_boot.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-chip-placement-derived-${{ github.run_id }}
-          path: placement-derived/
-          if-no-files-found: error
+          name: credit-crc-cvc-observed-boot-${{ github.run_id }}
+          path: |
+            cvc-probe/**/*.json
+            cvc-probe/**/*.log
+            cvc-probe/**/*.v
+            cvc-cell-qualification/**/*.json
+            cvc-cell-qualification/**/*.log
+            cvc-cell-qualification/**/*.v
+            out/**/*.json
+            out/**/*.log
+            cvc-build.log
+            cvc-source/OSS-CVC-MODIFIED-ARTISTIC-LIC.TXT
+            cvc-source/CHANGES.md
           retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: credit-crc-chip-placement-native-${{ github.run_id }}
-          path: hw/soc/out/cloud-predecode-chip-placement/
           if-no-files-found: error
-          retention-days: 90
