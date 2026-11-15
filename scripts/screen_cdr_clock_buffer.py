@@ -21,6 +21,7 @@ def main():
  runtime.OUT=OUT;runtime.NATIVE=NATIVE;runtime.DERIVED=DERIVED
  cfg=runtime.read(ROOT/runtime.CFG);models=runtime.acquire_models(cfg['runtime'])
  engine=NATIVE/'models/source/runtime/patched-ngspice';engine.chmod(0o755)
+ assert (models/'models/models/cornerHBT.lib').is_file(),'Authenticated HBT library missing before native execution'
  circuit=ROOT/'scripts/cdr_cascode_clock_buffer_candidate.inc'
  specs={'xip':('ep','inp','tail',12),'xin':('en','inn','tail',12),'xcp':('cp','cas','ep',12),'xcn':('cn','cas','en',12),'xfp':('avdd','cn','outp',12),'xfn':('avdd','cp','outn',12),'xref':('bias','bias','0',1),'xtail':('tail','bias','0',12),'xtp':('outp','bias','0',16),'xtn':('outn','bias','0',16)}
  lines=[l for l in circuit.read_text().splitlines()if l and not l.startswith('*')]
@@ -35,7 +36,7 @@ def main():
    sourcep='inp'if buffered else'outp';sourcen='inn'if buffered else'outn'
    nodes=sorted({'cp0','cn0','avdd','outp','outn'}|({n for x in specs.values()for n in x[:3]}-{'0'}if buffered else set()))
    vectors=['v('+n+')'for n in nodes]+(['@q.'+n+'.qnpn13g2[ic]'for n in specs]if buffered else[])
-   deck=['Native cascode clock buffer feasibility - not physical signoff',f'.lib "{models}/models/cornerHBT.lib" hbt_typ','.temp 27','.options reltol=1e-4 abstol=1e-12 sparse','VDD avdd 0 PWL(0 0 500p 2.5)', 'VCP cp0 0 '+frozen.clock(1.,True,False),'VCN cn0 0 '+frozen.clock(1.,False,False),f'RCP cp0 {sourcep} 10',f'RCN cn0 {sourcen} 10',f'CLP outp 0 {load_ff}f',f'CLN outn 0 {load_ff}f']
+   deck=['Native cascode clock buffer feasibility - not physical signoff',f'.lib "{models}/models/models/cornerHBT.lib" hbt_typ','.temp 27','.options reltol=1e-4 abstol=1e-12 sparse','VDD avdd 0 PWL(0 0 500p 2.5)', 'VCP cp0 0 '+frozen.clock(1.,True,False),'VCN cn0 0 '+frozen.clock(1.,False,False),f'RCP cp0 {sourcep} 10',f'RCN cn0 {sourcen} 10',f'CLP outp 0 {load_ff}f',f'CLN outn 0 {load_ff}f']
    if buffered:deck += [f'.include "{circuit}"','IREF avdd bias PWL(0 0 500p .0005)']
    deck += [f'.tran {frozen.STEP:.14g} {frozen.STOP:.14g} 0 {frozen.STEP:.14g}', '.control','set num_threads=1','set filetype=binary','save '+' '.join(vectors)]
    if buffered:
