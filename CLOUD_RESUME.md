@@ -1,3 +1,9 @@
+## Publication retry after owner access: HTTP504 and exact tag preparation
+
+Owner-dispatched43725447427/head374b FAILED with HTTP504 at releasecreate; log confirmsContents:write. This is distinctfromprevious403 underwrongaccount. Checkedrelease/tag afterterminalfailure: both404, so no ambiguouscompletedpublication. Created intendedimmutable tag prepared-sources-20261115-43716663208 pointingEXACT589540e861dbd006d98f1de7622c0079ebd921ad usingrestoredownerauth; no existingtagoverwritten. Redispatched unchangedpublicationworker as **43725663204** withpreexistingexacttag. Lateststatusin_progress/None.
+
+Readyvalidator now **95e204352fc36ff8c0fa8e55d56b61826b046fc8**, exactproducerbinding43725663204/374b/attempt1 andallhash/negativecontrolsretained. NOTDISPATCHEDuntilpublicationSUCCESS. NativePHYdiagnostic43725443962/head150a0ef and residualholdmeasurement43725515099/headadfa6e areIN_PROGRESS atlastpoll. Goalactive; restoredpush/admintrue. Next: evaluatebothnativeoutputs andpublishsuccess->validator.
+
 ## Access restored; current physical results and next cloud jobs
 
 The user restored access. `gh auth status` showed both accounts; switched the active saved account from mel11h to Melihakbulut221. Repository API now confirms push/admin true. The goal is active. No credentials were printed or copied.
