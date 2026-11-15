@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43750556058");assert run["head_sha"]=="8a3c2eb4d4bc2d94df45a2384e6fef90057b72c6"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43751933582");assert run["head_sha"]=="c7bc39794e3b8ae2f6e33a390617d9106e327d9e"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14176352623,"7fa7808bcd6d241610ee940a9872c50d74f1bf7fd0a44cc9ce8ba686157b6f15","derived")
- native=archive(14176546994,"1e346169a05785e4a31afdc65de3c7a8bbda880b186fd070f2bc91db9e72b78f","native")
+ safe=archive(14176744096,"687b1a284e7cbd6e0d3924a402754bc2224b7b8af8ccdb35c2a613c3eb6a80de","derived")
+ native=archive(14176139147,"d6ea40ac2e7a3fa4d3b9eec6f069ff9d8525b67bdb54509a42daa86cfc3f797b","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43749706625
- assert report["candidate_odb_sha256"]=="eca868e9dfa2a98395ff4d940edd3bc97822409631aadcb3e0d43fb26f2be862"
+ assert report["source_run"]==43750556058
+ assert report["candidate_odb_sha256"]=="3972efe44d18244b27274c0204bde31bb79fa5e8a91a489871af5d16f8785ba4"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -30,26 +30,17 @@ try:
   dest=source/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw)
  rows=report['targets'];paths=report['paths']
  assert rows==json.loads(safe.read('targets.json')) and len(rows)==3
- # Bind shared measured drivers to authenticated slow-corner data paths.
+ # Bind newly worst reset-to-data path and measured weak drivers.
  member='run/2-nssoc-sizedslow/max.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
- parts=data.decode().split('Startpoint:')[1:]
- first=parts[0]
+ first=data.decode().split('Startpoint:')[1]
  assert '$auto$ff.cc:337:slice$343559' in first
- assert 'u_pcie.receive_ownership.read_bank[0].r2_slot[0].lane_copy.' in first
- counts={}
- for cell,expected in [('fanout9594',250),('fanout9654',136),('fanout3185',85)]:
-  count=0
-  for part in parts:
-   if 'slack (VIOLATED)' not in part:continue
-   body=part.split('data arrival time')[0]
-   if cell+'/X (sg13g2_buf_1)' in body:count+=1
-  assert count==expected,(cell,count,expected)
-  counts[cell]=count
- r['shared_driver_reported_path_counts']=counts
+ assert 'Endpoint: $auto$ff.cc:337:slice$160968' in first
+ for cell,pin,master in [('$abc$734931$auto$blifparse.cc:397:parse_blif$735962','Y','sg13g2_inv_1'),('fanout6391','X','sg13g2_buf_1'),('fanout4141','X','sg13g2_buf_1')]:
+  assert cell+'/'+pin+' ('+master+')' in first
  r['critical_path_report_sha256']=report['outputs'][member]
  safe.close();native.close()
- r['source_archives']=[dict(id=14176352623,sha256='7fa7808bcd6d241610ee940a9872c50d74f1bf7fd0a44cc9ce8ba686157b6f15'),dict(id=14176546994,sha256='1e346169a05785e4a31afdc65de3c7a8bbda880b186fd070f2bc91db9e72b78f')]
+ r['source_archives']=[dict(id=14176744096,sha256='687b1a284e7cbd6e0d3924a402754bc2224b7b8af8ccdb35c2a613c3eb6a80de'),dict(id=14176139147,sha256='d6ea40ac2e7a3fa4d3b9eec6f069ff9d8525b67bdb54509a42daa86cfc3f797b')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -76,7 +67,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="SHARED_QUARANTINE_DRIVERS_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Sourceeca8 mixed candidate: fanout9594/9654/3185 buffer1to4. Ranking over reported paths only. All prior ECOs, hold delays and constraints retained. Requires fresh allcorner comparison against both eca8 and 6854; no routed or fullPHY acceptance.")
+ r.update(status="QUARANTINE_INVERTER_LOAD_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source3972: ABC735962 inv1to4 and fanout6391/4141 buf1to4; all prior ECOs and hold delays preserved. Requires fresh allcorner timing and electrical comparison. No routed or fullPHY acceptance.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()

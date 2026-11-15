@@ -12,9 +12,9 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {fanout9594} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout9654} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout3185} {sg13g2_buf_1 sg13g2_buf_4}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$735962} {sg13g2_inv_1 sg13g2_inv_4}
+ {fanout6391} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout4141} {sg13g2_buf_1 sg13g2_buf_4}
 }
 set targets [dict keys $choices]
 if {[llength $targets]!=3} {error "Wrong measured resize census"}
@@ -45,11 +45,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_SHARED_QUARANTINE_DRIVERS_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_QUARANTINE_INVERTER_LOAD_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size three measured shared quarantine drivers"
+    name = "Size loaded quarantine inverter and two buffers"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
