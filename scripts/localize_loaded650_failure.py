@@ -110,6 +110,35 @@ def run():
         found=[x['first_crossing_delay_s']for x in events if x['first_crossing_delay_s']is not None]
         clock.append(dict(device=dev['device'],logical_terminals=logic,physical_base=dev['physical']['nodes'][1],measured_reference='Local base relative to source clock commonmode; native crossing rows, no interpolation.',missing_crossings=sum(x['crossings']==0 for x in events),minimum_delay_s=min(found)if found else None,maximum_delay_s=max(found)if found else None,events=events))
     save('clock-base-crossings.json',clock)
+    from cdr_mos650_full650_loaded import clock as frozen_clock
+    drive={}
+    for pin,positive in [('cp',True),('cn',False)]:
+        pwl=frozen_clock(1.0,positive,False)
+        nums=list(map(float,pwl.replace('PWL(','').replace(')','').replace('+','').split()))
+        assert len(nums)%2==0
+        points=np.array(nums).reshape(-1,2)
+        ideal=np.interp(t,points[:,0],points[:,1])
+        # Original bench has ideal VCP/VCN and exactly10ohm series sources.
+        current=(ideal-v(pin))/10.0
+        drive[pin]=dict(original_series_resistance_ohm=10,maximum_active_abs_source_current_a=float(abs(current[active]).max()),
+            active_rms_source_current_a=float(np.sqrt(np.trapezoid(current[active]**2,t[active])/(t[active][-1]-t[active][0]))),
+            maximum_active_abs_voltage_drop_v=float(abs(ideal[active]-v(pin)[active]).max()),
+            analysis='KCL at original ideal-source/10ohm branch using frozen PWL and native terminal voltage; not per-transistor current.')
+    truth={}
+    for tag,left,right in [('x','a','b'),('y','c','b')]:
+        output=v(tag+'p')-v(tag+'n');left_delta=v('xpd.'+left+'qp')-v('xpd.'+left+'qn');right_delta=v('xpd.'+right+'qp')-v('xpd.'+right+'qn')
+        table={}
+        for i in range(1,256):
+            for phase in [.6,.75,.9]:
+                at=START+(i+.5+phase)*UI
+                lv=float(np.interp(at,t,left_delta));rv=float(np.interp(at,t,right_delta));ov=float(np.interp(at,t,output))
+                # Only classify real stable inputs; no relabelling acceptance.
+                if abs(lv)<.1 or abs(rv)<.1:continue
+                key=str(int(lv>0))+str(int(rv>0));table.setdefault(key,[]).append(ov)
+        truth[tag]={key:dict(samples=len(values),minimum_output_diff_v=min(values),maximum_output_diff_v=max(values),mean_output_diff_v=float(np.mean(values)),wrong_xor_sign=sum(value*(1 if key[0]!=key[1] else -1)<=0 for value in values),below_xor_100mv=sum(value*(1 if key[0]!=key[1] else -1)<.1 for value in values))for key,values in table.items()}
+    save('clock-source-demand.json',drive)
+    save('comparator-observed-input-truth.json',dict(table=truth,scope='Diagnostic actual sampler-input truth table; original ideal-bit acceptance remains unchanged and failed.'))
+
     save('sampling-localization.json',observations)
     save('device-headroom-localization.json',bad)
     summary=dict(status='PASS_READ_ONLY_FAILURE_LOCALIZATION',accepted=False,full_phy_accepted=False,
