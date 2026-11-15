@@ -12,11 +12,12 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {$abc$734931$auto$blifparse.cc:397:parse_blif$737526} {sg13g2_buf_2 sg13g2_buf_8}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$741549} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout9594} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout9654} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout3185} {sg13g2_buf_1 sg13g2_buf_4}
 }
 set targets [dict keys $choices]
-if {[llength $targets]!=2} {error "Wrong measured resize census"}
+if {[llength $targets]!=3} {error "Wrong measured resize census"}
 if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
 foreach name $targets {
  set inst [$block findInst $name]
@@ -44,11 +45,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_PCIE_INITIALIZED_DRIVERS_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_SHARED_QUARANTINE_DRIVERS_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size two initialized path buffers"
+    name = "Size three measured shared quarantine drivers"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
