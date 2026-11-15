@@ -1,3 +1,15 @@
+## Current650 loaded case rejected; native failure localization and new-chip sizing live
+
+Actual loaded producer 43697553951 / 30d59883a29c0c64f5855884a26aeb39783900ae completed native simulation (return 0, no diagnostics, sources unchanged) but FAILED electrical gates. This is not an observation timeout. Derived artifact 14157917034 SHA4f428b30a1a757556c425e5abddf4a3cf1ad1ca1af4d4e68ad486d69632bd854; native 14158082074 SHA1f6167012365bc7bffcc85bad084d0824021ec6d1c963d1dc3a5537f22b114c3 (3.45GB, stays cloud). Exact receipt docs/evidence/current650-loaded-rejection-20261115.json.
+
+Phase18.4019mV <30mV. Sampler A/B/C/D wrong-sign32/0/64/76 out of765 each; X/Y384/20. A/B settling50.156/47.031ps >37.5ps. HBT211/212 minimumVCE .396984/.395426V <.4V. VI passed53.098uA/15.040mV. Current clock-metal geometry did NOT resolve electrical failures; no fullPHY or mainchip acceptance. Native raw113490rows1752cols SHAfb95656a71a54217d4b7215571b5d8ac48513d0f17fd8736dd526b744125aa3a.
+
+Read-only localization **43705504612 / c7f2e37792525b4ad45abb1474dec6299ea7576e**, branch codex/current650-loaded-failure-localization. Restores authenticated native only in cloud; reproduces original six sampler/comparison counts exactly; records failure sample bit transitions, data/select/clock context and native lowVCE timestamps. No circuit or gate changes, no new native transient. Worker scripts/localize_loaded650_failure.py; artifact loaded650-localization-RUN. Await actual result before choosing next analog change.
+
+New-chip sizing **43704930454 / 3cd426a6244a9cfa423f36af5afe1be52711c8cd**, branch codex/ack-chip-seven-buffer-sizing, still live. Uses exact97f316 postCTS sourceODB. Replaces fanout3516/3514/3513 buf4->buf8, fanout2832/2411 and ABC735174...760989/760990 buf1->buf4; guards original masters, complete instance census and all pin-net incidence. SevenBufferECO followed by three fresh778targetSTA reports; output ack-chip-branches; artifact ack-chip-sized-derived/native. NewODB and fresh final state run/4-nssoc-sizedfast/state_out.json required. Setup AND hold must be compared before promotion; no final acceptance.
+
+Read-only unsized778target run43704514831 /1733c2ce4e780c0fef02e3c32cd38cb26f63384f and PLL131ns capture/130ns exactprefix43703613123 /90c1662b6d2597d85fdd171ff3e91deaf4825e7f remain in progress. No duplicate producer launched. Original clocks/derating and electrical gates preserved; fullPHY, mainchip routing and finaltiming remain open.
+
 ## NewACK branch measurement controller repairs; RX compare experiment remains isolated
 
 Original43703506723/de5f493d025a1768cde3e9320532960592d9bdc7 failed BEFORE STA: missing ack-chip-branches/run directory. Addedmkdir in8b68c8aff1482db7bb692b3d93e63f1085e05d63, rerun43703972790 then reached nativeSTA but failed on escaped flattenedpin $flatten\\u_pcie.receive_ownership.read_bank[2].pick_copy.../A. Actual778targets selected. Derivedfailedartifact14157836594 SHAdf85a1de02e5657f9c24c877b4a5c133cdcf89a7b1af5d55d7f55e6470cfcba5; native14158116058 SHAeda0e6881cfff81fe4852714c1ef6f1a346e9e0ff9cf465503d0a2ce5c5b9fab. No changedphysicalcandidate produced.
