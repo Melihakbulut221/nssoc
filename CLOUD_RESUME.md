@@ -1,3 +1,12 @@
+## Actual comparator settled-input diagnostic authenticated; physical trials still live
+
+43738464847/0c847e12a7242bf4a492e43b5adfb46b779b4cbd SUCCESS; fullcompactartifact14171263093 SHA bcc83af234c800a2951456a2c36de209d98a6cea4436b0acd2d7b8996c5aecf4 verifiedRAM. Diagnostic actual-comparator-settled-truth.json inspected. It reuses source-bound failedphysicalwave, not a newpassingPHY.
+At realinputminimum25mV andcontinuous125ps: Xall4truthcombinations have0wrongsignrows but unequalinputs01/10 reachonly72.777/60.057mV(max), all637/462rowsbelow100mV. At50mV/125ps X01/10 have66/37native rows,correctsignbutmax71.169/59.661mV,stillbelowgate. At100mV/125ps only00/11represented. Yunequalinputs01/10 areabsent evenat50mV/0duration; at25mV/62.5ps only00/11represented. Thus no fullsettledXORtruthcoverage/no staticconnection-bug proof. Inference: upstream levelshifter/sampler pulse overlap and propagation plus insufficient output amplitude matter; inspect delaythroughaq/bq/cq->ad/cd/s0/s1before speculativepolarityfix. No samplewindows/gateschanged. Native rowcountsnot independentbits; original full256bitmeasurementstillFAIL.
+This corrects overbroad interpretation of prior sampler-output truth: actual comparator inputs are distinct level-shifted signals. Next physicalrepair mustpreserveactualgeometry/RC consistency; do notpatch extractedtransistorparameters and claimlayoutmatch.
+
+43738187241 combined346delaybit5 bypass and43738428141 commit-read3buffers verifiedIN_PROGRESS in nativephysical steps. Do notrestart onobserverwait. Canonical43727638507 SoCformal job132852961996 nowSUCCESS,pilotformalSUCCESS; actualproofartifactsnotyetcontentverified inthisturn. SoCartifact14171163422/e9e12802d793e5c2d449b367fc5833afdd57e6f345afd6c9abaad3130fcfd06e andpilot14170965253/e3bcd15441b5c47d062e7afce56c1e629b71bc238099ee138bfd4ba8f2902057 metadataonly. Mainchecksjob132852962017 stilllive;oldRTLfailedanchor remainshistorical.
+Currentturn newdiagnostic evidence changesnextanalogaction plusverifiedwaits;prior turnconcretephysicaltrial. Fullgoalactive;production/fullserialPHY/finaltimingnotclosed.
+
 ## DLLP sizing measured; next commit-read buffer trial and comparator-input diagnosis running
 
 Compact43738086147/d05fcb9779fd29e32d18c5df3a4479fd707b7b77 SUCCESS. Compact14171122652 fullZIP SHA44b4831e66f993a9bb3adc52a388d1a2349b355388d14450ee0dbca83c94f92e independentlyverifiedRAM. Authenticates originalderived14170414642/b6b0be57 andall9state/max/minmembers in cloud.
