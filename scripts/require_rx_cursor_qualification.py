@@ -4,16 +4,16 @@ assert os.environ.get('GITHUB_ACTIONS')=='true'
 P='repos/Melihakbulut221/nssoc/'
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
 source=pathlib.Path('hw/soc/rtl/pcie/soc_pcie_rx_credit.v').read_bytes();digest=hashlib.sha256(source).hexdigest()
-assert digest=='dbdc7a33a7b118f3c96e114a477135c9bb1ef82ebd41800229366935dde202af'
+assert digest=='2a345ba4082873f73fd8f308880a1f8d29651e24c12bbeaf9ac20b8f4082636e'
 out=pathlib.Path('out');out.mkdir(exist_ok=True);results=[]
-for run,head,name,kind,count in [(43659632740,'da44f20d6af407cdfdd5e353ce36536067dccde7','rx-cursor-formal-43659632740','formal',4),(43659632740,'da44f20d6af407cdfdd5e353ce36536067dccde7','rx-cursor-traffic-43659632740','traffic',16)]:
+for run,head,name,kind,count in [(43659882138,'7b3d47cd6bd0666f035f6c231f5edefb705ca1c6','rx-cursor-formal-43659882138','formal',4),(43659882138,'7b3d47cd6bd0666f035f6c231f5edefb705ca1c6','rx-cursor-traffic-43659882138','traffic',16)]:
  r=api(f'actions/runs/{run}');assert r['head_sha']==head
  # Select exact immutable producer job, not the first run's unrelated failed traffic job.
  deadline=time.monotonic()+2700
  while True:
   jobs=api(f'actions/runs/{run}/jobs')['jobs'];selected=[j for j in jobs if j['name']==f'qualify ({kind})'];assert len(selected)==1
   if selected[0]['status']=='completed':break
-  assert selected[0]['id']==({'formal':132645821996,'traffic':132645821805}[kind])
+  assert selected[0]['id']==({'formal':132646601704,'traffic':132646601948}[kind])
   assert time.monotonic()<deadline,('qualification still pending; no CAD started',run)
   print('Waiting for exact qualification job',run,kind,selected[0]['status'],flush=True)
   time.sleep(45)
@@ -22,7 +22,7 @@ for run,head,name,kind,count in [(43659632740,'da44f20d6af407cdfdd5e353ce3653606
  art=selected_artifacts[0];assert art['workflow_run']['head_sha']==head
  b=subprocess.check_output(['gh','api',P+f"actions/artifacts/{art['id']}/zip"]);sha=hashlib.sha256(b).hexdigest();assert art['digest']=='sha256:'+sha
  assert art['workflow_run']['id']==run
- assert selected[0]['id']==({'formal':132645821996,'traffic':132645821805}[kind])
+ assert selected[0]['id']==({'formal':132646601704,'traffic':132646601948}[kind])
  z=zipfile.ZipFile(io.BytesIO(b));names=[n for n in z.namelist()if n.endswith('result.json')];assert len(names)==1
  result=json.loads(z.read(names[0]));assert result['source_sha256']==digest and len(result['cases'])==count
  assert len(z.namelist())==len(set(z.namelist()))

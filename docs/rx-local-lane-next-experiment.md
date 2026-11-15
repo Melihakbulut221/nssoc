@@ -1,5 +1,5 @@
-# Local RX lane next-state experiment
+# Qualified local lane mux experiment
 
-Candidate RTL SHA256: dbdc7a33a7b118f3c96e114a477135c9bb1ef82ebd41800229366935dde202af. Qualification run 43659632740, immutable source da44f20d6af407cdfdd5e353ce36536067dccde7; exact formal job132645821996 and traffic job132645821805. The build gate validates completed success, source digest, case counts, mutation failures and log hashes. A failed or pending qualification must not start CAD.
+Exact RTL SHA256 2a345ba4082873f73fd8f308880a1f8d29651e24c12bbeaf9ac20b8f4082636e. Qualification run43659882138/head7b3d47cd6bd0666f035f6c231f5edefb705ca1c6: two full-module equivalence proofs and eight300000-cycle traffic cases, with two formal and eight traffic mutations rejected. All result/log hashes independently verified.
 
-SOC_PCIE_RX_LOCAL_LANE_NEXT is opt-in. It replaces a shared lane D bus with local rotate/hold/restart logic under keep_hierarchy; the asynchronous master reset covers between-edge reset pulses. No additional cycle or relaxed timing contract. New source requires independent mapping, boot, placement, route and STA. Old source placement hold-zero evidence is not transferable. Full PHY and production qualification remain open.
+SOC_PCIE_RX_LOCAL_LANE_NEXT distributes only the next-state mux inside hierarchy-preserved copies. Master lane and original synchronous reset-free copy registers remain unchanged. Prior independent local cursor failed equivalence and is rejected. No timing exceptions or extra cycles. Native mapping/boot/CTS/route/STA acceptance is pending; old netlist hold-zero is not transferable.
