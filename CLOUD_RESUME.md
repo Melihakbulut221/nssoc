@@ -1,3 +1,13 @@
+## Width4 waveform diagnosis authenticated: phase improvement does not close data timing
+
+Diagnostic43776484521/fe07047226597d49c093d46f6c3e16d34eeb5008 SUCCESS; artifact14187040004 SHA256a2bfb0ff501236e962f6fe1aa8fb44ce1af94285b9789d8754ddbbfbb4e65afd verified. Full report archived at docs/timing/divider-width4-wave-diagnosis-43776484521.json. Actual loaded device binding used, original full113490x1791 raw authenticated, no SPICE rerun.
+
+At diagnostic .75UI, divider UA/UC wrong65/64 of255 and below100mV129/128; US0/US1 wrong92 each, below204. Buffer AD/CD/S0/S1 wrong103/96/99/98, below129/128/165/165. Thus phase46.34mV passing is insufficient. Samplers first all100mV only .50/.65/.55/.60UI; original .30UI acceptance unchanged. X has wrong signs throughout sweep (best127/255); a shifted observation is not acceptance. Actual strong-input comparator X subset118 still16 wrong/79below at zero delay, unlike previous Nx5 subset; Ysubset146 wrong0/below50. Subsets vary: never compare as full-population passes.
+
+Next analog hypothesis to evaluate: width increases lower divider resistance but also change native resistor intrinsic loading; investigate shortening divider lengths at original widths to separate R from device area/capacitance, preserving ratios. This is a hypothesis, not established causal proof or geometry-qualified fix. Inspect PDK model and experiment generator before dispatch. Any candidate still needs unchanged full data/phase/device gates, followed by actual geometry/RC qualification if it passes.
+
+Digital driver trial43776325443, queue postCTS43775507971, mapped boot43771666469 still live at last authoritative poll; no duplicate jobs. Full objective remains open.
+
 ## Queue CTS complete; source-bound driver trial and analog waveform diagnosis active
 
 - Queue candidate CTS43775336220/067d9d54efaecd131ad4bb146660da4684833a93 SUCCESS. Derived14185814520 SHA2568bb5a60706a1a37e56bf1c0d8e531b66308028eb1480f59f4115eeef50317b72 verified in RAM; return0,526.146s,sources unchanged. CTS ODB23fa3b742edbcd6c62f115cc95dd8528bd18e7d6f7aeee29ae34f968ea755d9a. Native14185968762 digest56d96886a7b323d30842f1b1158e352e432b8f16e980476e0129d830d7dfc6a5. PostCTS43775507971 already consumes exact producer; still running. No final timing/route acceptance.
