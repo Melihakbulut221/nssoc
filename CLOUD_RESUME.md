@@ -1,3 +1,11 @@
+## Shared-driver result improves setup; loaded inverter experiment live
+
+43751933582/c7bc39794e3b8ae2f6e33a390617d9106e327d9e SUCCESS. Derived14176744096 SHA687b1a284e7cbd6e0d3924a402754bc2224b7b8af8ccdb35c2a613c3eb6a80de and all included inventoried members fully verified in RAM. Native14176139147 advertised SHAd6ea40ac2e7a3fa4d3b9eec6f069ff9d8525b67bdb54509a42daa86cfc3f797b; next worker fully authenticates native archive. New ODB3972efe44d18244b27274c0204bde31bb79fa5e8a91a489871af5d16f8785ba4. Setup slow/typ/fast2082/0/0 WS-1.59067/+0.235356/+1.11161ns, slowTNS-1521.03 (prior eca8 count2101/TNS-1589.97 and 6854 count2100/TNS-1589.63). Hold0/0/0 WS+.222705/+.143183/+.00520262ns unchanged. Slew36/6/3 cap0. This is improvement, NOT final routed timing acceptance.
+
+New worst FF343559 quarantine.rst_ni -> FF160968. ABC734931735962 inv1 drives146.676fF, delay.644336ns and slew.741780ns; next ABC761559 nor4_1 has1.600857ns delay/slew1.683856ns into wire6392buf8. Avoid guessing nonexistent nor4 master. New trial changes ONLY ABC735962 inv1->4, fanout6391 buf1->4 and fanout4141 buf1->4. Exact firstpath/start/end/master pin guards, full artifact/output/ODB source checks, incidence and legalization, all3 corners, previoushold andclocks preserved. Python AST validated. Branchcodex/quarantine-inverter-load headb6ee2fa6c79bdbe3b89c7b2c7dd56d8ef8bc1089 run43752942052 verifiedin_progress. Expected artifacts quarantine-inverter-load-derived/native-43752942052. Compare against3972 beforeacceptance; no constraintsrelaxed. Do not merge experimentalworkflow.
+
+Full650 nominal_late electricalrun43751034595 recheckedin_progress; no new fullwave evidence yet. Keep running. FullserialPHY/mainchip/finaltiming remainopen; goalactive. No local native data or checkout created.
+
 ## Exact mapped RTL trace identified while native jobs run
 
 43751933582 is IN_PROGRESS at "Size three measured shared quarantine drivers and measure all corners"; 43751034595 is IN_PROGRESS at full256bit nominal-late electrical simulation. Neither restarted. This turn is a verified wait plus source evidence, not timing/PHY closure.
