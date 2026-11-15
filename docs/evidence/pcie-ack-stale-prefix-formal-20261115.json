@@ -1,0 +1,37 @@
+{
+  "run": 43694422342,
+  "source_head": "e5d97e810dc40069cf76216589eecd0c3d6d37d3",
+  "artifact_id": 14153377331,
+  "artifact_sha256": "88faf5ac758b1481b041ec22a6865f09c1e5081cbb9d415f0c752e4b30d7a646",
+  "accepted": false,
+  "records": {
+    "result.json": {
+      "status": "PASS_COMBINATIONAL_24BIT_EQUIVALENCE_AND_TWO_MUTANTS",
+      "source_head": "e5d97e810dc40069cf76216589eecd0c3d6d37d3",
+      "rtl_sha256": "447e2208baf1e158561e29332178adce5687ab574f465b109b433ca1a95652de",
+      "cases": [
+        {
+          "case": "exact",
+          "expected_equivalent": true,
+          "returncode": 0,
+          "status": "PASS"
+        },
+        {
+          "case": "mutant_half_distance",
+          "expected_equivalent": false,
+          "returncode": 1,
+          "status": "REJECTED_EXPECTED_MUTANT"
+        },
+        {
+          "case": "mutant_borrow",
+          "expected_equivalent": false,
+          "returncode": 1,
+          "status": "REJECTED_EXPECTED_MUTANT"
+        }
+      ],
+      "accepted": false,
+      "scope": "All 2^24 binary sequence pairs; exact combinational substitution at unchanged capture edge. Both actual RTL modes compile. Not full-module sequential traffic, four-state equivalence, mapped timing, route, or full PHY acceptance.",
+      "yosys": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)"
+    }
+  }
+}
