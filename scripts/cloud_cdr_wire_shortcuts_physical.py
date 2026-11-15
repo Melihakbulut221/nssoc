@@ -405,7 +405,7 @@ def verify():
         for n in("lvs","lvs_flat"):
             need(record["steps"][n]["native_primitive_census"]==dict(npn13g2=124,sg13_lv_nmos=200,rppd=98,cap_cmim=7,ptap1=221),"650 transistor-level primitives")
         for p,h in record["inputs"].items():need(sha(Path(p))==h,"actual final physical input "+p)
-        need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/PAIRED).read_bytes())["candidate_sha256"],"actual paired candidate verified")
+        need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/"scripts/cdr650-upper-physical-input.json").read_bytes())["candidate_sha256"],"actual paired candidate verified")
         gate()
         save("physical-qualification.json",dict(status="PASS_PAIRED_MOS650_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
     except BaseException as exc:error=exc
