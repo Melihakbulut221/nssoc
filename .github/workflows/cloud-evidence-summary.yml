@@ -1,34 +1,35 @@
-name: Generate actual via-connected upper-metal widening for shared comparator nets
+name: Generate actual clock conductor geometry candidate for full650 sampling delay
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  inspect:
+  generate:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+          filter: blob:none
           sparse-checkout-cone-mode: false
-          sparse-checkout: /scripts/inspect_packed_shared_geometry.py
+          sparse-checkout: /scripts/widen_current650_clock_geometry.py
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir klayout==0.30.4.post1
-      - run: python3 scripts/inspect_packed_shared_geometry.py
+      - run: python3 scripts/widen_current650_clock_geometry.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-shared-upper-widening-derived-${{ github.run_id }}
+          name: current650-clock-geometry-derived-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-shared-upper-widening-native-${{ github.run_id }}
+          name: current650-clock-geometry-native-${{ github.run_id }}
           path: native/
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 90
