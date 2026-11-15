@@ -42,6 +42,27 @@ try:
     assert p.returncode==0,log[-3000:]
     lines=[l for l in log.splitlines()if 'Delay ='in l or'Chip area'in l];assert any('Delay ='in l for l in lines)
     results.append(dict(corner=corner,width=width,mode=mode,native_measurements=lines))
+ per_input=[]
+ sta_version=subprocess.run(['sta','-version'],capture_output=True,text=True,check=True).stdout.strip()
+ for row in results:
+  corner=row['corner'];width=row['width'];mode=row['mode'];stem=corner+'-w'+str(width)+'-'+mode
+  lib=OUT/('sg13g2_stdcell_'+corner+'.lib')
+  pins=[f'output_index[{i}]'for i in range(width)]+[f'head_last[{i}]'for i in range(width)]+[f'dllp_length[{i}]'for i in range(3)]+['select_dllp']
+  script=[f'read_liberty {lib}',f'read_verilog {OUT/stem}.v','link_design eop','create_clock -name virtual -period 10','set_input_delay 0 -clock virtual [all_inputs]','set_output_delay 0 -clock virtual [all_outputs]','set_driving_cell -lib_cell sg13g2_buf_2 -pin X [all_inputs]','set_load 0.01 [all_outputs]']
+  for idx,pin in enumerate(pins):
+   script += [f'puts "INPUT_BEGIN {idx}"',f'report_checks -from [get_ports {{{pin}}}] -to [all_outputs] -path_delay max -group_path_count 1 -format full_clock_expanded -digits 9',f'puts "INPUT_END {idx}"']
+  script += ['exit']
+  tcl=OUT/(stem+'-input.tcl');tcl.write_text('\n'.join(script)+'\n')
+  proc=subprocess.run(['sta','-exit',str(tcl)],capture_output=True,text=True,timeout=180)
+  log=proc.stdout+proc.stderr;(OUT/(stem+'-input.log')).write_text(log)
+  assert proc.returncode==0 and not re.search(r'(?mi)^Error',log),log[-3000:]
+  measurements=[]
+  for idx,pin in enumerate(pins):
+   match=re.search(r'INPUT_BEGIN '+str(idx)+r'\n(.*?)INPUT_END '+str(idx)+r'\b',log,re.S);assert match,(stem,idx)
+   arrivals=re.findall(r'([-+\d.eE]+)\s+data arrival time',match[1]);assert arrivals,(stem,pin,match[1])
+   measurements.append(dict(input=pin,arrival_ns=max(map(float,arrivals))))
+  per_input.append(dict(corner=corner,width=width,mode=mode,inputs=measurements))
+ (OUT/'per-input-sta.json').write_text(json.dumps(dict(status='ISOLATED_INPUT_PATHS_NOT_CHIP_ACCEPTANCE',sta_version=sta_version,source_head=os.environ['GITHUB_SHA'],constraints=dict(virtual_clock_ns=10,io_delay_ns=0,output_load_pf=.01,driver='sg13g2_buf_2'),measurements=per_input,accepted=False),indent=2)+'\n')
  r=dict(status='EQUIVALENCE_AND_MAPPED_EOP_CONE_ONLY',source_head=os.environ['GITHUB_SHA'],rtl_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),formal=formal,measurements=results,libraries=libs,accepted=False,scope='Binary combinational substitution only; fourteen CW values (original expression retained below3) including zero-length modulo wrap; wholemodule traffic/mappedboot/physical timing/fullPHY not accepted.')
 except BaseException as e:r=dict(status='FAIL',error=repr(e),formal=formal,measurements=results,accepted=False);raise
 finally:(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
