@@ -168,6 +168,30 @@ module soc_pcie_credit_tx (
     reg update_h_overwritten,update_d_overwritten;
     reg [12:0] b_hi,b_hd,b_ha,b_hw;
     reg [22:0] b_di,b_dd,b_da,b_dw;
+`ifdef SOC_PCIE_CREDIT_DATA_SIGN_REG
+    // Register the sum's sign with its stage-B partials. No event latency
+    // changes: the stage-C admission check reads an equivalent saved bit.
+    function sign12;
+        input [22:0] p;
+        reg cm;
+        begin
+            cm=p[4] ? p[14] : p[9];
+            sign12=cm ? p[22] : p[18];
+        end
+    endfunction
+    reg b_di_negative,b_dd_negative;
+    wire update_di_negative=b_di_negative;
+    wire update_dd_negative=b_dd_negative;
+`ifndef SYNTHESIS
+    always @(posedge clk_i) if(rst_ni && link_up_i && update_valid) begin
+        if({b_di_negative,b_dd_negative}!=={update_d_idle[11],update_d_debit[11]})
+            $fatal(1,"CREDIT_DATA_SIGN_MISMATCH");
+    end
+`endif
+`else
+    wire update_di_negative=update_d_idle[11];
+    wire update_dd_negative=update_d_debit[11];
+`endif
     wire [7:0] update_h_idle=sum8(b_hi);
     wire [7:0] update_h_debit=sum8(b_hd);
     wire [11:0] update_d_idle=sum12(b_di);
@@ -247,7 +271,7 @@ module soc_pcie_credit_tx (
             h_ok=update_h_infinite ? update_header_zero :
                 (!h_step_back && !(debit ? h_debit_remaining[7] : h_idle_remaining[7]));
             d_ok=update_d_infinite ? update_data_zero :
-                (!d_step_back && !(debit ? d_debit_remaining[11] : d_idle_remaining[11]));
+                (!d_step_back && !((debit || update_d_debited) ? update_dd_negative : update_di_negative));
             if (update_valid) begin
                 if (update_rejected) error_n=1;
                 else if (!all_seen) begin
@@ -332,6 +356,10 @@ module soc_pcie_credit_tx (
             b_hi<=class_hi[a_class];b_hd<=class_hd[a_class];b_ha<=class_ha[a_class];
             b_hw<=part8(a_header,~update_header,1'b1);
             b_di<=class_di[a_class];b_dd<=class_dd[a_class];b_da<=class_da[a_class];
+`ifdef SOC_PCIE_CREDIT_DATA_SIGN_REG
+            b_di_negative<=sign12(class_di[a_class]);
+            b_dd_negative<=sign12(class_dd[a_class]);
+`endif
             b_dw<=part12(a_data,~update_data,1'b1);
 `ifdef SOC_PCIE_CREDIT_PICK
             update_h_overwritten<=picked_hl_written && update_class==a_class;

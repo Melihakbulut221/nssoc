@@ -1,4 +1,4 @@
-name: Build qualified ACK and RX DLLP compare mainchip candidate
+name: Build qualified credit sign and CRC upper comparison mainchip candidate
 on:
   workflow_dispatch:
 permissions:
@@ -10,6 +10,9 @@ jobs:
     timeout-minutes: 240
     env:
       GH_TOKEN: ${{ github.token }}
+      SOC_PCIE_CREDIT_DATA_SIGN_REG: '1'
+      SOC_PCIE_CRC_UPPER_COMPARE_REG: '1'
+
       SOC_PCIE_RX_CURSOR_LOCAL_RESET: '1'
       SOC_PCIE_RX_LOCAL_LANE_NEXT: '1'
       SOC_PCIE_ACK_STALE_PREFIX: '1'
@@ -54,6 +57,8 @@ jobs:
         run: python3 scripts/require_rx_cursor_qualification.py
       - name: Require exact ACK source and six-switch replay qualification
         run: python3 scripts/require_ack_prefix_qualification.py
+      - name: Require exact credit and CRC proofs plus rejected negative controls
+        run: python3 scripts/require_credit_crc_qualification.py
       - name: Prepare pinned source and tool inputs
         run: |
           set -euo pipefail
@@ -76,16 +81,17 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-rx-dllp-mainchip-source-native-${{ github.run_id }}
+          name: credit-crc-mainchip-source-native-${{ github.run_id }}
           path: native/build.tgz
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-rx-dllp-mainchip-mapping-${{ github.run_id }}
+          name: credit-crc-mainchip-mapping-${{ github.run_id }}
           path: |
             out/mapping.json
+            out/credit-crc-qualification.json
             out/rx-qualification-gate.json
             out/ack-prefix-qualification-gate.json
           if-no-files-found: error
@@ -93,7 +99,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-rx-dllp-replay-regressions-${{ github.run_id }}
+          name: credit-crc-replay-regressions-${{ github.run_id }}
           path: |
             out/qualification.json
             out/case-*.log

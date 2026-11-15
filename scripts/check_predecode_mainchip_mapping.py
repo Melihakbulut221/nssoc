@@ -13,6 +13,22 @@ assert sha('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')=='f5634cd4692abde4aa576aa11e3
 assert os.environ['SOC_PCIE_ACK_STALE_PREFIX']=='1' and '-DSOC_PCIE_ACK_STALE_PREFIX' in ys
 assert json.loads(P('out/ack-prefix-qualification-gate.json').read_text())['current_source_sha256']==sha('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')
 m=json.loads((syn/'soc_top.mapped.json').read_text())['modules']['soc_top']
+q=json.loads(P('out/credit-crc-qualification.json').read_text())
+assert q['credit_source_sha256']==sha('hw/soc/rtl/pcie/soc_pcie_credit_tx.v')
+assert q['crc_source_sha256']==sha('hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v')
+for knob in ['SOC_PCIE_CREDIT_DATA_SIGN_REG','SOC_PCIE_CRC_UPPER_COMPARE_REG']:
+ assert os.environ[knob]=='1' and '-D'+knob in ys
+new_registers={}
+for suffix in ['.b_di_negative','.b_dd_negative','.crc_upper_ok']:
+ selected=[(n,v)for n,v in m['netnames'].items()if n.endswith(suffix)]
+ assert len(selected)==1,(suffix,selected)
+ name,net=selected[0];assert len(net['bits'])==1 and isinstance(net['bits'][0],int)
+ bit=net['bits'][0];drivers=[(n,c)for n,c in m['cells'].items()if c['port_directions'].get('Q')=='output' and c['connections'].get('Q')==[bit]]
+ assert len(drivers)==1 and drivers[0][1]['type'].startswith('sg13g2_df'),(name,drivers)
+ assert drivers[0][1]['connections']['CLK']==m['ports']['pcie_clk_i']['bits']
+ new_registers[name]={'bit':bit,'cell':drivers[0][0],'type':drivers[0][1]['type']}
+assert len({v['bit']for v in new_registers.values()})==3
+
 assert os.environ['SOC_PCIE_REPLAY_CRC_SELECT']=='1' and '-DSOC_PCIE_REPLAY_CRC_SELECT' in ys
 assert os.environ['SOC_PCIE_RX_CURSOR_LOCAL_RESET']=='1' and '-DSOC_PCIE_RX_CURSOR_LOCAL_RESET' in ys
 assert os.environ['SOC_PCIE_RX_LOCAL_LANE_NEXT']=='1' and '-DSOC_PCIE_RX_LOCAL_LANE_NEXT' in ys
@@ -59,4 +75,6 @@ assert all(len(v)==1 and v[0]['type'].startswith('sg13g2_') and v[0]['port']=='Q
 counts=collections.Counter(c['type'] for c in m['cells'].values());macros={k:v for k,v in counts.items() if k.startswith('RM_IHPSG13')}
 assert sum(macros.values())==20 and macros.get('RM_IHPSG13_2P_256x16_c2_bm_bist')==16,macros
 result={'status':'MAPPED_ACK_PREFIX_RX_CURSOR_CRC_SELECT_EOP_CHIP_REQUIRES_GATE_BOOT_AND_PHYSICAL_IMPLEMENTATION','accepted':False,'source_head':os.environ['GITHUB_SHA'],'selected_widths':widths,'registered_bit_count':len(qdrivers),'cached_eop_register':cached,'lowered_eop_origins':sorted(origins),'ack_stale_prefix_enabled':True,'rx_dllp_last_compare_enabled':True,'crc_select_enabled':True,'rx_cursor_local_reset_enabled':True,'rx_local_lane_next_enabled':True,'macros':macros,'cells':sum(counts.values()),'mapped_boot_passed':False,'final_timing_complete':False,'full_phy_accepted':False,'configuration':{k:v for k,v in os.environ.items() if k.startswith(('SOC_','IBEX_','NATIVE_'))},'inputs':{p:sha(p) for p in ['hw/soc/rtl/pcie/soc_pcie_rx_credit.v','hw/soc/rtl/pcie/soc_pcie_replay_tx.v','hw/soc/flow/syn_soc_top.sh','hw/soc/flow/sim_soc.sh','scripts/prepare_predecode_mainchip.sh']},'outputs':{str(p.relative_to(out)):sha(p) for p in out.rglob('*') if p.is_file()}}
+result['credit_crc_registers']=new_registers
+result['credit_crc_qualification']=q
 P('out').mkdir(exist_ok=True);P('out/mapping.json').write_text(json.dumps(result,indent=2))
