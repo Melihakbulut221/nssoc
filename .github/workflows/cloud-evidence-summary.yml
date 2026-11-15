@@ -1,4 +1,4 @@
-name: Exact engine passive current transient orientation fixture
+name: Actual PLL4ns native current capture and original bit-prefix gate
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   readback:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 240
     env:
       GH_TOKEN: ${{ github.token }}
       PYTHONDONTWRITEBYTECODE: '1'
@@ -19,18 +19,18 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install numpy==2.3.3
-      - run: python3 -B scripts/pll_passive_dynamic_fixture.py
+      - run: python3 -B scripts/pll_current_prefix4ns.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pll-passive-dynamic-fixture-derived-${{ github.run_id }}
-          path: pll-passive-dynamic-fixture/
+          name: pll-current-prefix4ns-derived-${{ github.run_id }}
+          path: pll-current-prefix4ns/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pll-passive-dynamic-fixture-native-${{ github.run_id }}
+          name: pll-current-prefix4ns-native-${{ github.run_id }}
           path: cloud-pll-rhi120-c8-native/case/
           if-no-files-found: error
           retention-days: 90
