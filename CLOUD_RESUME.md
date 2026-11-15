@@ -1,3 +1,9 @@
+## Canonical integration CI running on refreshed prepared sources
+
+Integration commit7e046d88dcede61b92f2a96601fa40004ce24bb7 includes authenticated metadata/notice, fixture and no-skip Ibex boundary test, plus scoped evidence receipt. Explicit canonical checks run43727638507 is IN_PROGRESS with full_interfaces=true and native_boot=false. This is the actual integration run, not the experimental validator. Long native mapped boot remains a separate unresolved issue; no claim of boot/timing/fullPHY acceptance.
+
+Physical repair43727102369/job132851331678, combined sizing43726840782/job132850520498 and reduced-input PHY43727364585/job132852147581 all verified IN_PROGRESS in their native execution steps. No restart or cancellation. Wait for exact outcomes; then authenticate output hashes and compare all-corner setup/hold/electrical metrics before combining or selecting layout. Full objective active.
+
 ## Current prepared source replay and no-skip compatibility checks integrated
 
 Authenticated43726998790/headfec7a01 passed6base+6full tests and stalehashnegative refusal, no skips. Artifact14166482651 fullZIP SHAb2a65a3e73087e2f81dceb5c48892b19689590bd01dc106adaf82b489341434c and every memberSHA verified; actualJUnit6+6success/negativeerror inspected. Integrated new metadata+notice, fixture pointer, Ibex entry test using prepared_sources instead of skipped missing ROOT/gen file, and receipt. Compared integration source transforms to all metadatahashes and exact expected test/fixture diff. Only unused pytest import removed relative to testedhead (already cleaned on f27f41c). No experimental workflow or physics change included. Canonical checks dispatch with full interfaces follows this commit; not yet fullCI acceptance. Native timing43727102369,43726840782 and PHY43727364585 remain separate live workers. Full goal active.
