@@ -1,4 +1,4 @@
-name: Fresh three-corner STA and repair on exact ACK prefix RX local lane next-state mainchip CTS
+name: Measure actual ACK chip hold and critical setup branch margins
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/cloud_predecode_postcts.py
+          python3 -m py_compile scripts/measure_ack_chip_branches.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -30,16 +30,16 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native before and after STA with electrical and setup hold repair
-        run: python3 scripts/cloud_predecode_postcts.py
+      - name: Read-only per-branch all-corner STA on actual new chip
+        run: python3 scripts/measure_ack_chip_branches.py
       - name: Collect derived diagnostics
         if: always()
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('hw/soc/out/cloud-predecode-postcts');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('ack-chip-branches');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
-            for name in ['result.json','native.log']:
+            for name in ['result.json','native.log','targets.json']:
               p=root/name
               if p.is_file():
                 q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-prefix-chip-postcts-derived-${{ github.run_id }}
+          name: ack-chip-branches-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-prefix-chip-postcts-native-${{ github.run_id }}
-          path: hw/soc/out/cloud-predecode-postcts/
+          name: ack-chip-branches-native-${{ github.run_id }}
+          path: ack-chip-branches/
           if-no-files-found: error
           retention-days: 90
