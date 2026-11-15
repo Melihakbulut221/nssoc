@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/packed650-shared-upper-physical"
+BRANCH="codex/current650-clock-metal-physical"
 PAIRED="scripts/cdr650-paired-physical-input.json"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA='30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f'
@@ -51,10 +51,10 @@ def checker_text():
     return text,changes+extra
 def metadata(parent,gds,schematic,lef,inputs):
     need(isinstance(parent["ports"],dict)and len(parent["ports"])==25,"original public ports")
-    need(sha(gds)==json.loads((ROOT/"scripts/cdr650-upper-physical-input.json").read_bytes())["candidate_sha256"],"exact actual paired GDS")
+    need(sha(gds)==json.loads((ROOT/"scripts/cdr650-clock-physical-input.json").read_bytes())["candidate_sha256"],"exact actual paired GDS")
     need(gds.name==TOP+".gds"and schematic.name=="schematic.cir","checker file names")
     return dict(status="GENERATED_MOS650_CANDIDATE_REQUIRES_FULL_VERIFICATION",
-      source_head=os.environ["GITHUB_SHA"],generation_producer=json.loads((ROOT/"scripts/cdr650-upper-physical-input.json").read_bytes())["run"],top=TOP,
+      source_head=os.environ["GITHUB_SHA"],generation_producer=json.loads((ROOT/"scripts/cdr650-clock-physical-input.json").read_bytes())["run"],top=TOP,
       ports=parent["ports"],inputs={str(p.resolve()):sha(p)for p in inputs},
       outputs={p.name:sha(p)for p in(gds,schematic,lef)},
       original_450_nonmos_devices_unchanged=True,reference_from_original_schematic=True,explicit_mos_units=200,physical_acceptance=False,
@@ -287,7 +287,45 @@ def candidate():
     need(texts(ol)==texts(nl) and len(texts(nl))==25,"upper public labels unchanged")
     proof["ports"]=predecessor_proof["ports"]
     proof["predecessor_verified"]=dict(run=cfg["run"],source=cfg["source"],gds_sha256=hashlib.sha256(predecessor_bytes).hexdigest())
-    cfg=upper_cfg
+
+    # Independently authenticate the CP/CN successor after the full predecessor chain.
+    predecessor_bytes=candidate_bytes;predecessor_proof=proof
+    clock_cfg=json.loads((ROOT/"scripts/cdr650-clock-physical-input.json").read_bytes())
+    cr=acquire.api("actions/runs/"+str(clock_cfg["run"]))
+    need(cr["head_sha"]==clock_cfg["source"] and cr["status"]=="completed" and cr["conclusion"]=="success" and cr["run_attempt"]==1,"exact clock geometry producer")
+    clock_archives={}
+    for name,record in clock_cfg["artifacts"].items():
+        meta=acquire.api("actions/artifacts/"+str(record["id"]))
+        need(not meta["expired"] and meta["workflow_run"]["id"]==clock_cfg["run"] and meta["workflow_run"]["head_sha"]==clock_cfg["source"] and meta["digest"]=="sha256:"+record["sha256"],"clock artifact provenance")
+        path=target/("clock-"+name+".zip")
+        with path.open("xb")as stream:subprocess.run(["gh","api","repos/Melihakbulut221/nssoc/actions/artifacts/"+str(record["id"])+"/zip"],stdout=stream,check=True)
+        need(sha(path)==record["sha256"],"clock archive digest");clock_archives[name]=path
+    with zipfile.ZipFile(clock_archives["native"])as z:
+        need(z.namelist()==["candidate.gds"],"clock native inventory");candidate_bytes=z.read("candidate.gds")
+    with zipfile.ZipFile(clock_archives["proof"])as z:proof=json.loads(z.read("clock-metal-widening-proof.json"))
+    need(hashlib.sha256(candidate_bytes).hexdigest()==proof["candidate_gds_sha256"]==clock_cfg["candidate_sha256"],"clock GDS hash")
+    need(hashlib.sha256(predecessor_bytes).hexdigest()==proof["source_gds_sha256"]==clock_cfg["predecessor_sha256"],"clock exact predecessor")
+    need(proof["accepted"]is False and proof["added_layers"]==[30,50,67,126,134] and proof["original_top_hierarchy_and_labels_retained"] and proof["all_original_geometry_retained"] and proof["serialized_region_equality_checked"],"clock generation guards")
+    need(len(proof["components"])==10 and {(x["component"],x["metal"])for x in proof["components"]}=={(c,m)for c in [16,17]for m in [30,50,67,126,134]} and all(x["via_incidence_unchanged"]for x in proof["components"]),"exact two clock nets and five metals")
+    prior_path=target/"clock-predecessor.gds";prior_path.write_bytes(predecessor_bytes)
+    new_path=target/"clock-candidate.gds";new_path.write_bytes(candidate_bytes)
+    ol=db.Layout();ol.read(str(prior_path));nl=db.Layout();nl.read(str(new_path))
+    need(ol.dbu==nl.dbu==.001 and len(ol.top_cells())==len(nl.top_cells())==1 and ol.top_cell().name==nl.top_cell().name==TOP,"clock hierarchy units and top")
+    before=regions(ol);after=regions(nl);need(set(before)==set(after),"clock unchanged layers")
+    allowed=["30/0","50/0","67/0","126/0","134/0"];changed=[]
+    for key,region in before.items():
+        need((region-after[key]).is_empty(),"clock removed original geometry "+key)
+        if not(region^after[key]).is_empty():changed.append(key)
+        if key not in allowed:need((region^after[key]).is_empty(),"unexpected clock modification "+key)
+    need(set(changed)==set(allowed),"actual clock changed layers")
+    for key,vias in [("30/0",["29/0","49/0"]),("50/0",["49/0","66/0"]),("67/0",["66/0","125/0"]),("126/0",["125/0","133/0"]),("134/0",["133/0"])]:
+        patch=after[key]-before[key];need(not patch.is_empty(),"actual clock addition")
+        for via in vias:need((patch&before[via]).is_empty(),"clock changed via incidence "+via)
+    need(texts(ol)==texts(nl) and len(texts(nl))==25,"clock public labels unchanged")
+    proof["ports"]=predecessor_proof["ports"]
+    proof["predecessor_verified"]=dict(run=upper_cfg["run"],source=upper_cfg["source"],gds_sha256=hashlib.sha256(predecessor_bytes).hexdigest())
+    cfg=clock_cfg
+
     layout=target/"native/layout";layout.mkdir(parents=True)
     (layout/(TOP+".gds")).write_bytes(candidate_bytes)
     shutil.copyfile(baseline/"native/layout/schematic.cir",layout/"schematic.cir")
@@ -352,7 +390,7 @@ def prepare_layout(parent_base,new_base,checker):
     need(pin(layout/"schematic.cir")==json.loads((ROOT/CANDIDATE).read_bytes())["reference"],"exact independent650 reference")
     p=json.loads((old/"result.json").read_bytes());p["ports"]={n:str(b) for n,b in physical_ports.items()}
     inputs=[old/n for n in("result.json","schematic.cir",TOP+".lef",TOP+".gds")]
-    inputs.extend([new_base/"derived/result.json",new_base/("native/layout/"+TOP+".gds"),ROOT/CANDIDATE,ROOT/PAIRED,ROOT/"scripts/cdr650-upper-physical-input.json",ROOT/PARENT,checker,ROOT/"hw/soc/flow/make_pcie_clock_vco_v6_local_v1.py",ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
+    inputs.extend([new_base/"derived/result.json",new_base/("native/layout/"+TOP+".gds"),ROOT/CANDIDATE,ROOT/PAIRED,ROOT/"scripts/cdr650-upper-physical-input.json",ROOT/"scripts/cdr650-clock-physical-input.json",ROOT/PARENT,checker,ROOT/"hw/soc/flow/make_pcie_clock_vco_v6_local_v1.py",ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
     record=metadata(p,layout/(TOP+".gds"),layout/"schematic.cir",layout/(TOP+".lef"),inputs)
     (layout/"result.json").write_bytes(encode(record));save("candidate-layout-binding.json",record)
     return layout
@@ -405,7 +443,7 @@ def verify():
         for n in("lvs","lvs_flat"):
             need(record["steps"][n]["native_primitive_census"]==dict(npn13g2=124,sg13_lv_nmos=200,rppd=98,cap_cmim=7,ptap1=221),"650 transistor-level primitives")
         for p,h in record["inputs"].items():need(sha(Path(p))==h,"actual final physical input "+p)
-        need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/"scripts/cdr650-upper-physical-input.json").read_bytes())["candidate_sha256"],"actual paired candidate verified")
+        need(record["inputs"][str(layout/(TOP+".gds"))]==json.loads((ROOT/"scripts/cdr650-clock-physical-input.json").read_bytes())["candidate_sha256"],"actual paired candidate verified")
         gate()
         save("physical-qualification.json",dict(status="PASS_PAIRED_MOS650_GDS_FULL560_DRC_DEEP_FLAT_LVS13",gds=pin(layout/(TOP+".gds")),record=pin(OUT/"physical/result.json"),new_RC_executed=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False))
     except BaseException as exc:error=exc
