@@ -18,10 +18,10 @@ for exact producer runs and source hashes. All product gates in this document
 remain requirements; none is removed by a passing component test.
 
 The current lane-next mainchip candidate, source
-\`b2e5e00493c2770f69f2ef37ac07d7010c9a8a74\`, has completed synthesis and
+`b2e5e00493c2770f69f2ef37ac07d7010c9a8a74`, has completed synthesis and
 placement/CTS (runs 43680923081 and 43681407524). It contains 116050 mapped
 cells and twenty SRAM macros. Its own routed timing and physical release
-verification are not complete. The source's \`soc_top\` interface remains the
+verification are not complete. The source's `soc_top` interface remains the
 PCIe **packet boundary**, with externally supplied link/training signals;
 it is not the serial Gen3 x4 receiver/controller/PHY integration.
 The Ethernet interface remains GMII with external PHY/reference clocks.
