@@ -1,23 +1,29 @@
-name: Acquire exact passive select macro source
+name: Generate passive select resistor width candidate
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  source:
+  geometry:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 90
     env:
       GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - run: python3 scripts/acquire_select_passive_source.py
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
-          name: select-parent-source-${{ github.run_id }}
-          path: select-parent-source/
+          python-version: '3.12'
+      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 klayout==0.30.4.post1
+      - run: python3 -B scripts/generate_select_width_candidate.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: select-width-candidate-${{ github.run_id }}
+          path: select-variant-evidence/
           if-no-files-found: error
           retention-days: 90
