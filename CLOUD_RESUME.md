@@ -1,3 +1,12 @@
+## Initialized-output candidate measured; mixed result, not promoted as timing closure
+
+Run 43750556058/head 8a3c2eb4d4bc2d94df45a2384e6fef90057b72c6 completed successfully. Derived artifact 14176352623 SHA256 7fa7808bcd6d241610ee940a9872c50d74f1bf7fd0a44cc9ce8ba686157b6f15 and every included inventoried member verified in RAM. Native artifact 14176546994 advertised digest 1e346169a05785e4a31afdc65de3c7a8bbda880b186fd070f2bc91db9e72b78f (native ZIP not downloaded this turn). Candidate ODB eca868e9dfa2a98395ff4d940edd3bc97822409631aadcb3e0d43fb26f2be862.
+Setup count slow/typ/fast 2101/0/0, worst slack -1.59552/+0.235356/+1.11161 ns. Slow TNS -1589.97 ns. Compared with 6854 predecessor, worst slack improved but count 2100->2101 and TNS -1589.63->-1589.97 regressed; mixed candidate, NOT an unconditional improvement. Hold 0/0/0, worst slack +0.222705/+0.143183/+0.00520262 ns. Slew 36/6/3; cap zero. Neither final routing nor final timing accepted.
+
+Worst path now quarantine reset FF343559 to receive_ownership read_bank[0].r2_slot[0].lane_copy FF551935. Preserve 4 ns PCIe clock, propagated clocks, derates and hold delays. New report docs/timing/initialized-output-shared-path-profile.json ranks shared buffer delay over reported violated paths only. It is a heuristic for choosing guarded ECO experiments, not proof of benefit; inspect upstream loading and min paths, then rerun all three corners. Keep both 6854 and eca8 candidates available because aggregate regression is real.
+
+Electrical run 43751034595/head 71c9e88747cf83a498f29c19d4b8df7c433cab2f rechecked IN_PROGRESS. Do not restart it. Original full256bit nominal_late test and all electrical thresholds retained. Full serial PHY and main-chip integration remain open. GitHub owner/admin/push access verified. No local checkout or native artifacts created.
+
 ## Loaded trial setup fixture restored; corrected electrical run live
 
 43750849242/73c911e22a32872055966fc1f717f60fd99afa10 FAILED before electricalsimulation inintrinsic_variant: DERIVED/current-physical-cases.json missing. Exactsourceclosure,compositionmodel/probes,modelruntimeacquisition/modelreportpassed; missingstaginginputnotnativeelectricalfailure. Terminaljobconfirmed/readactualtrace,notrestartedonpolltimeout.
