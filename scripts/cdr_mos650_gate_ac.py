@@ -5,7 +5,7 @@ from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"paired650-full-composition";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/shared650-upper-full-composition"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/current650-clock-full-composition"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -323,7 +323,7 @@ def characterize(models):
   results[n]=(target,contract,bound)
   save(f"composition-n{n}.json",dict(partition=n,model=pin(target/"model.cir"),contract=pin(target/"contract.json"),
     probes=pin(target/"probes.json"),physical_devices=650,actual_intrinsic_MOS_instances=200*n,
-    metal_R=28634,metal_C=18488,native_MIM=7,physical_tail_units=bound["physical_mos_tail_count"],
+    metal_R=28414,metal_C=18356,native_MIM=7,physical_tail_units=bound["physical_mos_tail_count"],
     original_tail_families=bound["original_mos_tail_families"],stage_groups=len(bound["mos_tail_groups"]),
     all_actual_terminal_bindings_checked=True,**FLAGS))
   print("ASSEMBLED_ACTUAL650_PARTITION",n,flush=True)
@@ -347,18 +347,17 @@ def paired_current(dest):
   with path.open('xb')as out:subprocess.run(['gh','api','repos/'+REPO+'/actions/artifacts/'+str(aid)+'/zip'],stdout=out,check=True)
   need(pin(path)['sha256']==digest,'paired archive content')
   return zipfile.ZipFile(path)
- geometry=artifact(14148172598,'8325673484fce71cbbd9d2103e910d0e33810f2357cfc3e47db1d3cb3df5acc4',43680484913,'97150588f7cf9df96d32f61f32dd63ec4aa5c7e3','paired-geometry.zip')
- anchors=artifact(14148053860,'dd1a823739509bffac9a9296223908e5bbdca2a92377d638b1cf26feba3da2a3',43681114908,'ada33327319b35ec53eea1b3cba17a30060b8c00','paired-anchors.zip')
- identity=artifact(14148128097,'1b9b54eb2a11922da14262574c75a12b63fa6872ca667e29335d824648f05381',43680974890,'17297fd48eb45504f19c15f517c7ba69fdd017af','paired-identity.zip')
+ geometry=artifact(14154400256,'c79134cba9fcd33d749903b93d9a71b940771c3da7266ad4b1ed4ff051600248',43695046876,'7c253a13438932af701b33f6c9d6c76f2ddfa6b5','paired-geometry.zip')
+ anchors=artifact(14153204757,'e9233feee1c10354794dc7646b73b8fe9247113e3a1c070a8d0295d7c42e208f',43695818962,'8fc405e96adafb355d85e6da401df25b6ac22bfc','paired-anchors.zip')
+ identity=artifact(14154183456,'864aa69a2c72e061126c25841f46abfc17d4d2422a4e6a8b6fcdd5b604f8026a',43695470421,'d58ae1163bf3ba50206437c5c17cf63e299414a9','paired-identity.zip')
  rows={'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds':geometry.read('hw/soc/out/cloud-cdr-wire-shortcuts-physical/layout/nssoc_cdr_pd500_resistor_v59.gds'),
        'derived/gate-poly-access.json':anchors.read('gate-poly-access.json'),
        'derived/terminal-anchors.json':anchors.read('terminal-anchors.json'),
        'derived/lvs_flat-identity.json':identity.read('lvs_flat-identity.json')}
  for name,raw in rows.items():
   path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
- save('paired-current-acquisition.json',dict(files={n:pin(dest/n)for n in rows},geometry_run=43680484913,anchors_run=43681114908,identity_run=43680974890,**FLAGS))
+ save('paired-current-acquisition.json',dict(files={n:pin(dest/n)for n in rows},geometry_run=43695046876,anchors_run=43695818962,identity_run=43695470421,**FLAGS))
  return {n:pin(dest/n)for n in rows}
-
 def new_archive(aid,digest,run,source,name):
  import zipfile
  r=api('actions/runs/'+str(run));need(r['status']=='completed' and r['conclusion']=='success' and r['head_sha']==source,'qualified current native producer')
@@ -369,20 +368,20 @@ def new_archive(aid,digest,run,source,name):
  return zipfile.ZipFile(path)
 
 def new_metal(dest):
- z=new_archive(14148810524,'ee54cfd52b54b7ce963449a839280b0f31a68ddb152aa2b95dee061cd5f6434d',43681301520,'a81e8c3d4f38a9f836e710dce22085e6de39b97c','paired-metal-native.zip')
- s=new_archive(14148765623,'856c6667b3f0d848a412669dfc439d0349218b160816a29332b44bd1e5aaa743',43681301520,'a81e8c3d4f38a9f836e710dce22085e6de39b97c','paired-metal-safe.zip')
+ z=new_archive(14154956301,'217c4e367210a1f7de27b8820b5497c787bef1e89ad57104b56f23e60200c705',43696429827,'51f8af2cb8cf867e7fc15233096e2d31df9a12c0','paired-metal-native.zip')
+ s=new_archive(14154482289,'bdd6243a89b1394e46ed8fd948f1dd6842e40b88459b6c467a9db4b5b41cbc4f',43696429827,'51f8af2cb8cf867e7fc15233096e2d31df9a12c0','paired-metal-safe.zip')
  save('new-metal-archive-members.json',dict(members=z.namelist(),**FLAGS))
  report=json.loads(s.read('precise-mim-result.json'))
  for name in ('native/mim-precise/wire/anchors08.json','native/mim-precise/wire/rc03/wires.spice'):
   path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(z.read('mos650-metal-rc/'+name))
  path=dest/'derived/precise-mim-result.json';path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(s.read('precise-mim-result.json'))
  need(pin(dest/'native/mim-precise/wire/rc03/wires.spice')==report['result']['native_spice'],'exact current native metal netlist')
- need(report['result']['capture']['R']==28634 and report['result']['capture']['C']==18488,'actual current R C census')
- save('current-metal-acquisition.json',dict(run=43681301520,files={str(p.relative_to(dest)):pin(p)for p in dest.rglob('*')if p.is_file()},**FLAGS))
+ need(report['result']['capture']['R']==28414 and report['result']['capture']['C']==18356,'actual current R C census')
+ save('current-metal-acquisition.json',dict(run=43696429827,files={str(p.relative_to(dest)):pin(p)for p in dest.rglob('*')if p.is_file()},**FLAGS))
 
 def new_reduction(dest):
- z=new_archive(14149015728,'17c578b57dc780933d8b34e3f47a2c4280692cff922c6ad02e53d054e64d4cd6',43681872344,'a0f8e83e27889b7ad8fa28993c452a8884714aaa','paired-reduction-native.zip')
- s=new_archive(14148925763,'79bb3a11b2eb22eba2a35d89ee2bde4d452c18be1af0ee1f6140d8c4451681a2',43681872344,'a0f8e83e27889b7ad8fa28993c452a8884714aaa','paired-reduction-safe.zip')
+ z=new_archive(14155092029,'ce0ba53fab63b8a952d9d0c8f6a5542f9b5cc95cfaf946ef0c4f591d9c240d80',43697011992,'385dcedd4c42a5353c5fd930e5e882c94e7378c7','paired-reduction-native.zip')
+ s=new_archive(14154732668,'a59051eea20ed2a9bec8a4fcc47b74071396bc9466bb717568d393a79cecd50e',43697011992,'385dcedd4c42a5353c5fd930e5e882c94e7378c7','paired-reduction-safe.zip')
  report=json.loads(s.read('physical-gate-port-reduction.json'))
  need(report['native_simulator_executions']==503 and report['port_networks']==250 and report['native_fault_controls']==2 and report['nominal_R_network_port_reduction_qualified'],'complete native reduction qualification')
  need(len(report['groups'])==250,'all physical partition records')
@@ -391,7 +390,7 @@ def new_reduction(dest):
   for leaf,key in [('ports-and-matrices.json','matrices'),('reduced-positive-resistors.cir','reduced')]:
    name=f"native/reduction-g{row['group']}-n{row['copies']}/{leaf}"
    need(name not in files,'unique physical reduction member');path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(z.read(name));need(pin(path)==row[key],'exact qualified reduction member');files[name]=pin(path)
- save('current-reduction-acquisition.json',dict(run=43681872344,files=files,**FLAGS))
+ save('current-reduction-acquisition.json',dict(run=43697011992,files=files,**FLAGS))
 
 
 def main():
