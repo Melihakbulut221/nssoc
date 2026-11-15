@@ -5,14 +5,17 @@ import cdr_mos650_metal_rc as archive
 import cdr_mos650_geometry as original
 out=Path('select650-source-pins');out.mkdir()
 archive.NATIVE=Path('select650-pin-native');archive.NATIVE.mkdir();archive.DERIVED=out
-cfg=json.loads(Path(archive.CFG).read_text());parent=archive.NATIVE/'parent'
-archive.acquire(cfg['view'],parent,lambda n:n.startswith(('native/view/','native/selected/','derived/')))
-old=json.loads((parent/'native/view/wire/source-pins.json').read_text())
 P='repos/Melihakbulut221/nssoc/'
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
-r=api('actions/runs/43744181108');assert r['conclusion']=='success' and r['head_sha']=='ba72787f258e153e9d4070974b8558c817e6171d' and r['run_attempt']==1
-m=api('actions/artifacts/14173825484');assert m['workflow_run']['id']==r['id']and m['digest']=='sha256:ba416ff202c6bbd9706952fad3215120573a4c544890ec9eab1fb8d4a1040fc2'and not m['expired']
-b=subprocess.check_output(['gh','api',P+'actions/artifacts/14173825484/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];z=zipfile.ZipFile(io.BytesIO(b));gds=z.read('candidate650-select-width2.gds');assert hashlib.sha256(gds).hexdigest()=='8c42f6785d0b7ebac0a6d1b8f01d72943828a09ecf89b11f9ca05a3b4e771c77'
+oldrun=api('actions/runs/43695818962');assert oldrun['conclusion']=='success'and oldrun['head_sha']=='8fc405e96adafb355d85e6da401df25b6ac22bfc'and oldrun['run_attempt']==1
+oldmeta=api('actions/artifacts/14153204757');assert oldmeta['workflow_run']['id']==oldrun['id']and oldmeta['digest']=='sha256:e9233feee1c10354794dc7646b73b8fe9247113e3a1c070a8d0295d7c42e208f'and not oldmeta['expired']
+oldbytes=subprocess.check_output(['gh','api',P+'actions/artifacts/14153204757/zip']);assert 'sha256:'+hashlib.sha256(oldbytes).hexdigest()==oldmeta['digest']
+oldzip=zipfile.ZipFile(io.BytesIO(oldbytes));old=json.loads(oldzip.read('source-pins.json'))
+assert old['status']=='PASS_PAIRED650_PRIMITIVE_PINS_REBOUND_AFTER_VERIFIED_BAND_TRANSLATION'and old['target_gds_sha256']=='6023cf16271d3d49307b3967b056b4b11bfaa5534254dc89ba60f3dc21b6f82a'
+(out/'current-pin-parent.json').write_text(json.dumps(dict(run=oldrun['id'],artifact=oldmeta['id'],archive_sha256=oldmeta['digest'][7:],source_pins_sha256=hashlib.sha256(oldzip.read('source-pins.json')).hexdigest()),indent=2))
+r=api('actions/runs/43748270188');assert r['conclusion']=='success' and r['head_sha']=='4a37a0285be11fc7d424daa830887ec7bde5654b' and r['run_attempt']==1
+m=api('actions/artifacts/14175765192');assert m['workflow_run']['id']==r['id']and m['digest']=='sha256:a1381011a37b531184deedcca9e57e6bdba3ce18ac9d7a280ff0f00c1747504a'and not m['expired']
+b=subprocess.check_output(['gh','api',P+'actions/artifacts/14175765192/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];z=zipfile.ZipFile(io.BytesIO(b));gds=z.read('candidate650-select-width2.gds');assert hashlib.sha256(gds).hexdigest()=='5f66ce0cb46acfb580b517ba02b10f66560ba4200d9cfbba0b633a839cc59c5a'
 gpath=archive.NATIVE/'candidate.gds';gpath.write_bytes(gds)
 original.NATIVE=archive.NATIVE/'pdk';original.NATIVE.mkdir();original.DERIVED=out/'pdk-receipt';original.DERIVED.mkdir()
 pdk=original.pdk(json.loads(Path(original.CFG).read_text()));source=pdk/'libs.tech/klayout/python';sys.path[:0]=[str(source),str(source/'pycell4klayout-api/source/python')]
