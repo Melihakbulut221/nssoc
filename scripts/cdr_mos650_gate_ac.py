@@ -5,7 +5,7 @@ from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"paired650-full-composition";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/current650-clock-full-composition"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/current650-cascode-clock-loaded"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -292,7 +292,7 @@ def intrinsic_variant(models):
 
 def characterize(models):
  import cdr_mos650_full650 as full
- import cdr_mos650_full650_loaded as loaded
+ import cdr_mos650_clock_buffer_loaded as loaded
  cfg=read(ROOT/CFG)
  mim=NATIVE/"mim-current";mim.mkdir();new_metal(mim)
  reduction=NATIVE/"gate-reduction";reduction.mkdir();new_reduction(reduction)

@@ -1,4 +1,4 @@
-name: Assemble actual current650-clock metal gate intrinsic circuit and run frozen loaded case
+name: Test valid-Nx clock buffer with actual650 load and unchanged electrical gates
 on:
   workflow_dispatch:
 permissions:
@@ -41,14 +41,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: current650-clock-full-composition-derived-${{ github.run_id }}
+          name: buffer-loaded650-derived-${{ github.run_id }}
           path: paired650-full-composition/derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: current650-clock-full-composition-native-${{ github.run_id }}
+          name: buffer-loaded650-native-${{ github.run_id }}
           path: paired650-full-composition/
           if-no-files-found: error
           retention-days: 90
