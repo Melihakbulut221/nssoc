@@ -1,3 +1,15 @@
+## Buffered PHY diagnosis measured clock delay; report hash shadow fixed
+
+Diagnostic43725443962/head150a0ef SUCCESS; artifact14165713461 SHA78c6acc34efacab1a022c2e437270fbed0e4a9743e4d4d0ab79128c0534c0d4b authenticated. FullfailednativeZIP/raw verified byworker, originalsamplecounts reproduced, no activeHBT VCE violations. Source10ohm peakcurrent beforebuffer5.484523/5.329001mA versus originaldirect~26mA. Native localclockbase crossings23-26ps afterexternaledge,0missing over248events/device; noninterpolatedrows. Delay may contribute tosamplingfailure; notproofsolecause. Same-time observedinput truth table remainsdiagnostic, notlogicinversionproof.
+
+Found inheritedlocalizer variable shadow: archive digest variableexpected overwritten byclockpolarity, so oldsummary artifact_sha256=-1. ActualZIPcomparison beforeoverwrite usedcorrectSHA, so rawverificationexecuted, butreceiptfieldINVALID. Fixeddistinctarchive_sha256 plusfinalassertagainstAPIdigest, commitc73ef842de49f0ba8f9b4e7d26332000737975b9. Read-only corrected rerun **43725858840**, statusqueued. No native transient rerun, no acceptancegateschanged.
+
+## Source release created with owner API; assets still cloud-verified
+
+Pretaggedrun43725663204 FAILEDHTTP403 fromActionstoken despiteContents:write; artifact14165578868 SHA0818374395eb3b991416df2d8a66458bca7c58258c93340a8fed0adba084cd91. Exacttagalreadyverified. OwnerAPI successfullycreated release **446127809**, tagprepared-sources-20261115-43716663208,target589540e861dbd006d98f1de7622c0079ebd921ad,make_latestfalse. No localsource/nativefiles. Cloudworkerunchanged nowuploads/re-downloads/hashchecks assets intoexistingrelease: run **43725915316**, source374b, latestqueued/None.
+
+Readyvalidator **efa2587c4848f4eb7772e405ea8de232ae6c399d** binds exactrun43725915316/head374b/attempt1. NOTDISPATCHED untilpublicationSUCCESSandverifiedderivedmetadata. Residualholdmeasurement43725515099 remainsinprogressatlastpoll; SoCformal43710889358 stilllive. Fullgoalactive.
+
 ## Publication retry after owner access: HTTP504 and exact tag preparation
 
 Owner-dispatched43725447427/head374b FAILED with HTTP504 at releasecreate; log confirmsContents:write. This is distinctfromprevious403 underwrongaccount. Checkedrelease/tag afterterminalfailure: both404, so no ambiguouscompletedpublication. Created intendedimmutable tag prepared-sources-20261115-43716663208 pointingEXACT589540e861dbd006d98f1de7622c0079ebd921ad usingrestoredownerauth; no existingtagoverwritten. Redispatched unchangedpublicationworker as **43725663204** withpreexistingexacttag. Lateststatusin_progress/None.
