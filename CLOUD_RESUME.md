@@ -1,3 +1,11 @@
+## Shared-delay trial rejected unintended cell mirroring; fixed without weakening guard
+
+43729430502/da246d6 FAILED before STA, not a measured timing rejection. Derived14168002386 fullZIP SHA24c20b43fdc4c5f82e61fa5e8e02048a1a63e2de63fcd8979f37e25b5f41455f verified in RAM. Native log confirmed exact one-pin bypass guard completed, then inherited detailed_placement mirrored78245 instances despite0translation displacement; final orientation guard correctly raised Unexpected placement change. No candidate adopted. Failednative14168155850 SHA3cf11bbd3a56c61a48498e2882ce4927e492beb8db998303c3ac135ec66841f7 remainscloud.
+
+Fix3128bb965af5b1e7bf0b952a5f8ff34ed229304d: use already-proven hold repair policy to temporarily mark originalPLACED instancesFIRM, preventing optimizer mirroring; finalguard still requires identical coordinates/orientation, then restores and verifies originalplacementstatus beforewrite_views. Master/pin/net/portcensus, exactmeasuredsource and original clocks/derating remainunchanged. PythonASTchecked. Retried native **43730133822** on codex/new-rx-shared-hold-bypass; verifiedIN_PROGRESS. This supersedes failedrun43729430502, not a restart of a livejob. No timingoutcome yet.
+
+Low-margin repair43729972900/a8333ff and reduced-inputPHY43727364585/ed63d85 alsoverifiedIN_PROGRESS. Canonical43727638507 formal-and-boot progressed to doublefault/APBcocotb; no fullCI/physicalcompletionclaimed. Fullgoalactive; thisturnprogress from diagnosed terminalfailure and concretefix.
+
 ## Combined221-delay setup candidate retains hold0; measured low-margin improvement dispatched
 
 Combined43728240498/headb2ddf379726944957839e4e3755cc72e199df230 SUCCESS. Derived14167074480 fullZIP SHAfa6cb6d69d33622f36ac4a2bbbb3e7293629ae7c72f40b5abfd84c6f4aaf0b0c and all3state/minreport memberSHAs verified. CandidateODB **e975526a22a251cb830e24112eec64de5748754fc83000e441f7d2290f3ba9d4**. Native14167987249 SHAb484dcac548516118ba1fe04e485174d3057616dfb244b381da0f41c6472c99e,2090044530B cloud.221existingholdcells and10totalbufferupsizes retained. Setup slow/typ/fast2233/0/0,WS-1.8445/+.0185629/+.965397ns. Hold0/0/0,WS+.222705/+.0917479/+.000415001ns. Slew36/6/3,cap0. This is actual combined candidate, not mixed child metrics.
