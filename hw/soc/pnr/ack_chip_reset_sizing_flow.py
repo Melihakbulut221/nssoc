@@ -12,37 +12,16 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {input49} {sg13g2_buf_1 sg13g2_buf_2}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$767656} {sg13g2_nor2_1 sg13g2_nor2_2}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$761461} {sg13g2_nor4_1 sg13g2_nor4_2}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$738674} {sg13g2_nor4_1 sg13g2_nor4_2}
+ {fanout10862} {sg13g2_buf_2 sg13g2_buf_4}
 }
 set targets [dict keys $choices]
-if {[llength $targets]!=3} {error "Wrong measured resize census"}
+if {[llength $targets]!=2} {error "Wrong measured resize census"}
 if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
 foreach name $targets {
  set inst [$block findInst $name]
  if {$inst eq "NULL" || [[$inst getMaster] getName] ne [lindex [dict get $choices $name] 0]} {error "Reset target preflight mismatch $name"}
 }
-set driver [$block findInst {$abc$734931$auto$blifparse.cc:397:parse_blif$767656}]
-set dy [$driver findITerm Y]
-set wb [$block findInst wire7238]
-if {$dy eq "NULL" || $wb eq "NULL" || [[$wb getMaster] getName] ne "sg13g2_buf_8"} {error "Reset output or buffer missing"}
-set wa [$wb findITerm A]
-set rn [$dy getNet]
-if {$rn eq "NULL" || $wa eq "NULL" || [$wa getNet] ne $rn || [$rn getName] ne "u_pcie_cdc.reset_ni" || [llength [$rn getITerms]]!=2 || [llength [$rn getBTerms]]!=0} {error "Reset driver chain changed"}
-set release [$block findInst {$auto$ff.cc:337:slice$310738}]
-if {$release eq "NULL" || [[$release getMaster] getName] ne "sg13g2_dfrbpq_1"} {error "Reset release instance changed"}
-foreach {pin expected} {Q {u_pcie_cdc.destination_release[0]} D net20216 RESET_B net23863 CLK clknet_leaf_111_clk_i_regs} {
- set term [$release findITerm $pin]
- if {$term eq "NULL" || [$term getNet] eq "NULL" || [[ $term getNet] getName] ne $expected} {error "Reset release connectivity changed"}
-}
-set inp [$block findInst input49]
-set ip [$inp findITerm X]
-set delay [$block findInst hold23828]
-if {$ip eq "NULL" || $delay eq "NULL" || [[$delay getMaster] getName] ne "sg13g2_dlygate4sd3_1"} {error "Input recovery chain missing"}
-set sink [$delay findITerm A]
-set inet [$ip getNet]
-if {$inet eq "NULL" || $sink eq "NULL" || [$sink getNet] ne $inet || [$inet getName] ne "net49" || [llength [$inet getITerms]]!=2 || [llength [$inet getBTerms]]!=0} {error "Input recovery chain mismatch"}
 set ports_before {}
 foreach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}
 foreach name $targets {
@@ -65,11 +44,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_COMBINED_RESET_NOR4_SAME_INCIDENCE"
+puts "NSSOC_SHARED_PCIE_DRIVERS_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Combine SRAM reset and PCIe driver fixes"
+    name = "Size two shared violating PCIe drivers"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()

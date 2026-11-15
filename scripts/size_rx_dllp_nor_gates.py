@@ -30,18 +30,18 @@ try:
   dest=source/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw)
  rows=report['targets'];paths=report['paths']
  assert rows==json.loads(safe.read('targets.json')) and len(rows)==3
- # Bind exact measured worst PCIe path, preserving its full constraints.
+ # Select shared drivers only from reported violating Q-start paths.
  member='run/2-nssoc-sizedslow/max.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
- first=data.decode().split('Startpoint:')[1]
- assert '$auto$ff.cc:337:slice$160557' in first and 'Endpoint: $auto$ff.cc:337:slice$160680' in first
- assert '$761461/Y (sg13g2_nor4_1)' in first and 'slack (VIOLATED)' in first
+ violated=[p for p in data.decode().split('Startpoint:')[1:] if 'slack (VIOLATED)' in p and '/Q (' in p.split('data arrival time')[0]]
+ selected=[('$abc$734931$auto$blifparse.cc:397:parse_blif$738674','Y','sg13g2_nor4_1',233),('fanout10862','X','sg13g2_buf_2',145)]
+ census=[]
+ for cell,pin,master,expected in selected:
+  count=sum(cell+'/'+pin+' ('+master+')' in p.split('data arrival time')[0].split('/Q (',1)[1] for p in violated)
+  assert count==expected,(cell,count,expected)
+  census.append(dict(instance=cell,master=master,reported_violating_paths=count))
  r['critical_path_report_sha256']=report['outputs'][member]
- check_member='run/2-nssoc-sizedslow/checks.rpt';checks=safe.read(check_member)
- assert hashlib.sha256(checks).hexdigest()==report['outputs'][check_member]
- recovery=[p for p in checks.decode().split('Startpoint:') if 'Endpoint: $auto$ff.cc:337:slice$310738' in p and 'recovery check' in p]
- assert recovery and all('input49/X (sg13g2_buf_1)' in p and '$767656/Y (sg13g2_nor2_1)' in p and 'slack (VIOLATED)' in p for p in recovery)
- r['recovery_source_checks_sha256']=report['outputs'][check_member]
+ r['shared_driver_census']=census
  safe.close();native.close()
  r['source_archives']=[dict(id=14180460681,sha256='7de05629c8c45da8a34757eb1daf52cfa58998b02ba44f68b142105cdd570316'),dict(id=14179614696,sha256='77cb2268c36def7019817570cef1482fc529d2fc7ec9e408c65d164913b1c45d')]
  r['removed_verified_download_copies']=[]
@@ -70,7 +70,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="COMBINED_SRAM_RESET_NOR4_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source2b33 retains22SRAMbuffers and six driver resizes. Apply proven reset NOR767656/input49 and PCIe NOR761461 size changes together. Allcorner combined STA required; last SRAM A_MEN buffer is independent and not included. No final routed signoff.")
+ r.update(status="SHARED_PCIE_DRIVER_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source2b33 SRAM improvements retained. Only shared NOR738674 size1to2 and fanout10862 buf2to4; exact old masters and all original incidence preserved. Independent of combined reset/NOR761461 and final SRAM buffer candidates. Three corner STA required, not final routed signoff.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
