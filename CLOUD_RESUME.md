@@ -1,3 +1,11 @@
+## Both new timing candidates completed; authenticated compact comparison running
+
+43735491108/7b1b49fd31f792e97f259b2aaf03a1b08ccf24bb SUCCESS (current346delay staging sizing). Native14170478794 metadataSHA28158aac7871cf83ca7cd888a9dccab5f6c15b31916d89345d56e55d8b190368 size384779107B;derived14170063336 metadataSHA581d6036b40dc4ff3f96f43072c922b983fbeaee813fe6ae9d40dbcaee7d6970 size17976085B.
+
+43735708592/81d677c715cc29465403ed38bc7b9fbb1a736928 SUCCESS (bit5bypass on214delaylineage). Native14170990285 metadataSHA84ce1a208c21ac4c34e744960b266d0be8c6405f92983fbcb3c23252ace2ecdf size384754019B;derived14170865589 metadataSHA36f5fcc727690f6cfd5e0c0a9e020631a6766603b754692fdf1c4f3034996537 size17986946B. Numbersnotyetinspected. Archivecleanup reducesnativeoutput from~3.3GB to~385MB; originalsourceartifactsremaincloud. Needverifyresultremovedcopies/nozipoutputs receipt too, notsizealone.
+
+Dispatched43736726551/headcaf7ed23b7379cef41a412644e7f106191f664d6,codex/two-timing-candidates-compact,verifiedIN_PROGRESS. scripts/summarize_two_timing_candidates.py authenticatesbothexactsuccessfulproducerheads/attempt1,fullarchivehashes,all3states+globalmin/max+18branchreportspercandidate, assertsremoveddownloadcopiesexpected2/3 andnoneinoutputsmanifest. Exportsrawbranchreports,first5globalpaths,scalarresult+archive receipts/cornermetrics. ASTpassed. Nextreadsmallartifact, verifySHA, compareactualsetup/hold beforecombiningbit5repaironnew346delaycandidate. No fullCADrerun forsummary. PHY43727364585 stillverifiedlive. Currentturnprogress; fullgoalactive.
+
 ## Bit5 shared-delay topology qualified; one-pin bypass trial running
 
 Compact43735445777/340052fbd61f9a7499bd93a3380d7251c58f1a28 SUCCESS; compact14170177896 fullZIP SHA918a08d0e6fe7e0542c02381b0a49bbdfbe5a4443cc38b70958620a4a4b17f4c (42070B) verifiedRAM. Cloudscript authenticatesphysicalmeasurement43734364727/e7b5 andfulloriginalderived14170515411/1306de38..., all24consumedmembers. Rawreports inspected. SourceODBunchanged20b515. Bit5hold32105A/X minslow/typ/fast+.809978902/+.412984222/+.192794502ns; criticalXOR738686/B min+1.530964971/+.868574798/+.490187138ns andsetup-1.814112902/+.300249159/+1.499502540ns. NativeactualsourceFF175605/Q->head_last[5]->hold32105/A; outputnet32105 exactly805444/A and738686/B. No reusebit4counterpart.
