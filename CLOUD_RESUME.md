@@ -1,3 +1,11 @@
+## Third residual hold identified; exact-branch setup measurement dispatched — 2026-11-15
+
+Census43657314385/head4717859f79270dbdd22a1307003a310219f703d6 SUCCESS on codex/rx-three-residual-hold-census. Derived14138996569 SHA707333dec883f46332e1dcc6ee8c8731462e1e9d5d1dd25a9b6bbcfae8bb7e58 reads exact107repairODBbcc33... . Threefastnegativeendpoints:FF160423 -.020237ns andFF160725 -.012739ns (currentlatefeedbackECOtargets), plusFF162884 fromFF165926 -.001584ns. Thirdpath:165926/Q ->778838/B2(a22oi)->778838/Y ->778840/A2(o21ai)->778840/Y ->162884/D. Endpointslowsetup-2.765825ns, so blanketDdelayunsafe; measureactualshortbranch.
+
+Readonly43657463628/head12669ba4c370c5eae2712a94f29ff5dda4e74552 queued on codex/rx-third-hold-branch-timing:6reports3cornersmax/min THROUGH $abc$734844$auto$blifparse.cc:397:parse_blif$778838/B2. Restores107repairrun43655839647/native14138157525/ee48d106.../ODBbcc33... . Nodelayyet. Ifmarginspermit, addtargetedrepaironlyafterlateECOresult then remeasurecombinedalltargets/globalimpact. Two-branchlateECOwillnotdirectlymodifythisthirdsink; sourceFF165926alsofeedsalreadyrepairedbanches, so actualnewcandidateglobalcheckstillneeded.
+
+FullPHYloaded43657193496, lateECO43656972871/impact43657092967, newbankpostCTS43656292239 alllive atlastpoll. No successinferred. Keepfullproductiongoalactive.
+
 ## Widened gate reduction verified; fresh full650 loaded case dispatched — 2026-11-15
 
 Reduction43656724764/head273fc4523ce4534b909d935f72296595575ce3ac SUCCESS. Authenticatedsafe14139110010 SHA82d9f0dd0500d462c3c759c2d39134bda6c2e948b4a7be1ac6fb64297c249a8f; native14138466871 SHAc2b2a9a471c6a619d331341c653600b00b94d8d9357c3cc4091cdf50913b485c.250networks503nativeexecutions2faultcontrols; nominalRportreductiononly. Source75nmmesh74660407bytes SHAa9f431888484de7883ff3a6cc9cd2b15286368214ecc25620ee52689205adcf8. Receipt packed650-shared-widening-gate-reduction-20261115.json. ExtrinsicpolyC/materialcornerqualification/fullnonlinearintegration remainfalse.
