@@ -1,3 +1,16 @@
+## Authenticated path diagnosis completed; wait for new queue candidate
+
+Read-only diagnostic 43775930823/fd263f08a5fdd26d848865e327af2c461a23bbbd SUCCESS. Diagnostic artifact 14186526862 SHA256 73e36145232d54f077569ca3ad44eed105df2a0a32e29c70922302b398a47008 verified. Worker verified every member of source-derived archive 14186226268 against producer outputs. Full compact report saved in docs/timing/credit-crc-path-diagnosis-43775930823.json.
+
+Actual e59 credit/CRC-only residual paths:
+- Slow setup: staging[5][1] FF174792 -> receive_ownership commit_copies[3].write_copy[4] FF552034, -2.149719 ns. Critical data path includes weak buf1 740611 -> fanout8587 buf1 and NOR4 760683 (0.929349 ns output slew), NOR3_2 760694 (0.946217 ns output slew). These instance IDs belong ONLY to e59/ABC735191, not queue candidate.
+- Other top slow setup paths FF175775 -> read_bank[4].r2_slot[2].lane_copy FF552011/552006, -2.126425/-2.123166 ns.
+- Typical setup: reset-derived FF310756 -> pcie_initialized_o, -0.353682 ns; other top internal paths meet. Do not waive output constraint.
+- Worst hold all corners: pcie_training_i -> FF183526 through hold23721/input63/hold23722, slack -0.636595/-0.539264/-0.464779 ns. Other input residuals pcie_rx_error_i and pcie_rx_data_i[7].
+- Fast output hold: eth_txd_o[5] / [2] at -0.230339/-0.223771 ns. Preserve eth_gtx external interface clock/constraints.
+
+Next use exact new queue candidate postCTS 43775507971 to decide between source-specific data driver sizing and targeted input/output hold repair; do not transplant old instance identities. Queue placement 43775336220, postCTS43775507971, mapped boot43771666469, analog43771339958 all authoritatively live at this checkpoint. No restarts or acceptance claims.
+
 ## Credit/CRC postCTS measured result: NOT timing closure
 
 Run 43771562041 derived archive 14186226268 SHA256 586b8a9db44e4de004a3e929d5aec7b91fe2fb62dec4ff11c112d79bb926608f downloaded in RAM and whole-archive hash verified; result.json inspected. Native repair returned 0 in 1692.375 seconds, sources unchanged. Repaired ODB d4b55e0c8753f4c4ee0ed48cd1033fea40112db057b9f1000e619061383d5256. This is credit/CRC-only e59 lineage, NOT the new queue-count candidate.
