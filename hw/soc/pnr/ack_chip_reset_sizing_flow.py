@@ -12,12 +12,18 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {$abc$734931$auto$blifparse.cc:397:parse_blif$760730} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout7357} {sg13g2_buf_1 sg13g2_buf_8}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$760785} {sg13g2_and2_1 sg13g2_and2_2}
+ {fanout9482} {sg13g2_buf_2 sg13g2_buf_4}
+ {fanout9481} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout9466} {sg13g2_buf_2 sg13g2_buf_4}
+ {fanout9465} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout9463} {sg13g2_buf_2 sg13g2_buf_4}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$761647} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout4290} {sg13g2_buf_2 sg13g2_buf_4}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$778906} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout3653} {sg13g2_buf_1 sg13g2_buf_4}
 }
 set targets [dict keys $choices]
-if {[llength $targets]!=3} {error "Wrong measured resize census"}
+if {[llength $targets]!=9} {error "Wrong measured resize census"}
 if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
 foreach name $targets {
  set inst [$block findInst $name]
@@ -45,11 +51,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_COMMIT3_STAGING_DRIVERS_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_QUARANTINE_RESET_CHAIN_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size three staging commit3 drivers"
+    name = "Size nine quarantine reset chain buffers"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
