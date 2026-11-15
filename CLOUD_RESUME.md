@@ -1,3 +1,15 @@
+## Old RX margin repair complete; new RX setup/hold native experiments running
+
+**43714299681/8b72c3e96e93a3cc38902e5649f5493d2c900ca0 SUCCESS**. Derived **14162840855 /d8e43d4cf1f86d452b9231d72b6ead705a7324d4d7b0fc1a84ca762cca372bd3**, native **14162482681 /20409cbb2268c1f157e008b6811d7199ad6753cc252e6b01a5a6a353b4c90384** (1.72GB cloud only). Candidate ODB **9626a02146f01a57b32b85c035c384370ee3cb3a5edf5bedf31b99143653e754**, state run/4-nssoc-holdfast/state_out.json. Derived ZIP plus all3state/max/min hashes verified. Hold0/0/0,WS+.288109/+.136266/+.00457756ns; setup2716/25/0,WS-2.24368/-.351183/+.755945ns. Slew16/4/3,cap0. Fast reported sub50pspaths157 -> **27** (4264reportedpaths percorner); othercorners0. Not50psreserveclosure, notfinaltiming. Actual141additionalDLY stage preserves old271; candidate remains OLD RX2a345, do not transplant IDs or claim NEW RX holds closed. Receipt docs/evidence/ack-chip-margin-repair-result-20261115.json.
+
+NewRX readonly43715682174 and reset-size43715930015 both verified IN_PROGRESS at native measurement/ECO steps. Current native setup target reset-distribution fanout buffers; no result yet. Only superseded generic ancestor checks43712092757/head185526 cancelled after verifying diff solely workflow and postCTSworker and currentefa6 native43712102946success. Currenthead/nativework retained.
+
+## Valid-Nx analog repeat encountered a model-comment decoder issue; fixed without changing model bytes
+
+43715582272/45997e9 FAILED BEFORE any simulation: defaultUTF8 reader rejected0xb5 micro symbol in authenticated model comment. Derived **14162107110 /84f021badda1732db397ea1e331b2ad9dc34042b53ab16ec150571015cc60674** verified; native14162741153 /9064aab72196ffa069c20221857f76e9a02b852d93fe107cb9a04ace3a91218e retained. This does NOT refute the transistor-domain repair or qualify anything electrically.
+
+Fixed only model preflight reading to read_bytes().decode('latin-1') (lossless byte-to-codepoint inspection, no file rewrite). **43716130683 /0d5f38e9ce08fec744306a847b94437988f1aa1e**, codex/cdr-cascode-clock-buffer-screen, QUEUED atlastpoll. Circuit30validNxdevices, allmodels/solver/sources/envelopes unchanged. ASTpassed. Need actual six nativecase results; repeat no new circuitguess. FullPHY/fullchip/production objective stillactiveandunmet. Allcomputecloud.
+
 ## New RX reset-distribution sizing experiment dispatched with placement legalization
 
 **43715930015 /797c06051cde73076629381ed79fe8d0c5e6452f**, branch **codex/ack-rx-reset-tree-sizing**, queued at last poll. Parent70ddf859 newRX branch-measurement code; exact producer43712102946/efa6, native14162267126/4bbf12a0, derived14162406038/7d95470d, ODB815b689e unchanged source. Scripts **scripts/size_ack_rx_reset_tree.py**, **hw/soc/pnr/ack_chip_reset_sizing_flow.py**. Uses newRX restore and native branchSTA, no oldABC735174 mapping IDs.
