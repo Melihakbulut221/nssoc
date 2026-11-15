@@ -10,20 +10,20 @@ def digest(p):
     with open(p,'rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 def save(name,obj): (OUT/name).write_text(json.dumps(obj,indent=2,allow_nan=False)+'\n')
 def run():
-    meta=json.loads(subprocess.check_output(['gh','api',P+'actions/artifacts/14164934308']))
-    assert meta['workflow_run']['id']==43717632809 and meta['workflow_run']['head_sha']=='9709f80dfe3dcf1abeae5da770ee2ea7abdb1c5a' and not meta['expired']
-    producer=json.loads(subprocess.check_output(['gh','api',P+'actions/runs/43717632809']));assert producer['conclusion']=='failure' and producer['run_attempt']==1 and producer['head_sha']==meta['workflow_run']['head_sha']
-    archive_sha256='b29c348bce77354de4c311334900a17e12607cbe0238d65065cd7d5efc1feee0'
+    meta=json.loads(subprocess.check_output(['gh','api',P+'actions/artifacts/14170009078']))
+    assert meta['workflow_run']['id']==43727364585 and meta['workflow_run']['head_sha']=='ed63d8541533f9823beb2321eddba32c00625843' and not meta['expired']
+    producer=json.loads(subprocess.check_output(['gh','api',P+'actions/runs/43727364585']));assert producer['conclusion']=='failure' and producer['run_attempt']==1 and producer['head_sha']==meta['workflow_run']['head_sha']
+    archive_sha256='b12f0418e94da9228f4aa349f0b99af3a6aa11d682fbcfa7b4ca9dcce02172ff'
     assert meta['digest']=='sha256:'+archive_sha256
     archive=Path('/tmp/loaded650-native.zip')
-    with archive.open('wb') as f:subprocess.run(['gh','api',P+'actions/artifacts/14164934308/zip'],stdout=f,check=True,timeout=1200)
+    with archive.open('wb') as f:subprocess.run(['gh','api',P+'actions/artifacts/14170009078/zip'],stdout=f,check=True,timeout=1200)
     assert digest(archive)==archive_sha256
     with zipfile.ZipFile(archive) as z:
         names=z.namelist()
         def unique(s):
             found=[n for n in names if n.endswith(s)];assert len(found)==1,(s,found);return found[0]
         report=json.loads(z.read(unique('derived/loaded-n1-nominal_late.json')))
-        assert report['source_head']=='9709f80dfe3dcf1abeae5da770ee2ea7abdb1c5a'
+        assert report['source_head']=='ed63d8541533f9823beb2321eddba32c00625843'
         assert report['sources_unchanged'] and report['returncode']==0 and not report['diagnostics']
         assert report['status']=='REJECTED_WHOLE_MIM_ACTUAL650_LOADED'
         contracts=[n for n in names if n.endswith('.json') and z.getinfo(n).file_size==1509851]
@@ -34,7 +34,7 @@ def run():
         with z.open(unique('native/loaded-n1-nominal_late/wave.raw')) as inp,raw.open('wb') as out:
             import shutil
             shutil.copyfileobj(inp,out,1024*1024)
-    assert digest(raw)==report['raw_capture']['raw_sha256']=='8fa0dedff6a0519ea6fabb3f60adee47348bbf681447579e73537e89d3a8a8d6'
+    assert digest(raw)==report['raw_capture']['raw_sha256']=='c19b5649b288d2024a9c6932bd2750051cb270f52a02751fdf6c1e645e8c61cb'
     t,d,cap=read_streamed_wave(raw,report['vectors'],STOP,STEP)
     bound=report['binding']; aliases=bound['aliases']; active=t>=START
     def v(n):
@@ -143,7 +143,7 @@ def run():
     save('sampling-localization.json',observations)
     save('device-headroom-localization.json',bad)
     summary=dict(status='PASS_READ_ONLY_BUFFERED_FAILURE_LOCALIZATION',accepted=False,full_phy_accepted=False,
-        producer_run=43717632809,producer_head=report['source_head'],artifact=14164934308,artifact_sha256=archive_sha256,
+        producer_run=43727364585,producer_head=report['source_head'],artifact=14170009078,artifact_sha256=archive_sha256,
         raw_capture={k:v for k,v in cap.items() if k!='logical_vector_order'},phase_average_v=report['phase_average_v'],phase_gate=report['phase_gate'],
         devices_below_vce_gate=bad,sampling={k:{a:b for a,b in val.items() if a!='failed_samples'} for k,val in observations.items()},
         scope='Read-only failed buffered waveform; source current uses prebuffer nodes. Original sample gates reproduced exactly; nearest native context points separately labelled. No changed circuit, stimuli, timing gates, native simulation or acceptance.')

@@ -1,4 +1,4 @@
-name: Measure actual PHY clock source demand and comparator truth
+name: Diagnose reduced-input PHY clock and comparator failures
 on:
   workflow_dispatch:
 permissions:
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: buffered650-drive-truth-${{ github.run_id }}
+          name: reduced-input650-drive-truth-${{ github.run_id }}
           path: loaded650-localization/
           if-no-files-found: error
           retention-days: 90
