@@ -1,3 +1,11 @@
+## Formal frontend incompatibility corrected; equivalence now executing
+
+43763595569 /3c1d2a8b71cb94677f1214d93ac8f5198cabc957 terminalFAILURE beforeSAT. Actualjob132963621502 logs showYosys0.9/git1979e0b, reference.v:91 syntaxerror onexisting32bitSystemVerilogsizecast. This is parserfailure, notRTLcounterexample/equivalence. Artifact14181302536 SHA0529747dd67255c256edd9e75832a8318666c5c9935bda63b61d9660550f329d (version/prooflog). No reference/RTL/harness edits made to evade syntax.
+
+ChangedONLYworkflowrunnerUbuntu22.04->24.04 toobtainnewerformalfrontend, commit2f5f45a1ea57ea6f980da407bee9affe0967ecf0 oncodex/lcrc-upper-compare. NEW43763776791 job132964213209 verifiedIN_PROGRESS at Prove original and candidate packet boundary equivalent (installcomplete). No terminalproofyet, exactruntimeversionmustreadfromartifact. SameSATinduction/setup/scope, candidate defaultoff/notintegrated. Afterpass addnegativecontrolmutationsandinspectactualinductioncertificate/logbeforephysicalpromotion. Artifact lcrc-upper-compare-formal-43763776791.
+
+43763323946 combinedsharedphysicalcandidate and43759760309 Nx5PHY reverifiedIN_PROGRESS. Do notrestartactivejobs. Goalactive; fullPHY/routedmainchip/setupandproductiongatesopen. Thisturncorrectsactualtoolcompatibilityfailure and reachesformalexecution.
+
 ## Cycle-preserving CRC verdict RTL candidate and formal miter dispatched
 
 Reviewed exactmappedsource2dcbd7f9cedd8c9a70ee60b0adbc1cb5e2c96fd2 soc_pcie_sequence_rx.v/soc_pcie_lcrc_rx.v. Existing SOC_PCIE_SEQ_RX_REG alreadyregistersinputready; no duplicateoptimization. LCRC finalbyte verdict currently((SOP?ffffffff:crc)^data)==00be26ed. Candidate registers upper24comparison alongsideEVERYexistingCRCwrite, shortening latebyte verdict tolow8compare+flag. Exactenable: state!=EMIT && rx_valid && (SOP || (state!=IDLE && state!=DROP && !rx_error && received!=CAP+6)); resetflag0 matchesupperffffffff!=00be26. SOP verdictfalse becauseupperffffffffcannotmatch. No intended latency/ready/payload changes.
