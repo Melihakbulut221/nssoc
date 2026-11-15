@@ -1,4 +1,4 @@
-name: Size measured reset recovery NOR driver
+name: Size worst PCIe NOR4 driver
 on:
   workflow_dispatch:
 permissions:
@@ -30,7 +30,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Size measured reset recovery NOR driver and measure all corners
+      - name: Size worst PCIe NOR4 driver and measure all corners
         run: python3 scripts/size_rx_dllp_nor_gates.py
       - name: Collect derived diagnostics
         if: always()
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: reset-recovery-driver-derived-${{ github.run_id }}
+          name: pcie-worst-nor4-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: reset-recovery-driver-native-${{ github.run_id }}
+          name: pcie-worst-nor4-native-${{ github.run_id }}
           path: ack-chip-branches/
           if-no-files-found: error
           retention-days: 90

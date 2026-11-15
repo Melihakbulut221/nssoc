@@ -12,7 +12,7 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {$abc$734931$auto$blifparse.cc:397:parse_blif$767656} {sg13g2_nor2_1 sg13g2_nor2_2}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$761461} {sg13g2_nor4_1 sg13g2_nor4_2}
 }
 set targets [dict keys $choices]
 if {[llength $targets]!=1} {error "Wrong measured resize census"}
@@ -20,19 +20,6 @@ if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_
 foreach name $targets {
  set inst [$block findInst $name]
  if {$inst eq "NULL" || [[$inst getMaster] getName] ne [lindex [dict get $choices $name] 0]} {error "Reset target preflight mismatch $name"}
-}
-set driver [$block findInst {$abc$734931$auto$blifparse.cc:397:parse_blif$767656}]
-set dy [$driver findITerm Y]
-set wb [$block findInst wire7238]
-if {$dy eq "NULL" || $wb eq "NULL" || [[$wb getMaster] getName] ne "sg13g2_buf_8"} {error "Reset output or buffer missing"}
-set wa [$wb findITerm A]
-set rn [$dy getNet]
-if {$rn eq "NULL" || $wa eq "NULL" || [$wa getNet] ne $rn || [$rn getName] ne "u_pcie_cdc.reset_ni" || [llength [$rn getITerms]]!=2 || [llength [$rn getBTerms]]!=0} {error "Reset driver chain changed"}
-set release [$block findInst {$auto$ff.cc:337:slice$310738}]
-if {$release eq "NULL" || [[$release getMaster] getName] ne "sg13g2_dfrbpq_1"} {error "Reset release instance changed"}
-foreach {pin expected} {Q {u_pcie_cdc.destination_release[0]} D net20216 RESET_B net23863 CLK clknet_leaf_111_clk_i_regs} {
- set term [$release findITerm $pin]
- if {$term eq "NULL" || [$term getNet] eq "NULL" || [[ $term getNet] getName] ne $expected} {error "Reset release connectivity changed"}
 }
 set ports_before {}
 foreach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}
@@ -56,11 +43,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_RESET_RECOVERY_NOR_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_PCIE_WORST_NOR4_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size measured reset recovery NOR driver"
+    name = "Size worst PCIe NOR4 driver"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()

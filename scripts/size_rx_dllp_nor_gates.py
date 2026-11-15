@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43756546386");assert run["head_sha"]=="7ce9a64c4948534323731c88d537ac11a6746712"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43758008035");assert run["head_sha"]=="7253dc5e17f72458722a2677af401cec042528eb"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14179250243,"7d94769c10ad429f7c704448ea98b2ffaf9d94bbf16ed8868e479230b702a741","derived")
- native=archive(14178727716,"42b1618023962fb787387a4dd711535006b4ffcfd6fc31fb54154015efc8efc5","native")
+ safe=archive(14179995025,"83ec06bc3499886347b082eef69098444160c136b93b5d1b221861eedd12b519","derived")
+ native=archive(14179397749,"7e410ebd5699ec1755cedbf76bc77509611a00d7730846371656f44893eeb071","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43755093967
- assert report["candidate_odb_sha256"]=="5d9d77bfea375bde121ec1930f3faec0918270563834cc81742493af4cdbd32b"
+ assert report["source_run"]==43756546386
+ assert report["candidate_odb_sha256"]=="166610a71dac9d34b10de8b328a0bdb1577cab5df4ee736ea406b2e6ca4f944e"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -30,14 +30,15 @@ try:
   dest=source/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw)
  rows=report['targets'];paths=report['paths']
  assert rows==json.loads(safe.read('targets.json')) and len(rows)==3
- # Qualify the measured recovery path without adding timing exceptions.
- member='run/2-nssoc-sizedslow/checks.rpt';data=safe.read(member)
+ # Bind exact measured worst PCIe path, preserving its full constraints.
+ member='run/2-nssoc-sizedslow/max.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
- recovery=[p for p in data.decode().split('Startpoint:') if 'Endpoint: $auto$ff.cc:337:slice$310738' in p and 'recovery check' in p]
- assert recovery and all('pcie_retrain_done_i' in p and '$767656/Y (sg13g2_nor2_1)' in p and 'slack (VIOLATED)' in p for p in recovery)
+ first=data.decode().split('Startpoint:')[1]
+ assert '$auto$ff.cc:337:slice$160557' in first and 'Endpoint: $auto$ff.cc:337:slice$160680' in first
+ assert '$761461/Y (sg13g2_nor4_1)' in first and 'slack (VIOLATED)' in first
  r['critical_path_report_sha256']=report['outputs'][member]
  safe.close();native.close()
- r['source_archives']=[dict(id=14179250243,sha256='7d94769c10ad429f7c704448ea98b2ffaf9d94bbf16ed8868e479230b702a741'),dict(id=14178727716,sha256='42b1618023962fb787387a4dd711535006b4ffcfd6fc31fb54154015efc8efc5')]
+ r['source_archives']=[dict(id=14179995025,sha256='83ec06bc3499886347b082eef69098444160c136b93b5d1b221861eedd12b519'),dict(id=14179397749,sha256='7e410ebd5699ec1755cedbf76bc77509611a00d7730846371656f44893eeb071')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -64,7 +65,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="RESET_RECOVERY_DRIVER_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source5d9d: reset NOR767656 size1to2 only. Preserve all hold cells, reset semantics, clocks and timing checks. Independent of SRAM OAI batch. Fresh allcorner STA; not routed signoff.")
+ r.update(status="PCIE_WORST_NOR4_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source1666 retains22SRAMbuffers. Only worst-path ABC761461 nor4_1to2, all other masters/incidence/ports unchanged. Preserve hold/clock constraints. Independent of six remaining SRAM resizes and reset trials; allcorner STA required.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
