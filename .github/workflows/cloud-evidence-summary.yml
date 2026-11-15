@@ -1,4 +1,4 @@
-name: Measure all paths through109residual hold branches on combined database
+name: Measure later isolated branches of two setup-sensitive feedback paths
 on:
   workflow_dispatch:
 permissions:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-residual-branch-timing-derived-${{ github.run_id }}
+          name: rx-two-feedback-late-branch-timing-derived-${{ github.run_id }}
           path: |
             input-timing/result.json
             input-timing/native.log
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-residual-branch-timing-native-${{ github.run_id }}
+          name: rx-two-feedback-late-branch-timing-native-${{ github.run_id }}
           path: input-timing/run/
           if-no-files-found: warn
           retention-days: 90

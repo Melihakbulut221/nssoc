@@ -67,6 +67,6 @@ rows={}
 for p in (OUT/'run').glob('*/io-*.rpt'):
  text=p.read_text();v=re.findall(r'([-+]?[0-9]+\.[0-9]+)\s+slack\s+\((?:MET|VIOLATED)\)',text);assert v
  rows[str(p.relative_to(OUT))]={'worst_slack_ns':min(map(float,v)),'reported_paths':len(v),'sha256':prior.sha(p)}
-assert len(rows)==654
-assert len(rows)==654
-(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'reports':rows,'accepted':False,'scope':'Read-only exact combined IO ECO: all109remaining short-path first branch pins in three corners, max/min each; no layout change or routed signoff.'},indent=2))
+assert len(rows)==12
+assert len(rows)==12
+(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'reports':rows,'accepted':False,'scope':'Read-only exact combined IO ECO: two later feedback-branch first branch pins in three corners, max/min each; no layout change or routed signoff.'},indent=2))
