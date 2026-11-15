@@ -1,3 +1,25 @@
+## Access restored; current physical results and next cloud jobs
+
+The user restored access. `gh auth status` showed both accounts; switched the active saved account from mel11h to Melihakbulut221. Repository API now confirms push/admin true. The goal is active. No credentials were printed or copied.
+
+Both new RX trials completed successfully as experiments, NOT timing acceptance. Full derived ZIP SHA and per-corner state hashes independently verified:
+
+- Hold run43720921041/head15c0195: source0451 -> candidate441ff0490eb3239ba9011e1b5e08e99f7f8304a600e30ec38dc4806d10525e3e. Added214 delays on209 inputs. Hold slow/typ/fast counts0/0/7, worst slack+.222705/+.0846121/-.0299224ns. Setup2276/0/0, worst-1.86168/+.0185629/+.965397ns. Slew36/6/3,cap0. Derived14165417399 SHA54b555903714ceebf5648e9319743013f0fbf4cd0027fcf7d80571e8f45dd8e8; native14166012274 SHA792adf5a25ee7fb8f331aa19c208a0991a3d89c5620dde157acd36e9b84a973e. State run/4-nssoc-holdfast/state_out.json.
+- Quarantine sizing run43721847063/headb8089c8: source0451 -> candidate3ce326baddbae3fd57e15e40688213342dd1127c0cbf799c302689a4170efeef. Setup2233/0/0, worst-1.84451ns slow; hold unchanged1/2/210. Derived14165917559 SHA6b8bf8a9726d0ae9a1c0fb7b7fc1663ba87ad0f5031b2bbb5c48b9bf214cac86. This candidate is SEPARATE from hold repair; no combined acceptance. Worst now head_last[4]->rx_eop, including existing hold33182 delay.692288ns, then fanout3452/3451/3450/3449. Other critical paths link_up->r2_handshake and staging->commit (fanout8282 buf1 .893393ns delay). Do not remove hold cells blindly.
+
+Residual fast-hold endpoints:161171(-.029922ns),165885(-.024214),176732(-.008744),176731(-.004994),163157(-.002434),159806(-.001611),176723(-.001221). Existing measured endpoint setup is negative on several paths. Intermediate measured807934/A1 has.505898ns,760121/A has.380026ns,807891/B1 only.042615ns; none qualifies under prior1ns-per-delay rule. Many other intermediate inputs have no existing branch report, motivating the next native read-only measurement.
+
+Actual-load PHY run43717632809/head9709 FAILURE is an electrical rejection, not simulator crash: simulatorreturn0,3496.141s,stderr0,diagnostics[],sourcesunchanged. Derived14165465911 SHA192c9bc0f4a75abf5defb1d548ee1784e869023303764fc8dd1072be3ec6eae6 verified; native14164934308 SHAb29c348bce77354de4c311334900a17e12607cbe0238d65065cd7d5efc1feee0 remainscloud. Originaldevices_passedtrue and added30HBT buffer screenPASS(minactiveVCE.4356596V), but A/B/C/Dwrong129/95/98/153of765;below100mV129/173/144/161. Asettling60.53125ps,B/C/D118.90625ps versus unchanged37.5psgate. X/Ywrong414/123,below100mV695/554. Phase14.566706mV<30mV; VI40.125356uA<50uA. Buffer7idealR and physical650 not fullPHY acceptance.
+
+Publication43722855425 FAILED HTTP403 Resource not accessible by integration; artifact14166005175 SHA05818aa35e231c93947468da76f496dac59ba1c07a89619270d7d039b16aa8df verified. Earlier43717961699 failedHTTP502. Retried only after owner access restored; same source and idempotent no-clobber publication rules.
+
+New jobs:
+- codex/publish-prepared-source-refresh: run **43725447427**, head **374b0cc6dd4548c9f7f3d79d0a22985c65a5d695**, last observed completed/failure.
+- codex/buffered650-failure-localization: run **43725443962**, head **150a0ef2ae2f47ac3683a03ac5573d7d3c85427e**, last observed in_progress/None.
+- codex/new-rx-residual-hold-branches: run **43725515099**, head **adfa6e152dcf8560ed6cc5839682376c8a9d0633**, last observed in_progress/None.
+
+Prepared validator head **2d51320c9f01871f66214d10b92e5d28d4bbe853** now binds exact publication43725447427/head374b/attempt1, unchanged hashes/refusal tests. NOT DISPATCHED until publicationSUCCESS. Buffered localization worker uses exact failednative+raw SHA8fa0dedff6a0519ea6fabb3f60adee47348bbf681447579e73537e89d3a8a8d6, all original sample gates; source-current calculation correctly uses prebufferclk_inp/clk_inn, notcp/cn. Residual hold worker measures EVERY input on all reportedsub50ps paths and top10setup/corner, exact7negativefast-source check, no placement changes. All workcloud; no finalroute/fullPHY/production acceptance.
+
 ## Publication terminal HTTP502 retried; compact setup audit independently confirms target
 
 Publication43717961699 FAILED, artifact14164694678 SHA40ecd6989a9f5c810762093c3e9643798663c10438d90bb7b45b7eabcfc153ee verified. Actual joblog132823493627: GitHubHTTP502 at gh release create, AFTER authenticated replay/tar checks. API release lookup confirmed404/no partialrelease. Redispatched SAME source374b0cc6dd4548c9f7f3d79d0a22985c65a5d695 as **43722855425** (newrunattempt1), no source/gatechange and no successfulproducerrestart. Existingpublicationworker is idempotent and verifies anyexistingrelease/assets instead ofclobbering.
