@@ -12,12 +12,12 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {fanout9562} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout9560} {sg13g2_buf_2 sg13g2_buf_4}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$761694} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout3349} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout2201} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout1853} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout9642} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout9628} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout9616} {sg13g2_buf_1 sg13g2_buf_4}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$781299} {sg13g2_buf_1 sg13g2_buf_4}
+ {fanout3067} {sg13g2_buf_1 sg13g2_buf_4}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$739695} {sg13g2_nor3_1 sg13g2_nor3_2}
 }
 set targets [dict keys $choices]
 if {[llength $targets]!=6} {error "Wrong measured resize census"}
@@ -48,11 +48,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_SIX_QUARANTINE_RESET_BUFFERS_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_RETRY_RESET_DRIVERS_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size six measured quarantine reset buffers"
+    name = "Size five retry reset buffers and one NOR3"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
