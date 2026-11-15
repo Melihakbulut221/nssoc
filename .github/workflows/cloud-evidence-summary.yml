@@ -1,4 +1,4 @@
-name: Derived zero-delay CVC alias model preflight against untouched Icarus
+name: All affected IHP cells four-state functional alias qualification
 on:
   workflow_dispatch:
 permissions:
@@ -32,14 +32,19 @@ jobs:
           python3 hw/soc/flow/prepare_ihp_native_boot.py
       - name: Strict native reset data and X propagation probes plus mutations
         run: python3 scripts/probe_native_cvc.py
+      - name: Exhaustive affected-cell four-state transition comparison
+        run: python3 scripts/qualify_cvc_cells.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cvc-functional-alias-preflight-${{ github.run_id }}
+          name: cvc-four-state-cells-${{ github.run_id }}
           path: |
             cvc-probe/**/*.json
             cvc-probe/**/*.log
             cvc-probe/**/*.v
+            cvc-cell-qualification/**/*.json
+            cvc-cell-qualification/**/*.log
+            cvc-cell-qualification/**/*.v
             cvc-build.log
             cvc-source/OSS-CVC-MODIFIED-ARTISTIC-LIC.TXT
             cvc-source/CHANGES.md
