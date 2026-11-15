@@ -170,6 +170,37 @@ def run():
         settled[tag]=cases
     save('actual-comparator-settled-truth.json',dict(scope='Diagnostic real comparator data/select inputs with continuous stability windows. Native row counts are not independent bit tests. Original ideal-bit acceptance remains unchanged and failed; no delay allowance is added to acceptance.',cases=settled))
 
+    # Source-to-level-shifter observations on the captured physical wave.
+    # Match same-direction crossings only until the next source edge or 2UI.
+    # Missing/multiple crossings remain explicit; this is not a latency waiver.
+    def base_pair(positive_id,negative_id,positive_logic,negative_logic):
+        vals=[]
+        for did,logic in [(positive_id,positive_logic),(negative_id,negative_logic)]:
+            dev=bound['groups']['npn13g2']['xpd.xd'+str(did).zfill(4)]
+            assert by_id[did]['logical_terminals']['B']==logic
+            vals.append(v(dev['nodes'][1]))
+        return vals[0]-vals[1]
+    chains=[
+      ('a-data',v('xpd.aqp')-v('xpd.aqn'),base_pair(273,274,'uap','uan'),v('xpd.adp')-v('xpd.adn')),
+      ('c-data',v('xpd.cqp')-v('xpd.cqn'),base_pair(294,297,'ucp','ucn'),v('xpd.cdp')-v('xpd.cdn')),
+      ('b-select0',v('xpd.bqp')-v('xpd.bqn'),base_pair(295,299,'usp','usn'),v('xpd.s0p')-v('xpd.s0n')),
+      ('b-select1',v('xpd.bqp')-v('xpd.bqn'),base_pair(296,298,'usp','usn'),v('xpd.s1p')-v('xpd.s1n'))]
+    propagation={}
+    def crossings(values):
+        idx=np.flatnonzero(((values[:-1]<=0)&(values[1:]>0))|((values[:-1]>=0)&(values[1:]<0)))
+        return [(float(t[j]+(t[j+1]-t[j])*(-values[j])/(values[j+1]-values[j])),1 if values[j+1]>values[j] else -1,int(j))for j in idx if t[j]>=START]
+    for tag,source,base_input,output in chains:
+        stages={}
+        for name,left,right in [('sampler_to_driver_base',source,base_input),('driver_base_to_output',base_input,output),('sampler_to_output',source,output)]:
+            le=crossings(left);re=crossings(right);records=[]
+            for i,(at,sign,row) in enumerate(le):
+                end=min(at+2*UI,le[i+1][0] if i+1<len(le) else float(t[-1]))
+                matches=[(bt,br)for bt,bs,br in re if bs==sign and at<=bt<end]
+                records.append(dict(source_time_s=at,direction=sign,source_native_row=row,search_end_s=end,matched_crossings=len(matches),first_delay_s=matches[0][0]-at if matches else None))
+            found=[r['first_delay_s']for r in records if r['first_delay_s'] is not None]
+            stages[name]=dict(events=records,source_crossings=len(le),missing=sum(r['matched_crossings']==0 for r in records),multiple=sum(r['matched_crossings']>1 for r in records),minimum_delay_s=min(found)if found else None,median_delay_s=float(np.median(found))if found else None,maximum_delay_s=max(found)if found else None)
+        propagation[tag]=dict(stages=stages,active_differential_ranges_v={n:[float(arr[active].min()),float(arr[active].max())]for n,arr in [('sampler',source),('driver_base',base_input),('driver_output',output)]})
+    save('level-shifter-propagation.json',dict(scope='Read-only same-direction zero-crossing matching on exact native transistor base and output nodes. Missing/multiple events reported; no test phase, sample gate, circuit or acceptance modified.',chains=propagation))
     save('sampling-localization.json',observations)
     save('device-headroom-localization.json',bad)
     summary=dict(status='PASS_READ_ONLY_BUFFERED_FAILURE_LOCALIZATION',accepted=False,full_phy_accepted=False,
