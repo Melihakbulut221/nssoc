@@ -1,3 +1,16 @@
+## Credit/CRC postCTS measured result: NOT timing closure
+
+Run 43771562041 derived archive 14186226268 SHA256 586b8a9db44e4de004a3e929d5aec7b91fe2fb62dec4ff11c112d79bb926608f downloaded in RAM and whole-archive hash verified; result.json inspected. Native repair returned 0 in 1692.375 seconds, sources unchanged. Repaired ODB d4b55e0c8753f4c4ee0ed48cd1033fea40112db057b9f1000e619061383d5256. This is credit/CRC-only e59 lineage, NOT the new queue-count candidate.
+
+Corner order slow / typical / fast. Before -> after:
+- Setup violation counts: 2527/1078/360 -> 2543/1/0. Worst setup slack ns: -8.05948/-3.62558/-0.978766 -> -2.14972/-0.353682/+0.691027.
+- Hold violation counts: 458/994/14171 -> 3/28/282. Worst hold slack ns: -1.78812/-1.25643/-0.945498 -> -0.636595/-0.539264/-0.464779.
+- After register-to-register hold counts 0/0/242; typical register-to-register setup count 0. Port paths remain relevant; do not mask them.
+- Slew counts 159/16/2 -> 30/8/0. Cap counts 0/0/0. Fanout count 1333 each after repair.
+- Slow setup TNS -6174.18 -> -2795.29 ns, but endpoint violation count increased. Do not claim every metric improved. No routed RC or final timing acceptance.
+
+Next compare the independently running queue-count CTS/postCTS (43775336220,43775507971); inspect actual worst paths before new ECOs. Old 788b hold closure cannot transfer to this mapping. Boot and analog trials remain independent.
+
 ## Automatic exact-CTS timing continuation dispatched
 
 Queue/credit/CRC postCTS run 43775507971 (codex/queue-credit-crc-mainchip-postcts, 2f200e0ff6f514d714afc8d39873e5137cccc6c0) authenticates and waits for exact CTS run 43775336220/067d9d54efaecd131ad4bb146660da4684833a93. It requires successful producer, authenticates full archives and every output, binds queue netlist and original synthesis provenance, then performs independent before/after three-corner native repair/STA. Four underlying flow/derating files verified byte-equal to a137. No inherited timing acceptance or relaxed constraints. Experimental workflow remains off integration branch.
