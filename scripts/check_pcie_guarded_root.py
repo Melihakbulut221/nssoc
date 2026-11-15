@@ -36,7 +36,9 @@ def check_manifest(m,raw):
         assert set(legacy['admitted_root_deltas'])=={p for n,p in observed if n==name}
     assert set(observed)=={
       ('scripts/pcie-shared-serial-front-methods.json','.github/workflows/pcie-gen12-record-cdc-root-controls-cloud.yml'),
-      ('scripts/pcie-training-epoch-ingress-methods.json','hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v')}
+      ('scripts/pcie-training-epoch-ingress-methods.json','hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v'),
+      ('scripts/pcie-training-epoch-ingress-methods.json','docs/pcie-training-epoch-ingress-20261031.md'),
+      ('scripts/pcie-training-epoch-ingress-methods.json','hw/soc/rtl/soc_top.v')}
     for module,names in TESTS.items():
         t=ast.parse(raw['hw/soc/tb/cocotb/'+module+'.py'])
         found=[n.name for n in t.body if isinstance(n,ast.AsyncFunctionDef)and any(
