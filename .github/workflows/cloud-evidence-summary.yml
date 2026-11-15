@@ -1,4 +1,4 @@
-name: Check whole chip impact of residual short-branch hold candidate against combined repaired baseline
+name: Check whole chip impact of late feedback candidate against residual repaired baseline
 on:
   workflow_dispatch:
 permissions:
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: residual-short-hold-comparison-${{ github.run_id }}
+          name: late-feedback-hold-comparison-${{ github.run_id }}
           path: out/
           if-no-files-found: error
           retention-days: 90
