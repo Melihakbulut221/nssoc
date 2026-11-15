@@ -1,28 +1,22 @@
-name: Prove registered upper CRC verdict comparison
+name: Check CRC formal harness negative controls
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  formal:
+  controls:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Install formal runtime
-        run: sudo apt-get update -qq && sudo apt-get install -y yosys
-      - name: Prove original and candidate packet boundary equivalent
-        run: |
-          set -euo pipefail
-          mkdir formal-result
-          yosys -V | tee formal-result/version.txt
-          yosys -Q -T -l formal-result/proof.log -p 'read_verilog -formal -sv -DSOC_PCIE_SEQ_RX_REG hw/soc/rtl/pcie/soc_pcie_crc32_byte.v formal/lcrc_upper_compare/reference.v; read_verilog -formal -sv -DSOC_PCIE_SEQ_RX_REG -DSOC_PCIE_CRC_UPPER_COMPARE_REG hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v formal/lcrc_upper_compare/miter.v; prep -top lcrc_compare_formal -flatten; async2sync; memory_map; opt; sat -seq 4 -tempinduct -maxsteps 32 -set-assumes -set-init-zero -prove-asserts -verify' 
+      - run: sudo apt-get update -qq && sudo apt-get install -y yosys
+      - run: python3 formal/lcrc_upper_compare/check_controls.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: lcrc-upper-compare-formal-${{ github.run_id }}
+          name: lcrc-formal-controls-${{ github.run_id }}
           path: formal-result/
           if-no-files-found: error
           retention-days: 90
