@@ -51,10 +51,10 @@ def checker_text():
     return text,changes+extra
 def metadata(parent,gds,schematic,lef,inputs):
     need(isinstance(parent["ports"],dict)and len(parent["ports"])==25,"original public ports")
-    need(sha(gds)==json.loads((ROOT/PAIRED).read_bytes())["candidate_sha256"],"exact actual paired GDS")
+    need(sha(gds)==json.loads((ROOT/"scripts/cdr650-upper-physical-input.json").read_bytes())["candidate_sha256"],"exact actual paired GDS")
     need(gds.name==TOP+".gds"and schematic.name=="schematic.cir","checker file names")
     return dict(status="GENERATED_MOS650_CANDIDATE_REQUIRES_FULL_VERIFICATION",
-      source_head=os.environ["GITHUB_SHA"],generation_producer=json.loads((ROOT/PAIRED).read_bytes())["run"],top=TOP,
+      source_head=os.environ["GITHUB_SHA"],generation_producer=json.loads((ROOT/"scripts/cdr650-upper-physical-input.json").read_bytes())["run"],top=TOP,
       ports=parent["ports"],inputs={str(p.resolve()):sha(p)for p in inputs},
       outputs={p.name:sha(p)for p in(gds,schematic,lef)},
       original_450_nonmos_devices_unchanged=True,reference_from_original_schematic=True,explicit_mos_units=200,physical_acceptance=False,
@@ -352,7 +352,7 @@ def prepare_layout(parent_base,new_base,checker):
     need(pin(layout/"schematic.cir")==json.loads((ROOT/CANDIDATE).read_bytes())["reference"],"exact independent650 reference")
     p=json.loads((old/"result.json").read_bytes());p["ports"]={n:str(b) for n,b in physical_ports.items()}
     inputs=[old/n for n in("result.json","schematic.cir",TOP+".lef",TOP+".gds")]
-    inputs.extend([new_base/"derived/result.json",new_base/("native/layout/"+TOP+".gds"),ROOT/CANDIDATE,ROOT/PAIRED,ROOT/PARENT,checker,ROOT/"hw/soc/flow/make_pcie_clock_vco_v6_local_v1.py",ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
+    inputs.extend([new_base/"derived/result.json",new_base/("native/layout/"+TOP+".gds"),ROOT/CANDIDATE,ROOT/PAIRED,ROOT/"scripts/cdr650-upper-physical-input.json",ROOT/PARENT,checker,ROOT/"hw/soc/flow/make_pcie_clock_vco_v6_local_v1.py",ROOT/"scripts/cloud_cdr_wire_shortcuts_physical.py"])
     record=metadata(p,layout/(TOP+".gds"),layout/"schematic.cir",layout/(TOP+".lef"),inputs)
     (layout/"result.json").write_bytes(encode(record));save("candidate-layout-binding.json",record)
     return layout
