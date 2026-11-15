@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43751933582");assert run["head_sha"]=="c7bc39794e3b8ae2f6e33a390617d9106e327d9e"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43758008035");assert run["head_sha"]=="7253dc5e17f72458722a2677af401cec042528eb"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14176744096,"687b1a284e7cbd6e0d3924a402754bc2224b7b8af8ccdb35c2a613c3eb6a80de","derived")
- native=archive(14176139147,"d6ea40ac2e7a3fa4d3b9eec6f069ff9d8525b67bdb54509a42daa86cfc3f797b","native")
+ safe=archive(14179995025,"83ec06bc3499886347b082eef69098444160c136b93b5d1b221861eedd12b519","derived")
+ native=archive(14179397749,"7e410ebd5699ec1755cedbf76bc77509611a00d7730846371656f44893eeb071","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43750556058
- assert report["candidate_odb_sha256"]=="3972efe44d18244b27274c0204bde31bb79fa5e8a91a489871af5d16f8785ba4"
+ assert report["source_run"]==43756546386
+ assert report["candidate_odb_sha256"]=="166610a71dac9d34b10de8b328a0bdb1577cab5df4ee736ea406b2e6ca4f944e"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -30,38 +30,21 @@ try:
   dest=source/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw)
  rows=report['targets'];paths=report['paths']
  assert rows==json.loads(safe.read('targets.json')) and len(rows)==3
- # Bind newly worst reset-to-data path and measured weak drivers.
- member='run/2-nssoc-sizedslow/max.rpt';data=safe.read(member)
- assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
- first=data.decode().split('Startpoint:')[1]
- assert '$auto$ff.cc:337:slice$343559' in first
- assert 'Endpoint: $auto$ff.cc:337:slice$160968' in first
- for cell,pin,master in [('$abc$734931$auto$blifparse.cc:397:parse_blif$735962','Y','sg13g2_inv_1'),('fanout6391','X','sg13g2_buf_1'),('fanout4141','X','sg13g2_buf_1')]:
-  assert cell+'/'+pin+' ('+master+')' in first
- r['critical_path_report_sha256']=report['outputs'][member]
  check_member='run/2-nssoc-sizedslow/checks.rpt'
  checks=safe.read(check_member)
  assert hashlib.sha256(checks).hexdigest()==report['outputs'][check_member]
  text=checks.decode()
  slew=text.split('\nmax slew\n')[1].split('\nmax fanout\n')[0]
  pins=[line.split()[0] for line in slew.splitlines() if '(VIOLATED)' in line]
- assert len(pins)==36 and len(set(pins))==36
- m=re.search(r'Found (\d+) unannotated drivers\.',text);assert m and int(m[1])==1285
- rest=text[m.end():].splitlines();unannotated=[]
- for line in rest:
-  if not line.strip():
-   if unannotated:break
-   continue
-  if len(line.split())!=1:break
-  unannotated.append(line.strip())
- assert len(unannotated)==1285 and len(set(unannotated))==1285
+ assert len(pins)==9 and len(set(pins))==9
+ unannotated=[]
  assert all(not any(c in pin for c in '{}\n\r') for pin in pins+unannotated)
  (OUT/'probe-pins.json').write_text(json.dumps({'slew':pins,'unannotated':unannotated}))
  (OUT/'probe-pins.tcl').write_text('set slew_pins {'+' '.join('{'+p+'}' for p in pins)+'}\nset unannotated_pins {'+' '.join('{'+p+'}' for p in unannotated)+'}\n')
  r['probe_checks_sha256']=report['outputs'][check_member]
 
  safe.close();native.close()
- r['source_archives']=[dict(id=14176744096,sha256='687b1a284e7cbd6e0d3924a402754bc2224b7b8af8ccdb35c2a613c3eb6a80de'),dict(id=14176139147,sha256='d6ea40ac2e7a3fa4d3b9eec6f069ff9d8525b67bdb54509a42daa86cfc3f797b')]
+ r['source_archives']=[dict(id=14179995025,sha256='83ec06bc3499886347b082eef69098444160c136b93b5d1b221861eedd12b519'),dict(id=14179397749,sha256='7e410ebd5699ec1755cedbf76bc77509611a00d7730846371656f44893eeb071')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -89,12 +72,13 @@ try:
  r.update(candidate_state="run/1-nssoc-resetbuffereco/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert (OUT/"native-driver-probe.tsv").is_file()
  r["native_driver_probe_sha256"]=prior.sha(OUT/"native-driver-probe.tsv")
+ assert r["candidate_odb_sha256"]==r["source_odb_sha256"]
  r["timing_remeasured"]=False
  assert (OUT/"native-reset-release.tsv").is_file()
  r["native_reset_release_sha256"]=prior.sha(OUT/"native-reset-release.tsv")
  assert (OUT/"native-buffer-capabilities.txt").is_file()
  r["native_buffer_capabilities_sha256"]=prior.sha(OUT/"native-buffer-capabilities.txt")
- r.update(status="READ_ONLY_NATIVE_DRIVER_PROBE_NOT_SIGNOFF",sources_unchanged=True,scope="Read-only native ODB pin/net incidence probe for 36 SRAM slew pins and 1285 unannotated drivers. No resize or placement operation; no timing closure or fullPHY claim.")
+ r.update(status="READ_ONLY_NATIVE_DRIVER_PROBE_NOT_SIGNOFF",sources_unchanged=True,scope="Read-only native ODB pin/net incidence probe for nine remaining SRAM slew pins and their complete native input sink lists. No resize or placement operation; no timing closure or fullPHY claim.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()

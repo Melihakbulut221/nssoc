@@ -15,7 +15,7 @@ foreach inst [$block getInsts] {
 }
 source [file join $::env(GITHUB_WORKSPACE) ack-chip-branches probe-pins.tcl]
 set fh [open [file join $::env(GITHUB_WORKSPACE) ack-chip-branches native-driver-probe.tsv] w]
-puts $fh "kind\tpin\tnet\tsignal_type\titerms\tbterms\toutput_drivers\tinput_ports"
+puts $fh "kind\tpin\tnet\tsignal_type\titerms\tbterms\toutput_drivers\tinput_ports\tinput_sinks"
 foreach kind {slew unannotated} {
  if {$kind eq "slew"} {set names $slew_pins} else {set names $unannotated_pins}
  foreach pin_name $names {
@@ -40,15 +40,16 @@ foreach kind {slew unannotated} {
    puts $fh [join [list $kind $pin_name "" UNCONNECTED 0 0 [list [list [$inst getName] [[$pin getMTerm] getName] [[$inst getMaster] getName]]] {}] "\t"]
    continue
   }
-  set drivers {};set inputs {}
+  set drivers {};set inputs {};set sinks {}
   foreach term [$net getITerms] {
+   if {[$term getIoType] in {INPUT INOUT}} {lappend sinks [list [[$term getInst] getName] [[$term getMTerm] getName] [[$term getInst] getMaster]]}
    if {[$term getIoType] in {OUTPUT INOUT}} {
     set di [$term getInst]
     lappend drivers [list [$di getName] [[$term getMTerm] getName] [[$di getMaster] getName]]
    }
   }
   foreach port [$net getBTerms] {if {[$port getIoType] in {INPUT INOUT}} {lappend inputs [$port getName]}}
-  puts $fh [join [list $kind $pin_name [$net getName] [$net getSigType] [llength [$net getITerms]] [llength [$net getBTerms]] $drivers $inputs] "\t"]
+  puts $fh [join [list $kind $pin_name [$net getName] [$net getSigType] [llength [$net getITerms]] [llength [$net getBTerms]]  $drivers $inputs $sinks] "\t"]
  }
 }
 close $fh
