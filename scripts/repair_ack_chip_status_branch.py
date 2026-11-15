@@ -62,8 +62,9 @@ try:
  assert hashlib.sha256(base64.b64decode(model['content'])).hexdigest()==prior.sha(ROOT/'hw/soc/pnr/ack_chip_status_branch_flow.py')
  native_model=json.loads(subprocess.check_output(['gh','api','repos/IHP-GmbH/IHP-Open-PDK/contents/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v?ref=c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c']))
  raw=base64.b64decode(native_model['content']);assert hashlib.sha256(raw).hexdigest()=='28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4'
- module=re.search(r'module sg13g2_buf_4\b.*?endmodule',raw.decode(),re.S)[0]
- assert re.search(r'buf\s*\(X, A\);',module) and 'output X;'in module and 'input A;'in module
+ for cell in ['sg13g2_buf_1','sg13g2_buf_2','sg13g2_buf_4','sg13g2_buf_8','sg13g2_buf_16']:
+  module=re.search(r'module '+cell+r'\b.*?endmodule',raw.decode(),re.S)[0]
+  assert re.search(r'buf\s*\(X, A\);',module) and 'output X;'in module and 'input A;'in module
  r['identity_cell_definition_verified']=True
  app=Path(os.environ["CLOUD_APPIMAGE"]);prior.verify(app,"x86_64")
  protected={str(p):prior.sha(p)for p in [odb,initial,cfg,OUT/"targets.json",ROOT/"hw/soc/pnr/ack_chip_status_branch_flow.py"]}
@@ -75,7 +76,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="STATUS_BRANCH_BYPASS_EXPERIMENT_NOT_ACCEPTED",sources_unchanged=True,scope="Measured inputs on actual newACKchip, negative hold paths and top10 setup paths percorner; one sink bypasses three native noninverting buffers; all other incidence retained, no route/final acceptance.")
+ r.update(status="STATUS_BRANCH_BYPASS_EXPERIMENT_NOT_ACCEPTED",sources_unchanged=True,scope="Measured inputs on actual newACKchip, negative hold paths and top10 setup paths percorner; status AND4 input sinks bypass only their verified native noninverting buffer ancestry; all other incidence retained, no route/final acceptance.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
