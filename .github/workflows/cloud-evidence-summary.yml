@@ -1,4 +1,4 @@
-name: Compare original stale-only and full-delta ACK cones in frozen SG13G2 libraries
+name: Compare formally equivalent ACK borrow structures in frozen PVT libraries
 on:
   workflow_dispatch:
 permissions:
@@ -18,17 +18,17 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - run: python3 scripts/measure_ack_delta_prefix.py
+      - run: python3 scripts/measure_ack_borrow_topologies.py
         env:
           GH_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-delta-prefix-mapped-${{ github.run_id }}
+          name: ack-borrow-topologies-${{ github.run_id }}
           path: |
-            out-ack-delta-map/*.json
-            out-ack-delta-map/*.log
-            out-ack-delta-map/*.ys
-            out-ack-delta-map/*.v
+            out-ack-borrow-map/*.json
+            out-ack-borrow-map/*.log
+            out-ack-borrow-map/*.ys
+            out-ack-borrow-map/*.v
           if-no-files-found: error
           retention-days: 90
