@@ -43,7 +43,7 @@ for tag in 'abcdxy':
 result['clock_candidates']=[n for n in names if n.startswith('v(')and any(x in n.lower()for x in ('clk','clock','ckp','ckn'))]
 # Diagnose comparator polarity/settling against its actually observed inputs.
 result['actual_input_xor_checks']={}
-for tag,left,right in [('x','a','b'),('y','c','d')]:
+for tag,left,right in [('x','a','d'),('y','c','d')]:
  delta=v(tag+'p')-v(tag+'n');left_delta=v('xpd.'+left+'qp')-v('xpd.'+left+'qn');right_delta=v('xpd.'+right+'qp')-v('xpd.'+right+'qn')
  points=start+(indices+.5+.75)*ui
  measured=np.interp(points,t,delta);checks=[]
@@ -59,5 +59,21 @@ result['selected_aliases']={n:bound['aliases'].get(n,n)for n in selected}
 result['ports']=bound['ports']
 watch=set(result['selected_aliases'].values())
 result['connected_devices']={g:{name:dev for name,dev in group.items()if set(dev.get('nodes',[]))&watch}for g,group in bound['groups'].items()}
+result['correction']='Previous diagnostic X A/B correlation was not direct physical comparator input; X uses retimed A/D, buffered as AD/S0. This does not alter original functional expected samples or acceptance gates.'
+result['buffer_stage_checks']={}
+for label,p,n,bits_expected in [('AD','adp','adn',current),('CD','cdp','cdn',previous),('S0','s0p','s0n',previous),('S1','s1p','s1n',previous)]:
+ delta=v('xpd.'+p)-v('xpd.'+n);sign=2*bits_expected-1;measurements=[]
+ for phase in (.3,.5,.6,.75,.9):
+  vals=np.interp(start+(indices+.5+phase)*ui,t,delta)*sign
+  measurements.append({'phase_ui':phase,'wrong':int((vals<=0).sum()),'below100mv':int((vals<.1).sum()),'min_signed_v':float(vals.min()),'median_signed_v':float(np.median(vals))})
+ result['buffer_stage_checks'][label]=measurements
+result['buffered_xor_checks']={}
+for tag,left,right in [('x','ad','s0'),('y','cd','s1')]:
+ delta=v(tag+'p')-v(tag+'n');ld=v('xpd.'+left+'p')-v('xpd.'+left+'n');rd=v('xpd.'+right+'p')-v('xpd.'+right+'n')
+ points=start+(indices+.5+.75)*ui;measured=np.interp(points,t,delta);checks=[]
+ for delay_ps in range(0,81,5):
+  l=np.interp(points-delay_ps*1e-12,t,ld);rr=np.interp(points-delay_ps*1e-12,t,rd);valid=(np.abs(l)>=.1)&(np.abs(rr)>=.1);sign=np.where(l*rr<0,1.,-1.);signed=measured[valid]*sign[valid]
+  checks.append({'delay_ps':delay_ps,'strong_input_pairs':int(valid.sum()),'wrong':int((signed<=0).sum()),'below100mv':int((signed<.1).sum()),'median_signed_v':float(np.median(signed))if len(signed)else None})
+ result['buffered_xor_checks'][tag]=checks
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
 print(json.dumps({k:min(v['phase_sweep'],key=lambda x:(x['wrong'],x['below_100mv']))for k,v in result['signals'].items()}))
