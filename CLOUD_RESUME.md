@@ -1,3 +1,59 @@
+## Current recovery: timing candidates verified; reduced-input PHY rejected
+GitHub owner authentication and push/admin permission reverified. No local persistent source or CAD artifacts.
+
+Compact43736726551/caf7ed23 succeeded; full compact ZIP14169599566 SHA2291971ef16cd95789c4bdd7a18cdc3989303129afd83d14b36c14af7541b53f authenticated in preceding work. Current346-delay candidate43735491108/7b1b49fd has ODBbb7a8554565670dc9918249ecd4fc625dd41b9aacec6da5d8305f88a954ad18c: setup2170/0/0, worst -1.8152/+.0185629/+.965397ns; hold0/0/0 with +.222705/+.143165/+.00518863ns; slew36/6/3,cap0. Not routed timing closure.
+Separate214-delay bit5 bypass43735708592/81d677 has ODBdce5dd831c7f08a37dc2fb915b33e78d4d16506c970e17ab62ebe1ce06dfe4a5: setup2171/0/0,worst-1.790514ns;hold0/0/7 unchanged baseline. Cannot mix those results with current346-delay holdzero source.
+Recovered live run43737070576/head4ddcac924bb5c48dea6bc76e746a85fcf0e75e31,codex/new-rx-margin-headlast5-measure. Read-only requalification of bit5 hold32105/XOR738686/B on exactbb7a before combining bypass.
+Recovered live run43737191650/head787beb429b87825d01fbccf4115b11f5c397894e,codex/new-rx-dllp-nor-sizing. Independent214-delay source trial sizes DLLP critical739727 NOR2_1->2 and739732 NOR3_1->2; original measured gate delays .679290/.727554ns. No fabricated NAND3_2; source-bound native guards/all-corner STA pending.
+
+PHY43727364585/ed63d854 completed FAILURE. Full derivedZIP14170726509 SHAca3d1c881a890addc50131a891b34d62421b20daee717f4a79f4737fd9aa0f65 (272165B) authenticated RAM; native14170009078 metadataSHAb12f0418e94da9228f4aa349f0b99af3a6aa11d682fbcfa7b4ca9dcce02172ff remains cloud. Simulator return0,stderr0,5965.80686seconds; functional/electrical assertion correctly rejects. Reduced input/cascode driver does not close loaded timing: three positive outputfollowers xfp0..2 peak3.114435mA per emitter fail device screen. VI signed51.53398uA now passes its own gate; this does not fix sampler/comparator errors. Sources unchanged; fullPHYaccepted false. Need diagnostic measurement of archived raw wave and input/output edge displacement before next controlled circuit change; do not restart identical simulation, relax thresholds or integrate rejecteddriver.
+Canonical43727638507: pilotformal nowSUCCESS, socformal/checks stilllive, oldRTLanchor failure remains historical (separatefixalreadyintegrated). Full serial PHY/mainchip routing/final timing and production qualification remain open.
+
+Reduced-input scalar evidence (long sample arrays omitted):
+
+{
+  "comparisons": {
+    "x": {
+      "below_100mv_samples": 707,
+      "maximum_clock_to_valid_s": 1.189062500003487e-10,
+      "minimum_signed_margin_v": -0.13239314722754594,
+      "passed": false,
+      "samples": 765,
+      "wrong_sign_samples": 404
+    },
+    "y": {
+      "below_100mv_samples": 601,
+      "maximum_clock_to_valid_s": 1.189062500003487e-10,
+      "minimum_signed_margin_v": -0.008959137071276572,
+      "passed": false,
+      "samples": 765,
+      "wrong_sign_samples": 21
+    }
+  },
+  "diagnostics": [],
+  "status": "REJECTED_WHOLE_MIM_ACTUAL650_LOADED",
+  "vi": {
+    "actual_filter_connection": true,
+    "bias_passed": true,
+    "closed_loop": false,
+    "mean_output_difference_v": 0.014402748599263035,
+    "mean_signed_current_a": 5.153398179351501e-05,
+    "minimum_active_tail_current_a": {
+      "xtx": 0.00025273275229434144,
+      "xty": 0.00024926459577271216
+    },
+    "passed": true,
+    "phase_limits": {
+      "constant_maximum_abs_current_a": 5e-06,
+      "constant_maximum_abs_voltage_v": 0.002,
+      "minimum_signed_current_a": 5e-05,
+      "minimum_signed_voltage_v": 0.005
+    },
+    "phase_passed": true,
+    "real_input_loading": true
+  }
+}
+
 ## Both new timing candidates completed; authenticated compact comparison running
 
 43735491108/7b1b49fd31f792e97f259b2aaf03a1b08ccf24bb SUCCESS (current346delay staging sizing). Native14170478794 metadataSHA28158aac7871cf83ca7cd888a9dccab5f6c15b31916d89345d56e55d8b190368 size384779107B;derived14170063336 metadataSHA581d6036b40dc4ff3f96f43072c922b983fbeaee813fe6ae9d40dbcaee7d6970 size17976085B.
