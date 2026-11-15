@@ -1,3 +1,17 @@
+## RX per-input path benefit proven in isolated STA; full qualification live
+
+43707089634/6d133f9b1448c51c5e6be0bb6222c4901232cf49 PASS, artifact14159455175 SHA7aa06454c17ac458a95d60939776d15386be8c20c779902e27b8b91dc34862bf. Receipt docs/evidence/rx-dllp-per-input-sta-20261115.json. At CW6 (default MAX_TLP_DWORDS8 givesCAP38,CW6), output_index[0] arrival slow .965329->.606977ns,typ .603685->.378606,fast .395824->.252304. Slow worstlength-input .920053->1.238326ns (regression). AtCW8 index0 saves.388092ns butlengthalso slower. Overallisolatedcone-worse result didnot imply everyinputworse; candidate may help actualindex-start criticalpath. This isNOTchipgain; mustmeasurelengthpathsafterintegration.
+
+Fullmodule qualification **43707359187/d7719ea5449f3c61102f9a633692beaa19aa66be**, branch codex/rx-dllp-full-qualification. ExactRXsource865d687a272faf4a5077f79af21ace3b4afbe5085b640dd20f3512c8a43ff7d5 unchanged. Formalcommonflags READ2,RESET_COPIES,COMMIT_COPIES,CURSOR_LOCAL_RESET,LOCAL_LANE_NEXT inboth modules; gateadds ONLY DLLP_LAST_COMPARE. Existingequalresetcopycontract appliedboth, allotherinputs unconstrained. Parameters(dw4,slots1),(dw8,slots2), actualconditionalcompare inverted innegativecontrol. Trafficeightseeds x300k, completer/requester andsmallerparam, sameactualcomparison mutant; baseline defaultRTL. Addedmacro toshellwhitelist; nativevvp failurecode preserved evenifPASStext, rejectsFATAL/ERROR/MISMATCH. Workers qualify_rx_dllp_full_formal.py/qualify_rx_dllp_full_traffic.py. Twoartifacts rx-dllp-full-formal/traffic-RUN. No newRTLmainchipintegration orapprovalreuse untiltheseactualresultsverified.
+
+## Hold physical-name preflight correction
+
+43707023571/79757815ebec75ca9e46f43a1ba1b5d1a357134d passed inputporttarget166, then failedbeforecandidatepublication attarget228 flattenedreadbankand3input. Actualsourcepin '$flatten' prefix hasfourreportbackslashes; priorPythononcecollapse stilldidnotmatchODB. Derived14158792441 SHA7f98443cec0cdaf9e3d8d87f2cebe4c0857e9eeb003d6b7935026dc07a4efadf; native14159520343 SHAa4688665972631adc7f52234b492861d2c989cb49147bcefb058b01d566ecebd. No partialECO promoted.
+
+Current **43707520309/5680fc203d49785f1d33444d6e4b403a09bd5500**, sameholdbranch. Nativehelper tests literal reportname andsuccessive doublebackslashcollapse against findInst; requires EXACTLYONEphysicalmatch, sameexpectedmaster/inputpin. PreflightsALL254targetnames BEFOREanymutation, thenusesresolvedinstance. Keeps original267delays, measuredallcornerheadroom, exact1inputportor1internaldriverguards and allotherincidence/externalportnets/placements. No wildcardmatching oromittedtargets. Await actualresult.
+
+Statusbranch43706430499/b57d33515715591c62adc9ba328f65920db21b04 andPLL130ns43703613123/90c1662b6d2597d85fdd171ff3e91deaf4825e7f remainlive. Scope remains fullPHY/mainchip/routing/allcornerfinaltiming/production; diagnostic passes arenotacceptance.
+
 ## Hold repair controller fixes and additional PHY diagnosis
 
 Original hold run43706172494/227ee398324dbf6d4ea65d95e8a5e8fe0e911b6f failed BEFORE native flow: Python tuples in path pins compared to JSON lists. Both serialized254path/778target bindings were verified exactly equal. Derived14158830365 SHA95b9909f0df192c3ebc23bd39009ca3dd3bcd9a2828d3694c42d183cadda6a0b; native14158302929 SHAb917e048addd96a4241ca305a0cf9131c7cfb6a62139968df6b359a8191ba592. Normalize only representation via json.loads(json.dumps(paths)).
