@@ -1,4 +1,4 @@
-name: Build exact ACK-prefix mainchip retaining qualified lane CRC and EOP optimizations
+name: Build qualified ACK and RX DLLP compare mainchip candidate
 on:
   workflow_dispatch:
 permissions:
@@ -13,6 +13,7 @@ jobs:
       SOC_PCIE_RX_CURSOR_LOCAL_RESET: '1'
       SOC_PCIE_RX_LOCAL_LANE_NEXT: '1'
       SOC_PCIE_ACK_STALE_PREFIX: '1'
+      SOC_PCIE_RX_DLLP_LAST_COMPARE: '1'
       SOC_ETH_FIFO_RDREG: '1'
       SOC_BUSSTAT_EVPEND: '1'
       SOC_SRAM_MBIST_PIPE: '1'
@@ -75,14 +76,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-prefix-mainchip-source-native-${{ github.run_id }}
+          name: ack-rx-dllp-mainchip-source-native-${{ github.run_id }}
           path: native/build.tgz
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-prefix-mainchip-mapping-${{ github.run_id }}
+          name: ack-rx-dllp-mainchip-mapping-${{ github.run_id }}
           path: |
             out/mapping.json
             out/rx-qualification-gate.json
@@ -92,7 +93,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-prefix-replay-regressions-${{ github.run_id }}
+          name: ack-rx-dllp-replay-regressions-${{ github.run_id }}
           path: |
             out/qualification.json
             out/case-*.log
