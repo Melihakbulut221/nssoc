@@ -1,3 +1,11 @@
+## Fresh widened metalRC PASS; new RX-bank postCTS repair launched — 2026-11-15
+
+RC43655950942/headae914da1b8791477927d34ac8c8b50c060d2921a SUCCESS. Derived14137894183 SHA7dae990a1588017ff8d273dbb276a83134cbad90c9ae6690dde0bc7e5598aa13 independentlyauthenticated; native14138785042 SHAdbbaaa2f8d2dfeb5267bc08165541dd2587d74c9eb34f6010183513bd5ab2ae8 stayscloud. Fresh28634R18488C,7nativeMIM, bothnativeorders equal,13wire+9MIMfaults perorder. Receipt packed650-shared-widening-metal-rc-20261115.json. Counts equaloldgeometry do NOT implyequalvalues or benefit. Next freshgate/contact RC/full650composition on exactnewGDS and compare sharednetR/C then frozenloaded electrical tests. No electrical/fullPEX/fullPHY acceptance; substrateR/materialPVT stillopen.
+
+NewRXbank postCTS43656292239/headc536109095cf62d8efcbde4ba9dc144e2e66fb89 live on codex/rx-bank-chip-postcts. Based exactnewRTLbranch37635e..., restores mapping43651528850 and completedCTSjob132627989572 of43653859525. Native14136884328/d97e80b... andsafe14137827409/cbe6f... exactCTSODB041e9a... . Verifiesnewnetlistff7ab... and20macros; old metricsdiscarded, original20/4/8/8ns and5%derates/propagatedclocks preserved. Existingelectrical+timingrepair flow with3cornerbefore/after checks. Bootindependentpending. Newnetlistresults cannotreuseoldercursorECOproof.
+
+Older107residualholdECO43655839647, impact43655889301, twolatebranchmeasurement43656054797 allstilllive atlastcheck. Do notduplicate. No newholdclosureyet.
+
 ## Two setup-sensitive feedback paths: measure after fanout split — 2026-11-15
 
 Current107branchECO43655839647 and impact43655889301 remain live; newPHY RC43655950942/headae914da1b8791477927d34ac8c8b50c060d2921a also live. No restart or acceptance claims.
