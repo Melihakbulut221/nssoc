@@ -1,3 +1,13 @@
+## Current346-delay shared branch measured; actual combined setup/hold trial running
+
+Read-only43732030174/b70c4888f5c912b072f7b594a11339c5de8f4c78 SUCCESS. Derived14169073173 ZIP SHA2db2f422baccc23754034e68c2cb2138b1128ee6d69650819f13c2b4710044f6 (17940212B) authenticated in RAM; all3state,18branch min/max and3nativeconnectivity memberhashes verified. CandidateODB unchangedc887b622caf91307037b00e780ec73b52bfc4b8ab9700ba9c919625959876e09. Native14169048627 SHA570508ed85470ba13617bbc0408fb02710fed01224b9c62ef7983723c9ccca9e (2869586767B) stayscloud.
+
+Sharedhold33182 input/output minslow/typ/fast+.818965912/+.418567866/+.196297929ns; criticalXOR738684/B min+1.529207230/+.864189625/+.483826339ns. XORsetup-1.844499707/+.283951968/+1.492695570ns. Nativecensus stillFF175604/Q->head_last[4]->hold33182/A; outputnet33182 exactly805438/A and738684/B. This revalidates topology/margins on actual346delay source, not old214delay source.
+
+Dispatched43733131689/head8dda53af23853b6a7c690ddb7c626335ac057415, codex/new-rx-margin-shared-bypass; verifiedIN_PROGRESS onlyaftermeasurementproducerSUCCESS. Worker scripts/trial_rx_margin_shared_bypass.py restores exactc887 physicalproducer43729972900/a8333ff(native14168212861/f825619,derived14168124662/cb76b7) and independentlyauthenticates newmeasurement43732030174/14169073173. Requires125newdelays onsource43728240498 and originalmeasuredworstpath; unchangedminimumqualification1.5/.8/.48ns. Reuses provenonepinECO: ONLYcriticalXOR bypasseshold33182,otherloadkeepsdelay; allmasters,pins,nets,ports,coordinates,orientation,status invariant,temporaryFIRM topreventmirroring. All346delays retained. Freshglobal3corner+branchSTA; anynewholdviolation rejectsacceptance. No finaltiming/fullPHY acceptance asserted. ASTpassed; outcome pending.
+
+Stagingbuffertrial43732602282 and actual650PHY43727364585 stillliveatlastpoll; no restart. Prior turnverifiedwait; currentturn concretecombinedtrial fromfreshmeasurements. Fullgoalactive.
+
 ## Link-up sizing reduces setup count; staging buffer trial dispatched
 
 43731420109/3668f06febc8b96cc69d600061916f70b991f08b SUCCESS. Derived14168957702 ZIP SHA70de0599a4928d614f38d52172f690d9044458e32ab23771460a44ccffd8ba48 (17954453B) authenticated in RAM, all3cornerstates+slowmax/fastmin memberhashes verified. Native14169002716 SHAa06f4957dd597c88d259c5b50d05557ce3b7ced223fa3cdc2d3a81b06d7c7bae (2473256781B) stayscloud. CandidateODB2bbca33cd4b0711000abd1fa79f8fdd63a2d514ba232901115057a3d4f5d8174, state run/4-nssoc-sizedfast/state_out.json. From0ec7: setup2233->2172slow,typ/fast0;WS-1.82121/+.0185629/+.965397ns. Hold0/0/7 WS+.222705/+.0846121/-.0299224ns unchanged; slew36/6/3,cap0. This is214delay lineage, NOT346delay holdzero candidate; no mixedmetrics.
