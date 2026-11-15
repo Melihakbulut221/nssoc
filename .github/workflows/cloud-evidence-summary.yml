@@ -1,33 +1,25 @@
-name: Regenerate independently replayed current dependency evidence
+name: Publish independently replayed prepared source evidence
 on:
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
+  actions: read
 jobs:
-  replay:
+  publish:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir PyYAML==6.0.2
-      - name: Regenerate and independently replay pinned Ibex and both interface profiles
-        run: python3 -B scripts/cloud_refresh_prepared_sources.py
+      - name: Authenticate native producer package and publish immutable new release
+        run: python3 -B scripts/cloud_publish_prepared_sources.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: prepared-source-refresh-derived-${{ github.run_id }}
-          path: prepared-source-refresh/derived/
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: prepared-source-refresh-native-${{ github.run_id }}
-          path: prepared-source-refresh/
+          name: prepared-source-publication-derived-${{ github.run_id }}
+          path: prepared-source-publication/derived/
           if-no-files-found: error
           retention-days: 90
