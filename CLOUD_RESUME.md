@@ -1,3 +1,9 @@
+## Current widened PHY gate/contact mesh launched — 2026-11-15
+
+Gate mesh43656489981/headb102cbfba2f92a61931ff4933e044cf2e6d0a918 live on codex/shared650-widened-gate-mesh. Fresh actual GDS1640350bytes SHA f93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe from authenticatedgenerator43654184010/native14137186920, currentanchors43655485838/derived14138025358, currentidentity43655245035/derived14136829675. Sourceclosurepins refreshed. Existing actual200contacts/200MOS/50groups,600/300/150/75nm mesh,analytic70ohm rectangle and native currentconservationchecks unchanged. Material7ohm/square and15ohm/contact remain nominal, NOT PVT/signoffqualified. No currentmeshpassclaimed yet. Next inspect output then fresh portreduction/full650composition with newmetalRC43655950942 and frozen loaded transient; do not reuse oldgeometry acceptance.
+
+At lastcheck107holdECO43655839647 and latebranchmeasurement43656054797 stillhave noartifacts and arelive; impact43655889301 waits exactproducer. NewbankpostCTS43656292239 also live. Existing provenmetalRCreceipt below; fullPHY/electrical/finaltiming/productionremainopen.
+
 ## Fresh widened metalRC PASS; new RX-bank postCTS repair launched — 2026-11-15
 
 RC43655950942/headae914da1b8791477927d34ac8c8b50c060d2921a SUCCESS. Derived14137894183 SHA7dae990a1588017ff8d273dbb276a83134cbad90c9ae6690dde0bc7e5598aa13 independentlyauthenticated; native14138785042 SHAdbbaaa2f8d2dfeb5267bc08165541dd2587d74c9eb34f6010183513bd5ab2ae8 stayscloud. Fresh28634R18488C,7nativeMIM, bothnativeorders equal,13wire+9MIMfaults perorder. Receipt packed650-shared-widening-metal-rc-20261115.json. Counts equaloldgeometry do NOT implyequalvalues or benefit. Next freshgate/contact RC/full650composition on exactnewGDS and compare sharednetR/C then frozenloaded electrical tests. No electrical/fullPEX/fullPHY acceptance; substrateR/materialPVT stillopen.
