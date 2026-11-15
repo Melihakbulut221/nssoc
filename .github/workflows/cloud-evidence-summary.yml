@@ -22,10 +22,10 @@ jobs:
         run: |
           python3 - <<'PYCODE'
           from pathlib import Path
-          driver=Path("scripts/run_combined_nearzero_repair.py").read_text()
-          flow=Path("hw/soc/pnr/combined_nearzero_repair_flow.py").read_text()
-          assert 'OUT=ROOT/"combined-nearzero-repair";OUT.mkdir()' in driver
-          assert 'combined-nearzero-repair/targets.json' in flow
+          driver=Path("scripts/run_combined_six_repair.py").read_text()
+          flow=Path("hw/soc/pnr/combined_six_repair_flow.py").read_text()
+          assert 'OUT=ROOT/"combined-six-repair";OUT.mkdir()' in driver
+          assert 'combined-six-repair/targets.json' in flow
           PYCODE
       - name: Prepare pinned runtime
         run: |
@@ -35,14 +35,14 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Exact measured output branches and global STA
-        run: python3 scripts/run_combined_nearzero_repair.py
+        run: python3 scripts/run_combined_six_repair.py
       - name: Collect derived reports
         if: always()
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import shutil
-          root=Path("combined-nearzero-repair");out=Path("combined-nearzero-repair-derived")
+          root=Path("combined-six-repair");out=Path("combined-six-repair-derived")
           for p in root.rglob("*"):
               rel=p.relative_to(root)
               if p.is_file() and (str(rel) in ("result.json","native.log") or (rel.parts[0]=="run" and p.suffix in (".rpt",".json"))):
@@ -51,14 +51,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-lane-combined-nearzero-repair-derived-${{ github.run_id }}
-          path: combined-nearzero-repair-derived/
+          name: rx-lane-combined-six-repair-derived-${{ github.run_id }}
+          path: combined-six-repair-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-lane-combined-nearzero-repair-native-${{ github.run_id }}
-          path: combined-nearzero-repair/run/
+          name: rx-lane-combined-six-repair-native-${{ github.run_id }}
+          path: combined-six-repair/run/
           if-no-files-found: error
           retention-days: 90
