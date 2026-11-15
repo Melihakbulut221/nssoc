@@ -1,3 +1,9 @@
+## Publication authenticated; actual prepared-source guards dispatched
+
+Publication43725915316/head374b0cc6dd4548c9f7f3d79d0a22985c65a5d695 attempt1 SUCCESS. Derived14166183251 full ZIP SHA17cf79cbe44ae4472126b2310e4b944463fd822dfb2fa8593661b16527db1f89 authenticated in RAM. Result PUBLISHED_AND_REDOWNLOADED_HASH_VERIFIED_NOT_YET_CI_INTEGRATED; metadata SHA1ee40532bf8e71d56d9c79d64d3929d7f4158ce7ee67eec3f337250264c908eb verified; archive08e629ada48eb210c3dc32a964b8e10864844d7e8b8f2a697862e23ba4d9a4b4,203844B. Release446127809 retains original producer589540 and38-file replay; not physical acceptance.
+
+Dispatched ready validator 43726529947 at exact efa2587c4848f4eb7772e405ea8de232ae6c399d on codex/prepared-source-current-guards after verifying publication and absence of duplicate dispatch. Requires12 actual positive base/full structural guards plus stale-hash negative refusal. Do not integrate new fixture/metadata/notice until PASS. Native residual43725515099 and corrected PHY diagnosis43725858840 remain live at last observation. Goal active.
+
 ## Owner access verified; unintended release-tag queue cleared
 
 User confirmed access restoration. Active gh account Melihakbulut221; API confirms push/admin/maintain true. Found evidence tag prepared-sources-20261115-43716663208 unintentionally triggered legacy push workflows because cloud-* tag exclusion does not match this tag. Cancelled 66 nonterminal runs, restricted to event=push, this exact tag and source589540e861dbd006d98f1de7622c0079ebd921ad; every cancel API returned success. This does not cancel workflow_dispatch native residual measurement/publication/diagnosis. Future evidence tags must respect workflow filters; no historical tag/source rewritten. Freed capacity let publication and corrected PHY diagnosis start.
