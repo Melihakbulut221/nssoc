@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"mos650-metal-rc";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-metal-rc-inputs.json";PINS="scripts/cdr-mos650-metal-rc-pins.json"
 METHODS="docs/evidence/mos650-metal-rc-original-methods.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/current650-clock-metal-rc"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/select-width2-current-clock-mim-rc"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -166,7 +166,7 @@ def inputs(cfg):
   logical_anchors=1428,physical_anchors=1428,wire_inputs={n:pin(wire/n)for n in ("anchors08.json","native05/wires.gds","native05/wires.l2n","native05/result.json")},
   numerical_methods=derivation,old500_RC_reused=False,**FLAGS))
  return wire,physical,selected
-def execute(argv,label,seconds=1200):
+def execute(argv,label,seconds=3600):
  so=NATIVE/(label+".stdout");se=NATIVE/(label+".stderr");begin=time.monotonic();proc=None;error=None
  env={k:v for k,v in os.environ.items()if k not in("GH_TOKEN","GITHUB_TOKEN","PYTHONOPTIMIZE")}
  try:
