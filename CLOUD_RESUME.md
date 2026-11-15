@@ -1,3 +1,11 @@
+## New measured hold result and PLL transient pilot
+
+43701339119/6b9880503b0c5b9f3eea7f37afaf650c82f56070 completed. Candidate269cb4335730057ef617b10aa07eced703e1ae03dcfe56ae25d7d80f7fc16154, run/4-nssoc-combinedafterfast/state_out.json. All34targets>=50ps,35addedcells, hold0/0/0; globalfastminimum20.7873ps still below50ps. Setupslow2457/typ98/fast0; worst-2.71877/-.389342/+.683008ns; slew27/3/0cap0. No routed/final acceptance. Authenticated report and artifact bindings saved in docs/evidence/rx-lane-post174-repair-result-20261115.json. Historical selected_targets120 in producer is old lineage; actual measured_targets34 and new_cells35.
+
+Native passive RC fixture43701736489/82f41e26ade16885ddf11649b1bb77049a603d83 PASS:2011rows7variables, maxRerror1.735e-18A,C-ramp1.089e-14A,C-hold0,KCL5.766e-15A; wrongsign/missingcap mutants rejected. Derived14157285577 SHA f75bae364a9f005177bf0fa6fd6341a45281cbf351b0c590b203567898fc4c1d; native14157380344 SHA df76b5571788a7956fee9a963b99c4c61c2638fee2fb9990848e5b11dcdeff26. Not PLL acquisition/full-current qualification.
+
+Pilot 43702129953/b6e44d8a8bb58ab639dcef52d1d4de3cfe7347ba, codex/pll-current-prefix4ns, status in_progress at checkpoint. Actual845+4PLL, authenticated original131-column cache,110current/charge observations,5216expectedcolumns, all1694voltagevectors. Separate deck changes only1us->4ns endpoint; original protected unchanged. Bit-exact shared times/131values strictlybefore4ns required, one-bit mutant rejected. No long130ns dispatch until this pilot passes. Artifacts pll-current-prefix4ns-derived/native; worker scripts/pll_current_prefix4ns.py. All sources/captures cloud-only.
+
 ## Resumed live cloud work, 2026-11-15
 
 All CAD and source changes remain cloud-only. Direct recheck confirms these native jobs are in progress; do not restart them or claim final acceptance:
