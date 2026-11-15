@@ -76,7 +76,7 @@ try:
   choices=[]
   for pin,master in reversed(path['pins']):
    setup,hold=margins[pin];count=2 if hold<-.15 else 1
-   if setup>=count:choices.append(dict(sink=pin,master=master,delay_master='sg13g2_dlygate4sd3_1',delay_count=count,worst_setup_slack_ns=setup,worst_hold_slack_ns=hold))
+   if setup>=count:choices.append(dict(sink=pin,master=master,expected_port=path['start'],delay_master='sg13g2_dlygate4sd3_1',delay_count=count,worst_setup_slack_ns=setup,worst_hold_slack_ns=hold))
   assert choices,('No safe measured choice',path)
   choice=choices[0];selected[choice['sink']]=choice
  assert len(selected)==254 and sum(x['delay_count']for x in selected.values())==267
