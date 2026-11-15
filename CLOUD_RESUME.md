@@ -1,3 +1,11 @@
+## Publication terminal HTTP502 retried; compact setup audit independently confirms target
+
+Publication43717961699 FAILED, artifact14164694678 SHA40ecd6989a9f5c810762093c3e9643798663c10438d90bb7b45b7eabcfc153ee verified. Actual joblog132823493627: GitHubHTTP502 at gh release create, AFTER authenticated replay/tar checks. API release lookup confirmed404/no partialrelease. Redispatched SAME source374b0cc6dd4548c9f7f3d79d0a22985c65a5d695 as **43722855425** (newrunattempt1), no source/gatechange and no successfulproducerrestart. Existingpublicationworker is idempotent and verifies anyexistingrelease/assets instead ofclobbering.
+
+Ready validator branch **codex/prepared-source-current-guards** now **4dcf5754febe69d8425066145fb62f4a541f565d**, onlyexact producer run/name binding43717961699->43722855425 changed, head374b/attempt1/fullartifactSHA/metadata/tar/stalehash guards preserved; ASTpassed. STILL NOT DISPATCHED untilretrypublicationSUCCESS.
+
+Compactsetup audit43718375160 SUCCESS; artifact14165156570 SHA19206dc13cdf17b007d6496b00afc22dfa98e86ae842919fecdd2df9ce81b585 verified. Source0451/reportSHA782725f8b6efdcf06b464bb5976fccb02c5f65e89c27dc32d9502d18950aca41. Parsed1004reportednegativepaths (NOTall2276violations): quarantine reset293,ownershiplink_up242,retryreset186,creditsreset51; othercounters/data pathsremain. Worst-1.861761ns withsamefanout9519/9492/9485. Confirmsalreadydispatchedfivecelltrial43721847063; noduplicateCADrunneeded. FullPHY/finaltimingstillopen.
+
 ## Pilot artifact verified; freed runners started pending work
 
 RAM observer79341 finishedEXIT0: full artifact14165410093 ZIP SHA0c7fe43f verified, exactrun/head bound, result **54pilot tasks PASS,0exclusions**, allsource_state clean,sources_unchangedtrue, selected_stagepilot,complete_sweepfalse,makeexit0,5078.022s. Not fullSoC proof or fullCI pass.
