@@ -75,5 +75,14 @@ for tag,left,right in [('x','ad','s0'),('y','cd','s1')]:
   l=np.interp(points-delay_ps*1e-12,t,ld);rr=np.interp(points-delay_ps*1e-12,t,rd);valid=(np.abs(l)>=.1)&(np.abs(rr)>=.1);sign=np.where(l*rr<0,1.,-1.);signed=measured[valid]*sign[valid]
   checks.append({'delay_ps':delay_ps,'strong_input_pairs':int(valid.sum()),'wrong':int((signed<=0).sum()),'below100mv':int((signed<.1).sum()),'median_signed_v':float(np.median(signed))if len(signed)else None})
  result['buffered_xor_checks'][tag]=checks
+result['divider_base_checks']={}
+for label,ip,inn,bits_expected in [('UA',273,274,current),('UC',294,297,previous),('US0',295,299,previous),('US1',296,298,previous)]:
+ p=bound['groups']['npn13g2']['xpd.xd'+str(ip).zfill(4)];n=bound['groups']['npn13g2']['xpd.xd'+str(inn).zfill(4)]
+ assert p['native_id']==ip and n['native_id']==inn
+ vp=v(p['nodes'][1]);vn=v(n['nodes'][1]);delta=vp-vn;sign=2*bits_expected-1;measurements=[]
+ for phase in (.3,.5,.6,.75,.9):
+  points=start+(indices+.5+phase)*ui;vals=np.interp(points,t,delta)*sign;cm=np.interp(points,t,(vp+vn)/2)
+  measurements.append({'phase_ui':phase,'wrong':int((vals<=0).sum()),'below100mv':int((vals<.1).sum()),'min_signed_v':float(vals.min()),'median_signed_v':float(np.median(vals)),'commonmode_min_v':float(cm.min()),'commonmode_max_v':float(cm.max())})
+ result['divider_base_checks'][label]={'positive_device':ip,'negative_device':inn,'positive_node':p['nodes'][1],'negative_node':n['nodes'][1],'samples':measurements}
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
 print(json.dumps({k:min(v['phase_sweep'],key=lambda x:(x['wrong'],x['below_100mv']))for k,v in result['signals'].items()}))
