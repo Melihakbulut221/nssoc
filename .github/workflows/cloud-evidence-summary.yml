@@ -1,4 +1,4 @@
-name: Measure later isolated branches of two setup-sensitive feedback paths
+name: Measure later isolated branches of third remaining short path
 on:
   workflow_dispatch:
 permissions:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-two-feedback-late-branch-timing-derived-${{ github.run_id }}
+          name: rx-third-hold-branch-timing-derived-${{ github.run_id }}
           path: |
             input-timing/result.json
             input-timing/native.log
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-two-feedback-late-branch-timing-native-${{ github.run_id }}
+          name: rx-third-hold-branch-timing-native-${{ github.run_id }}
           path: input-timing/run/
           if-no-files-found: warn
           retention-days: 90

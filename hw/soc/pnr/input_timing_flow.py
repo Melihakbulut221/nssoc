@@ -4,7 +4,7 @@ from interface_flow import Interfaces
 from corrpre_postcts_flow import SingleCornerSTA,CORNERS
 EXTRA = r"""
 set index 0
-foreach name {{$abc$734844$auto$blifparse.cc:397:parse_blif$772052/A} {$abc$734844$auto$blifparse.cc:397:parse_blif$772804/A1}} {
+foreach name {{$abc$734844$auto$blifparse.cc:397:parse_blif$778838/B2}} {
  set target [get_pins [list $name]]
  if {[llength $target]!=1} {error "Missing exact feedback branch $name"}
  foreach type {max min} {
