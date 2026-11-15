@@ -13,9 +13,9 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 foreach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}
-set driver_name {$abc$734931$auto$blifparse.cc:397:parse_blif$747988}
+set driver_name {$abc$734931$auto$blifparse.cc:397:parse_blif$763417}
 set driver [$block findInst $driver_name]
-if {$driver eq "NULL" || [[$driver getMaster] getName] ne "sg13g2_o21ai_1"} {error "Wrong measured driver"}
+if {$driver eq "NULL" || [[$driver getMaster] getName] ne "sg13g2_nor2_2"} {error "Wrong measured driver"}
 set source_pin [$driver findITerm Y]
 set original_net [$source_pin getNet]
 if {$original_net eq "NULL" || [llength [$original_net getITerms]]!=2 || [llength [$original_net getBTerms]]!=0} {error "Original two-terminal net changed"}
@@ -24,11 +24,11 @@ foreach term [$original_net getITerms] {if {$term ne $source_pin} {set sink $ter
 if {$sink eq "NULL" || [$sink getIoType] ne "INPUT"} {error "Missing SRAM input"}
 set sink_inst [$sink getInst]
 set sink_name [$sink_inst getName]
-if {[string map [list "\\" ""] $sink_name] ne {u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem}} {error "Wrong SRAM instance"}
+if {[string map [list "\\" ""] $sink_name] ne {u_ram.g_ram_2048x64_ecc.u_b0}} {error "Wrong SRAM instance"}
 set sink_term [[$sink getMTerm] getName]
-if {[string map [list "\\" ""] $sink_term] ne {A_DIN[9]}} {error "Wrong SRAM terminal"}
-set buffer_name nssoc_sram_din9_buf
-set new_net_name nssoc_sram_din9_buf_net
+if {[string map [list "\\" ""] $sink_term] ne {A_MEN}} {error "Wrong SRAM terminal"}
+set buffer_name nssoc_sram_men_buf
+set new_net_name nssoc_sram_men_buf_net
 if {[$block findInst $buffer_name] ne "NULL" || [$block findNet $new_net_name] ne "NULL"} {error "ECO names already exist"}
 if {[llength [info commands insert_buffer]]!=1 || [llength [info commands rsz::insert_buffer_after_driver_cmd]]!=1} {error "Pinned insertion API missing"}
 insert_buffer -buffer_cell sg13g2_buf_4 -net [$original_net getName] -buffer_name $buffer_name -net_name $new_net_name
@@ -85,11 +85,11 @@ foreach term [$added getITerms] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_SRAM_DIN_BUFFER_EXACT_NONINVERTING_CHAIN_VERIFIED"
+puts "NSSOC_SRAM_MEN_BUFFER_EXACT_NONINVERTING_CHAIN_VERIFIED"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Insert one guarded SRAM data buffer"
+    name = "Insert one guarded SRAM memory-enable buffer"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
