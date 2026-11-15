@@ -16,6 +16,7 @@ class BranchSTA(SingleCornerSTA):
    extra+=['set matches {}','foreach alias {'+choices+'} {if {[dict exists $'+table+' $alias]} {dict set matches [dict get $'+table+' $alias] 1}}','if {[dict size $matches]!=1} {error {Unresolved or ambiguous exact target '+name+'}}','set target [dict keys $matches]']
    for mode in ["max","min"]:
     extra+=['puts "%OL_CREATE_REPORT branch-'+str(i)+'-'+mode+'.rpt"','puts {NSSOC_TARGET '+name+'}','report_checks -through $target -corner $corner_name -path_delay '+mode+' -group_path_count 1 -fields {slew cap input net fanout} -format full_clock_expanded -digits 9','puts "%OL_END_REPORT"']
+  extra += ['puts "%OL_CREATE_REPORT head-last-hold-connectivity.rpt"', 'set block [ord::get_db_block]', 'set inst [$block findInst hold33182]', 'if {$inst eq "NULL" || [[$inst getMaster] getName] ne "sg13g2_dlygate4sd3_1"} {error "Wrong shared hold instance"}', 'foreach port {A X} {set pin [$inst findITerm $port]; set net [$pin getNet]; puts [list HOLD_PORT $port NET [$net getName]]; foreach p [$net getITerms] {puts [list [[$p getInst] getName] [[$p getMTerm] getName] [$p getIoType] [[$p getInst] getMaster]]}}', 'puts "%OL_END_REPORT"']
   q=Path(self.step_dir)/"branch_sta.tcl";q.write_text(s+"\n"+"\n".join(extra)+"\n");return str(q)
 @Flow.factory.register()
 class AckChipBranches(Interfaces):
