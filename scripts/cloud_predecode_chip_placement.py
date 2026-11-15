@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Implement exact new RX-bank local handshake CRC-select EOP-cache mapped chip as a non-adopted physical candidate.
-Functional boot is independently running; this is not a boot-qualified handoff.
+"""Implement exact new RX local lane next-state CRC-select EOP-cache mapped chip as a non-adopted physical candidate.
+Functional boot is not yet accepted; this is not a boot-qualified handoff.
 """
 import hashlib,json,os,subprocess,time
 from pathlib import Path
@@ -13,16 +13,16 @@ def sha(p):
 def main():
  assert os.environ.get('GITHUB_ACTIONS')=='true'
  OUT.mkdir(parents=True,exist_ok=False)
- r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,functional_boot_accepted=False,full_phy_accepted=False,final_timing_complete=False,qualified_pex=False,scope='Exact new RX-bank local handshake CRC-select EOP-cache physical candidate only. New exact-source gate boot remains separate and pending; no old boot proof reused. Placement and CTS only, no routed timing, serial PHY or production acceptance.')
+ r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,functional_boot_accepted=False,full_phy_accepted=False,final_timing_complete=False,qualified_pex=False,scope='Exact new RX local lane next-state CRC-select EOP-cache physical candidate only. New exact-source gate boot remains separate and pending; no old boot proof reused. Placement and CTS only, no routed timing, serial PHY or production acceptance.')
  def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
  save()
  try:
   report=json.loads((ROOT/'out/source-binding.json').read_text())
-  assert report['source_run']==43651528850 and report['source_head']=='790a01e745ffa2a6b4b6db8e23a569749ddf06f5' and report['authenticated_files']==63
-  assert report['netlist_sha256']=='ff7ab0c7c6b49770176105b8ff6fde1f07ba9c0cb08607e486549e2ebf714852' and report['accepted'] is False
+  assert report['source_run']==43680923081 and report['source_head']=='b2e5e00493c2770f69f2ef37ac07d7010c9a8a74' and report['authenticated_files']==63
+  assert report['accepted'] is False
   boot=ROOT/'hw/soc/out/corrpre-pcie-mbist-native-boot'
   assert sha(boot/'synthesis/soc_top.netlist.v')==report['netlist_sha256']
-  assert sha(boot/'synthesis/soc_top.mapped.json')=='80ed8dd97816eeffb6bbd20a9552c507572bd8fe22d31e194cb4e315e396190d'
+  assert sha(boot/'synthesis/soc_top.mapped.json')==report['mapped_json_sha256']
   prepared=OUT/'prepared';r['preparation']=prepare(boot/'synthesis/soc_top.mapped.json',boot/'synthesis/soc_top.netlist.v',prepared)
   config=json.loads((prepared/'config.json').read_text())
   assert config['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']

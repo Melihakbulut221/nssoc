@@ -2,15 +2,31 @@ import subprocess,os
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 import hashlib,json,pathlib,tarfile,zipfile
 P=pathlib.Path
-r=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/runs/43651528850']))
-assert r['status']=='completed' and r['conclusion']=='success' and r['head_sha']=='790a01e745ffa2a6b4b6db8e23a569749ddf06f5'
-
-assert hashlib.sha256(P('source.zip').read_bytes()).hexdigest()=='dcd55025a9b50aa0e0a949cf7515f3f02057fbcdce2fea229bb84afa0b2b8145'
-assert hashlib.sha256(P('mapping.zip').read_bytes()).hexdigest()=='05bdb7b2d6345c7010ea5ededb39aaa8c2cfc319ae05849a23d60914de31ad1e'
+import time
+def api(path):return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path]))
+source_run=43680923081
+source_head='b2e5e00493c2770f69f2ef37ac07d7010c9a8a74'
+deadline=time.monotonic()+2400
+while True:
+ r=api('actions/runs/'+str(source_run))
+ assert r['head_sha']==source_head and r['run_attempt']==1
+ if r['status']=='completed':
+  assert r['conclusion']=='success',r['conclusion']
+  break
+ assert time.monotonic()<deadline,'Exact synthesis still pending; no acceptance'
+ print('Waiting for exact qualified synthesis',source_run,flush=True);time.sleep(30)
+artifacts=api('actions/runs/'+str(source_run)+'/artifacts')['artifacts']
+for dest,name in [('source.zip','rx-local-lane-mainchip-source-native-'),('mapping.zip','rx-local-lane-mainchip-mapping-')]:
+ rows=[x for x in artifacts if x['name']==name+str(source_run)]
+ assert len(rows)==1
+ meta=rows[0];assert not meta['expired'] and meta['workflow_run']['head_sha']==source_head
+ with P(dest).open('xb')as stream:subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/'+str(meta['id'])+'/zip'],stdout=stream,check=True)
+ assert 'sha256:'+hashlib.sha256(P(dest).read_bytes()).hexdigest()==meta['digest']
 with zipfile.ZipFile('mapping.zip') as z:report=json.loads(z.read('mapping.json'))
-assert report['source_head']=='790a01e745ffa2a6b4b6db8e23a569749ddf06f5' and report['registered_bit_count']==26
-assert report['rx_cursor_local_reset_enabled']
-assert report['inputs']['hw/soc/rtl/pcie/soc_pcie_rx_credit.v']=='6e8736695b6fe059716fd90b5b8d969ca80a326f6c3a4705325bb5b7ec8831c0'
+assert report['source_head']=='b2e5e00493c2770f69f2ef37ac07d7010c9a8a74' and report['registered_bit_count']==26
+assert report['rx_cursor_local_reset_enabled'] and report['rx_local_lane_next_enabled']
+assert report['configuration']['SOC_PCIE_RX_LOCAL_LANE_NEXT']=='1'
+assert report['inputs']['hw/soc/rtl/pcie/soc_pcie_rx_credit.v']=='2a345ba4082873f73fd8f308880a1f8d29651e24c12bbeaf9ac20b8f4082636e'
 assert report['crc_select_enabled'] and len(report['cached_eop_register'])==1
 assert len(report['outputs'])==63
 assert report['status']=='MAPPED_RX_CURSOR_CRC_SELECT_EOP_CHIP_REQUIRES_GATE_BOOT_AND_PHYSICAL_IMPLEMENTATION'
@@ -27,4 +43,4 @@ with tarfile.open('build.tgz') as tar:
   assert not path.exists();path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
 assert seen==set(report['outputs'])
 for f,h in report['inputs'].items():assert hashlib.sha256(P(f).read_bytes()).hexdigest()==h
-P('out').mkdir(exist_ok=True);P('out/source-binding.json').write_text(json.dumps({'source_run':43651528850,'source_head':report['source_head'],'authenticated_files':len(seen),'netlist_sha256':report['outputs']['synthesis/soc_top.netlist.v'],'accepted':False},indent=2))
+P('out').mkdir(exist_ok=True);P('out/source-binding.json').write_text(json.dumps({'source_run':43680923081,'source_head':report['source_head'],'authenticated_files':len(seen),'netlist_sha256':report['outputs']['synthesis/soc_top.netlist.v'],'mapped_json_sha256':report['outputs']['synthesis/soc_top.mapped.json'],'accepted':False},indent=2))
