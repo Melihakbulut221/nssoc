@@ -1,3 +1,9 @@
+## Automatic exact-CTS timing continuation dispatched
+
+Queue/credit/CRC postCTS run 43775507971 (codex/queue-credit-crc-mainchip-postcts, 2f200e0ff6f514d714afc8d39873e5137cccc6c0) authenticates and waits for exact CTS run 43775336220/067d9d54efaecd131ad4bb146660da4684833a93. It requires successful producer, authenticates full archives and every output, binds queue netlist and original synthesis provenance, then performs independent before/after three-corner native repair/STA. Four underlying flow/derating files verified byte-equal to a137. No inherited timing acceptance or relaxed constraints. Experimental workflow remains off integration branch.
+
+Credit/CRC-only timing run 43771562041 is now SUCCESS; derived artifact 14186226268 (33764694 bytes, SHA256 586b8a9db44e4de004a3e929d5aec7b91fe2fb62dec4ff11c112d79bb926608f), native 14185713649 (438487784 bytes, SHA256 c96320d0a80ee8b032fdeddace5e659c7d028019a5924f7e37c652f6669ca9c1). Derived archive reading pending; success does not imply zero violations. Boot 43771666469 and exploratory width4 analog 43771339958 still running. Do not duplicate live jobs.
+
 ## Queue-count mapping revalidated; fresh CTS dispatched
 
 - GitHub write/admin access reverified. Cloud-only execution continues.
