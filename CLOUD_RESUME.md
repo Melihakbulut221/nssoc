@@ -1,3 +1,13 @@
+## Link-up sizing reduces setup count; staging buffer trial dispatched
+
+43731420109/3668f06febc8b96cc69d600061916f70b991f08b SUCCESS. Derived14168957702 ZIP SHA70de0599a4928d614f38d52172f690d9044458e32ab23771460a44ccffd8ba48 (17954453B) authenticated in RAM, all3cornerstates+slowmax/fastmin memberhashes verified. Native14169002716 SHAa06f4957dd597c88d259c5b50d05557ce3b7ced223fa3cdc2d3a81b06d7c7bae (2473256781B) stayscloud. CandidateODB2bbca33cd4b0711000abd1fa79f8fdd63a2d514ba232901115057a3d4f5d8174, state run/4-nssoc-sizedfast/state_out.json. From0ec7: setup2233->2172slow,typ/fast0;WS-1.82121/+.0185629/+.965397ns. Hold0/0/7 WS+.222705/+.0846121/-.0299224ns unchanged; slew36/6/3,cap0. This is214delay lineage, NOT346delay holdzero candidate; no mixedmetrics.
+
+New slowworst FF174864 staging[2][6]->commit_copies[3].write_copy[2].copy FF551964: inverterABC734931760715inv1 delay.483504ns/slew.554038ns; fanout8282buf1 delay.893393ns/slew.899302ns/load.142386pF; lastAND760785and2_1 delay.817843ns/slew.986777ns,endpointsetup.502300ns. Next controlled trial targets one exactnative buffer8282 buf1->8; drivinginverterload andhold mayworsen, so freshallcornerSTArequired. No speculativeassumption accepted.
+
+Dispatched43732602282/head5df33083a6fda309563213ab9438026116f5660c on codex/new-rx-staging-buffer-trial; verifiedIN_PROGRESS. scripts/size_rx_staging_buffer.py binds exact2bbca archives/head/producer and authenticates firstcritical stagingpath/master; sourceproducer43730133822. Reuses guardedinstance/master/incidence/port sizing with legalization, unchangedclocks/derating; freshallcornerglobal+branchSTA. ASTpassed, nativepending. Experimentalworkflow notmerged.
+
+Currentholdmargin sharedmeasurement43732030174 and actual650PHY43727364585 verifiedstillIN_PROGRESS. Prior twoturns verifiedwaits; thisturn newresultanalysis and concretetrial. Fullgoalactive; fullserialPHY/mainchip routing/finaltiming/production remainopen.
+
 ## Current PCIe mutation anchors validated and integrated
 
 43731932691/head765cd2ef3310ba09bfc5192ff2e6ef1811e28e5c SUCCESS. Artifact14169006896 ZIP SHAc43efa3878de95bb64b9a059b1a817ab6bedd39a9506c49a74c7e981ef4ec6cc (252176B) authenticated in RAM, each16 XML/log memberhash and actualJUnit counts checked. Regs andstream eachthreebaseline6pass=36positivecases; all10mutants produce functional assertion failures with0skips. Regsmutants counts5/1,5/1,5/1,5/1,0/6;stream5/1,5/1,5/1,4/2,4/2 (pass/fail). Mutant failures expected, not productfailures. Actualtestgates unchanged.
