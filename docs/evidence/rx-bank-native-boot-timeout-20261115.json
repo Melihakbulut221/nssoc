@@ -1,0 +1,107 @@
+{
+  "native_cell_gate": {
+    "library": "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+    "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+    "compile": {
+      "command": [
+        "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_native_cell_gate",
+        "-o",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/predecode-gates/native-cell-gate/sim.vvp",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/predecode-gates/native-cell-gate/tb_native_cell_gate.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.16407913999998414
+    },
+    "runs": [
+      {
+        "command": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+          "-i",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/predecode-gates/native-cell-gate/sim.vvp"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.015861481999991156,
+        "pass_banner": true
+      }
+    ],
+    "passed": true
+  },
+  "compile": {
+    "command": [
+      "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+      "-g2005-sv",
+      "-s",
+      "tb_logicrom_gl",
+      "-o",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/predecode-gates/sim.vvp",
+      "-DFUNCTIONAL",
+      "-DTIMEOUT_CYCLES=2000000",
+      "-DEXIT_CODE_ADDR=32'h00001f94",
+      "-DEXIT_MAGIC_ADDR=32'h00001f98",
+      "-DCHECKS_ADDR=32'h00001fcc",
+      "-DFAILS_ADDR=32'h00001fd0",
+      "-DNSSOC_GL_MBIST",
+      "-DNSSOC_GL_PCIE",
+      "-DNSSOC_GL_PCIE_ASYNC",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis/soc_top.netlist.v",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tb/flash_w25q128jv.v",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tb/mapped_mbist_boot_monitor.v"
+    ],
+    "returncode": 0,
+    "elapsed_s": 6.629709326000011
+  },
+  "runs": [
+    {
+      "command": [
+        "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+        "-i",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/predecode-gates/sim.vvp",
+        "+flash0=/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/flash0.hex"
+      ],
+      "returncode": 124,
+      "elapsed_s": 19000.06430429,
+      "pass_banner": false,
+      "pcie_profile": "packet-async",
+      "mbist_profile": "system-ethernet",
+      "pcie_idle_boot_passed": false,
+      "mbist_boot_passed": false,
+      "pcie_idle_boot_status": "failed",
+      "mbist_boot_status": "failed",
+      "passed": false
+    }
+  ],
+  "sources_unchanged": true,
+  "passed": false,
+  "artifact": {
+    "id": 14146774814,
+    "node_id": "MDg6QXJ0aWZhY3QxNDE0Njc3NDgxNA==",
+    "name": "rx-bank-chip-boot-iverilog-43653859525",
+    "size_in_bytes": 6581,
+    "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/14146774814",
+    "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/14146774814/zip",
+    "expired": false,
+    "digest": "sha256:a0f70b780a8396799538c69548aa59e028da95b2e2278bb98016c93168dbcd44",
+    "created_at": "2026-11-15T04:52:03Z",
+    "updated_at": "2026-11-15T04:52:03Z",
+    "expires_at": "2027-02-12T23:33:48Z",
+    "workflow_run": {
+      "id": 43653859525,
+      "repository_id": 1364721142,
+      "head_repository_id": 1364721142,
+      "head_branch": "codex/rx-bank-chip-cts",
+      "head_sha": "37635e0231e164dd2ba68d4b7397feceb91d569d"
+    }
+  },
+  "scope": "Actual native Icarus boot timed out at19000s after approx1.58Mcycles, firmware started; no pass or functional deadlock conclusion. Netlist unchanged."
+}
