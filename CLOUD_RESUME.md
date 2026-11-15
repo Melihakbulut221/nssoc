@@ -1,3 +1,11 @@
+## Residual measurement complete; authenticated four-path repair dispatched
+
+**43709880012/8ecd5371a47ec0dfbba719e203a15a0fa02c7a17** completedSUCCESS. Derivedartifact14160212631 metadataSHA14457999d8492281e9087dd953c45be7ba1d90e9d711252fae4dd868df289e54,size19382957; native14160252700 SHAa133c1cb295de1f95a918a4f9132a90fa0394f9ebee4ed3ced48aecc4716298d. Nativecomputationnotrestarted. Independent RAM-only deriveddownload hit90sobservationtimeout; second180srequest inprogress atcheckpoint, session19879. This is downloadobservationnotnativefailure; reportcontents/marginsnotyetindependentlyreviewedlocally.
+
+**43710888222/386adc72f170ef69d298ce817a5e11de14b071a7**, codex/ack-chip-four-residual-hold-repair, NOW DISPATCHED. Samepreparedphase2workerplusliteralexpectedartifact14160212631/SHA14457999 gate andQUALIFIED_FOUR_RESIDUAL_CHOICES print before anyECO. Run/head/attempt/successbinding, archiveSHAandallselectedbranchreportSHA, sourcee2b564, targets/paths equality, exactly4distinctsinks and>=1ns allcornersetupheadroom allmustpass BEFORE physical changes. Nativepin/master/unique-driver/oldincidence/placementguard retained. FournewDLYidentitycells onlyifguards pass, thenfreshallcorner branch/globalSTA. No claimthatselectedmarginsorzero-holdhavepasseduntilactualresult. Newheaddoesnotmodifyclock/derating/holdmarginlimits. Artifactack-chip-residual-repair-derived/native. Existing267-delaycandidateunchanged; experimentnotpromoted.
+
+43709259323 exactRX+ACKchip stillinprogress firmwareRTL/synthesis;43710149740 freshplacement/CTSstillwaitingonthisexactproducer. FullserialPHY/routedchip/finaltiming/productionnotcomplete. No localpersistentfiles created.
+
 ## Residual repair prepared; authoritative workflow identity corrected
 
 The actual residual measurement is workflow_dispatch **43709880012/8ecd5371a47ec0dfbba719e203a15a0fa02c7a17**, NOT43709881841(the latter is generic push checks). At11:45UTC job132798925785 running native residual measurement since11:39:34; not stalled/pending. Always filterevent=workflow_dispatch and head SHA when discovering continuation runIDs. Updated preceding checkpoint reference accordingly. Producer43709259323 nowpassed replayregressions, running freshRTLboot/wholechipsynthesis. Placement43710149740 correctly waiting on exactproducer.
