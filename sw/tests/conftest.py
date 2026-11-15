@@ -33,7 +33,7 @@ def prepared_sources(tmp_path_factory):
     import json
     import re
     from evidence import ROOT, recorded_bundle
-    metadata = ROOT / 'docs/evidence/prepared-sources-eth-mbist-20260926.json'
+    metadata = ROOT / 'docs/evidence/prepared-sources-current-20261115.json'
     record = json.loads(metadata.read_text())
     pin = re.search(r'^IBEX_COMMIT\s*\?=\s*(\w+)',
                     (ROOT / 'hw/soc/tools.soc.mk').read_text(), re.M).group(1)
