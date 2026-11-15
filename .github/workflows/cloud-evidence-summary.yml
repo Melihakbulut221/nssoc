@@ -1,4 +1,4 @@
-name: Qualify full ACK delta parallel borrow on exact mainchip replay source
+name: Compare original stale-only and full-delta ACK cones in frozen SG13G2 libraries
 on:
   workflow_dispatch:
 permissions:
@@ -6,7 +6,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -14,20 +14,21 @@ jobs:
           sparse-checkout: |
             scripts
             hw/soc/rtl/pcie
-            hw/soc/tb
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - run: python3 scripts/qualify_ack_delta_prefix.py
+      - run: python3 scripts/measure_ack_delta_prefix.py
+        env:
+          GH_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-delta-prefix-proof-${{ github.run_id }}
+          name: ack-delta-prefix-mapped-${{ github.run_id }}
           path: |
-            out-ack-delta-prefix/*.json
-            out-ack-delta-prefix/*.log
-            out-ack-delta-prefix/*.ys
-            out-ack-delta-prefix/*.v
+            out-ack-delta-map/*.json
+            out-ack-delta-map/*.log
+            out-ack-delta-map/*.ys
+            out-ack-delta-map/*.v
           if-no-files-found: error
           retention-days: 90
