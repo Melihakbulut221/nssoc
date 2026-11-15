@@ -72,68 +72,10 @@ def regions(layout,cell):
  return {(layout.get_info(i).layer,layout.get_info(i).datatype):pya.Region(cell.begin_shapes_rec(i)).merged()for i in layout.layer_indexes()}
 def equal(left,right):
  for k in set(left)|set(right):assert (left.get(k,pya.Region())^right.get(k,pya.Region())).is_empty(),k
-# The qualified revision adds real contact landings/vias inside the passive macro.
-# Preserve every addition; reject removals or differences on unobserved layers.
-extras={};observed={}
-left=regions(g,c);right=regions(b,bt)
-for key in set(left)|set(right):
- current=left.get(key,pya.Region());baseline=right.get(key,pya.Region())
- added=(current-baseline).merged();removed=(baseline-current).merged()
- observed[str(key)]=dict(added_area=added.area(),removed_area=removed.area(),added_bbox=str(added.bbox()))
-(out/'current-contact-deltas.json').write_text(json.dumps(observed,indent=2))
-expected={(8,0):(20410400,'(29635,180;341800,29060)'),(10,0):(5945000,'(29635,885;341555,29055)'),(19,0):(1805000,'(29685,935;341505,29005)')}
-for key in set(left)|set(right):
- current=left.get(key,pya.Region());baseline=right.get(key,pya.Region())
- assert (baseline-current).is_empty(),('unexpected original material removal',key)
- added=(current-baseline).merged()
- if not added.is_empty():
-  assert key in expected and (added.area(),str(added.bbox()))==expected[key],('unexpected contact addition',key)
-  extras[key]=added
-assert set(extras)==set(expected)
-for key,extra in extras.items():bt.shapes(b.layer(*key)).insert(extra)
-equal(regions(g,c),regions(b,bt))
-def signature(cell,rename=None):
- return dict(shapes=[(str(g.get_info(i)),sorted(str(s)for s in cell.each_shape(i)))for i in g.layer_indexes()if not cell.shapes(i).is_empty()],instances=[(rename.get(x.cell.name,x.cell.name)if rename else x.cell.name,str(x.cplx_trans),x.na,x.nb,str(x.a),str(x.b),x.prop_id)for x in cell.each_inst()])
-original={x.cell_index():signature(x)for x in g.each_cell()}
-top=g.top_cell();oldbbox=str(top.bbox());instances=list(top.each_inst());targets=[x for x in instances if x.cell.name=='pd_child_rc_select'];assert len(targets)==1;inst=targets[0]
-assert inst.cell.name=='pd_child_rc_select' and not inst.is_regular_array()
-assert sum(x.cell.name=='pd_child_rc_select' for cell in g.each_cell()for x in cell.each_inst())==1
-variant=pya.Layout();variant.read('hw/soc/out/select-width-rwidth2/nssoc_cdr_select_feedforward_layout_v1_rwidth2_candidate.gds');vt=variant.top_cell()
-for cell in variant.each_cell():
- for layer,datatype in [(8,2),(67,2),(67,25)]:cell.shapes(variant.layer(layer,datatype)).clear()
-for key,extra in extras.items():vt.shapes(variant.layer(*key)).insert(extra)
-assert vt.bbox()==c.bbox() and variant.dbu==g.dbu
-# Preserve explicit native primitive hierarchy for terminal location and RC.
-replacement=g.create_cell('pd_child_rc_select_rwidth2_candidate');assert replacement.cell_index()not in original
-replacement.copy_tree(vt)
-equal(regions(g,replacement),regions(variant,vt))
-inst.cell_index=replacement.cell_index()
-for idx,value in original.items():assert signature(g.cell(idx),{replacement.name:'pd_child_rc_select'})==value
-assert str(top.bbox())==oldbbox
-before=regions(g,top)
-options=pya.SaveLayoutOptions();options.select_cell(top.cell_index());options.write_context_info=False
-gds=out/'candidate650-select-width2.gds';g.write(str(gds),options)
-reread=pya.Layout();reread.read(str(gds));assert reread.dbu==g.dbu and [x.name for x in reread.top_cells()]==[top.name]
-equal(before,regions(reread,reread.top_cell()))
-from collections import Counter
-leaves=[]
-def census(cell):
- children=list(cell.each_inst())
- if not children:
-  kind=cell.name.split('$')[0]
-  if kind in ['npn13G2','rppd','ptap1','cmim','nmos']:leaves.append(kind)
- for child in children:
-  assert not child.is_regular_array()
-  census(child.cell)
-census(reread.top_cell())
-assert Counter(leaves)==dict(npn13G2=124,rppd=98,ptap1=221,cmim=7,nmos=200)
-(out/'primitive-census.json').write_text(json.dumps(dict(physical_primitives=650,counts=dict(Counter(leaves)),hierarchy_preserved=True),indent=2))
-assert all(not x.is_pcell_variant()and not x.is_library_cell()for x in reread.each_cell())
-import re
-reference=schematic
-for name in ['RSE_D0','RSE_D1','RSE_D3','RSE_D4']:
- pattern=r'(?m)^('+name+r' .*? rppd )w=1u( .*)$'
- reference,count=re.subn(pattern,r'\1w=2u\2',reference);assert count==1
-assert sum(x!=y for x,y in zip(schematic.splitlines(),reference.splitlines(),strict=True))==4
-(out/'schematic650-select-width2.cir').write_text(reference)
-(out/'geometry-proposal.json').write_text(json.dumps(dict(status='GENERATED_ACTUAL650_SELECT_WIDTH2_REQUIRES_FULL_LVS_DRC_FRESH_RC',parent_sha256=hashlib.sha256((parent/'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds').read_bytes()).hexdigest(),candidate_sha256=hashlib.sha256(gds.read_bytes()).hexdigest(),reference_sha256=hashlib.sha256(reference.encode()).hexdigest(),original_cells_preserved=True,only_one_parent_reference_replaced=True,normalized_marker_layers=['8/2','67/2','67/25'],serialization_regions_equal=True,full_phy_accepted=False,full_lvs_pass=False,full_drc_pass=False,fresh_rc=False),indent=2))
+
+# Diagnose the real hierarchy before applying any physical transformation.
+# The previous difference is REMOVAL, not addition; do not waive that guard.
+def inspect(layout,cell):
+ return dict(name=cell.name,local_shapes={str(layout.get_info(i)):sorted(str(x)for x in cell.each_shape(i))for i in layout.layer_indexes()if not cell.shapes(i).is_empty()},children=[dict(name=x.cell.name,transform=str(x.dcplx_trans),array=x.is_regular_array(),local_shapes={str(layout.get_info(i)):sorted(str(y)for y in x.cell.each_shape(i))for i in layout.layer_indexes()if not x.cell.shapes(i).is_empty()})for x in cell.each_inst()])
+report=dict(status='READ_ONLY_CURRENT_PASSIVE_HIERARCHY_DIAGNOSIS',current=inspect(g,c),baseline=inspect(b,bt),current_top=top.name if 'top'in globals()else g.top_cell().name,instances=[dict(ordinal=i,transform=str(x.dcplx_trans),name=x.cell.name)for i,x in enumerate(g.top_cell().each_inst())if x.cell.name=='pd_child_rc_select'],geometry_modified=False,full_phy_accepted=False)
+(out/'passive-hierarchy-diagnosis.json').write_text(json.dumps(report,indent=2))
