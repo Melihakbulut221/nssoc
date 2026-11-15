@@ -50,7 +50,7 @@ try:
   pins=[f'output_index[{i}]'for i in range(width)]+[f'head_last[{i}]'for i in range(width)]+[f'dllp_length[{i}]'for i in range(3)]+['select_dllp']
   script=[f'read_liberty {lib}',f'read_verilog {OUT/stem}.v','link_design eop','create_clock -name virtual -period 10','set_input_delay 0 -clock virtual [all_inputs]','set_output_delay 0 -clock virtual [all_outputs]','set_driving_cell -lib_cell sg13g2_buf_2 -pin X [all_inputs]','set_load 0.01 [all_outputs]']
   for idx,pin in enumerate(pins):
-   script += [f'puts "INPUT_BEGIN {idx}"',f'report_checks -from [get_ports {{{pin}}}] -to [all_outputs] -path_delay max -group_path_count 1 -format full_clock_expanded -digits 9',f'puts "INPUT_END {idx}"']
+   script += [f'puts "INPUT_BEGIN {idx}"',f'report_checks -from [get_ports {{{pin}}}] -to [all_outputs] -path_delay max -format full_clock_expanded -digits 9',f'puts "INPUT_END {idx}"']
   script += ['exit']
   tcl=OUT/(stem+'-input.tcl');tcl.write_text('\n'.join(script)+'\n')
   proc=subprocess.run(['sta','-exit',str(tcl)],capture_output=True,text=True,timeout=180)
