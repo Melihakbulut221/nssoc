@@ -18,7 +18,6 @@ import pathlib
 import re
 import runpy
 
-import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 RTL = ROOT / "hw/rtl"
