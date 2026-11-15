@@ -41,5 +41,23 @@ for tag in 'abcdxy':
   sweep.append({'phase_ui':round(float(phase),2),'wrong':int((samples<=0).sum()),'below_100mv':int((samples<.1).sum()),'min_v':float(samples.min()),'median_v':float(np.median(samples))})
  result['signals'][tag]={'phase_sweep':sweep,'first_32_bits':expected[tag][:32].tolist(),'original_03_06_09_ui_signed_v':[[float(x)for x in np.interp(edges[:32]+ph*ui,t,delta)*sign[:32]]for ph in (.3,.6,.9)]}
 result['clock_candidates']=[n for n in names if n.startswith('v(')and any(x in n.lower()for x in ('clk','clock','ckp','ckn'))]
+# Diagnose comparator polarity/settling against its actually observed inputs.
+result['actual_input_xor_checks']={}
+for tag,left,right in [('x','a','b'),('y','c','d')]:
+ delta=v(tag+'p')-v(tag+'n');left_delta=v('xpd.'+left+'qp')-v('xpd.'+left+'qn');right_delta=v('xpd.'+right+'qp')-v('xpd.'+right+'qn')
+ points=start+(indices+.5+.75)*ui
+ measured=np.interp(points,t,delta);checks=[]
+ for delay_ps in range(0,126,5):
+  ld=np.interp(points-delay_ps*1e-12,t,left_delta);rd=np.interp(points-delay_ps*1e-12,t,right_delta)
+  valid=(np.abs(ld)>=.1)&(np.abs(rd)>=.1)
+  xor=np.where(ld*rd<0,1.,-1.)
+  signed=measured[valid]*xor[valid]
+  checks.append({'delay_ps':delay_ps,'strong_input_pairs':int(valid.sum()),'wrong':int((signed<=0).sum()),'below100mv':int((signed<.1).sum()),'median_signed_v':float(np.median(signed))if len(signed)else None})
+ result['actual_input_xor_checks'][tag]=checks
+selected=['xp','xn','yp','yn','clkp','clkn','xpd.aqp','xpd.aqn','xpd.bqp','xpd.bqn','xpd.cqp','xpd.cqn','xpd.dqp','xpd.dqn','xpd.s0p','xpd.s0n','xpd.s1p','xpd.s1n']
+result['selected_aliases']={n:bound['aliases'].get(n,n)for n in selected}
+result['ports']=bound['ports']
+watch=set(result['selected_aliases'].values())
+result['connected_devices']={g:{name:dev for name,dev in group.items()if set(dev.get('nodes',[]))&watch}for g,group in bound['groups'].items()}
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
 print(json.dumps({k:min(v['phase_sweep'],key=lambda x:(x['wrong'],x['below_100mv']))for k,v in result['signals'].items()}))
