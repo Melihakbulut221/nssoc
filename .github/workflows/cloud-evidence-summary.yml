@@ -1,4 +1,4 @@
-name: Bind new resistor source pins to actual650 geometry
+name: Extract new select650 conductor graph and terminal anchors
 on:
   workflow_dispatch:
 permissions:
@@ -19,11 +19,11 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 klayout==0.30.4.post1
-      - run: python3 -B scripts/bind_select650_source_pins.py
+      - run: python3 -B scripts/extract_select650_wire_topology.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: select650-source-pins-${{ github.run_id }}
-          path: select650-source-pins/
+          name: select650-current-clock-wires-${{ github.run_id }}
+          path: select650-wires/
           if-no-files-found: error
           retention-days: 90
