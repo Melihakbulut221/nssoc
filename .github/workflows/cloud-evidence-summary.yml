@@ -1,4 +1,4 @@
-name: Verify RX DLLP end comparison and measure pinned three-corner cone
+name: Measure per-input paths for formally qualified RX DLLP compare
 on:
   workflow_dispatch:
 permissions:
@@ -18,13 +18,14 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends opensta
       - run: python3 scripts/qualify_rx_dllp_compare.py
         env:
           GH_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-dllp-compare-${{ github.run_id }}
+          name: rx-dllp-input-paths-${{ github.run_id }}
           path: |
             out-rx-dllp-compare/*.json
             out-rx-dllp-compare/*.log
