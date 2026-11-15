@@ -1,3 +1,7 @@
+## Reduced-input failure localization dispatched
+43737724460/head832b70f87a8b4d8c370b1a62a12a4e49575ed1c5 on codex/reduced-input650-failure-diagnosis verified IN_PROGRESS. Reuses authenticated read-only localize_buffered650_failure.py, binds exact failed producer43727364585/ed63d854, native14170009078/b12f0418e94da9228f4aa349f0b99af3a6aa11d682fbcfa7b4ca9dcce02172ff and rawc19b5649b288d2024a9c6932bd2750051cb270f52a02751fdf6c1e645e8c61cb. Full archive hash, unchanged report, exact physical contract hash/650devices, raw hash and original sampling counts rechecked. Computes prebuffer source demand, native clock-base crossings, comparator observed-input truth and device headroom; no simulation rerun, modified acceptance or circuit. AST verified before dispatch. Experimentalworkflow not merged. All native work stays cloud.
+Next: inspect this diagnostic and ongoing timing43737070576/43737191650. Combine bit5 bypass only after fresh current346-delay margins pass. PHY rejection and current setup/hold metrics documented below. Goal active; this turn new authenticated failure analysis and targeted cloud worker.
+
 ## Current recovery: timing candidates verified; reduced-input PHY rejected
 GitHub owner authentication and push/admin permission reverified. No local persistent source or CAD artifacts.
 
