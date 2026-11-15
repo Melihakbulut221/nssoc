@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43759885305");assert run["head_sha"]=="a4803beeb5ec80d27088ea868e45817f7b7b8e78"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43761093479");assert run["head_sha"]=="f7524de418051bebb1c7a2245e1f82903c339537"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14180460681,"7de05629c8c45da8a34757eb1daf52cfa58998b02ba44f68b142105cdd570316","derived")
- native=archive(14179614696,"77cb2268c36def7019817570cef1482fc529d2fc7ec9e408c65d164913b1c45d","native")
+ safe=archive(14181105910,"b130b86e9d60a9a9f9c39b302aa60da761fe3b33603baf1d45d65c238e133c8a","derived")
+ native=archive(14180262419,"af34e97ebb631a9b351fc798f667e63610bb6f323c86ca910ed6c741954c621f","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43758008035
- assert report["candidate_odb_sha256"]=="2b33af5c60ab854b77829f5865bc67a3b7335026abce224d4ce4b372d8ba1b9f"
+ assert report["source_run"]==43759885305
+ assert report["candidate_odb_sha256"]=="288a7b12e20a107ee59d9399c89dd4f827c38ada5215b7b575a6979019bd7c95"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -43,7 +43,7 @@ try:
  assert recovery and all('input49/X (sg13g2_buf_1)' in p and '$767656/Y (sg13g2_nor2_1)' in p and 'slack (VIOLATED)' in p for p in recovery)
  r['recovery_source_checks_sha256']=report['outputs'][check_member]
  safe.close();native.close()
- r['source_archives']=[dict(id=14180460681,sha256='7de05629c8c45da8a34757eb1daf52cfa58998b02ba44f68b142105cdd570316'),dict(id=14179614696,sha256='77cb2268c36def7019817570cef1482fc529d2fc7ec9e408c65d164913b1c45d')]
+ r['source_archives']=[dict(id=14181105910,sha256='b130b86e9d60a9a9f9c39b302aa60da761fe3b33603baf1d45d65c238e133c8a'),dict(id=14180262419,sha256='af34e97ebb631a9b351fc798f667e63610bb6f323c86ca910ed6c741954c621f')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -70,7 +70,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="COMBINED_SRAM_RESET_NOR4_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source2b33 retains22SRAMbuffers and six driver resizes. Apply proven reset NOR767656/input49 and PCIe NOR761461 size changes together. Allcorner combined STA required; last SRAM A_MEN buffer is independent and not included. No final routed signoff.")
+ r.update(status="COMBINED_SRAM_RESET_NOR4_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source288a retains23SRAMbuffers and six driver resizes. Apply proven reset NOR767656/input49 and PCIe NOR761461 size changes together. Allcorner combined STA required; last SRAM A_MEN buffer is included from qualified zero-slew source. No final routed signoff.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
