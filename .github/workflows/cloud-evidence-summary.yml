@@ -1,22 +1,22 @@
-name: Compare registered credit data sign predicates
+name: Prove credit sign registers with explicit clock and reset events
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  cosim:
+  formal:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - run: sudo apt-get update -qq && sudo apt-get install -y iverilog
-      - run: bash scripts/check_pcie_credit_pick.sh credit-sign-result 300000
+      - run: sudo apt-get update -qq && sudo apt-get install -y yosys
+      - run: python3 formal/credit_sign/prove.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-sign-cosim-${{ github.run_id }}
-          path: credit-sign-result/
+          name: credit-sign-formal-${{ github.run_id }}
+          path: credit-formal/
           if-no-files-found: error
           retention-days: 90
