@@ -1,16 +1,15 @@
-name: Native select width2 DRC LVS and fault controls
+name: Bind qualified select candidate to actual650 parent geometry
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  verify:
+  binding:
     runs-on: ubuntu-22.04
-    timeout-minutes: 180
+    timeout-minutes: 45
     env:
       GH_TOKEN: ${{ github.token }}
-      APPIMAGE_EXTRACT_AND_RUN: '1'
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -21,21 +20,11 @@ jobs:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 klayout==0.30.4.post1
       - run: python3 -B scripts/generate_select_width_candidate.py
-      - name: Prepare checksum pinned native runtime and unmodified decks
-        run: |
-          set -euo pipefail
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2
-          python3 scripts/bootstrap_flow.py
-          python3 hw/soc/flow/prepare_ihp_drc.py
-          python3 hw/soc/flow/prepare_ihp_lvs.py
-      - run: python3 -B scripts/check_select_width_candidate.py
+      - run: python3 -B scripts/bind_select_width_parent.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: select-width2-native-checks-${{ github.run_id }}
-          path: |
-            hw/soc/out/select-width2-native-checks/
-            select-variant-evidence/
+          name: select-parent-binding-${{ github.run_id }}
+          path: select-parent-binding/
           if-no-files-found: error
           retention-days: 90
