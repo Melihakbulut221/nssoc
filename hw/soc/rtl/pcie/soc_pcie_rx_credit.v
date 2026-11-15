@@ -664,8 +664,10 @@ module soc_pcie_rx_credit #(
     assign out_sop_o=output_index==0;
 `ifdef SOC_PCIE_RX_DLLP_LAST_COMPARE
     // Move the increment off the read cursor path; retain CW-bit wrap at length zero.
+    // Preserve the original expression when CW is narrower than dllp_length.
     wire [CW-1:0] dllp_last_compare=CW'(dllp_length)-CW'(1);
-    assign out_eop_o=select_dllp ? output_index==dllp_last_compare : output_index==head_last;
+    assign out_eop_o=(CW<3) ? (select_dllp ? output_index+1'b1==CW'(dllp_length) : output_index==head_last) :
+        (select_dllp ? output_index==dllp_last_compare : output_index==head_last);
 `else
     assign out_eop_o=select_dllp ? output_index+1'b1==CW'(dllp_length) : output_index==head_last;
 `endif
