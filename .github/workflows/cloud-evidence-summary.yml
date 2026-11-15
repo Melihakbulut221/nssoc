@@ -1,4 +1,4 @@
-name: All affected IHP cells four-state functional alias qualification
+name: Original SRAM four-state functional simulator comparison
 on:
   workflow_dispatch:
 permissions:
@@ -30,21 +30,16 @@ jobs:
           test "$(git -C cvc-source rev-parse HEAD)" = 1c5e043ec33ef6f1fdbf38565501c944893a83cf
           make -C cvc-source/src -j2 cvc64 > cvc-build.log 2>&1
           python3 hw/soc/flow/prepare_ihp_native_boot.py
-      - name: Strict native reset data and X propagation probes plus mutations
-        run: python3 scripts/probe_native_cvc.py
-      - name: Exhaustive affected-cell four-state transition comparison
-        run: python3 scripts/qualify_cvc_cells.py
+      - name: Compare original SRAM models and reject data inversion
+        run: python3 scripts/qualify_cvc_sram.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cvc-four-state-cells-${{ github.run_id }}
+          name: cvc-sram-functional-${{ github.run_id }}
           path: |
-            cvc-probe/**/*.json
-            cvc-probe/**/*.log
-            cvc-probe/**/*.v
-            cvc-cell-qualification/**/*.json
-            cvc-cell-qualification/**/*.log
-            cvc-cell-qualification/**/*.v
+            cvc-sram-qualification/**/*.json
+            cvc-sram-qualification/**/*.log
+            cvc-sram-qualification/**/*.v
             cvc-build.log
             cvc-source/OSS-CVC-MODIFIED-ARTISTIC-LIC.TXT
             cvc-source/CHANGES.md
