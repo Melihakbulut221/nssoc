@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 """Native transistor feasibility only. Ideal sizing R/C, no physical PHY claim."""
-import os,json,hashlib,subprocess,traceback
+import os,json,hashlib,subprocess,traceback,re
 from pathlib import Path
 import numpy as np
 import cdr_mos650_gate_ac as runtime
@@ -38,12 +38,16 @@ def main():
    deck=['Native cascode clock buffer feasibility - not physical signoff',f'.lib "{models}/models/cornerHBT.lib" hbt_typ','.temp 27','.options reltol=1e-4 abstol=1e-12 sparse','VDD avdd 0 PWL(0 0 500p 2.5)', 'VCP cp0 0 '+frozen.clock(1.,True,False),'VCN cn0 0 '+frozen.clock(1.,False,False),f'RCP cp0 {sourcep} 10',f'RCN cn0 {sourcen} 10',f'CLP outp 0 {load_ff}f',f'CLN outn 0 {load_ff}f']
    if buffered:deck += [f'.include "{circuit}"','IREF avdd bias PWL(0 0 500p .0005)']
    deck += [f'.tran {frozen.STEP:.14g} {frozen.STOP:.14g} 0 {frozen.STEP:.14g}', '.control','set num_threads=1','set filetype=binary','save '+' '.join(vectors)]
-   if buffered:deck += [f'alter @q.{n}.qnpn13g2[off] = 1'for n in specs]
+   if buffered:
+    for n in specs:deck += [f'alter @q.{n}.qnpn13g2[off] = 1',f'echo NSSOC_NATIVE_FLAG_BEGIN q.{n}.qnpn13g2',f'show q.{n}.qnpn13g2 : off','echo NSSOC_NATIVE_FLAG_END']
    deck += ['op','run wave.raw','echo NSSOC_BACKEND_OPTIONS_BEGIN','option','echo NSSOC_BACKEND_OPTIONS_END','quit','.endc','.end']
    (folder/'bench.cir').write_text('\n'.join(deck)+'\n');(folder/'spinit').write_text('set num_threads=1\n')
    runtime.execute([engine,'-n','-b','bench.cir'],tag,seconds=1800,cwd=folder)
    log=(NATIVE/(tag+'.stdout')).read_text()+'\n'+(NATIVE/(tag+'.stderr')).read_text()
    options,notes,_=frozen.backend_readback(log,'sparse');assert not notes,notes
+   if buffered:
+    flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\S+)\n(.*?)^NSSOC_NATIVE_FLAG_END\s*$',log)
+    assert [n for n,_ in flags]==['q.'+n+'.qnpn13g2'for n in specs] and all(re.findall(r'(?m)^\s*off\s+([01])\s*$',v)==['1']for _,v in flags)
    t,v,raw=frozen.read_streamed_wave(folder/'wave.raw',vectors,frozen.STOP,frozen.STEP)
    def voltage(n):return np.zeros(len(t))if n=='0'else v['v('+n+')']
    active=t>=frozen.START;delta=voltage('outp')-voltage('outn');cm=(voltage('outp')+voltage('outn'))/2
