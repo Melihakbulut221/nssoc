@@ -1,36 +1,44 @@
-name: Actual PLL130ns exact prefix current diagnostic with131ns endpoint guard
+name: Reconstruct real first PLL latch boundary currents from authenticated native capture
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  readback:
+  analyze:
     runs-on: ubuntu-24.04
-    timeout-minutes: 355
+    timeout-minutes: 180
     env:
       GH_TOKEN: ${{ github.token }}
+      OPENBLAS_NUM_THREADS: '1'
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+          sparse-checkout: scripts
+          filter: blob:none
+      - name: Free unused SDK space on this disposable hosted runner
+        run: |
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL
+          df -h /tmp
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
       - run: python3 -m pip install numpy==2.3.3
-      - run: python3 -B scripts/pll_current_prefix130ns.py
+      - run: python3 -B scripts/analyze_pll_boundary_currents.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pll-current-prefix130ns-derived-${{ github.run_id }}
-          path: pll-current-prefix130ns/
+          name: pll-boundary-current-derived-${{ github.run_id }}
+          path: pll-boundary-current-analysis/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pll-current-prefix130ns-native-${{ github.run_id }}
-          path: cloud-pll-rhi120-c8-native/case/
+          name: pll-boundary-current-native-${{ github.run_id }}
+          path: pll-boundary-current-native/
           if-no-files-found: error
           retention-days: 90
