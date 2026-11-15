@@ -1,3 +1,9 @@
+## Queued duplicate generic checks removed; no native test cancelled
+
+Cancelled six not-started/pending genericpush checks **43718376793,43717963405,43717631576,43717555311,43715932009,43716131763**. Before each cancellation verified owned experimentbranch, checks.yml/eventpush, statusqueued/pending, NOjobin_progress, andexactcommitfiles restricted toscripts/pnr/experimentworkflow/docs (noRTL/testsuite/mainCIworkflowchanges). Dedicatednativeworkflows andactualRTL-changing regressions retained. This avoidsrepeatfullunchangedRTL suites on pureanalysis/nativeworker changes; doesNOTclaimgenericCIpassed or removefutureintegrationtests. Existingknownpreparedsource/mappedbootfailuresremainopen.
+
+Latestlivepoll **43717632809 IN_PROGRESS**, **43717961699 QUEUED**, **43718375160 QUEUED**. No nativeproducer restarted orcancelled. Previousgoalturn=progress(queuecleanupwithactualcancelresponses)+verifiedwait; noimpasse/fullgoalnotmet.
+
 ## Remaining setup report analysis moved to cloud after observer-only download timeouts
 
 LocalRAM observer68834 exhausted180s on SAME24MBderived14162873930 after prior120stimeout43270. Bothobserverhandles finished; no localartifactpersisted and successfulphysicalproducer43715930015 wasNOTrestarted. OriginalwholeZIPpreviouslyauthenticated andsetup2276/hold1/2/210 remainverified.
