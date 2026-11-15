@@ -254,7 +254,7 @@ def run_loaded(worker,models,variant,engine,model,contract,bound,case):
     folder=worker.NATIVE/('loaded-n'+str(bound['partition'])+'-'+case);folder.mkdir()
     r=dict(status='RUNNING',case=case,partition=bound['partition'],corner=corner,accepted=False,
         full_phy_accepted=False,final_timing_complete=False,closed_loop=False,full_pex_qualified=False,
-        scope='Exploratory reduced-input/cascode clock driver with30valid-Nx HBTs (93totalemitters) and7ideal sizing resistors added before unchanged physical650 clock ports. NOT physically implemented buffer or PHY signoff. Actual650 nonlinear devices with current MIM-aware metal and physical gate-port reductions. External8GHz clock; full original256bits, loads and electrical gates. One selected partition/case; full serial PHY, gate extrinsicC, substrate, PVT/refinement and chip integration remain unqualified.',
+        scope='Exploratory reduced-input/cascode clock driver with30valid-Nx HBTs (99totalemitters; output followers Nx5) and7ideal sizing resistors added before unchanged physical650 clock ports. NOT physically implemented buffer or PHY signoff. Actual650 nonlinear devices with current MIM-aware metal and physical gate-port reductions. External8GHz clock; full original256bits, loads and electrical gates. One selected partition/case; full serial PHY, gate extrinsicC, substrate, PVT/refinement and chip integration remain unqualified.',
         source_head=os.environ['GITHUB_SHA'],data_offset_s=offset,readback_controls=readback_controls())
     result=worker.DERIVED/('loaded-n'+str(bound['partition'])+'-'+case+'.json')
     def save():result.write_bytes(worker.enc(r))
@@ -267,11 +267,11 @@ def run_loaded(worker,models,variant,engine,model,contract,bound,case):
         for line in fragment.splitlines():
             if not line.startswith('X'):continue
             fields=line.lower().split();assert len(fields)==7 and fields[5]=='npn13g2'
-            nx=int(fields[6].split('=')[1]);assert nx in (1,2,4)
-            expected_nx=2 if fields[0].startswith(("xip_","xin_","xcp_","xcn_")) else 1 if fields[0]=="xref" else 4
+            nx=int(fields[6].split('=')[1]);assert nx in (1,2,4,5)
+            expected_nx=2 if fields[0].startswith(("xip_","xin_","xcp_","xcn_")) else 1 if fields[0]=="xref" else 5 if fields[0].startswith(("xfp_","xfn_")) else 4
             assert nx==expected_nx, "Exact reduced-input candidate census"
             buffer_devices['xclock.'+fields[0]]=dict(nodes=[bound_node(n)for n in fields[1:5]],nx=nx)
-        assert len(buffer_devices)==30 and sum(x['nx']for x in buffer_devices.values())==93
+        assert len(buffer_devices)==30 and sum(x['nx']for x in buffer_devices.values())==99
         cards=list(models.rglob('sg13g2_hbt_mod.lib'));assert len(cards)==1
         text=cards[0].read_bytes().decode('latin-1')
         assert 'Valid numbers: NX = 1 - 10' in text and '2.30E-14-(1.50E-15*Nx)' in text
