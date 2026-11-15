@@ -10,7 +10,7 @@ OUT=ROOT/"hw/soc/out/cloud-cdr-wire-shortcuts-physical"
 MANIFEST="scripts/cdr-wire-shortcuts-physical-pins.json"
 PARENT="scripts/cdr-wire-physical-parent.json"
 CANDIDATE="scripts/cdr-wire-physical-candidate.json"
-BRANCH="codex/packed650-shared-widening-physical"
+BRANCH="codex/packed650-shared-upper-physical"
 PAIRED="scripts/cdr650-paired-physical-input.json"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 CHECKER_SHA='30c4586b86167ad775af14b5568152820a802037150bdfd282e7ba0843a1555f'
@@ -250,6 +250,44 @@ def candidate():
     proof["ports"]=packed_proof["ports"]
     need(len(proof["ports"])==25,"complete unchanged packed public port records")
     proof["port_provenance"]={"source_gds_sha256":cfg["predecessor"]["candidate_sha256"],"actual_top_texts_compared":True,"all_positions_unchanged":True}
+    # Authenticate the original M3 predecessor above before admitting this
+    # separate upper-metal successor. Preserve all native checkers and faults.
+    predecessor_bytes=candidate_bytes;predecessor_proof=proof
+    upper_cfg=json.loads((ROOT/"scripts/cdr650-upper-physical-input.json").read_bytes())
+    ur=acquire.api("actions/runs/"+str(upper_cfg["run"]))
+    need(ur["head_sha"]==upper_cfg["source"] and ur["status"]=="completed" and ur["conclusion"]=="success" and ur["run_attempt"]==1,"exact upper-metal producer")
+    archives={}
+    for name,record in upper_cfg["artifacts"].items():
+        meta=acquire.api("actions/artifacts/"+str(record["id"]))
+        need(not meta["expired"] and meta["workflow_run"]["id"]==upper_cfg["run"] and meta["workflow_run"]["head_sha"]==upper_cfg["source"] and meta["digest"]=="sha256:"+record["sha256"],"upper artifact provenance")
+        path=target/("upper-"+name+".zip")
+        with path.open("xb")as stream:subprocess.run(["gh","api","repos/Melihakbulut221/nssoc/actions/artifacts/"+str(record["id"])+"/zip"],stdout=stream,check=True)
+        need(sha(path)==record["sha256"],"upper archive digest");archives[name]=path
+    with zipfile.ZipFile(archives["native"])as z:
+        need(z.namelist()==["candidate.gds"],"upper native inventory");candidate_bytes=z.read("candidate.gds")
+    with zipfile.ZipFile(archives["proof"])as z:proof=json.loads(z.read("shared-upper-widening-proof.json"))
+    need(hashlib.sha256(candidate_bytes).hexdigest()==proof["candidate_gds_sha256"]==upper_cfg["candidate_sha256"],"upper GDS hash")
+    need(hashlib.sha256(predecessor_bytes).hexdigest()==proof["source_gds_sha256"]==upper_cfg["predecessor_sha256"],"upper exact M3 predecessor")
+    need(proof["accepted"]is False and proof["added_layers"]==[50,67] and proof["original_top_hierarchy_and_labels_retained"] and proof["all_original_geometry_retained"] and proof["serialized_region_equality_checked"],"upper generation guards")
+    need(len(proof["components"])==20 and all(x["via_incidence_unchanged"]for x in proof["components"]),"ten shared nets on both upper layers")
+    prior_path=target/"upper-predecessor.gds";prior_path.write_bytes(predecessor_bytes)
+    new_path=target/"upper-candidate.gds";new_path.write_bytes(candidate_bytes)
+    ol=db.Layout();ol.read(str(prior_path));nl=db.Layout();nl.read(str(new_path))
+    need(ol.dbu==nl.dbu==.001 and len(ol.top_cells())==len(nl.top_cells())==1 and ol.top_cell().name==nl.top_cell().name==TOP,"upper hierarchy units and top")
+    before=regions(ol);after=regions(nl);need(set(before)==set(after),"upper unchanged layers")
+    changed=[]
+    for key,region in before.items():
+        need((region-after[key]).is_empty(),"upper removed original geometry "+key)
+        if not(region^after[key]).is_empty():changed.append(key)
+        if key not in ["50/0","67/0"]:need((region^after[key]).is_empty(),"unexpected upper modification "+key)
+    need(sorted(changed)==["50/0","67/0"],"exact actual changed layers")
+    for key,vias in [("50/0",["49/0","66/0"]),("67/0",["66/0","125/0"])]:
+        patch=after[key]-before[key];need(not patch.is_empty(),"actual upper addition")
+        for via in vias:need((patch&before[via]).is_empty(),"upper changed via incidence "+via)
+    need(texts(ol)==texts(nl) and len(texts(nl))==25,"upper public labels unchanged")
+    proof["ports"]=predecessor_proof["ports"]
+    proof["predecessor_verified"]=dict(run=cfg["run"],source=cfg["source"],gds_sha256=hashlib.sha256(predecessor_bytes).hexdigest())
+    cfg=upper_cfg
     layout=target/"native/layout";layout.mkdir(parents=True)
     (layout/(TOP+".gds")).write_bytes(candidate_bytes)
     shutil.copyfile(baseline/"native/layout/schematic.cir",layout/"schematic.cir")
