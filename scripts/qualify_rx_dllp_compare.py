@@ -21,8 +21,9 @@ try:
    v.write_text(header+original+body+'assign ok=reference==candidate; endmodule\n')
    p,log=execute(name,'read_verilog -sv '+str(v)+'\nprep -top proof\nflatten\nsat -verify -prove ok 1 -show-inputs\n')
    if mutant:assert p.returncode!=0 and 'proof did fail'in log,log[-3000:]
-   else:assert p.returncode==0 and 'SUCCESS!'in log,log[-3000:]
-   formal.append(dict(width=width,mutant=mutant,status='REJECTED_MUTANT'if mutant else'PASS'))
+   else:assert (p.returncode==0 and 'SUCCESS!'in log)or(p.returncode!=0 and 'proof did fail'in log),log[-3000:]
+   formal.append(dict(width=width,mutant=mutant,status='REJECTED_MUTANT'if mutant else('PASS'if p.returncode==0 else'NOT_EQUIVALENT')))
+ assert all(x['status']!='NOT_EQUIVALENT'for x in formal),formal
  (OUT/'constraints.txt').write_text('set_driving_cell sg13g2_buf_2\nset_load 10.0\n')
  PDK='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c';repo='repos/IHP-GmbH/IHP-Open-PDK/'
  def api(s):return json.loads(subprocess.check_output(['gh','api',repo+s]))
