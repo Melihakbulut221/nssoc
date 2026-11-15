@@ -72,6 +72,25 @@ def regions(layout,cell):
  return {(layout.get_info(i).layer,layout.get_info(i).datatype):pya.Region(cell.begin_shapes_rec(i)).merged()for i in layout.layer_indexes()}
 def equal(left,right):
  for k in set(left)|set(right):assert (left.get(k,pya.Region())^right.get(k,pya.Region())).is_empty(),k
+# The qualified revision adds real contact landings/vias inside the passive macro.
+# Preserve every addition; reject removals or differences on unobserved layers.
+extras={};observed={}
+left=regions(g,c);right=regions(b,bt)
+for key in set(left)|set(right):
+ current=left.get(key,pya.Region());baseline=right.get(key,pya.Region())
+ added=(current-baseline).merged();removed=(baseline-current).merged()
+ observed[str(key)]=dict(added_area=added.area(),removed_area=removed.area(),added_bbox=str(added.bbox()))
+(out/'current-contact-deltas.json').write_text(json.dumps(observed,indent=2))
+expected={(8,0):(20410400,'(29635,180;341800,29060)'),(10,0):(5945000,'(29635,885;341555,29055)'),(19,0):(1805000,'(29685,935;341505,29005)')}
+for key in set(left)|set(right):
+ current=left.get(key,pya.Region());baseline=right.get(key,pya.Region())
+ assert (baseline-current).is_empty(),('unexpected original material removal',key)
+ added=(current-baseline).merged()
+ if not added.is_empty():
+  assert key in expected and (added.area(),str(added.bbox()))==expected[key],('unexpected contact addition',key)
+  extras[key]=added
+assert set(extras)==set(expected)
+for key,extra in extras.items():bt.shapes(b.layer(*key)).insert(extra)
 equal(regions(g,c),regions(b,bt))
 def signature(cell,rename=None):
  return dict(shapes=[(str(g.get_info(i)),sorted(str(s)for s in cell.each_shape(i)))for i in g.layer_indexes()if not cell.shapes(i).is_empty()],instances=[(rename.get(x.cell.name,x.cell.name)if rename else x.cell.name,str(x.cplx_trans),x.na,x.nb,str(x.a),str(x.b),x.prop_id)for x in cell.each_inst()])
@@ -82,6 +101,7 @@ assert sum(x.cell.name=='pd_child_rc_select' for cell in g.each_cell()for x in c
 variant=pya.Layout();variant.read('hw/soc/out/select-width-rwidth2/nssoc_cdr_select_feedforward_layout_v1_rwidth2_candidate.gds');vt=variant.top_cell()
 for cell in variant.each_cell():
  for layer,datatype in [(8,2),(67,2),(67,25)]:cell.shapes(variant.layer(layer,datatype)).clear()
+for key,extra in extras.items():vt.shapes(variant.layer(*key)).insert(extra)
 assert vt.bbox()==c.bbox() and variant.dbu==g.dbu
 # Preserve explicit native primitive hierarchy for terminal location and RC.
 replacement=g.create_cell('pd_child_rc_select_rwidth2_candidate');assert replacement.cell_index()not in original
