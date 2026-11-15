@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43752942052");assert run["head_sha"]=="b6ee2fa6c79bdbe3b89c7b2c7dd56d8ef8bc1089"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43753912727");assert run["head_sha"]=="fb459530cf0c2407f0fbf3b7bfcc31ddc4f86f2e"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14176914006,"abe3b5d3eab555f04e5d53b26ebfd5a4ba08f858005c2b7178e2f0d6a365dd35","derived")
- native=archive(14176998026,"d93451b44ad916b21f3223dba07b25909e76921101940128ab06fc4367cfff77","native")
+ safe=archive(14178155232,"e4385930ba99c068c597514ce9992c93d454f9f6d0f10d6b5b282d03782513bb","derived")
+ native=archive(14178135929,"4843a60af4ede92f7c16ab9b3b11d88dcf7326889b4ca8ee379339d0fc86cf13","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43751933582
- assert report["candidate_odb_sha256"]=="fabb5f1be0ac4306c3caada4cfc07410f6087504f1fc5ec8c0c9fb5111d9b56d"
+ assert report["source_run"]==43752942052
+ assert report["candidate_odb_sha256"]=="263616794689975838ff3a0f6c8fbeb9b17696ab4cc15b7efd457abcde238c92"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -30,23 +30,38 @@ try:
   dest=source/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw)
  rows=report['targets'];paths=report['paths']
  assert rows==json.loads(safe.read('targets.json')) and len(rows)==3
- # Bind selected shared data-path drivers to the authenticated report.
- member='run/2-nssoc-sizedslow/max.rpt';data=safe.read(member)
+ # Verify the actual SRAM slew targets in this candidate's report.
+ member='run/2-nssoc-sizedslow/checks.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
- selected={'fanout9727': 84, 'fanout9729': 84, 'fanout11358': 98, 'fanout9697': 64, 'fanout9663': 99, '$abc$734931$auto$blifparse.cc:397:parse_blif$738678': 51}
- counts={}
- for name,expected in selected.items():
-  count=0
-  for part in data.decode().split('Startpoint:')[1:]:
-   if 'slack (VIOLATED)' not in part:continue
-   body=part.split('data arrival time')[0]
-   if name+'/X (sg13g2_buf_1)' in body:count+=1
-  assert count==expected,(name,count,expected)
-  counts[name]=count
- r['selected_shared_driver_path_counts']=counts
+ slew=data.decode().split('\nmax slew\n')[1].split('\nmax fanout\n')[0]
+ for bank in [6,7]:
+  pin='u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank['+str(bank)+'].u_mem/B_WEN'
+  lines=[line for line in slew.splitlines()if line.split() and line.split()[0]==pin]
+  assert len(lines)==1 and '(VIOLATED)' in lines[0]
+ # Independently authenticate the completed native connectivity probe.
+ probe_run=prior.api('actions/runs/43754262798')
+ assert probe_run['head_sha']=='427c5fe596cb8dc4633885cb893d22b175e305b5' and probe_run['conclusion']=='success' and probe_run['run_attempt']==1
+ meta=prior.api('actions/artifacts/14177192726')
+ digest='36cfb6730d8615d718e2bce222c3c3ad71f9de54809cf8a81730b5e1ce325df3'
+ assert meta['workflow_run']['id']==43754262798 and meta['digest']=='sha256:'+digest and not meta['expired']
+ probe_zip=OUT/'probe.zip'
+ with probe_zip.open('xb')as dest:subprocess.run(['gh','api',prior.REPO+'actions/artifacts/14177192726/zip'],stdout=dest,check=True)
+ assert prior.sha(probe_zip)==digest
+ import csv,io
+ with zipfile.ZipFile(probe_zip)as pz:
+  pr=json.loads(pz.read('result.json'));tsv=pz.read('native-driver-probe.tsv')
+  assert pr['returncode']==0 and pr['sources_unchanged'] and hashlib.sha256(tsv).hexdigest()==pr['native_driver_probe_sha256']
+  rr=list(csv.DictReader(io.StringIO(tsv.decode()),delimiter='\t'))
+  assert len(rr)==1321 and len(set((v['kind'],v['pin'])for v in rr))==1321
+  for bank in [6,7]:
+   pin='u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank['+str(bank)+'].u_mem/B_WEN'
+   match=[v for v in rr if v['kind']=='slew'and v['pin']==pin];assert len(match)==1
+   assert match[0]['output_drivers']=='{{$abc$734931$auto$blifparse.cc:397:parse_blif$757409} Y sg13g2_inv_1}' and match[0]['iterms']=='4'
+ probe_zip.unlink()
+ r['native_probe_binding']={'run':43754262798,'archive_sha256':digest,'tsv_sha256':pr['native_driver_probe_sha256']}
  r['critical_path_report_sha256']=report['outputs'][member]
  safe.close();native.close()
- r['source_archives']=[dict(id=14176914006,sha256='abe3b5d3eab555f04e5d53b26ebfd5a4ba08f858005c2b7178e2f0d6a365dd35'),dict(id=14176998026,sha256='d93451b44ad916b21f3223dba07b25909e76921101940128ab06fc4367cfff77')]
+ r['source_archives']=[dict(id=14178155232,sha256='e4385930ba99c068c597514ce9992c93d454f9f6d0f10d6b5b282d03782513bb'),dict(id=14178135929,sha256='4843a60af4ede92f7c16ab9b3b11d88dcf7326889b4ca8ee379339d0fc86cf13')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -73,7 +88,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="SHARED_SIX_BUFFERS_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Sourcefabb: six shared buffer1to4 ranked by aggregate delay over reported violated data paths. All clock, reset, hold and incidence guards unchanged. Fresh allcorner timing required; no final routing or fullPHY acceptance.")
+ r.update(status="SRAM_TXWEN_DRIVER_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source2636: shared TXFIFO bank6/7 B_WEN inverter1to4, native pin-to-driver guards. All prior timing ECOs and constraints preserved. Requires fresh threecorner timing/electrical checks; not final routed signoff.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()

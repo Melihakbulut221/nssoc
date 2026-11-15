@@ -12,19 +12,28 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {fanout9727} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout9729} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout11358} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout9697} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout9663} {sg13g2_buf_1 sg13g2_buf_4}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$738678} {sg13g2_buf_1 sg13g2_buf_4}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$757409} {sg13g2_inv_1 sg13g2_inv_4}
 }
 set targets [dict keys $choices]
-if {[llength $targets]!=6} {error "Wrong measured resize census"}
+if {[llength $targets]!=1} {error "Wrong measured resize census"}
 if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
 foreach name $targets {
  set inst [$block findInst $name]
  if {$inst eq "NULL" || [[$inst getMaster] getName] ne [lindex [dict get $choices $name] 0]} {error "Reset target preflight mismatch $name"}
+}
+# Bind both physical SRAM pins to this inverter, despite STA name escaping.
+set driver_inst [$block findInst {$abc$734931$auto$blifparse.cc:397:parse_blif$757409}]
+set driver_net [[$driver_inst findITerm Y] getNet]
+if {$driver_net eq "NULL" || [llength [$driver_net getITerms]]!=4} {error "SRAM driver net census changed"}
+foreach bank {6 7} {
+ set expected [format {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[%d].u_mem} $bank]
+ set matches {}
+ foreach inst [$block getInsts] {
+  if {[string map [list "\\" ""] [$inst getName]] eq $expected} {lappend matches $inst}
+ }
+ if {[llength $matches]!=1} {error "SRAM instance mapping not unique $expected"}
+ set sink [[lindex $matches 0] findITerm B_WEN]
+ if {$sink eq "NULL" || [$sink getNet] ne $driver_net} {error "SRAM pin does not use measured driver"}
 }
 set ports_before {}
 foreach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}
@@ -48,11 +57,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_SHARED_SIX_BUFFERS_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_SRAM_TXWEN_DRIVER_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size six measured shared data drivers"
+    name = "Size shared SRAM write-enable inverter"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
