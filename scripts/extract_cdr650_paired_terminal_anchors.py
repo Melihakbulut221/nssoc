@@ -38,6 +38,10 @@ def main():
   assert hashlib.sha256(gen.read('candidate.gds')).hexdigest()=='ecae8ae8e49beea391b1d2575da6f5ac9ea01180550ae65fc786ddc6fd9ee193'
   (NATIVE/'packed-predecessor.gds').write_bytes(gen.read('candidate.gds'))
   (NATIVE/'baseline.gds').write_bytes(gen.read('source.gds'));(NATIVE/'paired-layout-proof.json').write_bytes(proof.read('paired-layout-proof.json'))
+  oldclock=archive(14148043395,'8bf417abc9ce9c1b030c02bd749d4f72c15134d3e86d7bfd59e2307ff1ec259b',43680974890,'17297fd48eb45504f19c15f517c7ba69fdd017af')
+  oldbytes=oldclock.read('selected/layout/'+TOP+'.gds')
+  assert hashlib.sha256(oldbytes).hexdigest()=='0e7b4d8da7e6de4bda98ea0a83d6dbb5ea78c73c89a60d5724ba44401c1a24c0'
+  (NATIVE/'clock-predecessor.gds').write_bytes(oldbytes)
   cfg=identity.read(ROOT/'scripts/cdr-mos650-wires-inputs.json');old=wire.fetch_old_pins(cfg)
   import cdr650_paired_pin_provenance as provenance
   provenance.source_pins(cfg,flat,old)
