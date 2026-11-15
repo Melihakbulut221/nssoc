@@ -3,9 +3,9 @@ from pathlib import Path,PurePosixPath
 import cdr_mos650_identity as identity
 P='repos/Melihakbulut221/nssoc/'
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
-r=api('actions/runs/43743487912');assert r['conclusion']=='success' and r['head_sha']=='6c8c88198f2edb90ed3e649067adfed3ee72b3b5' and r['run_attempt']==1
-m=api('actions/artifacts/14173716603');assert m['workflow_run']['id']==r['id'] and m['digest']=='sha256:6f80911d79459c0ba1cf1d0ca23d5e2c53a9e14660707c102c8fc710a511028f' and not m['expired']
-b=subprocess.check_output(['gh','api',P+'actions/artifacts/14173716603/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];z=zipfile.ZipFile(io.BytesIO(b));assert len(z.namelist())==len(set(z.namelist()))
+r=api('actions/runs/43744181108');assert r['conclusion']=='success' and r['head_sha']=='ba72787f258e153e9d4070974b8558c817e6171d' and r['run_attempt']==1
+m=api('actions/artifacts/14173825484');assert m['workflow_run']['id']==r['id'] and m['digest']=='sha256:ba416ff202c6bbd9706952fad3215120573a4c544890ec9eab1fb8d4a1040fc2' and not m['expired']
+b=subprocess.check_output(['gh','api',P+'actions/artifacts/14173825484/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];z=zipfile.ZipFile(io.BytesIO(b));assert len(z.namelist())==len(set(z.namelist()))
 identity.NATIVE=Path('select650-identity-native');identity.NATIVE.mkdir();identity.DERIVED=Path('select650-identity');identity.DERIVED.mkdir()
 base=identity.NATIVE/'selected/physical';base.mkdir(parents=True)
 for info in z.infolist():
@@ -23,3 +23,27 @@ for name in ['SE_D0','SE_D1','SE_D3','SE_D4']:
 identity.save('reference-plan.json',dict(source_run=r['id'],artifact=m['id'],sha256=m['digest'][7:],changed_reference_names=changes,expected_devices=len(wanted),full_phy_accepted=False,fresh_rc=False))
 for mode in ['lvs','lvs_flat']:identity.native_side(mode,wanted)
 identity.save('result.json',dict(status='PASS_ACTUAL650_SELECT_WIDTH2_INDEPENDENT_NATIVE_IDENTITIES',devices=650,changed_reference_names=changes,full_phy_accepted=False,fresh_rc=False))
+
+import shutil
+view=identity.NATIVE/'view';wire=view/'wire';wire.mkdir(parents=True)
+layout=view/'parent/layout';layout.mkdir(parents=True)
+physical=view/'parent/physical/lvs_flat';physical.mkdir(parents=True)
+gds=base/'candidate650-select-width2.gds';assert hashlib.sha256(gds.read_bytes()).hexdigest()=='8c42f6785d0b7ebac0a6d1b8f01d72943828a09ecf89b11f9ca05a3b4e771c77'
+shutil.copyfile(gds,layout/'nssoc_cdr_pd500_resistor_v59.gds')
+shutil.copyfile(base/'lvs_flat/result.lvsdb',physical/'result.lvsdb')
+method=Path('docs/evidence/cdr-v59-tail-exact-wire-methods-20261026/locate01.py').read_text()
+assert method.count('==500')==2 and method.count('ALL_500_DEVICES')==1
+method=method.replace('==500','==650').replace('ALL_500_DEVICES','ALL_650_DEVICES')
+(wire/'locate01.py').write_text(method)
+with (identity.DERIVED/'locate.stdout').open('w')as so,(identity.DERIVED/'locate.stderr').open('w')as se:
+ subprocess.run(['python3','-B',str(wire/'locate01.py')],stdout=so,stderr=se,check=True)
+locations=json.loads((wire/'device-locations01.json').read_text())
+flat=json.loads((identity.DERIVED/'lvs_flat-identity.json').read_text())
+expected={row['layout']['id']:row['layout']for row in flat['pairs']}
+assert len(locations['devices'])==650 and len({row['native_id']for row in locations['devices']})==650
+for row in locations['devices']:
+ want=expected[row['native_id']]
+ assert row['model'].lower()==want['model'] and row['parameters']==want['parameters']
+ for terminal in row['terminals']:assert terminal['native_cluster']==want['terminals'][terminal['name'].upper()]['cluster']
+for name in ['device-locations01.json','pcell-inventory01.json']:shutil.copyfile(wire/name,identity.DERIVED/name)
+identity.save('location-result.json',dict(status='PASS_650_UNIQUE_PRIMITIVE_ENCLOSURES_AND_INDEPENDENT_TERMINAL_OWNERS',devices=650,terminals=2046,full_phy_accepted=False,fresh_rc=False))
