@@ -6,12 +6,13 @@ from check_ihp_drc import record_result,digest
 from prepare_ihp_drc import validate_lock,verify
 P='repos/Melihakbulut221/nssoc/'
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
-r=api('actions/runs/43744074899');assert r['conclusion']=='success' and r['head_sha']=='6ce9e9ad7df918a5163dba2cefaf084f63c97220' and r['run_attempt']==1
-a=api('actions/artifacts/14172679027');assert a['workflow_run']['id']==r['id'] and a['digest']=='sha256:9e991786eaec22cca6268d31968d12309e24b4960cc0e82b374872f2d987df19' and not a['expired']
-b=subprocess.check_output(['gh','api',P+'actions/artifacts/14172679027/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==a['digest'];z=zipfile.ZipFile(io.BytesIO(b))
+r=api('actions/runs/43748013313');assert r['conclusion']=='success' and r['head_sha']=='ec48f48e93c0e65318013964b7629bb6b089e387' and r['run_attempt']==1
+a=api('actions/artifacts/14175141753');assert a['workflow_run']['id']==r['id'] and a['digest']=='sha256:596d95517bff244928a3e64ea73a0391171dea352bda26fa3c7702cdd705e9ad' and not a['expired']
+b=subprocess.check_output(['gh','api',P+'actions/artifacts/14175141753/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==a['digest'];z=zipfile.ZipFile(io.BytesIO(b))
 assert json.loads(z.read('primitive-census.json'))==dict(physical_primitives=650,counts=dict(rppd=98,ptap1=221,npn13G2=124,nmos=200,cmim=7),hierarchy_preserved=True)
+proof=json.loads(z.read('primitive-replacement-proof.json'));assert len(proof['changes'])==4 and proof['all_original_shapes_retained'] and proof['only_four_resistor_references_changed']
 out=Path('select650-checks').resolve();out.mkdir()
-for n,h in [('candidate650-select-width2.gds','8c42f6785d0b7ebac0a6d1b8f01d72943828a09ecf89b11f9ca05a3b4e771c77'),('schematic650-select-width2.cir','1cef658f121e0ab0dc33a2c0cacd2dd564ff440413e4a0ab6a4b91de66fca239')]:
+for n,h in [('candidate650-select-width2.gds','5f66ce0cb46acfb580b517ba02b10f66560ba4200d9cfbba0b633a839cc59c5a'),('schematic650-select-width2.cir','1cef658f121e0ab0dc33a2c0cacd2dd564ff440413e4a0ab6a4b91de66fca239')]:
  data=z.read(n);assert hashlib.sha256(data).hexdigest()==h;(out/n).write_bytes(data)
 app=Path('hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage').resolve();assert digest(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
 pins={app:digest(app)}
