@@ -1,3 +1,9 @@
+## Critical length NOR4 improves setup; new physical baseline788b
+
+43765120368 /f4659e64d628ad2b910081fc78f21b4d53a0ccdd SUCCESS. Derived14181943979 SHA36b7da6718c7e056d797bd8bb428e55dd8f70b2dfb90f7e284c6fc95b9084dc8 fullarchive and ALL included inventoried members authenticatedRAM. Native14182118832 advertisedSHAf36b09b86d044e1200370ed3ad216efe44feee414d5ba40ca4c4b912c97664a8. ODB788b4fb23c599f3d9b9f0c30b39097898c4dd28ca4ad956d5f9e618c48ed576f. Producer43765120368, predecessor43763323946/source602e. OnlyNOR735945size1to2; return0/sourcesunchanged. Setup2036/0/0 (was2040); slowWS-1.46626ns (was-1.49755), TNS-1368.95ns (was-1403.33). TypicalWS+.240387fast+1.11161. Hold0/0/0 margins+.222705/+.143183/+.00520262ns; slew0/0/0cap0/0/0. Placement only, not final routed signoff. Worst nowFF160392->FF343753 pcie_clk_i, inspect newreport's full data segment before nextECO. RAMsession28430completed.
+
+Formal43765342655 strengthenedstate and43763776791 original plusNx5PHY43759760309 lastverifiedrunning; not restarted. Setup/fullPHY/routedchip/fanout/productiongatesstillopen. Familypriority analysis below is602e source; counts must be revalidated against788b before guardedphysicaltrial. Goalactive, thisturn actual4setupclosure plus priorityevidence.
+
 ## Setup launch-family census identifies broader receive-queue target
 
 Authenticated latest602e source43763323946 derived14180659232 fullZIPfd77a908e34c89f670dc8ca16733119dd58db4a7b32ec9002ac114d3ed86d97e and slowmax.rpt memberhash. Parsed1000reported VIOLATED Q-start paths (not all2040setup endpoints). Largest launch families: receive_ownership.qcount193paths/worst-1.397577ns; quarantine.rst_ni184/-1.308521; receiver.rst_ni129/-1.293643; credits.b_dd100/-1.466264; credits.rst_ni57/-1.384392; ownership.head_last52/-1.174410; packets.link_dllp51/-1.282532; quarantine.length39/-1.497553. All these are real Q-start data paths; reset-labelled net names do not authorize recovery/data-path exceptions.
