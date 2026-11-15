@@ -1,4 +1,4 @@
-name: Repair two isolated feedback branches after nonregressive residual repair
+name: Repair last measured short hold branch after nonregressive late feedback repair
 on:
   workflow_dispatch:
 permissions:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-late-feedback-hold-eco-derived-${{ github.run_id }}
+          name: rx-final-short-hold-eco-derived-${{ github.run_id }}
           path: |
             input-timing/result.json
             input-timing/native.log
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-late-feedback-hold-eco-native-${{ github.run_id }}
+          name: rx-final-short-hold-eco-native-${{ github.run_id }}
           path: input-timing/run/
           if-no-files-found: warn
           retention-days: 90

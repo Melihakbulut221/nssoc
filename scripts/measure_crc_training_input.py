@@ -1,4 +1,4 @@
-"""Two late feedback branches after verified residual repair."""
+"""Final short branch after verified late feedback repair."""
 import os,json,subprocess,zipfile,hashlib,stat,re
 from pathlib import Path
 import cloud_predecode_postcts as prior
@@ -27,11 +27,11 @@ for i in native.infolist():
  q=SOURCE/p;q.parent.mkdir(parents=True,exist_ok=True);q.write_bytes(b)
 state=json.loads((SOURCE/report['repaired_state']).read_text());odb=Path(state['odb']);assert prior.sha(odb)==report['repaired_odb_sha256'];state['metrics']={}
 # Continue from the exact successful RX training ECO, not the older placement.
-eco_run=api('actions/runs/43655839647');assert eco_run['status']=='completed'and eco_run['conclusion']=='success'and eco_run['head_sha']=='08d99bb8bc95db8629648202c37e7a17c8121840'
-m=api('actions/artifacts/14138157525');h='ee48d106b424c4557f87a774411cc2465496cbd116b149c69c9ae5a19cd6b8fe'
-assert not m['expired']and m['workflow_run']['id']==43655839647 and m['workflow_run']['head_sha']==eco_run['head_sha']and m['digest']=='sha256:'+h
+eco_run=api('actions/runs/43656972871');assert eco_run['status']=='completed'and eco_run['conclusion']=='success'and eco_run['head_sha']=='83c740023a5b95f390c0d3923a6c5cafd398fbb0'
+m=api('actions/artifacts/14138618413');h='76ac393d782d6a18705c3d0061684facacba82502b7f6cea2d9ed45f3a8533c9'
+assert not m['expired']and m['workflow_run']['id']==43656972871 and m['workflow_run']['head_sha']==eco_run['head_sha']and m['digest']=='sha256:'+h
 p=OUT/'baseline.zip'
-with p.open('xb')as f:subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14138157525/zip'],stdout=f,check=True)
+with p.open('xb')as f:subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14138618413/zip'],stdout=f,check=True)
 assert prior.sha(p)==h;z=zipfile.ZipFile(p);assert len(z.namelist())==len(set(z.namelist()))
 baseline=OUT/'baseline-eco'
 for i in z.infolist():
@@ -46,7 +46,7 @@ def relocate(v):
  if isinstance(v,list):return [relocate(x)for x in v]
  return v
 state=relocate(state);state['metrics']={};odb=Path(state['odb'])
-assert prior.sha(odb)=='bcc33fa1a7c936d1e97ebea796a918fb86835307d4238f8d0a8deaaf2f61c407'
+assert prior.sha(odb)=='1af420bd624b8448914f643aaa5a32589220bce31f87c7eb939b14a183c1a67d'
 initial=OUT/'initial.json';initial.write_text(json.dumps(state))
 config=SOURCE/'trial-config.json';cfg=json.loads(config.read_text());assert cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5.0
 app=Path(os.environ['CLOUD_APPIMAGE']);prior.verify(app,'x86_64')
@@ -68,9 +68,9 @@ rows={}
 for p in (OUT/'run').glob('*/io-*.rpt'):
  text=p.read_text();v=re.findall(r'([-+]?[0-9]+\.[0-9]+)\s+slack\s+\((?:MET|VIOLATED)\)',text);assert v
  rows[str(p.relative_to(OUT))]={'worst_slack_ns':min(map(float,v)),'reported_paths':len(v),'sha256':prior.sha(p)}
-assert len(rows)==1578
+assert len(rows)==1584
 states=list((OUT/'run').glob('*-nssoc-trainingholdeco/state_out.json'));assert len(states)==1
 eco_state=json.loads(states[0].read_text());eco_odb=Path(eco_state['odb']);assert eco_odb.is_file()
-assert len(rows)==1578
+assert len(rows)==1584
 input_closed=all(v['worst_slack_ns']>=0.05 for v in rows.values())
-(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'4_delay_cells_inserted':True,'original_placement_preserved':True,'original_placement_statuses_restored':True,'native_delay_is_identity_buffer':True,'all_previous_and_residual_setup_hold_margin_50ps_passed':input_closed,'candidate_odb_sha256':prior.sha(eco_odb),'reports':rows,'accepted':False,'scope':'Two late feedback branches with two delays each; previous40IOs,3SRAMenablepins,111feedback,107residual plus2late through-pins remeasured; original incidence protected, fresh placement RC, no routed or full-chip signoff.'},indent=2))
+(OUT/'result.json').write_text(json.dumps({'source_run':eco_run['id'],'source_head':eco_run['head_sha'],'source_odb_sha256':prior.sha(odb),'source_unchanged':True,'2_delay_cells_inserted':True,'original_placement_preserved':True,'original_placement_statuses_restored':True,'native_delay_is_identity_buffer':True,'all_previous_and_residual_setup_hold_margin_50ps_passed':input_closed,'candidate_odb_sha256':prior.sha(eco_odb),'reports':rows,'accepted':False,'scope':'One final short branch with two delays; previous40IOs,3SRAMenablepins,111feedback,107residual,2late plus1final through-pin remeasured; original incidence protected, fresh placement RC, no routed or full-chip signoff.'},indent=2))
