@@ -45,8 +45,17 @@ module soc_pcie_lcrc_rx #(
     // Eight reflected CRC steps are invertible. Reversing DEBB20E3 yields
     // 00BE26ED before the byte XOR. This tests the identical residue without
     // placing the entire byte-update XOR network on the late EOP verdict path.
+`ifdef SOC_PCIE_CRC_UPPER_COMPARE_REG
+    // Maintain the exact upper CRC comparison alongside every CRC update.
+    // This removes the 24-bit reduction from the late received-byte verdict.
+    // SOP selects ffffffff, whose upper comparison is always false.
+    reg crc_upper_ok;
+    wire crc_residue_ok=!rx_sop_i && crc_upper_ok &&
+                        ((crc[7:0] ^ rx_data_i)==8'hed);
+`else
     wire crc_residue_ok=((rx_sop_i ? 32'hffffffff : crc) ^
                          {24'b0,rx_data_i})==32'h00be26ed;
+`endif
     assign rx_ready_o=rst_ni && state!=EMIT;
     assign tlp_valid_o=rst_ni && state==EMIT;
     // Byte store ports. Bytes are written one cycle after acceptance from a
@@ -96,6 +105,19 @@ module soc_pcie_lcrc_rx #(
     generate if (MAX_TLP_DWORDS<3 || MAX_TLP_DWORDS>1028) begin: invalid_capacity
         initial $error("MAX_TLP_DWORDS must be 3..1028");
     end endgenerate
+`ifdef SOC_PCIE_CRC_UPPER_COMPARE_REG
+    // Use exactly the same enable as the crc register below, including SOP
+    // while dropping, restart, malformed EOP and the capacity boundary.
+    wire crc_write=state!=EMIT && rx_valid_i &&
+        (rx_sop_i || (state!=IDLE && state!=DROP &&
+                     !rx_error_i && 32'(received)!=CAP+6));
+    always @(posedge clk_i or negedge rst_ni)
+        if (!rst_ni) crc_upper_ok<=1'b0;
+        else if (crc_write) crc_upper_ok<=crc_next[31:8]==24'h00be26;
+`ifdef FORMAL
+    always @* if (rst_ni) assert(crc_upper_ok==(crc[31:8]==24'h00be26));
+`endif
+`endif
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
             state<=IDLE;received<=0;length<=0;index<=0;crc<=32'hffffffff;
