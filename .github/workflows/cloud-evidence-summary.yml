@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/repair_rx_sized_hold.py
+          python3 -m py_compile scripts/repair_rx_seven_residual_hold.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -31,7 +31,7 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Repair only all-corner setup-qualified hold inputs of the new RX sized candidate
-        run: python3 scripts/repair_rx_sized_hold.py
+        run: python3 scripts/repair_rx_seven_residual_hold.py
       - name: Collect derived diagnostics
         if: always()
         run: |
