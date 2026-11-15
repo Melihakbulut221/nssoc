@@ -1,0 +1,109 @@
+{
+  "run": 43694619569,
+  "source_head": "fb6f18b80192f9830eca6d150ba4e949860d95b4",
+  "artifact_id": 14154310067,
+  "artifact_sha256": "3735f2f2eac49e17aad5ef221b8a6b878d6cf3e3116547e1c43a58e7448ec713",
+  "accepted": false,
+  "result": {
+    "status": "PASS_24BIT_EQUIVALENCE_TWO_MUTANTS_AND_REPLAY_TRAFFIC",
+    "source_head": "fb6f18b80192f9830eca6d150ba4e949860d95b4",
+    "rtl_sha256": "447e2208baf1e158561e29332178adce5687ab574f465b109b433ca1a95652de",
+    "cases": [
+      {
+        "case": "exact",
+        "expected_equivalent": true,
+        "returncode": 0,
+        "status": "PASS"
+      },
+      {
+        "case": "mutant_half_distance",
+        "expected_equivalent": false,
+        "returncode": 1,
+        "status": "REJECTED_EXPECTED_MUTANT"
+      },
+      {
+        "case": "mutant_borrow",
+        "expected_equivalent": false,
+        "returncode": 1,
+        "status": "REJECTED_EXPECTED_MUTANT"
+      }
+    ],
+    "traffic": [
+      {
+        "depth": 4,
+        "max_bytes": 38,
+        "timeout": 256,
+        "seed": 1,
+        "cycles": 300000,
+        "status": "PASS",
+        "summary": [
+          "SUMMARY seed=-389961648 cycles=300000 frames_in=3552 bad_in=33 frames_out=4682 replayed_out=1231 replays=645 stalls=69571 take_pairs=91346 take_gaps=32130 acks=3815 losses=86 source_errors=37 resets=8 mismatches=0",
+          "RESULT PASS"
+        ]
+      },
+      {
+        "depth": 4,
+        "max_bytes": 38,
+        "timeout": 256,
+        "seed": 2,
+        "cycles": 300000,
+        "status": "PASS",
+        "summary": [
+          "SUMMARY seed=-176481271 cycles=300000 frames_in=3660 bad_in=30 frames_out=4791 replayed_out=1250 replays=651 stalls=69506 take_pairs=92691 take_gaps=32122 acks=3823 losses=92 source_errors=37 resets=12 mismatches=0",
+          "RESULT PASS"
+        ]
+      },
+      {
+        "depth": 4,
+        "max_bytes": 38,
+        "timeout": 1024,
+        "seed": 3,
+        "cycles": 300000,
+        "status": "PASS",
+        "summary": [
+          "SUMMARY seed=-1680196975 cycles=300000 frames_in=3723 bad_in=29 frames_out=4693 replayed_out=1082 replays=593 stalls=68090 take_pairs=90988 take_gaps=31641 acks=4034 losses=89 source_errors=35 resets=4 mismatches=0",
+          "RESULT PASS"
+        ]
+      },
+      {
+        "depth": 4,
+        "max_bytes": 38,
+        "timeout": 256,
+        "seed": 4,
+        "cycles": 300000,
+        "status": "PASS",
+        "summary": [
+          "SUMMARY seed=2035105152 cycles=300000 frames_in=3584 bad_in=33 frames_out=4741 replayed_out=1260 replays=631 stalls=69243 take_pairs=92789 take_gaps=32201 acks=3756 losses=82 source_errors=39 resets=9 mismatches=0",
+          "RESULT PASS"
+        ]
+      },
+      {
+        "depth": 2,
+        "max_bytes": 22,
+        "timeout": 128,
+        "seed": 5,
+        "cycles": 300000,
+        "status": "PASS",
+        "summary": [
+          "SUMMARY seed=1776506514 cycles=300000 frames_in=2858 bad_in=28 frames_out=4624 replayed_out=1821 replays=1104 stalls=52856 take_pairs=61113 take_gaps=22460 acks=4618 losses=76 source_errors=34 resets=11 mismatches=0",
+          "RESULT PASS"
+        ]
+      },
+      {
+        "depth": 2,
+        "max_bytes": 22,
+        "timeout": 128,
+        "seed": 6,
+        "cycles": 300000,
+        "status": "PASS",
+        "summary": [
+          "SUMMARY seed=553580852 cycles=300000 frames_in=2953 bad_in=23 frames_out=4688 replayed_out=1783 replays=1101 stalls=53444 take_pairs=62111 take_gaps=22813 acks=4672 losses=76 source_errors=30 resets=10 mismatches=0",
+          "RESULT PASS"
+        ]
+      }
+    ],
+    "accepted": false,
+    "scope": "All 2^24 binary sequence pairs; exact combinational substitution at unchanged capture edge. Both actual RTL modes compile; six full-module co-simulations compare every output with unchanged coverage gates for 1.8M cycles. Not exhaustive sequential or arbitrary-X/Z equivalence, mapped timing, route, or full PHY acceptance.",
+    "yosys": "Yosys 0.67+146 (git sha1 468ba27d9-dirty, Release, Clang /usr/bin/clang++ 21.1.8)"
+  }
+}
