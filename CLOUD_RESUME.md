@@ -1,3 +1,7 @@
+## Full ACK delta candidate rejected on isolated mapped timing
+
+43702685646/cdcb36214815b0941002e06b9b780a7a22068636 completed; artifact14157435974 SHA7d1bf70ca7793584a1626c397c25dac2fcb1773128495083238391ca0056fa05 authenticated and result inspected. ABC slow/typ/fast ps: original2593.46/1664.38/1095.69; stale-only2151.22/1370.64/905.56; full-delta3bit-group candidate2275.13/1453.50/957.20. Full-delta area910.7154 slow versus850.9158 stale-only. Thus do NOT promote this full-delta variant into mainchip; it regresses allcorners versus ongoing stale-only chip. Its independent equivalence/traffic43702510353 was still running; preserve result as diagnostic, never claim mapped timing acceptance from equivalence. The full-delta source remains isolated experimental branch only. Mainchip43700966904 and loadedPHY43697553951, read-onlyPLL difference43702605947 remain in progress at latest observation.
+
 ## PLL prefix rejection retained; full ACK delta alternative under qualification
 
 **43702129953/b6e44d8a8bb58ab639dcef52d1d4de3cfe7347ba FAILED** at exact131column prefix comparison after actual4ns native run. Original cache authenticated,12817rows strictlybefore4ns; reference prefixSHA f2a359fbedc10eebf8b0e8af8392a2e9bc0331bbd4bf844e3169435930d2f5d8. Do NOT relax equality or proceed130ns. Derived14156672470 SHA e89789a3f6beb52bb722a651fd0b019195f3983f7e7ae8af06b8d691459154d2; native14156199159 SHA 8cdd9bf7d0e92a3c59d0b141f5ab288326cb30a6cfea55a6e54cbadb2f6d83b8. The method has not proved noninvasiveness.
