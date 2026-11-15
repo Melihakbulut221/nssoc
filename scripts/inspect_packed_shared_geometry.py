@@ -10,11 +10,11 @@ def archive(i,h,run):
  with p.open('xb')as f:subprocess.run(['gh','api',P+'actions/artifacts/'+str(i)+'/zip'],stdout=f,check=True)
  with p.open('rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()==h
  return zipfile.ZipFile(p)
-z=archive(14131740193,'89585c334b2ae7f06b21e6851babe72ec11b5d1b4e0bee675c79090129193057',43639421390)
+z=archive(14137186920,'343b6f236d8d61683488dba3590727bbe5220c6c973da8af49fc89b6161bfd29',43654184010)
 n=[n for n in z.namelist()if n.endswith('candidate.gds')];assert len(n)==1
-b=z.read(n[0]);assert hashlib.sha256(b).hexdigest()=='ecae8ae8e49beea391b1d2575da6f5ac9ea01180550ae65fc786ddc6fd9ee193'
+b=z.read(n[0]);assert hashlib.sha256(b).hexdigest()=='f93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe'
 Path('candidate.gds').write_bytes(b)
-z=archive(14131807306,'e5a2c6cbe1134e92f812b6abfe5d77bed5e797a7f4d8a3cbe6af9cf7c6af0cf4',43640767232)
+z=archive(14138025358,'9edacef48d4e10df6e857dcff5e424b6e1e18ba8c7b72f158e88fa3ef4ab88c2',43655485838)
 anchors=json.loads(z.read('terminal-anchors.json'))
 l=kdb.Layout();l.read('candidate.gds');assert len(l.top_cells())==1 and l.dbu>0
 T=l.top_cell();cache={}
@@ -34,54 +34,63 @@ for r in anchors['rows']:
  for layer in [8,10,19,29,30,49,50,66,67,125,126,133,134]:
   near=reg(layer)&window
   if not near.is_empty():rows[-1]['nearby_material'][str(layer)]=[{'bbox_dbu':[p.bbox().left,p.bbox().bottom,p.bbox().right,p.bbox().top],'hull_vertices_dbu':[[v.x,v.y]for v in p.each_point_hull()]}for p in near.each()]
-result={'source_gds_sha256':hashlib.sha256(b).hexdigest(),'anchors_artifact_id':14131807306,'dbu_um':l.dbu,'top_cell':T.name,'components':sorted(components),'rows':rows,'accepted':False,'scope':'Read-only actual shared comparator anchor and same-layer connected polygon geometry. Nearby material has no inferred net ownership. No reroute, DRC/LVS, RC improvement or electrical pass claimed.'}
+result={'source_gds_sha256':hashlib.sha256(b).hexdigest(),'anchors_artifact_id':14138025358,'dbu_um':l.dbu,'top_cell':T.name,'components':sorted(components),'rows':rows,'accepted':False,'scope':'Read-only actual shared comparator anchor and same-layer connected polygon geometry. Nearby material has no inferred net ownership. No reroute, DRC/LVS, RC improvement or electrical pass claimed.'}
 Path('out').mkdir();Path('out/shared-geometry.json').write_text(json.dumps(result,indent=2));print('actual shared anchor geometry',len(rows),'dbu_um',l.dbu)
 
-# Grow only physically connected M3 polygons reached through real via stacks.
-# This is a candidate requiring native DRC/LVS/freshRC, not a qualified fix.
+
+# Follow each actual shared conductor through every physical via, not merely
+# the M3 landing. Never infer ownership from neighboring geometry.
 assert abs(l.dbu-.001)<1e-12
-metal3=reg(30);selected={}
-for item in rows:
- r=item['anchor'];x,y=r['point_dbu'];point=kdb.Region(kdb.Box(x-1,y-1,x+1,y+1))
- if r['metal']==10:m2=reg(10).interacting(point)
- elif r['metal']==8:
-  m1=reg(8).interacting(point);m2=reg(10).interacting(reg(19)&m1)
- else:continue
- assert not m2.is_empty()
- via2=reg(29)&m2;m3=metal3.interacting(via2)
- assert not m3.is_empty(),r
- component=r['wire_component'];selected[component]=(selected.get(component,kdb.Region())+m3).merged()
-assert set(selected)==components
-for a,ra in selected.items():
- for b,rb in selected.items():
-  if a<b:assert (ra&rb).is_empty(),('M3 ownership conflict',a,b)
-addition=kdb.Region();proof=[];clearance=600;growth=600
-# Clip against other conductors and every unrelated adjacent-layer via.
-for component,owned in sorted(selected.items()):
- other=metal3-owned
- foreign_vias=(reg(29)+reg(49))-(reg(29)+reg(49)).interacting(owned)
- patch=(owned.sized(growth)-owned-other.sized(clearance)-foreign_vias.sized(clearance)-addition.sized(clearance)).merged()
- expanded=(owned+patch).merged()
- assert (owned-expanded).is_empty(),('Existing metal clipped',component)
- patch=(expanded-owned).merged()
- assert not patch.is_empty(),('No legal widening',component)
- assert (patch&other.sized(clearance-1)).is_empty()
- assert ((expanded&reg(29))^(owned&reg(29))).is_empty(),'Changed via2 incidence'
- assert ((expanded&reg(49))^(owned&reg(49))).is_empty(),'Changed via3 incidence'
- assert (expanded&addition.sized(clearance-1)).is_empty(),'Candidate net spacing conflict'
- addition=(addition+patch).merged()
- proof.append({'wire_component':component,'original_m3_area_um2':owned.area()*l.dbu*l.dbu,'added_m3_area_um2':patch.area()*l.dbu*l.dbu,'original_bbox_dbu':str(owned.bbox()),'via_incidence_unchanged':True})
-assert not addition.is_empty()
-# Keep the exact original top hierarchy and public text labels.
-original_geometry={str(l.get_info(li)):kdb.Region(T.begin_shapes_rec(li)).merged()for li in l.layer_indexes()}
-C=T;C.shapes(l.layer(30,0)).insert(addition)
-Path('native').mkdir();opts=kdb.SaveLayoutOptions();opts.select_cell(C.cell_index());l.write('native/candidate.gds',opts)
+metals=[8,10,30,50,67,126,134]
+links=[(8,19,10),(10,29,30),(30,49,50),(50,66,67),(67,125,126),(126,133,134)]
+owned={}
+for component in sorted(components):
+ sels={m:kdb.Region()for m in metals}
+ for row in rows:
+  r=row['anchor']
+  if r['wire_component']!=component:continue
+  x,y=r['point_dbu'];m=r['metal'];assert m in metals
+  sels[m]=(sels[m]+reg(m).interacting(kdb.Region(kdb.Box(x-1,y-1,x+1,y+1)))).merged()
+ for iteration in range(30):
+  before=[sels[m].area()for m in metals]
+  for lower,via,upper in links:
+   sels[upper]=(sels[upper]+reg(upper).interacting(reg(via)&sels[lower])).merged()
+   sels[lower]=(sels[lower]+reg(lower).interacting(reg(via)&sels[upper])).merged()
+  if [sels[m].area()for m in metals]==before:break
+ else:raise AssertionError('Physical conductor traversal did not converge')
+ owned[component]=sels
+for ca,sa in owned.items():
+ for cb,sb in owned.items():
+  if ca<cb:
+   for m in metals:assert (sa[m]&sb[m]).is_empty(),('Net ownership conflict',ca,cb,m)
+original={str(l.get_info(li)):kdb.Region(T.begin_shapes_rec(li)).merged()for li in l.layer_indexes()}
+additions={};proof=[]
+# Candidate clearances; native full DRC must confirm all actual foundry rules.
+for m,growth,clearance in [(50,600,600),(67,600,600),(126,2000,2000),(134,3000,3000)]:
+ total=kdb.Region();adjacent=[v for lo,v,hi in links if m in (lo,hi)]
+ for component,sels in sorted(owned.items()):
+  own=sels[m]
+  if own.is_empty():continue
+  other=reg(m)-own;vias=kdb.Region()
+  for v in adjacent:vias+=reg(v)
+  foreign=vias-vias.interacting(own)
+  patch=(own.sized(growth)-own-other.sized(clearance)-foreign.sized(clearance)-total.sized(clearance)).merged()
+  expanded=(own+patch).merged()
+  assert (own-expanded).is_empty()
+  assert (patch&other.sized(clearance-1)).is_empty()
+  for v in adjacent:assert ((expanded&reg(v))^(own&reg(v))).is_empty(),('Changed via incidence',component,m,v)
+  total=(total+patch).merged()
+  proof.append(dict(component=component,metal=m,original_area_um2=own.area()*l.dbu*l.dbu,added_area_um2=patch.area()*l.dbu*l.dbu,growth_um=growth*l.dbu,clearance_um=clearance*l.dbu,via_incidence_unchanged=True))
+ if not total.is_empty():additions[m]=total
+assert additions,'No actual geometry change'
+for m,patch in additions.items():T.shapes(l.layer(m,0)).insert(patch)
+Path('native').mkdir();opts=kdb.SaveLayoutOptions();opts.select_cell(T.cell_index());l.write('native/candidate.gds',opts)
 check=kdb.Layout();check.read('native/candidate.gds');assert len(check.top_cells())==1
 actual={str(check.get_info(li)):kdb.Region(check.top_cell().begin_shapes_rec(li)).merged()for li in check.layer_indexes()}
-expected=original_geometry
-expected['30/0']=(expected['30/0']+addition).merged()
-assert set(actual)==set(expected)
-assert all((actual[k]^expected[k]).is_empty()for k in expected)
-assert not (actual['30/0']^(expected['30/0']-addition)).is_empty(),'Deleted-patch control ineffective'
-payload={'source_gds_sha256':result['source_gds_sha256'],'candidate_gds_sha256':hashlib.sha256(Path('native/candidate.gds').read_bytes()).hexdigest(),'accepted':False,'status':'GEOMETRY_CANDIDATE_REQUIRES_DRC_LVS_FRESH_RC_AND_ORIGINAL_LOADED_TEST','dbu_um':l.dbu,'growth_um':growth*l.dbu,'other_net_clearance_um':clearance*l.dbu,'components':proof,'only_metal3_added':True,'original_top_hierarchy_and_labels_retained':True,'all_original_geometry_retained':True,'serialized_region_equality_checked':True,'deleted_patch_control_rejected':True,'scope':'Conservative local M3 widening reached through actual M1-Via1-M2-Via2 incidence. No new vias, device changes, net swaps, electrical pass or signoff claimed.'}
-Path('out/shared-widening-proof.json').write_text(json.dumps(payload,indent=2))
+expected=dict(original)
+for m,patch in additions.items():expected[str(m)+'/0']=(expected[str(m)+'/0']+patch).merged()
+assert set(actual)==set(expected) and all((actual[k]^expected[k]).is_empty()for k in expected)
+assert all((original[k]-actual[k]).is_empty()for k in original)
+payload=dict(source_gds_sha256=hashlib.sha256(b).hexdigest(),candidate_gds_sha256=hashlib.sha256(Path('native/candidate.gds').read_bytes()).hexdigest(),accepted=False,status='UPPER_METAL_CANDIDATE_REQUIRES_DRC_LVS_FRESH_RC_ELECTRICAL',added_layers=sorted(additions),components=proof,original_top_hierarchy_and_labels_retained=True,all_original_geometry_retained=True,serialized_region_equality_checked=True,scope='Actual via-connected shared conductor upper-metal widening; no numerical RC scaling, device resizing or acceptance claim.')
+Path('out/shared-upper-widening-proof.json').write_text(json.dumps(payload,indent=2))
+print('CANDIDATE',payload['candidate_gds_sha256'],'LAYERS',payload['added_layers'],flush=True)
