@@ -10,6 +10,42 @@ product acceptance. A documented failure, an IP survey, a simulation model,
 or a passing block test does not close a physical product requirement.
 The review's historical reproduction is in [docs/89](89-external-review-follow-up.md).
 
+## 15 November 2026: current-source acceptance boundary
+
+The dated September results below are historical evidence, not acceptance of
+the current candidate. Read the newest [cloud continuation](../CLOUD_RESUME.md)
+for exact producer runs and source hashes. All product gates in this document
+remain requirements; none is removed by a passing component test.
+
+The current lane-next mainchip candidate, source
+\`b2e5e00493c2770f69f2ef37ac07d7010c9a8a74\`, has completed synthesis and
+placement/CTS (runs 43680923081 and 43681407524). It contains 116050 mapped
+cells and twenty SRAM macros. Its own routed timing and physical release
+verification are not complete. The source's \`soc_top\` interface remains the
+PCIe **packet boundary**, with externally supplied link/training signals;
+it is not the serial Gen3 x4 receiver/controller/PHY integration.
+The Ethernet interface remains GMII with external PHY/reference clocks.
+
+The separately qualified upper-metal 650-device CDR component has fresh
+physical checks and RC measurements. Its
+[168 passive conductor comparisons](evidence/shared650-upper-metal-resistance-20261115.json)
+show lower resistance; the full loaded electrical test remains a separate
+gate. This is not autonomous CDR/PLL, complete SERDES/PCS/LTSSM, x4 mainchip
+integration, qualified full PEX, channel/ESD compliance or production approval.
+
+The [original SRAM functional-model simulator comparison](evidence/cvc-sram-functional-qualification-20261115.json)
+covers directed four-state functional traces and mutation controls. It does
+not characterize transistor delay/energy, create SRAM Liberty tables or
+qualify extracted chip timing. The running supplemental derived-cell CVC
+boot also does not supply native timing/SDF acceptance.
+
+At release, revalidate the exact delivered RTL/netlist/layout chain, all
+setup/hold/recovery/removal/electrical corners, full-chip physical checks,
+SRAM models/RC, pads/package, clocks/POR/power, scan/ATPG/MBIST/debug,
+interface behaviour, fault protection, reproducibility and external
+manufacturing/qualification evidence. The full external-review and second
+audit obligations in [docs/96](96-second-audit-closure.md) remain in scope.
+
 ## External-review acceptance
 
 | Item | Current disposition | Evidence and remaining work |
