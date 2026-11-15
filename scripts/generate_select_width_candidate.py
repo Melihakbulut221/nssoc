@@ -20,6 +20,7 @@ source.DERIVED=out/'runtime-receipt';source.DERIVED.mkdir()
 pdk=source.pdk(json.loads(Path(source.CFG).read_bytes()))
 for width,label in [('1u','baseline'),('2u','rwidth2')]:
  target=Path('hw/soc/out')/('select-width-'+label)
+ target.parent.mkdir(parents=True,exist_ok=True)
  command=['python3','-B','hw/soc/flow/make_pcie_cdr_feedforward_width_trial.py','--pdk',str(pdk),'--out',str(target),'--kind','select','--select-resistor-width',width]
  with (out/(label+'.log')).open('w')as log:subprocess.run(command,stdout=log,stderr=subprocess.STDOUT,check=True)
  shutil.copytree(target,out/label)
