@@ -5,6 +5,14 @@ from corrpre_postcts_flow import ElectricalPostCTS,CORNERS
 from ack_chip_branches_flow import BranchSTA
 ECO = r"""
 set block [ord::get_db_block]
+# STA display names omit OpenDB escape characters. Require a unique mapping.
+proc canonical_name {name} {return [string map [list "\\" ""] $name]}
+set instance_map {}
+foreach inst [$block getInsts] {
+ set key [canonical_name [$inst getName]]
+ if {[dict exists $instance_map $key]} {error "Ambiguous canonical instance $key"}
+ dict set instance_map $key $inst
+}
 source [file join $::env(GITHUB_WORKSPACE) ack-chip-branches probe-pins.tcl]
 set fh [open [file join $::env(GITHUB_WORKSPACE) ack-chip-branches native-driver-probe.tsv] w]
 puts $fh "kind\tpin\tnet\tsignal_type\titerms\tbterms\toutput_drivers\tinput_ports"
@@ -15,9 +23,16 @@ foreach kind {slew unannotated} {
   if {$slash<1} {error "Bad pin $pin_name"}
   set instance_name [string range $pin_name 0 [expr {$slash-1}]]
   set terminal_name [string range $pin_name [expr {$slash+1}] end]
-  set inst [$block findInst $instance_name]
-  if {$inst eq "NULL"} {error "Missing instance $instance_name"}
-  set pin [$inst findITerm $terminal_name]
+  set key [canonical_name $instance_name]
+  if {![dict exists $instance_map $key]} {error "Missing instance $instance_name"}
+  set inst [dict get $instance_map $key]
+  set pin "NULL"
+  foreach candidate [$inst getITerms] {
+   if {[canonical_name [[$candidate getMTerm] getName]] eq [canonical_name $terminal_name]} {
+    if {$pin ne "NULL"} {error "Ambiguous canonical pin $pin_name"}
+    set pin $candidate
+   }
+  }
   if {$pin eq "NULL"} {error "Missing pin $pin_name"}
   set net [$pin getNet]
   if {$net eq "NULL"} {error "Unconnected pin $pin_name"}
