@@ -171,6 +171,33 @@ module soc_pcie_replay_tx #(
     // frontier directly, removing the adder from credit reservation metadata.
     reg [PW-1:0] new_slot;
     wire [11:0] ack_delta=ack_sequence_i-acknowledged_sequence_o;
+    // Same 12-bit modulo comparison without a full subtract-then-compare.
+    // Kept opt-in until mapped timing and full replay qualification pass.
+`ifdef SOC_PCIE_ACK_STALE_PREFIX
+    // BEGIN ACK_STALE_PREFIX
+    wire [10:0] ack_a_low=ack_sequence_i[10:0];
+    wire [10:0] ack_b_low=acknowledged_sequence_o[10:0];
+    wire [3:0] ack_g,ack_p;
+    assign ack_g[0]=ack_a_low[2:0]<ack_b_low[2:0];
+    assign ack_g[1]=ack_a_low[5:3]<ack_b_low[5:3];
+    assign ack_g[2]=ack_a_low[8:6]<ack_b_low[8:6];
+    assign ack_g[3]=ack_a_low[10:9]<ack_b_low[10:9];
+    assign ack_p[0]=ack_a_low[2:0]==ack_b_low[2:0];
+    assign ack_p[1]=ack_a_low[5:3]==ack_b_low[5:3];
+    assign ack_p[2]=ack_a_low[8:6]==ack_b_low[8:6];
+    assign ack_p[3]=ack_a_low[10:9]==ack_b_low[10:9];
+    wire ack_borrow10=ack_g[3] | (ack_p[3]&ack_g[2]) |
+        (ack_p[3]&ack_p[2]&ack_g[1]) |
+        (ack_p[3]&ack_p[2]&ack_p[1]&ack_g[0]);
+    wire ack_delta_high=ack_sequence_i[11] ^ acknowledged_sequence_o[11] ^ ack_borrow10;
+    wire ack_low_different=ack_a_low!=ack_b_low;
+    wire ack_stale_prefix=ack_delta_high && ack_low_different;
+    // END ACK_STALE_PREFIX
+    wire ack_stale_now=ack_stale_prefix;
+`else
+    wire ack_stale_now=ack_delta>12'd2048;
+`endif
+
     // Classify at the first validated ACK presentation, even if frame atomicity
     // delays consumption. Backpressure cannot turn an early future ACK valid.
     wire current_ack_allowed=ack_delta==0 || (ack_delta<=12'(sent_count) && ack_delta!=0);
@@ -392,7 +419,7 @@ module soc_pcie_replay_tx #(
 `endif
 
             if(ack_valid_i && !ack_observed) begin
-                ack_observed<=1;ack_was_allowed<=current_ack_allowed;ack_was_stale<=ack_delta>12'd2048;
+                ack_observed<=1;ack_was_allowed<=current_ack_allowed;ack_was_stale<=ack_stale_now;
                 ack_delta_q<=ack_delta;
             end
             if(ack_valid_i && ack_ready_o) ack_observed<=0;
