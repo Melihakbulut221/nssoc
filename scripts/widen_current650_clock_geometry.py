@@ -74,7 +74,7 @@ assert original_bbox.left==0 and original_bbox.bottom==0
 macro_extent=kdb.Region(original_bbox)
 additions={};proof=[]
 # Candidate clearances; native full DRC must confirm all actual foundry rules.
-for m,growth,clearance in [(30,300,600),(50,600,600),(67,600,600),(126,2000,2000),(134,3000,3000)]:
+for m,growth,clearance in [(30,300,600),(50,600,600),(67,600,600),(126,2000,2000),(134,3000,5000)]:
  total=kdb.Region();adjacent=[v for lo,v,hi in links if m in (lo,hi)]
  for component,sels in sorted(owned.items()):
   own=sels[m]
@@ -84,6 +84,13 @@ for m,growth,clearance in [(30,300,600),(50,600,600),(67,600,600),(126,2000,2000
   foreign=vias-vias.interacting(own)
   patch=(own.sized(growth)-own-other.sized(clearance)-foreign.sized(clearance)-total.sized(clearance)).merged()
   patch=(patch&macro_extent).merged()
+  # Remove narrow added projections using the pinned PDK minimum widths.
+  # Preserve every original polygon; opening is applied only to the candidate
+  # union, and the final patch is intersected with the original allowed area.
+  min_width={30:200,50:200,67:200,126:1640,134:2000}[m]
+  radius=(min_width+1)//2
+  opened=(own+patch).merged().sized(-radius).sized(radius).merged()
+  patch=(patch&opened).merged()
   assert (patch-macro_extent).is_empty()
   expanded=(own+patch).merged()
   assert (own-expanded).is_empty()
