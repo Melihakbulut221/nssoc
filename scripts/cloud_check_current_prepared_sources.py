@@ -10,8 +10,8 @@ r=dict(status='RUNNING',accepted=False,full_phy_accepted=False,source_head=os.en
 def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
 try:
  assert os.environ.get('GITHUB_ACTIONS')=='true' and shutil.which('yosys')
- run=api('actions/runs/43722855425');assert run['conclusion']=='success' and run['head_sha']=='374b0cc6dd4548c9f7f3d79d0a22985c65a5d695' and run['run_attempt']==1
- artifacts=api('actions/runs/43722855425/artifacts')['artifacts'];entries=[x for x in artifacts if x['name']=='prepared-source-publication-derived-43722855425'];assert len(entries)==1
+ run=api('actions/runs/43725447427');assert run['conclusion']=='success' and run['head_sha']=='374b0cc6dd4548c9f7f3d79d0a22985c65a5d695' and run['run_attempt']==1
+ artifacts=api('actions/runs/43725447427/artifacts')['artifacts'];entries=[x for x in artifacts if x['name']=='prepared-source-publication-derived-43725447427'];assert len(entries)==1
  artifact=entries[0];assert not artifact['expired'] and artifact['workflow_run']['head_sha']==run['head_sha']
  archive=OUT/'published-derived.zip'
  with archive.open('xb')as f:subprocess.run(['gh','api',P+'actions/artifacts/'+str(artifact['id'])+'/zip'],stdout=f,check=True,timeout=120)
