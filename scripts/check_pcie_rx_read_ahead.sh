@@ -27,7 +27,7 @@ BENCH_ARGS=()
     case "$d" in
       SOC_PCIE_RX_READ_AHEAD|SOC_PCIE_RX_STAGED_COMMIT) ;;
       # Section 19: the commit copies stop the run themselves if one differs.
-      SOC_PCIE_RX_COMMIT_COPIES|SOC_PCIE_RX_CURSOR_LOCAL_RESET|SOC_PCIE_RX_LOCAL_LANE_NEXT) ;;
+      SOC_PCIE_RX_COMMIT_COPIES|SOC_PCIE_RX_CURSOR_LOCAL_RESET|SOC_PCIE_RX_LOCAL_LANE_NEXT|SOC_PCIE_RX_DLLP_LAST_COMPARE) ;;
       # The bench also checks the two-stage read's lane-register copies.
       SOC_PCIE_RX_READ2) BENCH_ARGS+=(-DCOSIM_READ2) ;;
       # The candidate has the reset-copy port; the bench drives it with rst_ni.
@@ -47,9 +47,10 @@ for cfg in "8 2 1 1" "8 2 1 2" "8 2 1 3" "8 2 1 4" "8 2 0 5" "8 2 0 6" "4 1 0 7"
   iverilog -g2012 -o "$OUT/$name.vvp" ${BENCH_ARGS[@]+"${BENCH_ARGS[@]}"} -Ptb_pcie_rx_credit_read_ahead.MAX_TLP_DWORDS=$dw \
     -Ptb_pcie_rx_credit_read_ahead.SLOTS_PER_CLASS=$slots -Ptb_pcie_rx_credit_read_ahead.COMPLETER_ONLY=$co \
     "$OUT/reference.v" "$OUT/candidate.v" "$ROOT/hw/soc/tb/tb_pcie_rx_credit_read_ahead.v"
-  vvp -n "$OUT/$name.vvp" +seed=$seed +cycles=$CYCLES > "$OUT/$name.log" 2>&1 || true
+  sim_status=0
+  vvp -n "$OUT/$name.vvp" +seed=$seed +cycles=$CYCLES > "$OUT/$name.log" 2>&1 || sim_status=$?
   grep -E "^(SUMMARY|RESULT|MISMATCH|COPY MISMATCH|RX_COMMIT_COPY_MISMATCH)" "$OUT/$name.log" | head -12 | sed "s/^/$name: /"
-  grep -q "^RESULT PASS" "$OUT/$name.log" || fail=1
+  if [ "$sim_status" -ne 0 ] || ! grep -q "^RESULT PASS" "$OUT/$name.log" || grep -Eq "FATAL|ERROR|MISMATCH" "$OUT/$name.log"; then fail=1; fi
   rm -f "$OUT/$name.vvp"
 done
 echo "RX_CREDIT_COSIM defines=$(IFS=,; echo "${DEFINES[*]}") fail=$fail"

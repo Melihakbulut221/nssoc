@@ -1,12 +1,12 @@
-name: Verify RX DLLP end comparison and measure pinned three-corner cone
+name: Qualify full RX DLLP last compare with formal and traffic mutations
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  qualify:
+  formal:
     runs-on: ubuntu-22.04
-    timeout-minutes: 15
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -14,21 +14,39 @@ jobs:
           sparse-checkout: |
             scripts
             hw/soc/rtl/pcie
+            hw/soc/tb
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - run: python3 scripts/qualify_rx_dllp_compare.py
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - run: python3 scripts/qualify_rx_dllp_full_formal.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-dllp-compare-${{ github.run_id }}
-          path: |
-            out-rx-dllp-compare/*.json
-            out-rx-dllp-compare/*.log
-            out-rx-dllp-compare/*.ys
-            out-rx-dllp-compare/*.v
+          name: rx-dllp-full-formal-${{ github.run_id }}
+          path: out-formal/
+          if-no-files-found: error
+          retention-days: 90
+  traffic:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 310
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          sparse-checkout: |
+            scripts
+            hw/soc/rtl/pcie
+            hw/soc/tb
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: python3 scripts/qualify_rx_dllp_full_traffic.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: rx-dllp-full-traffic-${{ github.run_id }}
+          path: out-traffic/
           if-no-files-found: error
           retention-days: 90
