@@ -1,4 +1,4 @@
-name: Trial measured bit5 shared-delay critical branch bypass
+name: Trial current hold-margin measured bit5 shared-delay critical branch bypass
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/trial_rx_headlast5_bypass.py
+          python3 -m py_compile scripts/trial_rx_margin_headlast5_bypass.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -31,7 +31,7 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Bypass measured bit5 critical branch with invariant cell placement
-        run: python3 scripts/trial_rx_headlast5_bypass.py
+        run: python3 scripts/trial_rx_margin_headlast5_bypass.py
       - name: Collect derived diagnostics
         if: always()
         run: |
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-headlast5-bypass-derived-${{ github.run_id }}
+          name: rx-margin-headlast5-bypass-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-headlast5-bypass-native-${{ github.run_id }}
+          name: rx-margin-headlast5-bypass-native-${{ github.run_id }}
           path: ack-chip-branches/
           if-no-files-found: error
           retention-days: 90
