@@ -1,4 +1,4 @@
-name: Qualify PCIe ACK stale prefix replacement
+name: Map exact ACK classification cone to pinned SG13G2 libraries
 on:
   workflow_dispatch:
 permissions:
@@ -6,7 +6,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 30
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -14,20 +14,21 @@ jobs:
           sparse-checkout: |
             scripts
             hw/soc/rtl/pcie
-            hw/soc/tb
       - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - run: python3 scripts/qualify_ack_stale_prefix.py
+      - run: python3 scripts/measure_ack_stale_prefix.py
+        env:
+          GH_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-prefix-proof-${{ github.run_id }}
+          name: ack-prefix-mapped-${{ github.run_id }}
           path: |
-            out-ack-prefix/*.json
-            out-ack-prefix/*.log
-            out-ack-prefix/*.ys
-            out-ack-prefix/*.v
+            out-ack-map/*.json
+            out-ack-map/*.log
+            out-ack-map/*.ys
+            out-ack-map/*.v
           if-no-files-found: error
           retention-days: 90
