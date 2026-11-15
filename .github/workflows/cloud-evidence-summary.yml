@@ -1,4 +1,4 @@
-name: Prove receive count predicates under arbitrary commit and remove
+name: Prove full receive queue composition after fresh count lemmas
 on:
   workflow_dispatch:
 permissions:
@@ -6,17 +6,17 @@ permissions:
 jobs:
   formal:
     runs-on: ubuntu-24.04
-    timeout-minutes: 65
+    timeout-minutes: 85
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
       - run: sudo apt-get update -qq && sudo apt-get install -y yosys
-      - run: python3 formal/queue_flags/prove.py
+      - run: python3 formal/queue_flags/composition.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: queue-flag-invariants-${{ github.run_id }}
+          name: queue-flags-composition-${{ github.run_id }}
           path: queue-flag-proof/
           if-no-files-found: error
           retention-days: 90
