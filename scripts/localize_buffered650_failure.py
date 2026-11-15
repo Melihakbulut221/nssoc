@@ -140,6 +140,36 @@ def run():
     save('clock-source-demand.json',drive)
     save('comparator-observed-input-truth.json',dict(table=truth,scope='Diagnostic actual sampler-input truth table; original ideal-bit acceptance remains unchanged and failed.'))
 
+    # Diagnostic actual transistor-base truth, never substitutes original gates.
+    # Require both real comparator inputs to keep sign and minimum magnitude
+    # throughout the specified window before measuring the output.
+    settled={}
+    for tag,data_pair,select_pair in [('x',('xpd.adp','xpd.adn'),('xpd.s0p','xpd.s0n')),('y',('xpd.cdp','xpd.cdn'),('xpd.s1p','xpd.s1n'))]:
+        ld=v(data_pair[0])-v(data_pair[1]);rd=v(select_pair[0])-v(select_pair[1]);od=v(tag+'p')-v(tag+'n')
+        cases=[]
+        for threshold in [.025,.05,.1]:
+            states=np.where((abs(ld)>=threshold)&(abs(rd)>=threshold),2*(ld>0).astype(int)+(rd>0).astype(int),-1)
+            changed=np.r_[True,states[1:]!=states[:-1]]
+            last=np.maximum.accumulate(np.where(changed,np.arange(len(t)),0))
+            age=t-t[last]
+            for duration in [0.,.25*UI,.5*UI,UI]:
+                groups={}
+                for code in range(4):
+                    indices=np.flatnonzero(active&(states==code)&(age>=duration))
+                    if not len(indices):continue
+                    sign=1 if (code//2)!=(code%2) else -1
+                    margins=od[indices]*sign
+                    currents={}
+                    for name,dev in bound['groups']['npn13g2'].items():
+                        logical=by_id[dev['native_id']]['logical_terminals']
+                        if logical.get('B') not in (('s0p','s0n') if tag=='x' else ('s1p','s1n')):continue
+                        current=d['@q.'+name+'.qnpn13g2[ic]'][indices]
+                        currents[name]=dict(base=logical['B'],mean_model_ic_a=float(current.mean()),minimum_model_ic_a=float(current.min()),maximum_model_ic_a=float(current.max()))
+                    groups[str(code//2)+str(code%2)]=dict(native_rows=len(indices),minimum_signed_output_v=float(margins.min()),maximum_signed_output_v=float(margins.max()),wrong_sign_rows=int(np.sum(margins<=0)),below_100mv_rows=int(np.sum(margins<.1)),first_native_row=int(indices[0]),select_device_currents=currents)
+                cases.append(dict(input_threshold_v=threshold,minimum_continuous_stable_s=duration,groups=groups))
+        settled[tag]=cases
+    save('actual-comparator-settled-truth.json',dict(scope='Diagnostic real comparator data/select inputs with continuous stability windows. Native row counts are not independent bit tests. Original ideal-bit acceptance remains unchanged and failed; no delay allowance is added to acceptance.',cases=settled))
+
     save('sampling-localization.json',observations)
     save('device-headroom-localization.json',bad)
     summary=dict(status='PASS_READ_ONLY_BUFFERED_FAILURE_LOCALIZATION',accepted=False,full_phy_accepted=False,
