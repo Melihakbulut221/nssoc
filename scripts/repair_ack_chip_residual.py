@@ -66,6 +66,7 @@ try:
  found=[x for x in prior.api('actions/runs/43709880012/artifacts')['artifacts'] if x['name']=='ack-chip-residual-derived-43709880012' and not x['expired']]
  assert len(found)==1
  meta=found[0];assert meta['workflow_run']['head_sha']==run['head_sha'] and meta['digest'].startswith('sha256:')
+ assert meta['id']==14160212631 and meta['digest']=='sha256:14457999d8492281e9087dd953c45be7ba1d90e9d711252fae4dd868df289e54'
  measured=archive(meta['id'],meta['digest'].removeprefix('sha256:'),'residual-measured')
  r['measurement_artifact_binding']={k:meta[k] for k in ['id','name','digest','workflow_run']}
  mr=json.loads(measured.read('result.json'));assert mr['source_odb_sha256']==r['source_odb_sha256'] and mr['sources_unchanged'] and mr['returncode']==0
@@ -91,6 +92,7 @@ try:
   assert choices,('No safe measured choice',path)
   choice=choices[0];selected[choice['sink']]=choice
  assert len(selected)==4 and sum(x['delay_count']for x in selected.values())==4
+ print('QUALIFIED_FOUR_RESIDUAL_CHOICES',json.dumps(list(selected.values())),flush=True)
  (OUT/'hold-selected.json').write_text(json.dumps(list(selected.values()),indent=2)+'\n')
  r.update(repair_measurement_run=run['id'],selected_targets=list(selected.values()),inserted_cells=4)
  run=saved_run
