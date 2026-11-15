@@ -1,4 +1,4 @@
-name: Fresh packed650 gate port reduction with DC AC noise and fault controls
+name: Fresh shared650-widened gate port reduction with DC AC noise and fault controls
 on:
   workflow_dispatch:
 permissions:
@@ -39,14 +39,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-gate-reduction-derived-${{ github.run_id }}
+          name: shared650-widened-gate-reduction-derived-${{ github.run_id }}
           path: paired650-gate-reduction/derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: packed650-gate-reduction-native-${{ github.run_id }}
+          name: shared650-widened-gate-reduction-native-${{ github.run_id }}
           path: paired650-gate-reduction/
           if-no-files-found: warn
           retention-days: 90
