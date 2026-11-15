@@ -53,6 +53,32 @@ module soc_pcie_rx_credit #(
     reg [SW-1:0] order[0:SLOTS-1];
     reg [SLOTS-1:0] used;
     reg [SW-1:0] qread,qwrite,qcount;
+`ifdef SOC_PCIE_RX_COUNT_FLAGS
+    // Cycle-preserving count predicates. Keep truncation to SW bits exactly
+    // as the existing count register, including simultaneous/no operations.
+    reg count_empty_q,count_one_q,count_room_q;
+    wire [SW-1:0] count_next=commit && !remove ? qcount+1'b1 :
+        !commit && remove ? qcount-1'b1 : qcount;
+    always @(posedge clk_i or negedge rst_ni)
+        if(!rst_ni) begin count_empty_q<=1;count_one_q<=0;count_room_q<=1;end
+        else if(!link_up_i) begin count_empty_q<=1;count_one_q<=0;count_room_q<=1;end
+        else begin
+            count_empty_q<=count_next==0;
+            count_one_q<=count_next==1;
+            count_room_q<=32'(count_next)<SLOTS;
+        end
+    wire queue_room=count_room_q;
+`ifndef SYNTHESIS
+    always @(posedge clk_i) if(rst_ni===1'b1) begin
+        if({count_empty_q,count_one_q,count_room_q}!==
+           {qcount==0,qcount==1,32'(qcount)<SLOTS})
+            $fatal(1,"RX_COUNT_FLAGS_MISMATCH");
+    end
+`endif
+`else
+    wire queue_room=32'(qcount)<SLOTS;
+`endif
+
     reg input_active,input_dllp,input_bad,stage_pending,dllp_pending,dllp_bad;
     reg [CW-1:0] input_count,stage_length,stage_last;
     reg stage_bad;
@@ -120,7 +146,7 @@ module soc_pcie_rx_credit #(
     genvar cbank,cgroup;
     generate for(cbank=0;cbank<SLOTS;cbank=cbank+1) begin: commit_copies
         wire commit_d=link_up_i && stage_pending && !commit && !stage_drop && shape_ok &&
-            free_slot==cbank && 32'(qcount)<SLOTS;
+            free_slot==cbank && queue_room;
         for(cgroup=0;cgroup<COMMIT_GROUPS;cgroup=cgroup+1) begin: write_copy
             soc_pcie_rx_commit_copy copy(.clk_i(clk_i),.rst_ni(rst_ni),.d_i(commit_d),
                 .q_o(commit_write[cbank*COMMIT_GROUPS+cgroup]));
@@ -171,8 +197,13 @@ module soc_pcie_rx_credit #(
     // was queued (the queue is empty otherwise, and the head is then
     // unused), and else the next queued slot, which is occupied and so not
     // the one being committed.
+`ifdef SOC_PCIE_RX_COUNT_FLAGS
+    wire queue_empty=count_empty_q;
+    wire queue_one=count_one_q;
+`else
     wire queue_empty=qcount==0;
     wire queue_one=qcount==1;
+`endif
     wire stay_staged=commit && queue_empty;
     wire [SW-1:0] second_slot=order[qread_plus];
     wire [SW-1:0] stay_slot=stay_staged ? stage_slot : head_slot;
@@ -196,7 +227,7 @@ module soc_pcie_rx_credit #(
     wire [CW-1:0] next_head_last=remove ? advance_last : stay_last;
     wire [11:0] next_head_units=remove ? advance_units : stay_units;
     wire select_dllp=output_active ? output_dllp : dllp_pending;
-    wire tlp_available=qcount!=0 && !waiting && initialized_i;
+    wire tlp_available=!queue_empty && !waiting && initialized_i;
     // The frozen consumer's ready depends on frame kind, not valid. Qualifying
     // only the first TLP beat avoids blocking incoming DLLPs behind a TLP that
     // cannot start. Once a beat transfers the entire frame is locked/stable.
@@ -739,7 +770,7 @@ module soc_pcie_rx_credit #(
             stage_slot<=SW'(free_slot);stage_units<=12'((payload_dw+3)/4);
             for(b=0;b<SLOTS;b=b+1)
                 commit_slot[b]<=stage_pending && !commit && !stage_drop && shape_ok &&
-                    free_slot==b && 32'(qcount)<SLOTS;
+                    free_slot==b && queue_room;
             if(stage_drop) begin
                 stage_pending<=0;dropped_o<=1;protocol_error_o<=1;recovery_request_o<=1;
             end
