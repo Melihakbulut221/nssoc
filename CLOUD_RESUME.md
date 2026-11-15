@@ -1,3 +1,12 @@
+## Combined bit5 native run completed; compact evidence and PHY propagation analysis live
+43738187241/fc2b2e1640ae110c2afbf2e54893ba0cd00ed688 SUCCESS. Native14171581554 metadataSHA1b62cfdb160641918facedf0c67ca68313ef8942f5afec1bc93f3ce4c1219bb9,size384835004B. Derived14171158875 metadataSHA0c2163969a74cddd262e1afc5c4ea9b489828698d5007e79b2800794f1d059df,size18003461B. Numericalresultnotyetinspected; do notinferholdzeroorclosurefromjobsuccess.
+Dispatched43739027505/head7422fdf1008aa9f48139d0e742e73fb695bf790f,codex/new-rx-margin-bit5-bypass-compact, verifiedIN_PROGRESS. Reusedsummary authenticatesexactproducer/head/attempt1,fulloriginalderivedZIPsha and9globalstate/max/minmemberhashes; first5pathseach. ASTpassed. NextreadcompactSHA/cornermetrics before combiningfurtherresizes. Currentcommit-readbuffers43738428141 verifiedstillIN_PROGRESS; no native restart.
+
+PHYexactconnectivity inspection identifies drivers:273B=uap/274B=uan outputsadn/adp;294B=ucp/297B=ucn outputscdn/cdp;295B=usp/299B=usn outputss0n/s0p;296B=usp/298B=usn outputss1n/s1p. Verifiedagainstactual124HBTcontractandbinding, not guessednetnames.
+Dispatched43738966004/head8ea9e300e7b62d4a794d0f3e68bdfafeea25eee2,codex/reduced-input650-level-propagation,verifiedIN_PROGRESS. Extendsalreadyverifiedreadonlydiagnosis withlevel-shifter-propagation.json: fourchains Adata,Cdata,Bselect0,Bselect1; sampler->actualdriverbase,driverbase->output,sampler->output same-directionzero crossings. Eachmatchlimitedbynextsourceedgeor2UI, missing/multiple explicit; interpolatedcrossingtime withnative rowidentity, perstage min/median/max plusdiffamplitude. ExactlogicalB->nativeIDguard. No sourcewave/circuit/stimuli/acceptance mutation; no newnativeSPICErun. Originalsamplingcounts/hash reproduction retained. ASTpassed. Readresult tochoosephysicaldriverrepair without mistakingtransientinputcoverage forstaticXORdefect.
+
+Previousgoalturn newsettledtruth evidence, currentturn newsource-boundpropagationanalysis andcompletedphysicalcandidate/verifiedwait. Fullgoalactive; setup/holdfinalroute/fullserialPHY/productionunproven.
+
 ## Actual comparator settled-input diagnostic authenticated; physical trials still live
 
 43738464847/0c847e12a7242bf4a492e43b5adfb46b779b4cbd SUCCESS; fullcompactartifact14171263093 SHA bcc83af234c800a2951456a2c36de209d98a6cea4436b0acd2d7b8996c5aecf4 verifiedRAM. Diagnostic actual-comparator-settled-truth.json inspected. It reuses source-bound failedphysicalwave, not a newpassingPHY.
