@@ -5,78 +5,77 @@ from corrpre_postcts_flow import ElectricalPostCTS,CORNERS
 from ack_chip_branches_flow import BranchSTA
 ECO = r"""
 set block [ord::get_db_block]
-set before {};set nets_before {};set ports_before {}
-foreach net [$block getNets] {dict set nets_before [$net getName] $net}
+set before {}
 foreach inst [$block getInsts] {
  set pins {}
  foreach pin [$inst getITerms] {dict set pins [[$pin getMTerm] getName] [$pin getNet]}
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
+set choices {
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$763417} {sg13g2_nor2_1 sg13g2_nor2_2}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$760981} {sg13g2_nor2_1 sg13g2_nor2_2}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$763372} {sg13g2_a21o_1 sg13g2_a21o_2}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$766536} {sg13g2_nor2_1 sg13g2_nor2_2}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$763419} {sg13g2_nor2b_1 sg13g2_nor2b_2}
+}
+set targets [dict keys $choices]
+if {[llength $targets]!=5} {error "Wrong measured resize census"}
+if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
+foreach name $targets {
+ set inst [$block findInst $name]
+ if {$inst eq "NULL" || [[$inst getMaster] getName] ne [lindex [dict get $choices $name] 0]} {error "Reset target preflight mismatch $name"}
+}
+set sink_specs {
+ {{$abc$734931$auto$blifparse.cc:397:parse_blif$763417} {Y} {u_ram.g_ram_2048x64_ecc.u_b0} {A_MEN}}
+ {{$abc$734931$auto$blifparse.cc:397:parse_blif$760981} {Y} {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[5].u_mem} {B_MEN}}
+ {{$abc$734931$auto$blifparse.cc:397:parse_blif$763372} {X} {u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem} {A_MEN}}
+ {{$abc$734931$auto$blifparse.cc:397:parse_blif$766536} {Y} {u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem} {B_MEN}}
+ {{$abc$734931$auto$blifparse.cc:397:parse_blif$763419} {Y} {u_ram.g_ram_2048x64_ecc.u_b1} {A_MEN}}
+}
+foreach spec $sink_specs {
+ lassign $spec driver_name driver_pin expected_instance expected_pin
+ set driver_inst [$block findInst $driver_name]
+ set driver_term [$driver_inst findITerm $driver_pin]
+ if {$driver_term eq "NULL"} {error "Missing measured output"}
+ set net [$driver_term getNet]
+ if {$net eq "NULL" || [llength [$net getITerms]]!=2 || [llength [$net getBTerms]]!=0} {error "Control net census changed"}
+ set found 0
+ foreach term [$net getITerms] {
+  if {$term eq $driver_term} {continue}
+  set name [string map [list "\\" ""] [[$term getInst] getName]]
+  set pin [string map [list "\\" ""] [[$term getMTerm] getName]]
+  if {$name ne $expected_instance || $pin ne $expected_pin || [$term getIoType] ne "INPUT"} {error "Wrong SRAM control sink"}
+  incr found
+ }
+ if {$found!=1} {error "SRAM sink not unique"}
+}
+set ports_before {}
 foreach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}
-set driver_name {$abc$734931$auto$blifparse.cc:397:parse_blif$747988}
-set driver [$block findInst $driver_name]
-if {$driver eq "NULL" || [[$driver getMaster] getName] ne "sg13g2_o21ai_1"} {error "Wrong measured driver"}
-set source_pin [$driver findITerm Y]
-set original_net [$source_pin getNet]
-if {$original_net eq "NULL" || [llength [$original_net getITerms]]!=2 || [llength [$original_net getBTerms]]!=0} {error "Original two-terminal net changed"}
-set sink "NULL"
-foreach term [$original_net getITerms] {if {$term ne $source_pin} {set sink $term}}
-if {$sink eq "NULL" || [$sink getIoType] ne "INPUT"} {error "Missing SRAM input"}
-set sink_inst [$sink getInst]
-set sink_name [$sink_inst getName]
-if {[string map [list "\\" ""] $sink_name] ne {u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem}} {error "Wrong SRAM instance"}
-set sink_term [[$sink getMTerm] getName]
-if {[string map [list "\\" ""] $sink_term] ne {A_DIN[9]}} {error "Wrong SRAM terminal"}
-set buffer_name nssoc_sram_din9_buf
-set new_net_name nssoc_sram_din9_buf_net
-if {[$block findInst $buffer_name] ne "NULL" || [$block findNet $new_net_name] ne "NULL"} {error "ECO names already exist"}
-if {[llength [info commands insert_buffer]]!=1 || [llength [info commands rsz::insert_buffer_after_driver_cmd]]!=1} {error "Pinned insertion API missing"}
-insert_buffer -buffer_cell sg13g2_buf_4 -net [$original_net getName] -buffer_name $buffer_name -net_name $new_net_name
-set added [$block findInst $buffer_name]
-if {$added eq "NULL" || [[$added getMaster] getName] ne "sg13g2_buf_4"} {error "Named noninverting buffer missing"}
-set ai [$added findITerm A];set xo [$added findITerm X]
-if {$ai eq "NULL" || $xo eq "NULL" || [$ai getIoType] ne "INPUT" || [$xo getIoType] ne "OUTPUT"} {error "Wrong buffer interface"}
-set upstream [$source_pin getNet];set downstream [$sink getNet]
-if {$upstream eq "NULL" || $downstream eq "NULL" || $upstream eq $downstream} {error "Buffer bypass or disconnected chain"}
-if {[$ai getNet] ne $upstream || [$xo getNet] ne $downstream} {error "Wrong chain polarity or wiring"}
-set created [$block findNet $new_net_name]
-if {$created eq "NULL" || !($original_net in [list $upstream $downstream]) || !($created in [list $upstream $downstream])} {error "Unexpected chain nets"}
-foreach net [list $upstream $downstream] {
- if {[llength [$net getITerms]]!=2 || [llength [$net getBTerms]]!=0} {error "Unexpected chain branches"}
+foreach name $targets {
+ lassign [dict get $choices $name] old_master new_master
+ set inst [$block findInst $name]
+ if {$inst eq "NULL" || [[$inst getMaster] getName] ne $old_master} {error "Unexpected measured driver $name"}
+ replace_cell $name $new_master
+ if {[[$inst getMaster] getName] ne $new_master} {error "Replacement failed"}
 }
-if {[llength [$block getInsts]]!=[expr {[dict size $before]+1}] || [llength [$block getNets]]!=[expr {[dict size $nets_before]+1}]} {error "Unexpected cell/net census"}
-foreach net [$block getNets] {
- if {[$net getName] eq $new_net_name} {continue}
- if {![dict exists $nets_before [$net getName]] || [dict get $nets_before [$net getName]] ne $net} {error "Other net identity changed"}
-}
+if {[llength [$block getInsts]] != [dict size $before]} {error "Instance census changed"}
 foreach inst [$block getInsts] {
  set name [$inst getName]
- if {$name eq $buffer_name} {continue}
- if {![dict exists $before $name]} {error "Unexpected instance"}
  lassign [dict get $before $name] master pins
- if {[[$inst getMaster] getName] ne $master || [llength [$inst getITerms]]!=[dict size $pins]} {error "Existing cell changed"}
- foreach term [$inst getITerms] {
-  if {$term eq $source_pin || $term eq $sink} {continue}
-  set pinname [[$term getMTerm] getName]
-  if {![dict exists $pins $pinname] || [$term getNet] ne [dict get $pins $pinname]} {error "Unrelated incidence changed"}
- }
-}
-foreach term [$added getITerms] {
- if {$term eq $ai || $term eq $xo} {continue}
- set pinname [[$term getMTerm] getName];set net [$term getNet]
- if {$pinname ni {VDD VSS}} {error "Unexpected buffer pin"}
- if {$net ne "NULL"} {
-  if {![dict exists $nets_before [$net getName]] || [$net getSigType] ni {POWER GROUND}} {error "Incorrect buffer supply connection"}
+ if {$name in $targets} {set master [lindex [dict get $choices $name] 1]}
+ if {[[$inst getMaster] getName] ne $master} {error "Unexpected master change"}
+ foreach pin [$inst getITerms] {
+  if {[$pin getNet] ne [dict get $pins [[$pin getMTerm] getName]]} {error "Incidence changed"}
  }
 }
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_SRAM_DIN_BUFFER_EXACT_NONINVERTING_CHAIN_VERIFIED"
+puts "NSSOC_SRAM_CONTROL_DRIVERS_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Insert one guarded SRAM data buffer"
+    name = "Size five measured SRAM control drivers"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()

@@ -34,9 +34,11 @@ try:
  member='run/2-nssoc-sizedslow/checks.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
  slew=data.decode().split('\nmax slew\n')[1].split('\nmax fanout\n')[0]
- pin='u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem/A_DIN[9]'
- lines=[line for line in slew.splitlines()if line.split() and line.split()[0]==pin]
- assert len(lines)==1 and '(VIOLATED)' in lines[0]
+ controls=[('$abc$734931$auto$blifparse.cc:397:parse_blif$763417', 'Y', 'sg13g2_nor2_1', 'sg13g2_nor2_2', 'u_ram.g_ram_2048x64_ecc.u_b0', 'A_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$760981', 'Y', 'sg13g2_nor2_1', 'sg13g2_nor2_2', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[5].u_mem', 'B_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$763372', 'X', 'sg13g2_a21o_1', 'sg13g2_a21o_2', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem', 'A_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$766536', 'Y', 'sg13g2_nor2_1', 'sg13g2_nor2_2', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem', 'B_MEN'), ('$abc$734931$auto$blifparse.cc:397:parse_blif$763419', 'Y', 'sg13g2_nor2b_1', 'sg13g2_nor2b_2', 'u_ram.g_ram_2048x64_ecc.u_b1', 'A_MEN')]
+ for driver,dp,old,new,instance,terminal in controls:
+  pin=instance+'/'+terminal
+  lines=[line for line in slew.splitlines()if line.split() and line.split()[0]==pin]
+  assert len(lines)==1 and '(VIOLATED)' in lines[0]
  # Independently authenticate the completed native connectivity probe.
  probe_run=prior.api('actions/runs/43754262798')
  assert probe_run['head_sha']=='427c5fe596cb8dc4633885cb893d22b175e305b5' and probe_run['conclusion']=='success' and probe_run['run_attempt']==1
@@ -52,8 +54,11 @@ try:
   assert pr['returncode']==0 and pr['sources_unchanged'] and hashlib.sha256(tsv).hexdigest()==pr['native_driver_probe_sha256']
   rr=list(csv.DictReader(io.StringIO(tsv.decode()),delimiter='\t'))
   assert len(rr)==1321 and len(set((v['kind'],v['pin'])for v in rr))==1321
-  match=[v for v in rr if v['kind']=='slew'and v['pin']==pin];assert len(match)==1
-  assert match[0]['output_drivers']=='{{$abc$734931$auto$blifparse.cc:397:parse_blif$747988} Y sg13g2_o21ai_1}' and match[0]['iterms']=='2' and match[0]['bterms']=='0'
+  for driver,dp,old,new,instance,terminal in controls:
+   pin=instance+'/'+terminal
+   match=[v for v in rr if v['kind']=='slew'and v['pin']==pin];assert len(match)==1
+   expected='{{'+driver+'} '+dp+' '+old+'}'
+   assert match[0]['output_drivers']==expected and match[0]['iterms']=='2' and match[0]['bterms']=='0'
  probe_zip.unlink()
  r['native_probe_binding']={'run':43754262798,'archive_sha256':digest,'tsv_sha256':pr['native_driver_probe_sha256']}
  r['critical_path_report_sha256']=report['outputs'][member]
@@ -85,7 +90,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="SRAM_DIN_BUFFER_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source61eb: one buf4 inserted between authenticated o21ai747988/Y and RXFIFO bank6 A_DIN9. Exact two-edge graph, one-cell/one-net census and all other incidence preserved; allcorner timing required; not routed final signoff.")
+ r.update(status="SRAM_CONTROL_DRIVERS_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source61eb: five native-proven SRAM control drivers size1to2, no buffering. Same baseline as independent DIN buffer trial; not combined yet. Fresh allcorner timing required; no final signoff.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
