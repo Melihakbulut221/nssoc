@@ -1,4 +1,4 @@
-name: Prove credit sign registers with explicit clock and reset events
+name: Qualify credit sign registers with mapped pick option and negative control
 on:
   workflow_dispatch:
 permissions:
@@ -6,17 +6,21 @@ permissions:
 jobs:
   formal:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - run: sudo apt-get update -qq && sudo apt-get install -y yosys
+      - run: sudo apt-get update -qq && sudo apt-get install -y yosys iverilog
       - run: python3 formal/credit_sign/prove.py
+      - run: python3 formal/credit_sign/check_mutation.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-sign-formal-${{ github.run_id }}
-          path: credit-formal/
+          name: credit-sign-pick-qualified-${{ github.run_id }}
+          path: |
+            credit-formal/
+            credit-mutation-evidence/
+            credit-mutant/*.log
           if-no-files-found: error
           retention-days: 90
