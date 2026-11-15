@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43758008035");assert run["head_sha"]=="7253dc5e17f72458722a2677af401cec042528eb"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43759885305");assert run["head_sha"]=="a4803beeb5ec80d27088ea868e45817f7b7b8e78"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14179995025,"83ec06bc3499886347b082eef69098444160c136b93b5d1b221861eedd12b519","derived")
- native=archive(14179397749,"7e410ebd5699ec1755cedbf76bc77509611a00d7730846371656f44893eeb071","native")
+ safe=archive(14180460681,"7de05629c8c45da8a34757eb1daf52cfa58998b02ba44f68b142105cdd570316","derived")
+ native=archive(14179614696,"77cb2268c36def7019817570cef1482fc529d2fc7ec9e408c65d164913b1c45d","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43756546386
- assert report["candidate_odb_sha256"]=="166610a71dac9d34b10de8b328a0bdb1577cab5df4ee736ea406b2e6ca4f944e"
+ assert report["source_run"]==43758008035
+ assert report["candidate_odb_sha256"]=="2b33af5c60ab854b77829f5865bc67a3b7335026abce224d4ce4b372d8ba1b9f"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -37,8 +37,13 @@ try:
  assert '$auto$ff.cc:337:slice$160557' in first and 'Endpoint: $auto$ff.cc:337:slice$160680' in first
  assert '$761461/Y (sg13g2_nor4_1)' in first and 'slack (VIOLATED)' in first
  r['critical_path_report_sha256']=report['outputs'][member]
+ check_member='run/2-nssoc-sizedslow/checks.rpt';checks=safe.read(check_member)
+ assert hashlib.sha256(checks).hexdigest()==report['outputs'][check_member]
+ recovery=[p for p in checks.decode().split('Startpoint:') if 'Endpoint: $auto$ff.cc:337:slice$310738' in p and 'recovery check' in p]
+ assert recovery and all('input49/X (sg13g2_buf_1)' in p and '$767656/Y (sg13g2_nor2_1)' in p and 'slack (VIOLATED)' in p for p in recovery)
+ r['recovery_source_checks_sha256']=report['outputs'][check_member]
  safe.close();native.close()
- r['source_archives']=[dict(id=14179995025,sha256='83ec06bc3499886347b082eef69098444160c136b93b5d1b221861eedd12b519'),dict(id=14179397749,sha256='7e410ebd5699ec1755cedbf76bc77509611a00d7730846371656f44893eeb071')]
+ r['source_archives']=[dict(id=14180460681,sha256='7de05629c8c45da8a34757eb1daf52cfa58998b02ba44f68b142105cdd570316'),dict(id=14179614696,sha256='77cb2268c36def7019817570cef1482fc529d2fc7ec9e408c65d164913b1c45d')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -65,7 +70,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="PCIE_WORST_NOR4_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source1666 retains22SRAMbuffers. Only worst-path ABC761461 nor4_1to2, all other masters/incidence/ports unchanged. Preserve hold/clock constraints. Independent of six remaining SRAM resizes and reset trials; allcorner STA required.")
+ r.update(status="COMBINED_SRAM_RESET_NOR4_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source2b33 retains22SRAMbuffers and six driver resizes. Apply proven reset NOR767656/input49 and PCIe NOR761461 size changes together. Allcorner combined STA required; last SRAM A_MEN buffer is independent and not included. No final routed signoff.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
