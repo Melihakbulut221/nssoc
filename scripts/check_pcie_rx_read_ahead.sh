@@ -25,7 +25,7 @@ BENCH_ARGS=()
 {
   for d in "${DEFINES[@]}"; do
     case "$d" in
-      SOC_PCIE_RX_COUNT_FLAGS|SOC_PCIE_RX_READ_AHEAD|SOC_PCIE_RX_STAGED_COMMIT) ;;
+      SOC_PCIE_RX_DLLP_LAST_COMPARE|SOC_PCIE_RX_COUNT_FLAGS|SOC_PCIE_RX_READ_AHEAD|SOC_PCIE_RX_STAGED_COMMIT) ;;
       # Section 19: the commit copies stop the run themselves if one differs.
       SOC_PCIE_RX_COMMIT_COPIES|SOC_PCIE_RX_CURSOR_LOCAL_RESET|SOC_PCIE_RX_LOCAL_LANE_NEXT) ;;
       # The bench also checks the two-stage read's lane-register copies.
