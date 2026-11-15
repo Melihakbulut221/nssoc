@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/measure_rx_shared_hold.py
+          python3 -m py_compile scripts/measure_rx_margin_shared_hold.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -31,7 +31,7 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Size five exact new RX reset-tree buffers and measure all corners
-        run: python3 scripts/measure_rx_shared_hold.py
+        run: python3 scripts/measure_rx_margin_shared_hold.py
       - name: Collect derived diagnostics
         if: always()
         run: |
