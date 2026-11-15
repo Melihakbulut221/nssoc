@@ -58,7 +58,7 @@ try:
  assert run['conclusion']=='success' and run['head_sha']=='1733c2ce4e780c0fef02e3c32cd38cb26f63384f' and run['run_attempt']==1
  measured=archive(14158067560,'bdb1030257c058024fb03a5acbffa39b57d934b31851bb01f573d43f799e908d','branch-measured')
  mr=json.loads(measured.read('result.json'));assert mr['source_odb_sha256']==r['source_odb_sha256'] and mr['sources_unchanged'] and mr['returncode']==0
- assert json.loads(measured.read('targets.json'))==rows and mr['paths']==paths
+ assert json.loads(measured.read('targets.json'))==rows and mr['paths']==json.loads(json.dumps(paths))
  margins={}
  for index,target in enumerate(rows):
   if target['kind']!='pin':continue
