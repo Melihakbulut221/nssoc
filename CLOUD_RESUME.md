@@ -1,3 +1,7 @@
+## PLL source preflight resumed, 2026-11-15
+
+**43698421351 / f0f1ee210be80c08d15ff52a38b11af74eaac8d2**, branch codex/pll-current-source-preflight, performs hosted exact source readback only. Restores original preparation39920519407 (summary63c6b8d...,parts92a85e...) and frozen HBT modelae9288..., seven actual first-master device records391/392/393/394/395/396/400, original deck/terminal contract, and pinned ngspice VBIC source. No circuit/solver/stimulus change, no transient, no current-query qualification claim. Native model/source payload remains cloud. Consume readback.json to resolve actual leaf/parameter/scaling/branch topology, then qualify accessors with exact original engine before130ns unchanged-circuit diagnostic. The proposal atd05b2bf1756194d1dd5e8f8fb816044a9a1e9a14 remains source-only; its old authorization flag is historical, user has since authorized full PHY work. Preserve all startup/OFF/load/safety gates and common131-column trajectory comparison; full1us acquisition is still required. Existing raw capture has no individual HBT currents; do not infer conduction-only or complete macro-terminal currents from unqualified queries.
+
 Additional live read-only run **43697869651 /162c746d4cd214aee03ce421f1dd56d3438330f2**, branch codex/rx-lane-six-path-alternatives: every data input on the six excluded paths, unchanged254b1e baseline, all three corners. Re-measure on the repaired ODB before applying subsequent changes; combined effects are not established.
 
 ## 2026-11-15: fresh RC composition and measured hold-margin repair dispatched
