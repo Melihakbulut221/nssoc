@@ -2,9 +2,9 @@ import subprocess,json,hashlib,zipfile,io
 from pathlib import Path
 P='repos/Melihakbulut221/nssoc/'
 def api(path):return json.loads(subprocess.check_output(['gh','api',P+path]))
-run=api('actions/runs/43739336608')
-assert run['conclusion']=='success' and run['head_sha']=='0eb8c9127c6621346e9df8572d2120d13547a913' and run['run_attempt']==1
-aid=14172156500;digest='9cc11856df03d66a453e7eb5fb43f24049213fc277a3a8aa780b5b146d56267f'
+run=api('actions/runs/43740394021')
+assert run['conclusion']=='success' and run['head_sha']=='a21affd587931ff1b2aa84f891184f2ef485bd7b' and run['run_attempt']==1
+aid=14172641068;digest='e11d6e5f0eed80f02facb6cbcb718d0bf17f30a2fcaae50583c2985db3f04aee'
 a=api('actions/artifacts/'+str(aid))
 assert a['workflow_run']['id']==run['id'] and a['digest']=='sha256:'+digest and not a['expired']
 b=subprocess.check_output(['gh','api',P+'actions/artifacts/'+str(aid)+'/zip'],timeout=300)
