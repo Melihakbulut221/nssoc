@@ -17,6 +17,22 @@ Statuses: OPEN needs work; PARTIAL has a narrower implemented result;
 VERIFY means a change awaits its stated checks; DONE requires evidence.
 External dependencies remain OPEN rather than being converted into exclusions.
 
+## 15 November 2026 continuation note
+
+The table below retains its dated audit dispositions. A historical DONE or
+PARTIAL row is not fresh acceptance of later RTL, netlists or physical views.
+The current source-bound work is recorded in [CLOUD_RESUME.md](../CLOUD_RESUME.md);
+[docs/92](92-product-acceptance.md) retains the complete product release scope.
+
+In particular, current packet-interface mainchip synthesis/CTS, a standalone
+650-device CDR layout and directed functional simulator comparisons do not
+close audit 1.8, 2.4 or section 4. Full serial PCIe Gen3 x4 integration,
+routed timing, qualified SRAM Liberty/RC, pads/package, DFT/debug,
+clock/POR/power, fault qualification and actual external manufacturing
+evidence must each be established on the final delivered candidate.
+Other OPEN/PARTIAL rows require their own exact-source evidence; they are
+not silently waived while timing and PHY work proceeds.
+
 | Audit ID | Required work and acceptance | Status / current disposition |
 |---|---|---|
 | 0.1 | Project-specific TT test guide; regenerate manifest; synchronize TT repository | DONE. Generator updated; 18 TT checks pass / 1 absent-tool skip. Only guide and manifest changed; remote TT `main` is `aa870aba3b2c4d39460ae7a8da42918fa25df422`, verified with `git ls-remote`. Frozen RTL remains byte-identical. |
