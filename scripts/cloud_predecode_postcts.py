@@ -42,30 +42,45 @@ def relative(name):
 
 def restore(args, result):
     import zipfile, stat
-    run = api('actions/runs/43653859525')
-    job=api('actions/jobs/132627989572')
-    assert job['run_id']==43653859525 and job['status']=='completed' and job['conclusion']=='success'
-    assert run['run_attempt']==1
-    # Independent boot job is still live; only the completed physical job is consumed.
-    assert run['head_sha']=='37635e0231e164dd2ba68d4b7397feceb91d569d'
+    deadline=time.monotonic()+5400
+    while True:
+        run=api('actions/runs/43771256588')
+        assert run['head_sha']=='ae446b8efcb699cb4536ddec299c349c3a0caf4f' and run['run_attempt']==1
+        if run['status']=='completed':
+            assert run['conclusion']=='success',run['conclusion']
+            break
+        assert time.monotonic()<deadline,'Exact CTS still pending; no timing acceptance'
+        print('Waiting for exact CTS producer',run['id'],flush=True);time.sleep(30)
+    artifacts=api('actions/runs/43771256588/artifacts')['artifacts']
+    def artifact_record(name):
+        rows=[row for row in artifacts if row['name']==name+'43771256588']
+        assert len(rows)==1 and not rows[0]['expired']
+        row=rows[0];assert row['workflow_run']['head_sha']==run['head_sha']
+        assert re.fullmatch('sha256:[0-9a-f]{64}',row['digest'])
+        return row['id'],row['digest'].split(':')[1]
+    safe_id,safe_digest=artifact_record('credit-crc-chip-placement-derived-')
+    native_id,native_digest=artifact_record('credit-crc-chip-placement-native-')
     def archive(aid, digest, name):
         meta=api('actions/artifacts/'+str(aid))
-        assert meta['workflow_run']['id']==43653859525 and meta['workflow_run']['head_sha']==run['head_sha']
+        assert meta['workflow_run']['id']==43771256588 and meta['workflow_run']['head_sha']==run['head_sha']
         assert meta['digest']=='sha256:'+digest and not meta['expired']
         path=OUT/name
         with path.open('xb') as f:
             subprocess.run(['gh','api',REPO+'actions/artifacts/'+str(aid)+'/zip'],stdout=f,check=True)
         assert sha(path)==digest
         return zipfile.ZipFile(path)
-    safe=archive(14137827409,'cbe6f6921b81d781904bc594f3ac741986803fb2d27bb6cbc638680cc1f471e9','safe.zip')
-    native=archive(14136884328,'d97e80b9340d239cc7775488a8ca971aa819482b96fb1c40892e5c17106ae94c','native.zip')
+    safe=archive(safe_id,safe_digest,'safe.zip')
+    native=archive(native_id,native_digest,'native.zip')
     report=json.loads(safe.read('result.json'))
     assert report['source_head']==run['head_sha'] and report['sources_unchanged'] and report['returncode']==0
     assert report['accepted'] is False and report['functional_boot_accepted'] is False
-    assert report['cts_odb_sha256']=='041e9a211b843cc07a90ddbabde1fb2484d4c0c1858c216c82c3f8e12964359c'
+    assert re.fullmatch('[0-9a-f]{64}',report['cts_odb_sha256'])
     assert len(report['preparation']['macros'])==20
-    assert report['source_binding']['netlist_sha256']=='ff7ab0c7c6b49770176105b8ff6fde1f07ba9c0cb08607e486549e2ebf714852'
-    assert report['source_binding']['source_run']==43651528850
+    assert report['source_binding']['netlist_sha256']=='15f996437ae5c74079fcb77f48fc8fe55b8517f784744e9c0b9a609e562f00fc'
+    assert report['source_binding']['source_run']==43768772862
+    assert report['source_binding']['source_head']=='e59e693a0a2a86d4e0edb71cf3c8ae4e07c05a88'
+    assert report['source_binding']['mapped_json_sha256']=='13f96b84486caff79ce53b1e183d98443875208b26d962dfe9d95e62878d40d5'
+    assert report['source_binding']['authenticated_files']==63
     names=native.namelist();assert len(names)==len(set(names))
     assert {n for n in names if not n.endswith('/')}==set(report['outputs'])|{'result.json'}
     assert not SOURCE.exists();SOURCE.mkdir(parents=True)
@@ -77,8 +92,8 @@ def restore(args, result):
         expected=hashlib.sha256(safe.read('result.json')).hexdigest() if info.filename=='result.json' else report['outputs'][info.filename]
         assert hashlib.sha256(raw).hexdigest()==expected,info.filename
         dest=SOURCE/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw)
-    result['placement_source']=dict(run=43653859525,head=run['head_sha'],native_artifact=14136884328,
-        native_sha256='d97e80b9340d239cc7775488a8ca971aa819482b96fb1c40892e5c17106ae94c',
+    result['placement_source']=dict(run=43771256588,head=run['head_sha'],native_artifact=native_id,
+        native_sha256=native_digest, derived_artifact=safe_id,derived_sha256=safe_digest,cts_odb_sha256=report["cts_odb_sha256"],
         authenticated_files=len(report['outputs']),functional_boot_accepted=False)
     return report
 
@@ -89,7 +104,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=False)
     result = dict(status="RUNNING", source_head=os.environ["GITHUB_SHA"], accepted=False, functional_boot_accepted=False,
                   final_timing_complete=False, full_phy_accepted=False, qualified_pex=False,
-                  scope="NEW RX-bank local-handshake CRC-select EOP-cache candidate; boot validation remains independent and pending. "
+                  scope="NEW credit-sign and CRC-upper registered candidate with unchanged ACK/RX options; boot validation remains independent and pending. "
                         "Exact CTS DB, three separate propagated-clock placement-estimate "
                         "STA processes before/after native electrical/setup/hold repair. "
                         "Not routed, extracted timing, logic equivalence or full PHY acceptance.")
