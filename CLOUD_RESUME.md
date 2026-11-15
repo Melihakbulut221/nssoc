@@ -1,3 +1,11 @@
+## Redundant formal workers identified by actual input comparison and cancelled
+
+Compared heads386adc72f170ef69d298ce817a5e11de14b071a7 and185526ac2e0dda69118962290e3288c1f13546f7. Formal directories formal(25entries),hw/rtl(10),hw/soc/formal(66) byte/blob-identical. Read all37SBY configs; all77declared tracked file inputs matched exact blobs; no executable config references changedrx_credit/soc_top/interfaces. Sole generated dependency ibex_register_file_ff.v: identical Makefile preparation recipe, tools.soc.mk/upstreampins/tools.mk, sv2v_ibex.sh(7db85aa5),ibex_fault_port.py(082086cc). check_formal_sweep/source_state, policy, peripheral/regfile/scrub helpers,requirements,checks.yml identical. This is scoped formal-model equivalence, NOT equivalent full newRX RTL.
+
+During final preflight, retained43710889358 pilotjob132813745103 completedSUCCESS while socjob132813745437 remainedlive. Newer43710151473 had ONLY duplicatepilot/socformaljobs live; allotherjobs completed (including failing generic checks). Cancel requested for43710151473 ONLY after this verification; all nativephysical/analog jobs untouched and earlierformal retained. This supersedes older checkpoint instruction to retain43710151473, based on newly examined actual formal input closure. Do not label cancelled CI green or reuseold proof as fullnewRX integration acceptance.
+
+Pilot artifact **14165410093 /0c7fe43f2a8c2afe088fcd86c965ab185dc5eaaa945103c0429bd2a20e11823c**,2433562B; RAM observer **79341** authenticating archive+result at checkpoint time. If stillrunning, poll samehandle. No localfilespersisted. Remaining main native jobs43717632809(actual650PHY),43717961699(publication),43718375160(setupaudit),43720921041(hold),43721847063(quarantinesetup); recheck after capacityrelease. Fullgoalactive.
+
 ## Actual remaining worst setup path recovered; five quarantine-path buffer trial dispatched
 
 Signed HTTP Range ZIP read succeeded after whole-archive observer12332 ended143. Range observer19775 EXIT0, verified member SHA against producer result and source ODB0451f211 on API-bound artifact14162873930/e97aedd4. Whole archive digest had been verified earlier; NOT rehashed during range read. No local files persisted. Compact cloud audit43718375160 preserved (not cancelled).
