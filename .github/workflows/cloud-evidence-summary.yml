@@ -1,4 +1,4 @@
-name: Read SRAM slew and unannotated native drivers
+name: Inspect pinned native SRAM buffering capabilities
 on:
   workflow_dispatch:
 permissions:
@@ -30,7 +30,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Read SRAM slew and unannotated native drivers and measure all corners
+      - name: Inspect pinned native SRAM buffering capabilities and measure all corners
         run: python3 scripts/size_rx_dllp_nor_gates.py
       - name: Collect derived diagnostics
         if: always()
@@ -39,7 +39,7 @@ jobs:
           import pathlib,shutil
           root=pathlib.Path('ack-chip-branches');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
-            for name in ['result.json','native.log','targets.json','probe-pins.json','probe-pins.tcl','native-driver-probe.tsv']:
+            for name in ['result.json','native.log','targets.json','probe-pins.json','probe-pins.tcl','native-driver-probe.tsv','native-buffer-capabilities.txt']:
               p=root/name
               if p.is_file():
                 q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: sram-slew-native-probe-derived-${{ github.run_id }}
+          name: sram-buffer-capabilities-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: sram-slew-native-probe-native-${{ github.run_id }}
+          name: sram-buffer-capabilities-native-${{ github.run_id }}
           path: ack-chip-branches/
           if-no-files-found: error
           retention-days: 90

@@ -52,6 +52,24 @@ foreach kind {slew unannotated} {
  }
 }
 close $fh
+set cap [open [file join $::env(GITHUB_WORKSPACE) ack-chip-branches native-buffer-capabilities.txt] w]
+puts $cap "READ_ONLY_RUNTIME_CAPABILITIES"
+foreach command {insert_buffer rsz::insert_buffer_before_load_cmd rsz::insert_buffer_before_loads_cmd rsz::insert_buffer_after_driver_cmd} {
+ puts $cap [list command $command available [llength [info commands $command]]]
+ if {[llength [info procs $command]]==1} {puts $cap [list body $command [info body $command]]}
+}
+set db [ord::get_db]
+foreach lib [$db getLibs] {
+ foreach master [$lib getMasters] {
+  set name [$master getName]
+  if {[regexp {^sg13g2_(inv|buf|nor2|nor2b|a21o|o21ai|mux2|nand2b)_[0-9]+$} $name]} {
+   set terms {}
+   foreach term [$master getMTerms] {lappend terms [list [$term getName] [$term getIoType]]}
+   puts $cap [list master $name width [$master getWidth] height [$master getHeight] terms $terms]
+  }
+ }
+}
+close $cap
 puts "NSSOC_READ_ONLY_NATIVE_DRIVER_PROBE_COMPLETE"
 """
 class ResetBufferECO(ElectricalPostCTS):
