@@ -1,3 +1,9 @@
+## Follow-up: native waveform diagnosis and queue composition
+
+Native diagnosis43769793981 succeeded. Verified artifact14183353063 ZIP SHA2566a257d3a25cbe275473ca77423b3bbceca7250bfcf0a2ae531009f71a1d47918. Original waveform SHA and all113490rows/1791columns verified by cloud worker. A has129wrong/255 at0.3UI; first swept phase with every sample above100mV is0.5UI62.5ps, versus37.5ps deadline. B/C/D best phases0.65/0.55/0.6UI. X fails at every swept phase0..1.5UI: best122wrong/255,221below100mV. Y best170below100mV. These are diagnostics, not relaxed acceptance windows. Investigate sampler latency and comparison circuitry before another driver-only sizing change.
+
+Full queue composition43770004136 /5b9156fd971eae72bb3365bc9e4f4acc2570db24 is running on codex/queue-flags-composition. Re-proves count lemmas and mutations, then substitutes only proven predicates in temporary candidate for full queue equivalence DW8/S2 andDW4/S1 with mapped optional switches. Artifact queue-flags-composition-43770004136. NOT accepted until results reviewed. Mainchip43768772862 remains in firmware RTL boot/full synthesis. No full PHY/routed timing closure.
+
 ## 2026-11-16 UTC continuation: count predicate proof and measured Nx5 rejection
 
 - Whole-chip credit-sign + CRC-upper candidate run **43768772862**, source **e59e693a0a2a86d4e0edb71cf3c8ae4e07c05a88**, remains in progress; all source/qualification and replay regression gates passed, now fresh firmware RTL boot and synthesis. Do not reuse old ECO instance names for the remapped netlist; mapped boot and fresh physical timing remain required.
