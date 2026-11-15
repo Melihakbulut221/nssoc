@@ -27,6 +27,10 @@ shutil.copytree(restored/'view',physical/'native/view');(physical/'derived').mkd
 selected={str(p.relative_to(physical)):source.pin(p)for p in physical.rglob('*')if p.is_file()}
 cfg=source.read(source.ROOT/source.CFG);cfg['view']=dict(run=43748923684,source='e7aef3e3e4b3d7b2c93190649d0981cdee1b9bd5',selected=selected)
 runtime=source.NATIVE/'runtime-parent';runtime.mkdir();source.acquire(cfg['runtime'],runtime,lambda n:n in cfg['runtime']['selected'])
+for relative in ['wire-stage/magic-cloud/runtime/lib/magic/tcl/tclmagic.so','mim/precise/precision-runtime/lib/magic/tcl/tclmagic.so']:
+ linked=subprocess.run(['ldd',str(runtime/relative)],text=True,capture_output=True,check=True)
+ assert 'not found'not in linked.stdout+linked.stderr,(relative,linked.stdout,linked.stderr)
+source.save('native-linkage.json',dict(both_pinned_magic_runtimes_resolved=True))
 stage=source.NATIVE/'wire-stage';stage.mkdir();shutil.copytree(runtime/'wire-stage/magic-cloud',stage/'magic-cloud')
 assert source.pin(stage/'magic-cloud/runtime/lib/magic/tcl/tclmagic.so')['sha256']=='e8f2d96121e704acee41e7a58c23feead887527e3bfc4f51da4d97aa8183970e'
 parser=source.ROOT/'hw/soc/out/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py';parser.parent.mkdir(parents=True,exist_ok=True);parser.write_bytes((source.ROOT/'scripts/frozen_cdr_rc/audit_pilot.py').read_bytes())
