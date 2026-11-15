@@ -1,3 +1,9 @@
+## Pilot artifact verified; freed runners started pending work
+
+RAM observer79341 finishedEXIT0: full artifact14165410093 ZIP SHA0c7fe43f verified, exactrun/head bound, result **54pilot tasks PASS,0exclusions**, allsource_state clean,sources_unchangedtrue, selected_stagepilot,complete_sweepfalse,makeexit0,5078.022s. Not fullSoC proof or fullCI pass.
+
+Duplicate43710151473 nowCOMPLETED/CANCELLED. Capacityrelease effective: publication**43717961699 IN_PROGRESS**, compactsetup audit**43718375160 IN_PROGRESS**. Hold43720921041 andquarantinesizing43721847063 stillqueued atlatestpoll. Continuepublication->readyvalidator9c6 dispatch onlyaftersuccess, thenfixtureintegration; inspectsetupauditcompactoutput. ActualPHY43717632809 remainsindependent. Fullgoalactive.
+
 ## Redundant formal workers identified by actual input comparison and cancelled
 
 Compared heads386adc72f170ef69d298ce817a5e11de14b071a7 and185526ac2e0dda69118962290e3288c1f13546f7. Formal directories formal(25entries),hw/rtl(10),hw/soc/formal(66) byte/blob-identical. Read all37SBY configs; all77declared tracked file inputs matched exact blobs; no executable config references changedrx_credit/soc_top/interfaces. Sole generated dependency ibex_register_file_ff.v: identical Makefile preparation recipe, tools.soc.mk/upstreampins/tools.mk, sv2v_ibex.sh(7db85aa5),ibex_fault_port.py(082086cc). check_formal_sweep/source_state, policy, peripheral/regfile/scrub helpers,requirements,checks.yml identical. This is scoped formal-model equivalence, NOT equivalent full newRX RTL.
