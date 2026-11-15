@@ -1,3 +1,9 @@
+## Combined shared-driver result verified; access restored
+
+GitHub repository permissions verified admin/push true. Run43763323946 /14f6b3b6a6df8f75bc89a4fd2688e3ef2da4846f SUCCESS. Derived14180659232 full ZIP SHA fd77a908e34c89f670dc8ca16733119dd58db4a7b32ec9002ac114d3ed86d97e verified in RAM. Native14181331903 advertised SHA1992ae786f9f067c6330f3df67bcfb1b23e3f5aa53a06e8913e4ce9392e41e3f. ODB602e7379b025853f4b074a9b13089603a582cc9addeb63d8262a7976c64803a4. Source de99 plus two shared driver sizes. Return0/sources unchanged. Setup2040/0/0; WNSslow-1.49755ns,TNS-1403.33ns. Hold0/0/0, margins+.222705/+.143183/+.00520262ns. Slew0/0/0, cap0/0/0. Fanout1361 remains. Improvements over de99 setup2048,WNS-1.5152,TNS-1447.5. Placement estimates only, not routed final timing. Bounded measurements in docs/timing/combined-shared-driver-placement.json.
+
+Formal43763776791 and full256bit Nx5PHY43759760309 reverified running; do not restart. New formal negative-control branch codex/lcrc-formal-controls checks bounded unmutated baseline and deliberately wrong upper flag/inverted ready. This does NOT replace pending induction proof. Complete serial PHY/main-chip routing/setup/signoff remain open. No persistent local CAD files.
+
 ## Formal frontend incompatibility corrected; equivalence now executing
 
 43763595569 /3c1d2a8b71cb94677f1214d93ac8f5198cabc957 terminalFAILURE beforeSAT. Actualjob132963621502 logs showYosys0.9/git1979e0b, reference.v:91 syntaxerror onexisting32bitSystemVerilogsizecast. This is parserfailure, notRTLcounterexample/equivalence. Artifact14181302536 SHA0529747dd67255c256edd9e75832a8318666c5c9935bda63b61d9660550f329d (version/prooflog). No reference/RTL/harness edits made to evade syntax.
