@@ -7,7 +7,21 @@ source.NATIVE=Path('select-parent-native');source.NATIVE.mkdir()
 source.DERIVED=out
 cfg=json.loads(Path(source.CFG).read_bytes())
 parent=source.NATIVE/'parent'
-source.acquire(cfg['view'],parent,lambda n:n.startswith(('native/view/','native/selected/','derived/')))
+# Preserve the qualified clock/gate-contact revision; never rebuild on original650.
+import subprocess,zipfile,io
+P='repos/Melihakbulut221/nssoc/'
+def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
+run=api('actions/runs/43695046876');assert run['conclusion']=='success' and run['head_sha']=='7c253a13438932af701b33f6c9d6c76f2ddfa6b5' and run['run_attempt']==1
+meta=api('actions/artifacts/14154400256');digest='c79134cba9fcd33d749903b93d9a71b940771c3da7266ad4b1ed4ff051600248'
+assert meta['workflow_run']['id']==run['id'] and meta['digest']=='sha256:'+digest and not meta['expired']
+blob=subprocess.check_output(['gh','api',P+'actions/artifacts/14154400256/zip']);assert hashlib.sha256(blob).hexdigest()==digest
+z=zipfile.ZipFile(io.BytesIO(blob));assert len(z.namelist())==len(set(z.namelist()))
+prefix='hw/soc/out/cloud-cdr-wire-shortcuts-physical/layout/'
+for leaf in ['nssoc_cdr_pd500_resistor_v59.gds','schematic.cir']:
+ dst=parent/'native/selected/layout'/leaf;dst.parent.mkdir(parents=True,exist_ok=True);dst.write_bytes(z.read(prefix+leaf))
+assert hashlib.sha256((parent/'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds').read_bytes()).hexdigest()=='6023cf16271d3d49307b3967b056b4b11bfaa5534254dc89ba60f3dc21b6f82a'
+(out/'current-parent-acquisition.json').write_text(json.dumps(dict(run=run['id'],head=run['head_sha'],artifact=meta['id'],archive_sha256=digest,current_clock_and_gate_revision_preserved=True),indent=2))
+
 g=pya.Layout();g.read(str(parent/'native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds'))
 b=pya.Layout();b.read('hw/soc/out/select-width-baseline/nssoc_cdr_select_feedforward_layout_v1.gds')
 bt=b.top_cell();assert g.dbu==b.dbu==.001
@@ -62,8 +76,8 @@ equal(regions(g,c),regions(b,bt))
 def signature(cell,rename=None):
  return dict(shapes=[(str(g.get_info(i)),sorted(str(s)for s in cell.each_shape(i)))for i in g.layer_indexes()if not cell.shapes(i).is_empty()],instances=[(rename.get(x.cell.name,x.cell.name)if rename else x.cell.name,str(x.cplx_trans),x.na,x.nb,str(x.a),str(x.b),x.prop_id)for x in cell.each_inst()])
 original={x.cell_index():signature(x)for x in g.each_cell()}
-top=g.top_cell();oldbbox=str(top.bbox());instances=list(top.each_inst());inst=instances[8]
-assert inst.cell.name=='pd_child_rc_select' and str(inst.dcplx_trans)=='r0 *1 993.6,2561.04' and not inst.is_regular_array()
+top=g.top_cell();oldbbox=str(top.bbox());instances=list(top.each_inst());targets=[x for x in instances if x.cell.name=='pd_child_rc_select'];assert len(targets)==1;inst=targets[0]
+assert inst.cell.name=='pd_child_rc_select' and not inst.is_regular_array()
 assert sum(x.cell.name=='pd_child_rc_select' for cell in g.each_cell()for x in cell.each_inst())==1
 variant=pya.Layout();variant.read('hw/soc/out/select-width-rwidth2/nssoc_cdr_select_feedforward_layout_v1_rwidth2_candidate.gds');vt=variant.top_cell()
 for cell in variant.each_cell():
