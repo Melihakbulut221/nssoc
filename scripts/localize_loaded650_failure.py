@@ -25,6 +25,10 @@ def run():
         assert report['source_head']=='30d59883a29c0c64f5855884a26aeb39783900ae'
         assert report['sources_unchanged'] and report['returncode']==0 and not report['diagnostics']
         assert report['status']=='REJECTED_WHOLE_MIM_ACTUAL650_LOADED'
+        contracts=[n for n in names if n.endswith('.json') and z.getinfo(n).file_size==1509851]
+        contracts=[n for n in contracts if hashlib.sha256(z.read(n)).hexdigest()=='6095d786d9ba65d967c7029b0753ef8f4316dcfb463a5aacb801565a90d5fad1']
+        assert len(contracts)==1
+        contract=json.loads(z.read(contracts[0]));assert contract['physical_devices']==650
         raw=Path('/tmp/loaded650-wave.raw')
         with z.open(unique('native/loaded-n1-nominal_late/wave.raw')) as inp,raw.open('wb') as out:
             import shutil
@@ -68,6 +72,44 @@ def run():
         vc,vb,ve,_=map(v,dev['nodes']);vce=vc-ve;ids=np.flatnonzero(active&(vce<.4))
         if len(ids):
             j=int(ids[np.argmin(vce[ids])]);bad.append(dict(device=name,nodes=dev['nodes'],minimum_active_vce_v=float(vce[j]),time_s=float(t[j]),native_row=j,violating_rows=len(ids),vc_v=float(vc[j]),vb_v=float(vb[j]),ve_v=float(ve[j]),native_model_ic_a=float(d['@q.'+name+'.qnpn13g2[ic]'][j]),note='Native model ic is not asserted to be full terminal current.'))
+    # Preserve exact logical/physical identities and first failing native rows.
+    devices=contract['devices']; by_id={dev['native_id']:dev for dev in devices}
+    assert len(by_id)==650
+    rows=sorted(set(rec['native_row'] for values in observations.values() for rec in values['failed_samples'][:3]))
+    topology=[]
+    for dev in devices:
+        if dev['model']!='npn13g2':continue
+        name='xpd.'+dev['instances'][0]['name'].lower()
+        physical=bound['groups']['npn13g2'][name]
+        vc,vb,ve,vs=map(v,physical['nodes'])
+        ic=d['@q.'+name+'.qnpn13g2[ic]']
+        topology.append(dict(device=name,native_id=dev['native_id'],logical_terminals=dev['logical_terminals'],original_source=dev['original_source'],physical=physical,
+            active_ranges_v={key:[float(val[active].min()),float(val[active].max())]for key,val in [('c',vc),('b',vb),('e',ve),('vce',vc-ve)]},
+            sample_context=[dict(native_row=j,time_s=float(t[j]),vc_v=float(vc[j]),vb_v=float(vb[j]),ve_v=float(ve[j]),native_model_ic_a=float(ic[j]))for j in rows]))
+    assert len(topology)==124
+    save('actual-hbt-topology-context.json',topology)
+    # Every resistor retains its logical terminals and intrinsic geometry. This
+    # maps measured headroom to its real load branch without changing RC.
+    save('actual-resistor-topology.json',[dev for dev in devices if dev['model']=='rppd'])
+    clock=[]
+    for dev in topology:
+        logic=dev['logical_terminals']
+        if logic.get('B') not in ('cp','cn'):continue
+        vb=v(dev['physical']['nodes'][1]);ref=v(logic['B']);other=v('cn' if logic['B']=='cp' else 'cp')
+        delta=vb-(ref+other)/2
+        expected=1 if logic['B']=='cp' else -1
+        events=[]
+        # Local base crossing versus ideal source clock edge; report missing
+        # crossings rather than adjusting the original sample gates.
+        for i in range(8,256):
+            edge=START+(i+.5)*UI
+            mask=(t>=edge-.1*UI)&(t<=edge+.9*UI);ids=np.flatnonzero(mask)
+            directed=delta[ids]*expected
+            cross=np.flatnonzero((directed[:-1]<=0)&(directed[1:]>0))
+            events.append(dict(bit_index=i,crossings=len(cross),first_crossing_delay_s=None if not len(cross) else float(t[ids[int(cross[0])+1]]-edge)))
+        found=[x['first_crossing_delay_s']for x in events if x['first_crossing_delay_s']is not None]
+        clock.append(dict(device=dev['device'],logical_terminals=logic,physical_base=dev['physical']['nodes'][1],measured_reference='Local base relative to source clock commonmode; native crossing rows, no interpolation.',missing_crossings=sum(x['crossings']==0 for x in events),minimum_delay_s=min(found)if found else None,maximum_delay_s=max(found)if found else None,events=events))
+    save('clock-base-crossings.json',clock)
     save('sampling-localization.json',observations)
     save('device-headroom-localization.json',bad)
     summary=dict(status='PASS_READ_ONLY_FAILURE_LOCALIZATION',accepted=False,full_phy_accepted=False,

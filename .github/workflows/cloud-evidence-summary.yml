@@ -1,4 +1,4 @@
-name: Localize actual current650 loaded electrical failures without rerunning simulation
+name: Map actual current650 failing stages and local clock bases
 on:
   workflow_dispatch:
 permissions:
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: loaded650-localization-${{ github.run_id }}
+          name: loaded650-stage-map-${{ github.run_id }}
           path: loaded650-localization/
           if-no-files-found: error
           retention-days: 90
