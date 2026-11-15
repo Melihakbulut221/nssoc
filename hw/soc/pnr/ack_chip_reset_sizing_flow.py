@@ -12,42 +12,27 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {$abc$734931$auto$blifparse.cc:397:parse_blif$763417} {sg13g2_nor2_1 sg13g2_nor2_2}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$760981} {sg13g2_nor2_1 sg13g2_nor2_2}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$763372} {sg13g2_a21o_1 sg13g2_a21o_2}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$766536} {sg13g2_nor2_1 sg13g2_nor2_2}
- {$abc$734931$auto$blifparse.cc:397:parse_blif$763419} {sg13g2_nor2b_1 sg13g2_nor2b_2}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$767656} {sg13g2_nor2_1 sg13g2_nor2_2}
 }
 set targets [dict keys $choices]
-if {[llength $targets]!=5} {error "Wrong measured resize census"}
+if {[llength $targets]!=1} {error "Wrong measured resize census"}
 if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
 foreach name $targets {
  set inst [$block findInst $name]
  if {$inst eq "NULL" || [[$inst getMaster] getName] ne [lindex [dict get $choices $name] 0]} {error "Reset target preflight mismatch $name"}
 }
-set sink_specs {
- {{$abc$734931$auto$blifparse.cc:397:parse_blif$763417} {Y} {u_ram.g_ram_2048x64_ecc.u_b0} {A_MEN}}
- {{$abc$734931$auto$blifparse.cc:397:parse_blif$760981} {Y} {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[5].u_mem} {B_MEN}}
- {{$abc$734931$auto$blifparse.cc:397:parse_blif$763372} {X} {u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem} {A_MEN}}
- {{$abc$734931$auto$blifparse.cc:397:parse_blif$766536} {Y} {u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[2].u_mem} {B_MEN}}
- {{$abc$734931$auto$blifparse.cc:397:parse_blif$763419} {Y} {u_ram.g_ram_2048x64_ecc.u_b1} {A_MEN}}
-}
-foreach spec $sink_specs {
- lassign $spec driver_name driver_pin expected_instance expected_pin
- set driver_inst [$block findInst $driver_name]
- set driver_term [$driver_inst findITerm $driver_pin]
- if {$driver_term eq "NULL"} {error "Missing measured output"}
- set net [$driver_term getNet]
- if {$net eq "NULL" || [llength [$net getITerms]]!=2 || [llength [$net getBTerms]]!=0} {error "Control net census changed"}
- set found 0
- foreach term [$net getITerms] {
-  if {$term eq $driver_term} {continue}
-  set name [string map [list "\\" ""] [[$term getInst] getName]]
-  set pin [string map [list "\\" ""] [[$term getMTerm] getName]]
-  if {$name ne $expected_instance || $pin ne $expected_pin || [$term getIoType] ne "INPUT"} {error "Wrong SRAM control sink"}
-  incr found
- }
- if {$found!=1} {error "SRAM sink not unique"}
+set driver [$block findInst {$abc$734931$auto$blifparse.cc:397:parse_blif$767656}]
+set dy [$driver findITerm Y]
+set wb [$block findInst wire7238]
+if {$dy eq "NULL" || $wb eq "NULL" || [[$wb getMaster] getName] ne "sg13g2_buf_8"} {error "Reset output or buffer missing"}
+set wa [$wb findITerm A]
+set rn [$dy getNet]
+if {$rn eq "NULL" || $wa eq "NULL" || [$wa getNet] ne $rn || [$rn getName] ne "u_pcie_cdc.reset_ni" || [llength [$rn getITerms]]!=2 || [llength [$rn getBTerms]]!=0} {error "Reset driver chain changed"}
+set release [$block findInst {$auto$ff.cc:337:slice$310738}]
+if {$release eq "NULL" || [[$release getMaster] getName] ne "sg13g2_dfrbpq_1"} {error "Reset release instance changed"}
+foreach {pin expected} {Q {u_pcie_cdc.destination_release[0]} D net20216 RESET_B net23863 CLK clknet_leaf_111_clk_i_regs} {
+ set term [$release findITerm $pin]
+ if {$term eq "NULL" || [$term getNet] eq "NULL" || [[ $term getNet] getName] ne $expected} {error "Reset release connectivity changed"}
 }
 set ports_before {}
 foreach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}
@@ -71,11 +56,11 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
 detailed_placement
 check_placement -verbose
-puts "NSSOC_SRAM_CONTROL_DRIVERS_UPSIZED_SAME_INCIDENCE"
+puts "NSSOC_RESET_RECOVERY_NOR_UPSIZED_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size five measured SRAM control drivers"
+    name = "Size measured reset recovery NOR driver"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
