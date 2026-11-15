@@ -10,7 +10,7 @@ try:
  for fault in [False,True]:
   name='mutant'if fault else'positive';dest=out/name
   rtl.write_text(source.replace(needle,'wire r2_handshake=rst_copy_ni && link_up_i && !out_ready_i &&')if fault else source)
-  with(out/(name+'.log')).open('w')as stream:r=subprocess.run(['bash','scripts/check_pcie_rx_read_ahead.sh',str(dest),'300000','SOC_PCIE_RX_READ2','SOC_PCIE_RESET_COPIES','SOC_PCIE_RX_COMMIT_COPIES','SOC_PCIE_RX_CURSOR_LOCAL_RESET'],stdout=stream,stderr=subprocess.STDOUT,timeout=9000)
+  with(out/(name+'.log')).open('w')as stream:r=subprocess.run(['bash','scripts/check_pcie_rx_read_ahead.sh',str(dest),'300000','SOC_PCIE_RX_READ2','SOC_PCIE_RESET_COPIES','SOC_PCIE_RX_COMMIT_COPIES','SOC_PCIE_RX_CURSOR_LOCAL_RESET','SOC_PCIE_RX_LOCAL_LANE_NEXT'],stdout=stream,stderr=subprocess.STDOUT,timeout=9000)
   logs=sorted(dest.glob('dw*.log'));assert len(logs)==8
   for log in logs:
    text=log.read_text();passed='RESULT PASS'in text

@@ -420,7 +420,14 @@ module soc_pcie_rx_credit #(
     genvar r2_index,r2_bit,r2_offset;
     generate for(r2_index=0;r2_index<R2_GROUPS;r2_index=r2_index+1) begin: r2_staged_group
         wire [R2_LANES-1:0] lane_q;
+        `ifdef SOC_PCIE_RX_LOCAL_LANE_NEXT
+        // Same cycle: each copy computes its own rotate/hold/restart.
+        soc_pcie_rx_local_lane_copy #(.W(R2_LANES)) lane_copy(
+            .clk_i(clk_i),.rst_ni(r2_rst_n),.link_up_i(link_up_i),
+            .advance_i(r2_handshake),.eop_i(out_eop_o),.q_o(lane_q));
+`else
         soc_pcie_rx_lane_copy #(.W(R2_LANES)) lane_copy(.clk_i(clk_i),.d_i(r2_lane_d),.q_o(lane_q));
+`endif
         wire [R2_LANES-1:0] lane_near={lane_q[R2_LANES-2:0],lane_q[R2_LANES-1]};
         wire [R2_LANES-1:0] lane_far={lane_q[R2_LANES-3:0],lane_q[R2_LANES-1:R2_LANES-2]};
 `ifndef SYNTHESIS
@@ -457,7 +464,14 @@ module soc_pcie_rx_credit #(
             reg [7:0] near_q,far_q;
             // This group's own copy of the lane register (section 15).
             wire [R2_LANES-1:0] lane_q;
-            soc_pcie_rx_lane_copy #(.W(R2_LANES)) lane_copy(.clk_i(clk_i),.d_i(r2_lane_d),.q_o(lane_q));
+            `ifdef SOC_PCIE_RX_LOCAL_LANE_NEXT
+        // Same cycle: each copy computes its own rotate/hold/restart.
+        soc_pcie_rx_local_lane_copy #(.W(R2_LANES)) lane_copy(
+            .clk_i(clk_i),.rst_ni(r2_rst_n),.link_up_i(link_up_i),
+            .advance_i(r2_handshake),.eop_i(out_eop_o),.q_o(lane_q));
+`else
+        soc_pcie_rx_lane_copy #(.W(R2_LANES)) lane_copy(.clk_i(clk_i),.d_i(r2_lane_d),.q_o(lane_q));
+`endif
             wire [R2_LANES-1:0] lane_near={lane_q[R2_LANES-2:0],lane_q[R2_LANES-1]};
             wire [R2_LANES-1:0] lane_far={lane_q[R2_LANES-3:0],lane_q[R2_LANES-1:R2_LANES-2]};
 `ifndef SYNTHESIS
@@ -864,6 +878,20 @@ module soc_pcie_rx_lane_copy #(
 );
     always @(posedge clk_i) q_o<=d_i;
 endmodule
+// Local next-state experiment. Asynchronous master reset also covers a
+// reset pulse between clock edges. Full-module qualification is required.
+`ifdef SOC_PCIE_RX_LOCAL_LANE_NEXT
+(* keep_hierarchy *)
+module soc_pcie_rx_local_lane_copy #(parameter integer W=8)(
+    input wire clk_i,rst_ni,link_up_i,advance_i,eop_i,
+    output reg [W-1:0] q_o
+);
+    always @(posedge clk_i or negedge rst_ni)
+        if(!rst_ni) q_o<=1;
+        else if(!link_up_i || (advance_i && eop_i)) q_o<=1;
+        else if(advance_i) q_o<={q_o[W-2:0],q_o[W-1]};
+endmodule
+`endif
 // Section 16: one copy of the two-stage read's pick registers, with the
 // master's asynchronous reset and reset value, so it equals the master in
 // every cycle. keep_hierarchy as for soc_pcie_rx_lane_copy.
