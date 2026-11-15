@@ -36,6 +36,9 @@ set sink_specs {
 }
 foreach spec $sink_specs {
  lassign $spec driver_name driver_pin expected_sinks
+ set canonical_sinks {}
+ foreach pair $expected_sinks {lassign $pair instance pin; lappend canonical_sinks [list $instance $pin]}
+ set expected_sinks $canonical_sinks
  set driver_inst [$block findInst $driver_name]
  set term [$driver_inst findITerm $driver_pin]
  if {$term eq "NULL" || [$term getIoType] ne "OUTPUT"} {error "Missing driver output"}
