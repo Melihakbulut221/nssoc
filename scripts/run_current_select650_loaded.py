@@ -22,5 +22,25 @@ assert len(mos)==len(fixture['devices'])==200 and {d['native_id']:d['parameters'
 (source.DERIVED/'current-physical-cases.json').write_bytes(fixture_bytes)
 cfg=source.read(source.ROOT/source.CFG);models=source.acquire_models(cfg['runtime']);source.model_report(models);variant=source.intrinsic_variant(models)
 engine=source.NATIVE/'models/source/runtime/patched-ngspice';engine.chmod(0o755)
-result=loaded.run_loaded(source,models,variant,engine,target/'model.cir',contract,bound,case)
+# Exploratory resistor sizing only: baseline physical RC is retained, so this
+# is NOT an extracted model of a changed layout and cannot qualify physical PHY.
+import copy
+candidate_contract=copy.deepcopy(contract);text=(target/'model.cir').read_text();changes=[]
+approved={377:(6.,2.),378:(8.6,2.),379:(6.,2.),380:(8.6,2.),381:(3.6,1.),382:(21.6,1.),383:(3.6,1.),384:(21.6,1.),400:(3.6,1.),401:(21.6,1.),402:(3.6,1.),403:(21.6,1.)}
+for d in candidate_contract['devices']:
+ if d['native_id']not in approved:continue
+ length,width=approved[d['native_id']];assert d['model']=='rppd'and d['native_parameters']['l']==length and d['native_parameters']['w']==width
+ assert len(d['instances'])==1
+ inst=d['instances'][0];old=inst['parameters']['w'];assert old==str(int(width))+'u'
+ lines=text.splitlines();hits=[i for i,line in enumerate(lines)if line.split()and line.split()[0]==inst['name']];assert len(hits)==1
+ tokens=lines[hits[0]].split();assert tokens.count('w='+old)==1;tokens[tokens.index('w='+old)]='w=4u';lines[hits[0]]=' '.join(tokens);text='\n'.join(lines)+'\n'
+ inst['parameters']['w']='4u';d['native_parameters']['w']=4.;changes.append(dict(native_id=d['native_id'],old_width_um=width,new_width_um=4.,length_um=length))
+assert len(changes)==12
+candidate_contract['physical_geometry_matches']=False
+candidate_contract['scope']='Exploratory twelve divider resistor width changes with OLD baseline metal/gate RC. Not a physically extracted candidate, not layout or PHY acceptance.'
+candidate=target/'candidate-model.cir';candidate.write_text(text)
+(target/'candidate-contract.json').write_bytes(source.enc(candidate_contract))
+source.save('divider-width4-experiment.json',dict(changes=changes,baseline_model_sha256=source.pin(target/'model.cir'),candidate_model=source.pin(candidate),physical_geometry_matches=False,full_phy_accepted=False,scope=candidate_contract['scope']))
+bound=full.probes(candidate_contract)
+result=loaded.run_loaded(source,models,variant,engine,candidate,candidate_contract,bound,case)
 source.gate();source.save('selected-whole-loaded-summary.json',dict(case=case,partition=n,status=result['status'],all256bits_executed=True,unchanged_original_electrical_gates=True,full_phy_accepted=False,final_timing_complete=False))
