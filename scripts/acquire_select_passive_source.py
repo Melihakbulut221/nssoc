@@ -20,7 +20,7 @@ with archive.open('xb')as f:subprocess.run(['gh','api',P+'releases/assets/'+str(
 assert sha(archive)==spec['sha256'] and archive.stat().st_size==spec['bytes']
 prefix='binding/inputs/parent/inputs/rc_select/'
 selected={n for n in prod['complete_members']if n.startswith(prefix)}
-assert len(selected)==6,selected
+assert len(selected)==5,selected
 out=Path('select-parent-source');out.mkdir()
 receipt={};seen=set()
 with tarfile.open(archive,'r|gz')as tar:
@@ -36,7 +36,7 @@ with tarfile.open(archive,'r|gz')as tar:
   if n in selected:
    rel=n[len(prefix):];dest=out/rel;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(b''.join(chunks))
    receipt[rel]=dict(source_member=n,bytes=size,sha256=h.hexdigest())
-assert seen==set(prod['complete_members']) and len(receipt)==6
+assert seen==set(prod['complete_members']) and len(receipt)==5
 archive.unlink()
 (out/'acquisition.json').write_text(json.dumps(dict(producer=prod['run'],source=prod['source'],asset=spec,verified_archive_members=len(seen),selected=receipt,accepted=False,scope='Authenticated original select-feedforward macro source. No geometry change, new RC or PHY acceptance. MOS650 replacement preserves these non-MOS devices; whole-chip closure not inferred.'),indent=2)+'\n')
 print(json.dumps(receipt))
