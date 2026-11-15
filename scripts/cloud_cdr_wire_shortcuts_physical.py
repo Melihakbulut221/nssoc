@@ -311,6 +311,9 @@ def candidate():
     new_path=target/"clock-candidate.gds";new_path.write_bytes(candidate_bytes)
     ol=db.Layout();ol.read(str(prior_path));nl=db.Layout();nl.read(str(new_path))
     need(ol.dbu==nl.dbu==.001 and len(ol.top_cells())==len(nl.top_cells())==1 and ol.top_cell().name==nl.top_cell().name==TOP,"clock hierarchy units and top")
+    box=ol.top_cell().bbox()
+    need(nl.top_cell().bbox()==box and box.left==box.bottom==0,"clock macro extent and origin preserved")
+    need(proof["macro_boundary_unchanged"] is True and proof["source_bbox_dbu"]==[box.left,box.bottom,box.right,box.top],"clock boundary proof matches actual GDS")
     before=regions(ol);after=regions(nl);need(set(before)==set(after),"clock unchanged layers")
     allowed=["30/0","50/0","67/0","126/0","134/0"];changed=[]
     for key,region in before.items():
