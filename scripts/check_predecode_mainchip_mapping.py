@@ -13,8 +13,9 @@ assert sha('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')=='a5891101ff12672cf6da0fa5da0
 m=json.loads((syn/'soc_top.mapped.json').read_text())['modules']['soc_top']
 assert os.environ['SOC_PCIE_REPLAY_CRC_SELECT']=='1' and '-DSOC_PCIE_REPLAY_CRC_SELECT' in ys
 assert os.environ['SOC_PCIE_RX_CURSOR_LOCAL_RESET']=='1' and '-DSOC_PCIE_RX_CURSOR_LOCAL_RESET' in ys
-assert sha('hw/soc/rtl/pcie/soc_pcie_rx_credit.v')=='6e8736695b6fe059716fd90b5b8d969ca80a326f6c3a4705325bb5b7ec8831c0'
-assert json.loads(P('out/rx-qualification-gate.json').read_text())['source_sha256']=='6e8736695b6fe059716fd90b5b8d969ca80a326f6c3a4705325bb5b7ec8831c0'
+assert os.environ['SOC_PCIE_RX_LOCAL_LANE_NEXT']=='1' and '-DSOC_PCIE_RX_LOCAL_LANE_NEXT' in ys
+assert sha('hw/soc/rtl/pcie/soc_pcie_rx_credit.v')=='2a345ba4082873f73fd8f308880a1f8d29651e24c12bbeaf9ac20b8f4082636e'
+assert json.loads(P('out/rx-qualification-gate.json').read_text())['source_sha256']=='2a345ba4082873f73fd8f308880a1f8d29651e24c12bbeaf9ac20b8f4082636e'
 assert '-DSOC_PCIE_RX_READ2' in ys and '-DSOC_PCIE_RESET_COPIES' in ys
 # Source span is obtained from actual lowered RTL, never inherited line numbers.
 rtl=P('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')
@@ -54,5 +55,5 @@ assert set(qdrivers)==bits
 assert all(len(v)==1 and v[0]['type'].startswith('sg13g2_') and v[0]['port']=='Q' and 'CLK' in m['cells'][v[0]['cell']]['connections'] for v in qdrivers.values()),qdrivers
 counts=collections.Counter(c['type'] for c in m['cells'].values());macros={k:v for k,v in counts.items() if k.startswith('RM_IHPSG13')}
 assert sum(macros.values())==20 and macros.get('RM_IHPSG13_2P_256x16_c2_bm_bist')==16,macros
-result={'status':'MAPPED_RX_CURSOR_CRC_SELECT_EOP_CHIP_REQUIRES_GATE_BOOT_AND_PHYSICAL_IMPLEMENTATION','accepted':False,'source_head':os.environ['GITHUB_SHA'],'selected_widths':widths,'registered_bit_count':len(qdrivers),'cached_eop_register':cached,'lowered_eop_origins':sorted(origins),'crc_select_enabled':True,'rx_cursor_local_reset_enabled':True,'macros':macros,'cells':sum(counts.values()),'mapped_boot_passed':False,'final_timing_complete':False,'full_phy_accepted':False,'configuration':{k:v for k,v in os.environ.items() if k.startswith(('SOC_','IBEX_','NATIVE_'))},'inputs':{p:sha(p) for p in ['hw/soc/rtl/pcie/soc_pcie_rx_credit.v','hw/soc/rtl/pcie/soc_pcie_replay_tx.v','hw/soc/flow/syn_soc_top.sh','hw/soc/flow/sim_soc.sh','scripts/prepare_predecode_mainchip.sh']},'outputs':{str(p.relative_to(out)):sha(p) for p in out.rglob('*') if p.is_file()}}
+result={'status':'MAPPED_RX_CURSOR_CRC_SELECT_EOP_CHIP_REQUIRES_GATE_BOOT_AND_PHYSICAL_IMPLEMENTATION','accepted':False,'source_head':os.environ['GITHUB_SHA'],'selected_widths':widths,'registered_bit_count':len(qdrivers),'cached_eop_register':cached,'lowered_eop_origins':sorted(origins),'crc_select_enabled':True,'rx_cursor_local_reset_enabled':True,'rx_local_lane_next_enabled':True,'macros':macros,'cells':sum(counts.values()),'mapped_boot_passed':False,'final_timing_complete':False,'full_phy_accepted':False,'configuration':{k:v for k,v in os.environ.items() if k.startswith(('SOC_','IBEX_','NATIVE_'))},'inputs':{p:sha(p) for p in ['hw/soc/rtl/pcie/soc_pcie_rx_credit.v','hw/soc/rtl/pcie/soc_pcie_replay_tx.v','hw/soc/flow/syn_soc_top.sh','hw/soc/flow/sim_soc.sh','scripts/prepare_predecode_mainchip.sh']},'outputs':{str(p.relative_to(out)):sha(p) for p in out.rglob('*') if p.is_file()}}
 P('out').mkdir(exist_ok=True);P('out/mapping.json').write_text(json.dumps(result,indent=2))
