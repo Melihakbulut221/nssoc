@@ -1,4 +1,4 @@
-name: Qualify ACK prefix on exact CRC-select EOP-cache mainchip source
+name: Qualify full ACK delta parallel borrow on exact mainchip replay source
 on:
   workflow_dispatch:
 permissions:
@@ -19,15 +19,15 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - run: python3 scripts/qualify_ack_stale_prefix.py
+      - run: python3 scripts/qualify_ack_delta_prefix.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-prefix-proof-${{ github.run_id }}
+          name: ack-delta-prefix-proof-${{ github.run_id }}
           path: |
-            out-ack-prefix/*.json
-            out-ack-prefix/*.log
-            out-ack-prefix/*.ys
-            out-ack-prefix/*.v
+            out-ack-delta-prefix/*.json
+            out-ack-delta-prefix/*.log
+            out-ack-delta-prefix/*.ys
+            out-ack-delta-prefix/*.v
           if-no-files-found: error
           retention-days: 90

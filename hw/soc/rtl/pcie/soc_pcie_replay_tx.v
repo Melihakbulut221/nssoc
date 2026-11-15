@@ -170,7 +170,29 @@ module soc_pcie_replay_tx #(
     // Only an original transmitted EOP advances their modulo sum. Keep that
     // frontier directly, removing the adder from credit reservation metadata.
     reg [PW-1:0] new_slot;
+`ifdef SOC_PCIE_ACK_DELTA_PREFIX
+    // BEGIN ACK_DELTA_PREFIX
+    wire [2:0] ack_db_g,ack_db_p;
+    assign ack_db_g[0]=ack_sequence_i[2:0]<acknowledged_sequence_o[2:0];
+    assign ack_db_g[1]=ack_sequence_i[5:3]<acknowledged_sequence_o[5:3];
+    assign ack_db_g[2]=ack_sequence_i[8:6]<acknowledged_sequence_o[8:6];
+    assign ack_db_p[0]=ack_sequence_i[2:0]==acknowledged_sequence_o[2:0];
+    assign ack_db_p[1]=ack_sequence_i[5:3]==acknowledged_sequence_o[5:3];
+    assign ack_db_p[2]=ack_sequence_i[8:6]==acknowledged_sequence_o[8:6];
+    wire ack_db3=ack_db_g[0];
+    wire ack_db6=ack_db_g[1] | (ack_db_p[1]&ack_db_g[0]);
+    wire ack_db9=ack_db_g[2] | (ack_db_p[2]&ack_db_g[1]) |
+        (ack_db_p[2]&ack_db_p[1]&ack_db_g[0]);
+    wire [11:0] ack_delta_prefix;
+    assign ack_delta_prefix[2:0]=ack_sequence_i[2:0]-acknowledged_sequence_o[2:0];
+    assign ack_delta_prefix[5:3]=ack_sequence_i[5:3]-acknowledged_sequence_o[5:3]-ack_db3;
+    assign ack_delta_prefix[8:6]=ack_sequence_i[8:6]-acknowledged_sequence_o[8:6]-ack_db6;
+    assign ack_delta_prefix[11:9]=ack_sequence_i[11:9]-acknowledged_sequence_o[11:9]-ack_db9;
+    // END ACK_DELTA_PREFIX
+    wire [11:0] ack_delta=ack_delta_prefix;
+`else
     wire [11:0] ack_delta=ack_sequence_i-acknowledged_sequence_o;
+`endif
     // Same 12-bit modulo comparison without a full subtract-then-compare.
     // Kept opt-in until mapped timing and full replay qualification pass.
 `ifdef SOC_PCIE_ACK_STALE_PREFIX
