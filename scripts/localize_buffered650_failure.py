@@ -13,11 +13,11 @@ def run():
     meta=json.loads(subprocess.check_output(['gh','api',P+'actions/artifacts/14164934308']))
     assert meta['workflow_run']['id']==43717632809 and meta['workflow_run']['head_sha']=='9709f80dfe3dcf1abeae5da770ee2ea7abdb1c5a' and not meta['expired']
     producer=json.loads(subprocess.check_output(['gh','api',P+'actions/runs/43717632809']));assert producer['conclusion']=='failure' and producer['run_attempt']==1 and producer['head_sha']==meta['workflow_run']['head_sha']
-    expected='b29c348bce77354de4c311334900a17e12607cbe0238d65065cd7d5efc1feee0'
-    assert meta['digest']=='sha256:'+expected
+    archive_sha256='b29c348bce77354de4c311334900a17e12607cbe0238d65065cd7d5efc1feee0'
+    assert meta['digest']=='sha256:'+archive_sha256
     archive=Path('/tmp/loaded650-native.zip')
     with archive.open('wb') as f:subprocess.run(['gh','api',P+'actions/artifacts/14164934308/zip'],stdout=f,check=True,timeout=1200)
-    assert digest(archive)==expected
+    assert digest(archive)==archive_sha256
     with zipfile.ZipFile(archive) as z:
         names=z.namelist()
         def unique(s):
@@ -143,11 +143,12 @@ def run():
     save('sampling-localization.json',observations)
     save('device-headroom-localization.json',bad)
     summary=dict(status='PASS_READ_ONLY_BUFFERED_FAILURE_LOCALIZATION',accepted=False,full_phy_accepted=False,
-        producer_run=43717632809,producer_head=report['source_head'],artifact=14164934308,artifact_sha256=expected,
+        producer_run=43717632809,producer_head=report['source_head'],artifact=14164934308,artifact_sha256=archive_sha256,
         raw_capture={k:v for k,v in cap.items() if k!='logical_vector_order'},phase_average_v=report['phase_average_v'],phase_gate=report['phase_gate'],
         devices_below_vce_gate=bad,sampling={k:{a:b for a,b in val.items() if a!='failed_samples'} for k,val in observations.items()},
         scope='Read-only failed buffered waveform; source current uses prebuffer nodes. Original sample gates reproduced exactly; nearest native context points separately labelled. No changed circuit, stimuli, timing gates, native simulation or acceptance.')
     assert digest(raw)==cap['raw_sha256']
+    assert summary['artifact_sha256']==meta['digest'].removeprefix('sha256:')
     save('result.json',summary)
     print(json.dumps({k:v for k,v in summary.items() if k not in ('devices_below_vce_gate','sampling','raw_capture')},indent=2))
 try:run()
