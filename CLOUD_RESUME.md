@@ -1,3 +1,11 @@
+## Two setup-sensitive feedback paths: measure after fanout split — 2026-11-15
+
+Current107branchECO43655839647 and impact43655889301 remain live; newPHY RC43655950942/headae914da1b8791477927d34ac8c8b50c060d2921a also live. No restart or acceptance claims.
+
+Inspected exact native max/min reports from residualmeasurement43654879592. Excludedindex9 sourceFF160423(update_h_infinite) drives commonbuf737260; fastfeedback then takes772052/A->772053/B1->sameFF/D, while worstslowsetup takesfanout8646 and longcreditlogic toFF343661. Excludedindex11 sourceFF160725(ack_encoder.index[1]) drives commoninv761429; fastfeedback takes772804/A1->sameFF/D; worstslowsetup instead takes772693/A and longencoderlogic toFF160709. Thus delayingcommonfirstsink penalizesunrelatedsetup; investigate later isolatedbranches.
+
+Readonly measurement43656054797/head45e1293cb0ad8ac9380de465f85759854592821e live on codex/rx-two-feedback-late-branch-timing. Exactunchanged combinedODB4f937eac...;12reports=2laterthroughpins*3corners*max/min. Targets $abc$734844$auto$blifparse.cc:397:parse_blif$772052/A (source737260/X) and $abc$734844$auto$blifparse.cc:397:parse_blif$772804/A1 (source761429/Y). Targetmanifest hw/soc/pnr/rx-two-feedback-late-targets.json. NoECOyet. If actualmarginspermit, repairthese on exact accepted107repaircandidate onlyaftertargeted+globalresults; current measurementbaselineexcludespending107repair, so remeasureallaftercombinedECO. Do notclaim2holdsclosedorsetupfixed.
+
 ##107-branch repair and whole-chip impact launched; MIM source guard corrected — 2026-11-15
 
 Residual ECO43655839647/head08d99bb8bc95db8629648202c37e7a17c8121840 live on codex/rx-residual-short-hold-eco. Exact combinedODB4f937eac... restored from14137831182/1d8aa6f... . Adds214identitydelaycells only107 selected firstsink branches; indices9/11excluded from measured109list. Existingallplacements frozen/restored; originalmasters/incidence retained except exactsinks. Reports1566=3corners*2types*(40IO+111oldfeedback+3SRAM+107newbranches); 50ps targetedgate. Selectionmanifest rx-residual-eco-selection.json. No pass yet.
