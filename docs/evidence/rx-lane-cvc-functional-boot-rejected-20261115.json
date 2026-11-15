@@ -1,0 +1,81 @@
+{
+  "run": 43681966595,
+  "head": "4d0e9c12b692fe6297989ce1b62834cc0cada86a",
+  "artifact": 14152836241,
+  "sha256": "0d909e3bc3ed901f373cf648a2f7779d052cb30bba5999c2d59bf730304a9b2a",
+  "result": {
+    "source_head": "4d0e9c12b692fe6297989ce1b62834cc0cada86a",
+    "passed": false,
+    "native_gate_boot_accepted": false,
+    "full_phy_accepted": false,
+    "final_timing_complete": false,
+    "scope": "Supplemental four-state zero-delay derived-standard-cell functional gate boot. No native/SDF/timing acceptance; SRAM simulator equivalence not independently established. No simultaneous-transition equivalence claim.",
+    "qualification_sha256": "56504f6e9a81cb9156f95385b2ca4cd7f8fde480195b4544d05272380fb9d2f0",
+    "input_manifest_sha256": "1592888b836e1d3dc6cb8c6c609d7ea06296a3a26fb8e9720c96af643fb99597",
+    "derived_sha256": "b1280e76c1e322681066805af26b7405d93cae36b58de079045c85342b5b101f",
+    "compiler_sha256": "0fc2f7bb6fb055583a127db810b783be9d76906b4116aec10b9c4f9164c829af",
+    "compile": {
+      "command": [
+        "/home/runner/work/nssoc/nssoc/cvc-source/build64/cvc64",
+        "-sv",
+        "+nospecify",
+        "+define+NSSOC_CVC_ZERO_DELAY",
+        "-o",
+        "/home/runner/work/nssoc/nssoc/out/cvc-chip-boot/sim",
+        "+define+FUNCTIONAL",
+        "+define+TIMEOUT_CYCLES=4000000",
+        "+define+EXIT_CODE_ADDR=32'h00001f94",
+        "+define+EXIT_MAGIC_ADDR=32'h00001f98",
+        "+define+CHECKS_ADDR=32'h00001fcc",
+        "+define+FAILS_ADDR=32'h00001fd0",
+        "+define+NSSOC_GL_MBIST",
+        "+define+NSSOC_GL_PCIE",
+        "+define+NSSOC_GL_PCIE_ASYNC",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis/soc_top.netlist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/flash_w25q128jv.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/mapped_mbist_boot_monitor.v",
+        "-v",
+        "/home/runner/work/nssoc/nssoc/out/cvc-chip-boot/derived-functional-standard-cells.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 26.43363436100003
+    },
+    "run": {
+      "command": [
+        "/home/runner/work/nssoc/nssoc/out/cvc-chip-boot/sim",
+        "+flash0=/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/flash0.hex"
+      ],
+      "returncode": 0,
+      "elapsed_s": 7019.453695686
+    },
+    "checks": {
+      "pass_banner": false,
+      "pcie_profile": "packet-async",
+      "mbist_profile": "system-ethernet",
+      "pcie_idle_boot_passed": false,
+      "mbist_boot_passed": false,
+      "pcie_idle_boot_status": "failed",
+      "mbist_boot_status": "failed",
+      "passed": false
+    },
+    "sources_unchanged": true,
+    "error": "AssertionError('Supplemental whole-chip functional gate boot failed')",
+    "logs": {
+      "compile.log": {
+        "sha256": "fc027b694416a10ffd6510087bbebea95888c7669f9f4a60dc731d5c390c402e",
+        "bytes": 3993
+      },
+      "run.log": {
+        "sha256": "31c0040aeb9879f8f87daf3d3bf56be7a443c152466e7661ac1b979636938459",
+        "bytes": 35277
+      }
+    }
+  },
+  "accepted": false
+}
