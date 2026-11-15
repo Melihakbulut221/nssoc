@@ -180,11 +180,17 @@ def run():
             assert by_id[did]['logical_terminals']['B']==logic
             vals.append(v(dev['nodes'][1]))
         return vals[0]-vals[1]
+    actual_resistors=[dev for dev in devices if dev['model']=='rppd']
+    for upstream,downstream in [('dqp','usp'),('dqn','usn')]:
+        matches=[dev for dev in actual_resistors if {dev['logical_terminals'].get('RPPD_1'),dev['logical_terminals'].get('RPPD_2')}=={upstream,downstream}]
+        assert len(matches)==1,(upstream,downstream,len(matches))
+    for alias in ['xpd.dqp','xpd.dqn']:
+        assert alias in aliases,alias
     chains=[
       ('a-data',v('xpd.aqp')-v('xpd.aqn'),base_pair(273,274,'uap','uan'),v('xpd.adp')-v('xpd.adn')),
       ('c-data',v('xpd.cqp')-v('xpd.cqn'),base_pair(294,297,'ucp','ucn'),v('xpd.cdp')-v('xpd.cdn')),
-      ('b-select0',v('xpd.bqp')-v('xpd.bqn'),base_pair(295,299,'usp','usn'),v('xpd.s0p')-v('xpd.s0n')),
-      ('b-select1',v('xpd.bqp')-v('xpd.bqn'),base_pair(296,298,'usp','usn'),v('xpd.s1p')-v('xpd.s1n'))]
+      ('d-select0',v('xpd.dqp')-v('xpd.dqn'),base_pair(295,299,'usp','usn'),v('xpd.s0p')-v('xpd.s0n')),
+      ('d-select1',v('xpd.dqp')-v('xpd.dqn'),base_pair(296,298,'usp','usn'),v('xpd.s1p')-v('xpd.s1n'))]
     propagation={}
     def crossings(values):
         idx=np.flatnonzero(((values[:-1]<=0)&(values[1:]>0))|((values[:-1]>=0)&(values[1:]<0)))
@@ -200,7 +206,7 @@ def run():
             found=[r['first_delay_s']for r in records if r['first_delay_s'] is not None]
             stages[name]=dict(events=records,source_crossings=len(le),missing=sum(r['matched_crossings']==0 for r in records),multiple=sum(r['matched_crossings']>1 for r in records),minimum_delay_s=min(found)if found else None,median_delay_s=float(np.median(found))if found else None,maximum_delay_s=max(found)if found else None)
         propagation[tag]=dict(stages=stages,active_differential_ranges_v={n:[float(arr[active].min()),float(arr[active].max())]for n,arr in [('sampler',source),('driver_base',base_input),('driver_output',output)]})
-    save('level-shifter-propagation.json',dict(scope='Read-only same-direction zero-crossing matching on exact native transistor base and output nodes. Missing/multiple events reported; no test phase, sample gate, circuit or acceptance modified.',chains=propagation))
+    save('level-shifter-propagation.json',dict(scope='Read-only same-direction zero-crossing matching on exact native transistor base and output nodes. Select source is actual DQP/DQN validated by physical resistor connectivity, not BQP/BQN before the clocked D sampler. Missing/multiple events reported; no test phase, sample gate, circuit or acceptance modified.',chains=propagation))
     save('sampling-localization.json',observations)
     save('device-headroom-localization.json',bad)
     summary=dict(status='PASS_READ_ONLY_BUFFERED_FAILURE_LOCALIZATION',accepted=False,full_phy_accepted=False,
