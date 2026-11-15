@@ -70,6 +70,28 @@ foreach lib [$db getLibs] {
  }
 }
 close $cap
+set rf [open [file join $::env(GITHUB_WORKSPACE) ack-chip-branches native-reset-release.tsv] w]
+puts $rf "instance\tmaster\tQ_net\tD_net\tRESET_B_net\tCLK_net"
+set target_found 0
+foreach inst [$block getInsts] {
+ set name [$inst getName]
+ set qp [$inst findITerm Q]
+ if {$qp eq "NULL" || [$qp getNet] eq "NULL"} {continue}
+ set qn [[$qp getNet] getName]
+ if {$name ne {$auto$ff.cc:337:slice$310738} && ![regexp {u_pcie_cdc.*(release|reset)} $qn]} {continue}
+ set fields [list $name [[$inst getMaster] getName] $qn]
+ foreach pn {D RESET_B CLK} {
+  set term [$inst findITerm $pn]
+  if {$term eq "NULL"} {error "Selected reset flop lacks $pn"}
+  set net [$term getNet]
+  if {$net eq "NULL"} {error "Selected reset flop has disconnected $pn"}
+  lappend fields [$net getName]
+ }
+ puts $rf [join $fields "\t"]
+ if {$name eq {$auto$ff.cc:337:slice$310738}} {incr target_found}
+}
+if {$target_found!=1} {error "Recovery endpoint not uniquely found"}
+close $rf
 puts "NSSOC_READ_ONLY_NATIVE_DRIVER_PROBE_COMPLETE"
 """
 class ResetBufferECO(ElectricalPostCTS):

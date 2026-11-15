@@ -90,6 +90,8 @@ try:
  assert (OUT/"native-driver-probe.tsv").is_file()
  r["native_driver_probe_sha256"]=prior.sha(OUT/"native-driver-probe.tsv")
  r["timing_remeasured"]=False
+ assert (OUT/"native-reset-release.tsv").is_file()
+ r["native_reset_release_sha256"]=prior.sha(OUT/"native-reset-release.tsv")
  assert (OUT/"native-buffer-capabilities.txt").is_file()
  r["native_buffer_capabilities_sha256"]=prior.sha(OUT/"native-buffer-capabilities.txt")
  r.update(status="READ_ONLY_NATIVE_DRIVER_PROBE_NOT_SIGNOFF",sources_unchanged=True,scope="Read-only native ODB pin/net incidence probe for 36 SRAM slew pins and 1285 unannotated drivers. No resize or placement operation; no timing closure or fullPHY claim.")
