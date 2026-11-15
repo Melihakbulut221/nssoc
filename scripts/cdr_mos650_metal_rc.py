@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"mos650-metal-rc";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-metal-rc-inputs.json";PINS="scripts/cdr-mos650-metal-rc-pins.json"
 METHODS="docs/evidence/mos650-metal-rc-original-methods.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/shared650-widened-metal-rc"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/shared650-upper-metal-rc"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -135,7 +135,7 @@ def inputs(cfg):
  record=read(physical/"derived/result.json");view=physical/"native/view"
  need(record["status"]=="PASS_PAIRED650_CURRENT_TERMINAL_AND_GATE_CONTACT_ANCHORS_REQUIRES_FRESH_RC" and record["context"]["run"]==spec["run"] and record["context"]["source"]==spec["source"],"current accepted anchor producer")
  need((record["devices"],record["terminals"],record["physical_anchors"],record["gate_contacts"])==(650,2046,1428,200),"complete paired census")
- need(record["gds_sha256"]==pin(physical/"native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds")["sha256"]=="f93aa21dc645e4396b8e230114ec36656399e35bed94a1095e58fc3b62e009fe","exact physically qualified paired GDS")
+ need(record["gds_sha256"]==pin(physical/"native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds")["sha256"]=="0e7b4d8da7e6de4bda98ea0a83d6dbb5ea78c73c89a60d5724ba44401c1a24c0","exact physically qualified paired GDS")
  need(not record["old_RC_reused"] and not record["wire_rc_extracted"],"fresh extraction required")
  flat=read(physical/"derived/lvs_flat-identity.json")
  need(pin(physical/"native/selected/physical/lvs_flat/result.lvsdb")==flat["lvsdb"],"actual current intrinsic-terminal geometry")
