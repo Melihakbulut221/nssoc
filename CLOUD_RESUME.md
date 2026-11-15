@@ -1,3 +1,9 @@
+## Exact PLL native OP accessor result
+
+**43698755531 /636f4a54a66c0ecc01c8a3fe799565e16fa553b7 passed bounded accessor existence.** Derived14155955561 SHA57f41cc165d88dfc1dc52bb22ddea1033d91c16035d55f1770fa48df30eb09bd; native14155920694 SHAf602f0c42a06bc7f7b27e9ac41fd0fbcc21eb78c69fda0f4c6761e971ec65c6f. Actual engine/model/image restored, all102OFF flags read back, original inputs unchanged,42 finite queries. Native OP header has28current/14charge variables. See docs/evidence/pll-current-native-op-20261115.json.
+
+CRITICAL next-capture requirement: this OP-only wrapper's extra `save` produces exactly42 variables, not the original voltage vectors. This is valid only for query-existence preflight. A future dynamic wrapper must explicitly preserve the original save set plus new queries and verify actual native full-column/header coverage and common131-column/time prefix. Do not infer original observation preservation from source-byte preservation. OP zero values do not prove scaling, transient semantics or complete macro-terminal KCL. Native query/model readback logs remain available; qualify Nx/m and query equations before130ns diagnostic, retain original1us acquisition requirements.
+
 ## 2026-11-15: repair publication fix, six-path results, actual PLL accessor probe
 
 - **43697752210 /c5affedb31cd1b2e02d8234d073525a3be94f571 is terminal FAILURE.** Native ECO+STA command succeeded, but both uploads found no files: workflow collected combined-nearzero-repair-trial while actual driver wrote combined-nearzero-repair. No artifacts means NO verified timing improvement, no successor ODB. Corrected ONLY publication paths and added pre-CAD output-contract guard. **Replacement live43698884172 /8efcfa852e866f4a0db100f3c5bda36a9e260c6d**, same branch codex/rx-lane-nearzero-repair, unchanged native experiment. This is a genuine failed publication retry, not restart from observation timeout.
