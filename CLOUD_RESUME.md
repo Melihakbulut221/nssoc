@@ -1,3 +1,11 @@
+## Globalhold3->1 verified; last measured short branch repair launched — 2026-11-15
+
+Lateimpact43657092967/head38fb30e3c725cbdb44069357a69a24398ccae12c SUCCESS. Authenticatedsafe14138693271 SHA945d582f1e142c54521a3b762ad1261c89b634f8189196b4980da6d1152f25ed. NOregressions,targetedtrue. Fasthold3->1,WS/TNS-.00158362ns; setupunchanged. TypWS+.0940192->+.10981ns. Receipt rx-late-feedback-hold-impact-20261115.json. ExactacceptedengineeringODB1af420...; stillplacementRC, setupstillnegative, notsignoff.
+
+Thirdbranch43657463628/head12669ba4c370c5eae2712a94f29ff5dda4e74552 completed6reports verifiedhashes. Derived14138177986 SHA6750609871aa84657f8f54eb1e4a655eb0b35a519bd5ed8a357517f57d045c9d. THROUGH778838/B2 slowsetup+2.871114016ns/hold+.362137884,typ+3.206366777/+.133547068,fast+3.392246246/-.001583622ns. Receipt rx-third-hold-branch-timing-20261115.json.
+
+NewECO43658104828/headbe37a6115e72e3571f78e4b5f839ba6672dcd90d queued on codex/rx-final-short-hold-eco. RestorelateECO43656972871/native14138618413 SHA76ac393d782d6a18705c3d0061684facacba82502b7f6cea2d9ed45f3a8533c9 andODB1af420bd624b8448914f643aaa5a32589220bce31f87c7eb939b14a183c1a67d. Add2identitydelays onlysink778838/B2 fromFF165926/Q, preserveoriginalplacement/statuses/incidence. Measure1584reports=264targets*3corners*max/min includingallpreviouspins;50psgate. No passyet. NEXT dispatchwholechipimpact based38fb30... with producer43658104828/headbe37..., baseline43656972871/native14138618413/76ac.../ODB1af420..., prefixrx-final-short-hold-eco. Mustverifytargeted+globalandactualremainingholdcount beforeclaimclosure. PHYloaded43657193496/newbankpostCTS43656292239 remainpending.
+
 ## Two late feedback ECO targeted checks PASS; global impact pending — 2026-11-15
 
 ECO43656972871/head83c740023a5b95f390c0d3923a6c5cafd398fbb0 produced all1578reports; everyreporthash independentlyverified and all>=50ps. Originalplacement/statuses/incidencepreserved,4nativeidentitydelays added on2laterfeedbackbranches. CandidateODB1af420bd624b8448914f643aaa5a32589220bce31f87c7eb939b14a183c1a67d. Native14138618413 SHA76ac393d782d6a18705c3d0061684facacba82502b7f6cea2d9ed45f3a8533c9; safe14139131529 SHA20f6d222cbf7f513c6abe2a41930805ca04552d2eee2c705fdda43ae914f1902. Receipt rx-late-feedback-hold-eco-20261115.json. TargetedPASS only; do notassertglobalholdcountyet.
