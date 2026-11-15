@@ -9,6 +9,10 @@ def adapt(source):
  changed=[]
  def module(match):
   text=match.group(0);name=match.group(1)
+  # CVC parses unsupported ifnone edge paths even with +nospecify.
+  # Explicitly omit ALL specify text only in the derived functional mode.
+  # Icarus reference and macro-off model retain original specify sections.
+  text=re.sub(r'\bspecify\b.*?\bendspecify\b',lambda m:'\n`ifndef NSSOC_CVC_ZERO_DELAY\n'+m.group(0)+'\n`endif\n',text,flags=re.S)
   if 'delayed_'not in text:return text
   aliases={}
   for kind,args in re.findall(r'\$(setuphold|recrem)\s*\((.*?)\);',text,re.S):
