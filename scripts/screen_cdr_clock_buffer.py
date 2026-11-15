@@ -24,8 +24,16 @@ def main():
  assert (models/'models/models/cornerHBT.lib').is_file(),'Authenticated HBT library missing before native execution'
  circuit=ROOT/'scripts/cdr_cascode_clock_buffer_candidate.inc'
  specs={'xip':('ep','inp','tail',12),'xin':('en','inn','tail',12),'xcp':('cp','cas','ep',12),'xcn':('cn','cas','en',12),'xfp':('avdd','cn','outp',12),'xfn':('avdd','cp','outn',12),'xref':('bias','bias','0',1),'xtail':('tail','bias','0',12),'xtp':('outp','bias','0',16),'xtn':('outn','bias','0',16)}
+ # Preserve aggregate emitter count with separate valid native devices; Nx is not arbitrary multiplicity.
+ specs={name+'_'+str(i):(c,b,e,4) for name,(c,b,e,nx) in specs.items() if nx>10 for i in range(nx//4)}|{name:x for name,x in specs.items() if x[3]<=10}
+ assert len(specs)==30 and all(1<=x[3]<=10 for x in specs.values())
+ cards=list(models.rglob('sg13g2_hbt_mod.lib'));assert len(cards)==1
+ model=cards[0].read_text();section=model.split('.subckt npn13G2 c b e bn')[1].split('.ends npn13G2')[0]
+ assert 'Valid numbers: NX = 1 - 10' in model and "2.30E-14-(1.50E-15*Nx)" in section
+ assert all(2.30e-14-1.50e-15*x[3]>0 for x in specs.values())
+ save('model-domain-preflight.json',dict(model_sha256=sha(cards[0]),valid_nx=[1,10],devices={n:x[3]for n,x in specs.items()},old_nx16_substrate_cap_f=2.30e-14-1.50e-15*16,accepted=False))
  lines=[l for l in circuit.read_text().splitlines()if l and not l.startswith('*')]
- assert len(lines)==17 and sum(l.lower().startswith('x')for l in lines)==10
+ assert len(lines)==37 and sum(l.lower().startswith('x')for l in lines)==30
  for name,(c,b,e,nx)in specs.items():
   assert f'{name} {c} {b} {e} 0 npn13g2 nx={nx}' in [l.lower()for l in lines]
  protected={str(p):sha(p)for p in [Path(__file__),circuit,engine,Path(runtime.__file__),Path(frozen.__file__),*[p for p in models.rglob('*')if p.is_file()]]}
