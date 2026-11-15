@@ -9,7 +9,7 @@ lib=root/'hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcel
 sha=lambda p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
 original=lib.read_text();derived,changed=adapt(original);model=out/'derived-zero-delay.v';model.write_text(derived)
 cvc=root/'cvc-source/build64/cvc64';records=[]
-r=dict(source_head=os.environ['GITHUB_SHA'],source_sha256=SOURCE_SHA,derived_sha256=sha(model),compiler_sha256=sha(cvc),scope='Exhaustive four-state single-input transitions over every other input combination, with sequentially settled initialization and context pin transitions; original and derived Icarus vs derived CVC. Not arbitrary simultaneous-edge formal proof, timing/SDF or whole-chip acceptance.',native_model_compatible=False,chip_accepted=False,cells=records)
+r=dict(source_head=os.environ['GITHUB_SHA'],source_sha256=SOURCE_SHA,derived_sha256=sha(model),compiler_sha256=sha(cvc),scope='Exhaustive four-state single-input transitions over every other input combination, with sequentially settled initialization and context pin transitions; original and derived Icarus vs derived CVC. Not arbitrary simultaneous-edge formal proof, timing/SDF or whole-chip acceptance.',native_model_compatible=False,chip_accepted=False,cvc_specify_disabled=True,cells=records)
 def save():(out/'result.json').write_text(json.dumps(r,indent=2))
 def run(command,folder,filename,timeout):
  start=time.monotonic()
@@ -35,7 +35,7 @@ def bench(name,body):
  return text,2*num*n*4,inputs,outputs
 def execute(name,kind,src,library,expected):
  folder=out/(name+'-'+kind);folder.mkdir();exe=folder/'sim'
- command=([str(cvc),'-sv','+define+NSSOC_CVC_ZERO_DELAY','-o',str(exe),str(src),'-v',str(library)]if kind.startswith('cvc')else['iverilog','-g2005-sv','-s','cell_probe','-o',str(exe),str(src),str(library)])
+ command=([str(cvc),'-sv','+nospecify','+define+NSSOC_CVC_ZERO_DELAY','-o',str(exe),str(src),'-v',str(library)]if kind.startswith('cvc')else['iverilog','-g2005-sv','-s','cell_probe','-o',str(exe),str(src),str(library)])
  result={'compile':run(command,folder,'compile.log',300)};assert result['compile']['returncode']==0 and exe.is_file(),result
  result['run']=run([str(exe)]if kind.startswith('cvc')else['vvp','-i',str(exe)],folder,'run.log',300)
  log=(folder/'run.log').read_text();assert result['run']['returncode']==0 and 'CELL_TRANSITIONS_COMPLETE'in log
