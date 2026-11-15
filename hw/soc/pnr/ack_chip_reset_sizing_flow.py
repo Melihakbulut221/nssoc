@@ -5,51 +5,39 @@ from corrpre_postcts_flow import ElectricalPostCTS,CORNERS
 from ack_chip_branches_flow import BranchSTA
 ECO = r"""
 set block [ord::get_db_block]
-set before {}
-foreach inst [$block getInsts] {
- set pins {}
- foreach pin [$inst getITerms] {dict set pins [[$pin getMTerm] getName] [$pin getNet]}
- dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
-}
-set choices {
- {$abc$734931$auto$blifparse.cc:397:parse_blif$735962} {sg13g2_inv_1 sg13g2_inv_4}
- {fanout6391} {sg13g2_buf_1 sg13g2_buf_4}
- {fanout4141} {sg13g2_buf_1 sg13g2_buf_4}
-}
-set targets [dict keys $choices]
-if {[llength $targets]!=3} {error "Wrong measured resize census"}
-if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
-foreach name $targets {
- set inst [$block findInst $name]
- if {$inst eq "NULL" || [[$inst getMaster] getName] ne [lindex [dict get $choices $name] 0]} {error "Reset target preflight mismatch $name"}
-}
-set ports_before {}
-foreach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}
-foreach name $targets {
- lassign [dict get $choices $name] old_master new_master
- set inst [$block findInst $name]
- if {$inst eq "NULL" || [[$inst getMaster] getName] ne $old_master} {error "Unexpected measured driver $name"}
- replace_cell $name $new_master
- if {[[$inst getMaster] getName] ne $new_master} {error "Replacement failed"}
-}
-if {[llength [$block getInsts]] != [dict size $before]} {error "Instance census changed"}
-foreach inst [$block getInsts] {
- set name [$inst getName]
- lassign [dict get $before $name] master pins
- if {$name in $targets} {set master [lindex [dict get $choices $name] 1]}
- if {[[$inst getMaster] getName] ne $master} {error "Unexpected master change"}
- foreach pin [$inst getITerms] {
-  if {[$pin getNet] ne [dict get $pins [[$pin getMTerm] getName]]} {error "Incidence changed"}
+source [file join $::env(GITHUB_WORKSPACE) ack-chip-branches probe-pins.tcl]
+set fh [open [file join $::env(GITHUB_WORKSPACE) ack-chip-branches native-driver-probe.tsv] w]
+puts $fh "kind\tpin\tnet\tsignal_type\titerms\tbterms\toutput_drivers\tinput_ports"
+foreach kind {slew unannotated} {
+ if {$kind eq "slew"} {set names $slew_pins} else {set names $unannotated_pins}
+ foreach pin_name $names {
+  set slash [string last / $pin_name]
+  if {$slash<1} {error "Bad pin $pin_name"}
+  set instance_name [string range $pin_name 0 [expr {$slash-1}]]
+  set terminal_name [string range $pin_name [expr {$slash+1}] end]
+  set inst [$block findInst $instance_name]
+  if {$inst eq "NULL"} {error "Missing instance $instance_name"}
+  set pin [$inst findITerm $terminal_name]
+  if {$pin eq "NULL"} {error "Missing pin $pin_name"}
+  set net [$pin getNet]
+  if {$net eq "NULL"} {error "Unconnected pin $pin_name"}
+  set drivers {};set inputs {}
+  foreach term [$net getITerms] {
+   if {[$term getIoType] in {OUTPUT INOUT}} {
+    set di [$term getInst]
+    lappend drivers [list [$di getName] [[$term getMTerm] getName] [[$di getMaster] getName]]
+   }
+  }
+  foreach port [$net getBTerms] {if {[$port getIoType] in {INPUT INOUT}} {lappend inputs [$port getName]}}
+  puts $fh [join [list $kind $pin_name [$net getName] [$net getSigType] [llength [$net getITerms]] [llength [$net getBTerms]] $drivers $inputs] "\t"]
  }
 }
-foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
-detailed_placement
-check_placement -verbose
-puts "NSSOC_QUARANTINE_INVERTER_LOAD_UPSIZED_SAME_INCIDENCE"
+close $fh
+puts "NSSOC_READ_ONLY_NATIVE_DRIVER_PROBE_COMPLETE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size loaded quarantine inverter and two buffers"
+    name = "Read native driver incidence without modifying cells"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()
@@ -63,7 +51,7 @@ class ResetBufferECO(ElectricalPostCTS):
         return str(q)
 @Flow.factory.register()
 class AckChipResetSized(Interfaces):
- Steps=[ResetBufferECO]+[type("Sized"+n,(BranchSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS]
+ Steps=[ResetBufferECO]
 if __name__=="__main__":
  from librelane.__main__ import cli
  cli()

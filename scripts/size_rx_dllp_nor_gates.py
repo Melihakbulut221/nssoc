@@ -39,6 +39,27 @@ try:
  for cell,pin,master in [('$abc$734931$auto$blifparse.cc:397:parse_blif$735962','Y','sg13g2_inv_1'),('fanout6391','X','sg13g2_buf_1'),('fanout4141','X','sg13g2_buf_1')]:
   assert cell+'/'+pin+' ('+master+')' in first
  r['critical_path_report_sha256']=report['outputs'][member]
+ check_member='run/2-nssoc-sizedslow/checks.rpt'
+ checks=safe.read(check_member)
+ assert hashlib.sha256(checks).hexdigest()==report['outputs'][check_member]
+ text=checks.decode()
+ slew=text.split('\nmax slew\n')[1].split('\nmax fanout\n')[0]
+ pins=[line.split()[0] for line in slew.splitlines() if '(VIOLATED)' in line]
+ assert len(pins)==36 and len(set(pins))==36
+ m=re.search(r'Found (\d+) unannotated drivers\.',text);assert m and int(m[1])==1285
+ rest=text[m.end():].splitlines();unannotated=[]
+ for line in rest:
+  if not line.strip():
+   if unannotated:break
+   continue
+  if len(line.split())!=1:break
+  unannotated.append(line.strip())
+ assert len(unannotated)==1285 and len(set(unannotated))==1285
+ assert all(not any(c in pin for c in '{}\n\r') for pin in pins+unannotated)
+ (OUT/'probe-pins.json').write_text(json.dumps({'slew':pins,'unannotated':unannotated}))
+ (OUT/'probe-pins.tcl').write_text('set slew_pins {'+' '.join('{'+p+'}' for p in pins)+'}\nset unannotated_pins {'+' '.join('{'+p+'}' for p in unannotated)+'}\n')
+ r['probe_checks_sha256']=report['outputs'][check_member]
+
  safe.close();native.close()
  r['source_archives']=[dict(id=14176744096,sha256='687b1a284e7cbd6e0d3924a402754bc2224b7b8af8ccdb35c2a613c3eb6a80de'),dict(id=14176139147,sha256='d6ea40ac2e7a3fa4d3b9eec6f069ff9d8525b67bdb54509a42daa86cfc3f797b')]
  r['removed_verified_download_copies']=[]
@@ -64,10 +85,12 @@ try:
  with(OUT/"native.log").open("w")as log:code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
  r["returncode"]=code;assert code==0
  assert all(prior.sha(Path(p))==h for p,h in protected.items())
- final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
- r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
- assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="QUARANTINE_INVERTER_LOAD_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source3972: ABC735962 inv1to4 and fanout6391/4141 buf1to4; all prior ECOs and hold delays preserved. Requires fresh allcorner timing and electrical comparison. No routed or fullPHY acceptance.")
+ final=json.loads((OUT/"run/1-nssoc-resetbuffereco/state_out.json").read_text())
+ r.update(candidate_state="run/1-nssoc-resetbuffereco/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
+ assert (OUT/"native-driver-probe.tsv").is_file()
+ r["native_driver_probe_sha256"]=prior.sha(OUT/"native-driver-probe.tsv")
+ r["timing_remeasured"]=False
+ r.update(status="READ_ONLY_NATIVE_DRIVER_PROBE_NOT_SIGNOFF",sources_unchanged=True,scope="Read-only native ODB pin/net incidence probe for 36 SRAM slew pins and 1285 unannotated drivers. No resize or placement operation; no timing closure or fullPHY claim.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
