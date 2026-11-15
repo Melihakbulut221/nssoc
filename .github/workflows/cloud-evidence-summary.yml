@@ -1,4 +1,4 @@
-name: Extract fresh select650 native metal and via RC
+name: Read actual modified650 gate access geometry
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   binding:
     runs-on: ubuntu-22.04
-    timeout-minutes: 180
+    timeout-minutes: 45
     env:
       GH_TOKEN: ${{ github.token }}
       PYTHONDONTWRITEBYTECODE: '1'
@@ -19,17 +19,11 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 klayout==0.30.4.post1
-      - run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends tcl8.6 tk8.6 libx11-6 libxext6 libxrender1 libxt6 libcairo2
-          python3 -m pip install --disable-pip-version-check --no-cache-dir networkx==3.5
-      - run: python3 -B scripts/extract_select650_metal_rc.py
+      - run: python3 -B scripts/read_select650_gate_access.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: select650-metal-rc-${{ github.run_id }}
-          path: |
-            select650-metal-rc/derived/
-            select650-metal-rc/native/wire-stage/wire/
+          name: select650-gate-access-${{ github.run_id }}
+          path: select650-gate-access/
           if-no-files-found: error
           retention-days: 90
