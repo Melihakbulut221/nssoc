@@ -138,14 +138,13 @@ def test_module_boundaries_comments_and_duplicate_variants():
     assert len(modules["live"]) == 2
 
 
-def test_register_file_external_entry_contract():
-    # Clean-clone inventory has no fetched Ibex. Its selected replacement is
-    # an explicit external entry, not an invented soc_top instantiation.
+def test_register_file_external_entry_contract(prepared_sources):
+    # Verify the authenticated prepared Ibex used by whole-SoC elaboration,
+    # including clean checkouts without a separately generated local tree.
     source = (ROOT / "hw/soc/flow/ibex_sources.sh").read_text()
     assert 'echo "$soc_dir/rtl/ibex_regfile_secded.v"' in source
-    generated = ROOT / "hw/soc/gen/ibex_top.v"
-    if not generated.exists():
-        pytest.skip("generated Ibex absent; elaborate the prepared SoC to verify this boundary")
+    generated = prepared_sources / "gen/ibex_top.v"
+    assert generated.is_file(), "authenticated prepared Ibex top is required"
     modules = _modules([(generated, generated.read_text())])
     assert "ibex_register_file_ff" in _instantiations(
         modules["ibex_top"][0][1], {"ibex_register_file_ff"})
