@@ -1,4 +1,4 @@
-name: Map dominant postCTS setup sources into exact mapped RTL
+name: Map current chip fetch and exception signals for boot diagnosis
 on:
   workflow_dispatch:
 permissions:
@@ -19,15 +19,15 @@ jobs:
           filter: blob:none
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /scripts/map_current_critical_sources.py
+            /scripts/map_current_boot_signals.py
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 -B scripts/map_current_critical_sources.py
+      - run: python3 -B scripts/map_current_boot_signals.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: critical-source-map-${{ github.run_id }}
-          path: critical-source-map/
+          name: boot-signal-map-${{ github.run_id }}
+          path: boot-signal-map/
           if-no-files-found: error
           retention-days: 90
