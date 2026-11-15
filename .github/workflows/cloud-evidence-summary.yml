@@ -1,13 +1,13 @@
-name: Fresh three-corner STA and repair on exact RX local lane next-state mainchip CTS
+name: Measured reset and data loaded-driver sizing trial
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  candidate:
+  measure:
     runs-on: ubuntu-22.04
-    timeout-minutes: 355
+    timeout-minutes: 60
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -18,46 +18,38 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Restore exact newly mapped candidate without inherited boot acceptance
-        run: |
-          set -euo pipefail
-          python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/cloud_predecode_postcts.py
-      - name: Prepare pinned native physical runtime
+      - name: Prepare pinned runtime
         run: |
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native before and after STA with electrical and setup hold repair
-        run: python3 scripts/cloud_predecode_postcts.py
-      - name: Collect derived diagnostics
+      - name: Exact current candidate loaded-driver replacement and global STA
+        run: python3 scripts/run_loaded_driver_trial.py
+      - name: Collect derived reports
         if: always()
         run: |
-          python3 - <<'PYCODE'
-          import pathlib,shutil
-          root=pathlib.Path('hw/soc/out/cloud-predecode-postcts');out=pathlib.Path('placement-derived');out.mkdir()
-          if root.exists():
-            for name in ['result.json','native.log']:
-              p=root/name
-              if p.is_file():
-                q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
-            for p in (root/'run').rglob('*'):
-              if p.is_file() and (p.suffix=='.rpt' or p.name in ('state_out.json','or_metrics_out.json','config.json')):
-                q=out/p.relative_to(root);q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
-          PYCODE
+          python3 - <<'PY'
+          from pathlib import Path
+          import shutil
+          root=Path("loaded-driver-trial");out=Path("loaded-driver-derived")
+          for p in root.rglob("*"):
+              rel=p.relative_to(root)
+              if p.is_file() and (str(rel) in ("result.json","native.log") or (rel.parts[0]=="run" and p.suffix in (".rpt",".json"))):
+                  q=out/rel;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
+          PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-local-lane-chip-postcts-derived-${{ github.run_id }}
-          path: placement-derived/
+          name: rx-lane-loaded-driver-derived-${{ github.run_id }}
+          path: loaded-driver-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: rx-local-lane-chip-postcts-native-${{ github.run_id }}
-          path: hw/soc/out/cloud-predecode-postcts/
+          name: rx-lane-loaded-driver-native-${{ github.run_id }}
+          path: loaded-driver-trial/run/
           if-no-files-found: warn
           retention-days: 90
