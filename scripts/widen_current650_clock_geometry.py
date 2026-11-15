@@ -69,6 +69,9 @@ for ca,sa in owned.items():
   if ca<cb:
    for m in metals:assert (sa[m]&sb[m]).is_empty(),('Net ownership conflict',ca,cb,m)
 original={str(l.get_info(li)):kdb.Region(T.begin_shapes_rec(li)).merged()for li in l.layer_indexes()}
+original_bbox=T.bbox()
+assert original_bbox.left==0 and original_bbox.bottom==0
+macro_extent=kdb.Region(original_bbox)
 additions={};proof=[]
 # Candidate clearances; native full DRC must confirm all actual foundry rules.
 for m,growth,clearance in [(30,300,600),(50,600,600),(67,600,600),(126,2000,2000),(134,3000,3000)]:
@@ -80,6 +83,8 @@ for m,growth,clearance in [(30,300,600),(50,600,600),(67,600,600),(126,2000,2000
   for v in adjacent:vias+=reg(v)
   foreign=vias-vias.interacting(own)
   patch=(own.sized(growth)-own-other.sized(clearance)-foreign.sized(clearance)-total.sized(clearance)).merged()
+  patch=(patch&macro_extent).merged()
+  assert (patch-macro_extent).is_empty()
   expanded=(own+patch).merged()
   assert (own-expanded).is_empty()
   assert (patch&other.sized(clearance-1)).is_empty()
@@ -89,13 +94,15 @@ for m,growth,clearance in [(30,300,600),(50,600,600),(67,600,600),(126,2000,2000
  if not total.is_empty():additions[m]=total
 assert additions,'No actual geometry change'
 for m,patch in additions.items():T.shapes(l.layer(m,0)).insert(patch)
+assert T.bbox()==original_bbox, 'Clock additions changed macro boundary'
 Path('native').mkdir();opts=kdb.SaveLayoutOptions();opts.select_cell(T.cell_index());l.write('native/candidate.gds',opts)
 check=kdb.Layout();check.read('native/candidate.gds');assert len(check.top_cells())==1
+assert check.top_cell().bbox()==original_bbox, 'Serialized macro boundary changed'
 actual={str(check.get_info(li)):kdb.Region(check.top_cell().begin_shapes_rec(li)).merged()for li in check.layer_indexes()}
 expected=dict(original)
 for m,patch in additions.items():expected[str(m)+'/0']=(expected[str(m)+'/0']+patch).merged()
 assert set(actual)==set(expected) and all((actual[k]^expected[k]).is_empty()for k in expected)
 assert all((original[k]-actual[k]).is_empty()for k in original)
-payload=dict(source_gds_sha256=hashlib.sha256(b).hexdigest(),candidate_gds_sha256=hashlib.sha256(Path('native/candidate.gds').read_bytes()).hexdigest(),accepted=False,status='CLOCK_METAL_CANDIDATE_REQUIRES_DRC_LVS_FRESH_RC_ELECTRICAL',added_layers=sorted(additions),components=proof,original_top_hierarchy_and_labels_retained=True,all_original_geometry_retained=True,serialized_region_equality_checked=True,scope='Actual via-connected CP/CN clock conductor M3 and upper-metal widening; no numerical RC scaling, device resizing or acceptance claim.')
+payload=dict(source_gds_sha256=hashlib.sha256(b).hexdigest(),candidate_gds_sha256=hashlib.sha256(Path('native/candidate.gds').read_bytes()).hexdigest(),accepted=False,status='CLOCK_METAL_CANDIDATE_REQUIRES_DRC_LVS_FRESH_RC_ELECTRICAL',added_layers=sorted(additions),components=proof,original_top_hierarchy_and_labels_retained=True,all_original_geometry_retained=True,serialized_region_equality_checked=True,macro_boundary_unchanged=True,source_bbox_dbu=[original_bbox.left,original_bbox.bottom,original_bbox.right,original_bbox.top],scope='Actual via-connected CP/CN clock conductor M3 and upper-metal widening; no numerical RC scaling, device resizing or acceptance claim.')
 Path('out/clock-metal-widening-proof.json').write_text(json.dumps(payload,indent=2))
 print('CANDIDATE',payload['candidate_gds_sha256'],'LAYERS',payload['added_layers'],flush=True)
