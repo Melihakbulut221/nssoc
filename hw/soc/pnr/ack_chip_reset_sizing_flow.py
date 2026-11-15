@@ -12,11 +12,10 @@ foreach inst [$block getInsts] {
  dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
 }
 set choices {
- {$abc$734931$auto$blifparse.cc:397:parse_blif$738674} {sg13g2_nor4_1 sg13g2_nor4_2}
- {fanout10862} {sg13g2_buf_2 sg13g2_buf_4}
+ {$abc$734931$auto$blifparse.cc:397:parse_blif$735945} {sg13g2_nor4_1 sg13g2_nor4_2}
 }
 set targets [dict keys $choices]
-if {[llength $targets]!=2} {error "Wrong measured resize census"}
+if {[llength $targets]!=1} {error "Wrong measured resize census"}
 if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
 foreach name $targets {
  set inst [$block findInst $name]
@@ -48,7 +47,7 @@ puts "NSSOC_SHARED_PCIE_DRIVERS_SAME_INCIDENCE"
 """
 class ResetBufferECO(ElectricalPostCTS):
     id = "NSSOC.ResetBufferECO"
-    name = "Size two shared violating PCIe drivers"
+    name = "Size critical PCIe length-control NOR4"
     def get_script_path(self):
         p = Path(super().get_script_path())
         s = p.read_text()

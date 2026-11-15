@@ -7,18 +7,18 @@ def save():(OUT/"result.json").write_text(json.dumps(r,indent=2)+"\n")
 try:
  assert os.environ["GITHUB_ACTIONS"]=="true"
  prior.OUT=OUT/"restore";prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api("actions/runs/43762042340");assert run["head_sha"]=="d81e6024d1fd96fb2a3e9f3137cb8e33747ce303"and run["conclusion"]=="success"and run["run_attempt"]==1
+ run=prior.api("actions/runs/43763323946");assert run["head_sha"]=="14f6b3b6a6df8f75bc89a4fd2688e3ef2da4846f"and run["conclusion"]=="success"and run["run_attempt"]==1
  def archive(aid,digest,label):
   m=prior.api("actions/artifacts/"+str(aid));assert m["workflow_run"]["id"]==run["id"]and m["workflow_run"]["head_sha"]==run["head_sha"]and m["digest"]=="sha256:"+digest and not m["expired"]
   p=OUT/(label+".zip")
   with p.open("xb")as dest:subprocess.run(["gh","api",prior.REPO+"actions/artifacts/"+str(aid)+"/zip"],stdout=dest,check=True)
   assert prior.sha(p)==digest
   return zipfile.ZipFile(p)
- safe=archive(14180908188,"8fc7988778b812ec0b7c1b7bf3c51be66427becbc38d2293355454b69d7e7ed1","derived")
- native=archive(14181291310,"7f51e69826d583eb5377c404eed5a7af5059be98307986aa5bfb24807d8a2c3c","native")
+ safe=archive(14180659232,"fd77a908e34c89f670dc8ca16733119dd58db4a7b32ec9002ac114d3ed86d97e","derived")
+ native=archive(14181331903,"1992ae786f9f067c6330f3df67bcfb1b23e3f5aa53a06e8913e4ce9392e41e3f","native")
  report=json.loads(safe.read("result.json"));assert report["sources_unchanged"]and report["returncode"]==0 and not report["accepted"]
- assert report["source_run"]==43761093479
- assert report["candidate_odb_sha256"]=="de99d611cf4769ad9799bc5d44f2c47de59a2e6156730c1ec5e0eca473c606d2"
+ assert report["source_run"]==43762042340
+ assert report["candidate_odb_sha256"]=="602e7379b025853f4b074a9b13089603a582cc9addeb63d8262a7976c64803a4"
  source=ROOT/"ack-reset-source";source.mkdir()
  assert len(native.namelist())==len(set(native.namelist()))
  assert {n for n in native.namelist()if not n.endswith("/")}==set(report["outputs"])|{"result.json"}
@@ -34,7 +34,7 @@ try:
  member='run/2-nssoc-sizedslow/max.rpt';data=safe.read(member)
  assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
  violated=[p for p in data.decode().split('Startpoint:')[1:] if 'slack (VIOLATED)' in p and '/Q (' in p.split('data arrival time')[0]]
- selected=[('$abc$734931$auto$blifparse.cc:397:parse_blif$738674', 'Y', 'sg13g2_nor4_1', 235), ('fanout10862', 'X', 'sg13g2_buf_2', 145)]
+ selected=[('$abc$734931$auto$blifparse.cc:397:parse_blif$735945', 'Y', 'sg13g2_nor4_1', 39)]
  census=[]
  for cell,pin,master,expected in selected:
   count=sum(cell+'/'+pin+' ('+master+')' in p.split('data arrival time')[0].split('/Q (',1)[1] for p in violated)
@@ -43,7 +43,7 @@ try:
  r['critical_path_report_sha256']=report['outputs'][member]
  r['shared_driver_census']=census
  safe.close();native.close()
- r['source_archives']=[dict(id=14180908188,sha256='8fc7988778b812ec0b7c1b7bf3c51be66427becbc38d2293355454b69d7e7ed1'),dict(id=14181291310,sha256='7f51e69826d583eb5377c404eed5a7af5059be98307986aa5bfb24807d8a2c3c')]
+ r['source_archives']=[dict(id=14180659232,sha256='fd77a908e34c89f670dc8ca16733119dd58db4a7b32ec9002ac114d3ed86d97e'),dict(id=14181331903,sha256='1992ae786f9f067c6330f3df67bcfb1b23e3f5aa53a06e8913e4ce9392e41e3f')]
  r['removed_verified_download_copies']=[]
  for name in ['derived.zip','native.zip']:
   path=OUT/name;assert path.is_file() and not path.is_symlink()
@@ -70,7 +70,7 @@ try:
  final=json.loads((OUT/"run/4-nssoc-sizedfast/state_out.json").read_text())
  r.update(candidate_state="run/4-nssoc-sizedfast/state_out.json",candidate_odb_sha256=prior.sha(Path(final["odb"])),measurements=final["metrics"])
  assert r["candidate_odb_sha256"]!=r["source_odb_sha256"]
- r.update(status="SHARED_PCIE_DRIVER_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Sourcede99 retains23SRAMbuffers, six SRAM resizes, reset recovery and worst PCIe NOR4 fixes. Only shared NOR738674 size1to2 and fanout10862 buf2to4; exact old masters and all original incidence preserved. These are now combined with the shared driver pair. Three corner STA required, not final routed signoff.")
+ r.update(status="SHARED_PCIE_DRIVER_TRIAL_NOT_ACCEPTED",sources_unchanged=True,scope="Source602e retains all combined SRAM/reset/shared-driver fixes. Only critical length-control NOR735945 size1to2. Exact graph/master guards and all three corners, not routed signoff.")
 except BaseException as e:r.update(status="FAIL_OR_ERROR",error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r["outputs"]={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob("*")if p.is_file()and p.name!="result.json"};save()
