@@ -9,7 +9,16 @@ assert d['source_head']==r['head_sha'] and d['sources_unchanged'] and d['returnc
 for n in z.namelist():
  if n!='result.json':assert hashlib.sha256(z.read(n)).hexdigest()==d['outputs'][n],n
 out=pathlib.Path('diagnosis');out.mkdir();summary={k:v for k,v in d.items()if k!='outputs'};summary['source_artifact']=m['id'];summary['source_archive_sha256']=h;summary['result_sha256']=hashlib.sha256(z.read('result.json')).hexdigest();summary['paths']={}
+targets=['$auto$ff.cc:337:slice$183526','$auto$ff.cc:337:slice$172492','$auto$ff.cc:337:slice$172502','eth_txd_o[5]','eth_txd_o[2]','pcie_initialized_o']
+summary['paired_paths']={};summary['scope']='Diagnostic path pairing only. Not a promise that arbitrary inserted delay is feasible across corners.'
 for n in z.namelist():
- if n.endswith(('/max.rpt','/min.rpt')):
-  t=z.read(n).decode();paths=[s for s in re.split(r'(?=Startpoint:)',t)if s.startswith('Startpoint:')];summary['paths'][n]=paths[:2]
-(out/'result.json').write_text(json.dumps(summary,indent=2));print(json.dumps({k:v for k,v in summary.items()if k not in ['paths','source_before']}))
+ if not n.endswith(('/max.rpt','/min.rpt')):continue
+ paths=[s for s in re.split(r'(?=Startpoint:)',z.read(n).decode())if s.startswith('Startpoint:')]
+ rows=[]
+ for target in targets:
+  found=[v for v in paths if re.search(r'^Endpoint: '+re.escape(target)+r'(?:\s|$)',v,re.M)]
+  for v in found:
+   slack=re.search(r'([-+0-9.]+)\s+slack \((?:MET|VIOLATED)\)',v);assert slack
+   rows.append({'endpoint':target,'startpoint':v.splitlines()[0],'slack_ns':float(slack[1]),'path':v})
+ summary['paired_paths'][n]=rows
+(out/'result.json').write_text(json.dumps(summary,indent=2));print(json.dumps({k:[{a:b for a,b in row.items()if a!='path'}for row in v]for k,v in summary['paired_paths'].items()}))

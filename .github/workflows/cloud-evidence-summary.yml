@@ -1,4 +1,4 @@
-name: Inspect authenticated three driver sizing result
+name: Pair residual hold endpoints with actual setup paths
 on:
   workflow_dispatch:
 permissions:
@@ -17,7 +17,7 @@ jobs:
       - run: python3 scripts/summarize_driver_trial.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: driver-trial-summary-${{ github.run_id }}
+          name: hold-setup-pairs-${{ github.run_id }}
           path: diagnosis/
           if-no-files-found: error
           retention-days: 90
