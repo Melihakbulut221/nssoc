@@ -1,3 +1,9 @@
+## Two late feedback ECO targeted checks PASS; global impact pending — 2026-11-15
+
+ECO43656972871/head83c740023a5b95f390c0d3923a6c5cafd398fbb0 produced all1578reports; everyreporthash independentlyverified and all>=50ps. Originalplacement/statuses/incidencepreserved,4nativeidentitydelays added on2laterfeedbackbranches. CandidateODB1af420bd624b8448914f643aaa5a32589220bce31f87c7eb939b14a183c1a67d. Native14138618413 SHA76ac393d782d6a18705c3d0061684facacba82502b7f6cea2d9ed45f3a8533c9; safe14139131529 SHA20f6d222cbf7f513c6abe2a41930805ca04552d2eee2c705fdda43ae914f1902. Receipt rx-late-feedback-hold-eco-20261115.json. TargetedPASS only; do notassertglobalholdcountyet.
+
+Impact43657092967 stillnoartifactatlastcheck; wait actualcomparison againstbcc33...baseline. Thirdbranchmeasurement43657463628 stilllive,noartifact. Afterbothready, ifthirdbranchsetupmarginallows, useexactnew1af420...ODB fornextselectiveECO then remeasurealltargets andglobal; confirm noimpactregressionfirst. FullPHYloaded43657193496/newbankpostCTS43656292239 stillpending.
+
 ## Third residual hold identified; exact-branch setup measurement dispatched — 2026-11-15
 
 Census43657314385/head4717859f79270dbdd22a1307003a310219f703d6 SUCCESS on codex/rx-three-residual-hold-census. Derived14138996569 SHA707333dec883f46332e1dcc6ee8c8731462e1e9d5d1dd25a9b6bbcfae8bb7e58 reads exact107repairODBbcc33... . Threefastnegativeendpoints:FF160423 -.020237ns andFF160725 -.012739ns (currentlatefeedbackECOtargets), plusFF162884 fromFF165926 -.001584ns. Thirdpath:165926/Q ->778838/B2(a22oi)->778838/Y ->778840/A2(o21ai)->778840/Y ->162884/D. Endpointslowsetup-2.765825ns, so blanketDdelayunsafe; measureactualshortbranch.
