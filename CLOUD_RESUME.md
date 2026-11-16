@@ -1,3 +1,14 @@
+## Upstream SRAM LVS recheck: relevant PR still does not correct width
+
+Live API review2026-11-16: IHP-GmbH/IHP-Open-PDK issue239 open(updated2026-10-27); PR1121 open/unmerged(updated2026-11-02), head3df647ebe53439ae41d56a1e9c2b38003ba2124d on sergeiandreyev/IHP-Open-PDK. Read actualcomments and fullPRfilelist/targetedpatches, notonlytitle. Clarification: PR1121 IS relevant to SRAM and modifiesmanyCDLs, not an unrelated device-onlyPR. Maintainer explicitlyacknowledges wrongmetaltype andwidthmismatches in BITKIT and2P COLCTRL2:
+https://github.com/IHP-GmbH/IHP-Open-PDK/pull/1121#issuecomment-6448497832
+Issue239 links thatacknowledgment:
+https://github.com/IHP-GmbH/IHP-Open-PDK/issues/239#issuecomment-6448649181
+
+AtcurrentPRhead, BOTH actualmainchipmacroCDLs RM_IHPSG13_1P_2048x64_c2_bm_bist.cdl and RM_IHPSG13_2P_256x16_c2_bm_bist.cdl stillretain w=2.6e-07,l=6e-07 onBITKIT lvsres declarations. Changesadd layer=Metal2/Metal3 (andMetal1 elsewhere), not widthcorrection. RulechangesenableRES2 W/Lcomparison andhandlelvsres layer/missinglayer. ThereforethisPR isrelevant butcannotbeclaimed toresolveknown0.20vs0.26umgeometry/CDL mismatch. PR merge_commit_sha whilemerged=false isNOTproof ofmerger. Do not blindlyupgradethepinnedPDK, waive dimensions or callblackboxLVS fullproductionLVS. Currentexternalissue/PRstatesalone areNOT freshnativeLVS measurements; existingphysical mismatchevidence stillrequiresactualcorrectedviewsandfullchiprerun.
+
+No thirdpartycomment/message sent. Mainsetup/PHY/globalrouting jobs leftundisturbed. FullproductgoalOPEN.
+
 ## Fresh EOP global routing dispatched from authenticated second continuation
 
 43793553628/fc1b53d5641b2ca885ac3fac661984c366352e06 on codex/eop-second-fresh-global, base dc057ddb. Replays two qualified bounded continuations and their original first-baseline gate; appends independent SizedSlow/Typical/Fast reports then NSSOC.ValidatedGlobalRouting. Global-stage preflight authenticates43791735845/head/attempt1 and14193400320 SHA6b1283de222e8621f0f06380d4c0beb9f4121decd79399a510bc417c62d2aba2, reproduces EVERY secondbaseline metric before invoking original BankedGlobalRouting(GuardedPropagated,OpenROAD.GlobalRouting). Original clock/derate/I/O unchanged. No detailedrouting launched, no postGRT repair yet. This progresses physical connectivity while third placementsetup continuation runs separately; unresolvedslowsetup remainsfailure, not waived.
