@@ -8,6 +8,11 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: deeper clock-tree counterexample prevents model promotion
+
+Expanded qualification43801732196 /9abe18746e8f6ece5ccc74d9c22f14ca31391a97 FAILED as designed on disagreement. Artifact14196806624 SHA5dab6cb3f41ec9709ef519aa3bd7ca73ef0eb40f40e70c9b71c1b085995f08e4 verified. Bench8e5b62400f794ade923d086cd52afe780777fe264ef6c16ae7ad15f9f6f95ef0 adds0..16clock buffers with inverter data path. Original Icarus and macro-disabled derived Icarus EACH495ideal mismatches/513rows. NBA-enabled Icarus and ALL4CVCmodes EACH0ideal mismatches but495differences versus original library. Native zero-delay composition itself races across deeper clock paths. DO NOT call NBA model native-equivalent or promote prior short test as complete. All16single-pin four-state cell tests now additionally include macro-ENABLED Icarus, passed374784reference rows/negative control. SDF/physical timing remains entirely separate.
+New independent SRAM-to-standard-cell composition probes created in codex/native-sram-cell-composition. Base9abe; commit947d3bff9edc87b57026d113f8510130bf5123d5 run43801990632 will likely stop at known composition gate. Followupb06394ece2f3d203fa451cf3ce5be6f6f8df6fb4 run43802053716 runs SRAM probe even if previous clock gate rejects (overall job still fails; NOTcontinue-on-error). Untouched native1PSRAM,12289transactions, independentbitwise scoreboard, directRTL plus64bitFFbanks on0..8bufferedclocks, nativeIcarus/derived-enabledIcarus/CVC andaddress-XORmutants. Inspect SRAM-specificresult separately. No wholechip boot launched on NBA model; no originalfirmware/reset/MBIST changes.
+
 ## 2026-11-16: fourth timing repair, simulator counterexample and experimental fix
 
 Cloud-only; write permission reverified. No production closure claimed.
