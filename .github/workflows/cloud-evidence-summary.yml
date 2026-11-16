@@ -1,4 +1,4 @@
-name: Ninth direct bounded EOP repair with authenticated intermediate baselines
+name: Tenth direct bounded EOP repair with authenticated intermediate baselines
 on:
   workflow_dispatch:
 permissions:
@@ -37,7 +37,7 @@ jobs:
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('eop-ninth-direct');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('eop-tenth-direct');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,27 +50,27 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-ninth-direct-incremental-repair-derived-${{ github.run_id }}
+          name: eop-tenth-direct-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-ninth-direct-incremental-repair-native-${{ github.run_id }}
+          name: eop-tenth-direct-incremental-repair-native-${{ github.run_id }}
           path: |
-            eop-ninth-direct/run/
-            eop-ninth-direct/result.json
-            eop-ninth-direct/native.log
-            eop-ninth-direct/config.json
-            eop-ninth-direct/initial.json
+            eop-tenth-direct/run/
+            eop-tenth-direct/result.json
+            eop-tenth-direct/native.log
+            eop-tenth-direct/config.json
+            eop-tenth-direct/initial.json
           if-no-files-found: error
           retention-days: 90
       - name: Publish compact authenticated measurements without large report download
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-ninth-direct-summary-${{ github.run_id }}
-          path: eop-ninth-direct/result.json
+          name: eop-tenth-direct-summary-${{ github.run_id }}
+          path: eop-tenth-direct/result.json
           retention-days: 90
           if-no-files-found: error
