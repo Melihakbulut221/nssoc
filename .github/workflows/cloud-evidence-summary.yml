@@ -1,4 +1,4 @@
-name: Measure 143 slow-path buffer replacements from exact eleventh database
+name: Bounded timing repair from verified 143-buffer candidate
 on:
   workflow_dispatch:
 permissions:
@@ -30,14 +30,14 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native three-corner STA before and after measured buffer batch
+      - name: Native three-corner STA and setup hold repair after measured buffer batch
         run: python3 scripts/run_eop_fifth_direct.py
       - name: Collect derived diagnostics
         if: always()
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('measured-buffer-batch');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('after-buffer-batch');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,27 +50,27 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: measured-buffer-batch-incremental-repair-derived-${{ github.run_id }}
+          name: after-buffer-batch-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: measured-buffer-batch-incremental-repair-native-${{ github.run_id }}
+          name: after-buffer-batch-incremental-repair-native-${{ github.run_id }}
           path: |
-            measured-buffer-batch/run/
-            measured-buffer-batch/result.json
-            measured-buffer-batch/native.log
-            measured-buffer-batch/config.json
-            measured-buffer-batch/initial.json
+            after-buffer-batch/run/
+            after-buffer-batch/result.json
+            after-buffer-batch/native.log
+            after-buffer-batch/config.json
+            after-buffer-batch/initial.json
           if-no-files-found: error
           retention-days: 90
       - name: Publish compact authenticated measurements without large report download
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: measured-buffer-batch-summary-${{ github.run_id }}
-          path: measured-buffer-batch/result.json
+          name: after-buffer-batch-summary-${{ github.run_id }}
+          path: after-buffer-batch/result.json
           retention-days: 90
           if-no-files-found: error
