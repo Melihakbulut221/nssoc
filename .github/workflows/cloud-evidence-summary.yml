@@ -1,4 +1,4 @@
-name: Build qualified ACK delta prefix full mainchip candidate
+name: Recover qualified ACK delta mapping without repeating completed synthesis
 on:
   workflow_dispatch:
 permissions:
@@ -70,8 +70,8 @@ jobs:
           python3 -m pytest -q sw/tests/test_logic_boot_gl.py sw/tests/test_native_boot_preparation.py
       - name: Replay positive and semantic mutation regressions before whole-chip synthesis
         run: python3 scripts/qualify_replay_crc_select.py
-      - name: Fresh firmware RTL boot and complete chip synthesis with twenty SRAMs
-        run: bash scripts/prepare_predecode_mainchip.sh
+      - name: Authenticate completed RTL boot and synthesis then validate actual mapping
+        run: python3 scripts/recover_ack_delta_mapping.py
       - name: Preserve native source even on failed measurement
         if: always()
         run: |
@@ -82,14 +82,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-delta-mainchip-source-native-${{ github.run_id }}
+          name: ack-delta-recovered-source-native-${{ github.run_id }}
           path: native/build.tgz
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-delta-mainchip-mapping-${{ github.run_id }}
+          name: ack-delta-recovered-mapping-${{ github.run_id }}
           path: |
             out/mapping.json
             out/eop-flags-qualification.json

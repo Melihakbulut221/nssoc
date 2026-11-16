@@ -9,7 +9,12 @@ def sha(p):
 assert os.environ['SOC_PCIE_REPLAY_WRITE_PREDECODE']=='1'
 ys=(syn/'soc_top_syn.ys').read_text();assert '-DSOC_PCIE_REPLAY_WRITE_PREDECODE' in ys
 assert os.environ['SOC_PCIE_REPLAY_EOP_CACHE']=='1' and '-DSOC_PCIE_REPLAY_EOP_CACHE' in ys
-assert sha('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')=='f5634cd4692abde4aa576aa11e392c4ef5c2787a35962aeec0ac444340ec4c7a'
+assert sha('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')=='0833d4a4126272253fd0cd35e7eca118c163c435a803ef32930f61f16948f554'
+ack_delta=json.loads(P('out/ack-delta-qualification-gate.json').read_text())
+assert ack_delta['current_source_sha256']==sha('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')
+assert ack_delta['run']==43808667103 and ack_delta['source']=='31a9b7349474229b511f101acb5249655e6ce9f2'
+assert ack_delta['artifact']==14199990698 and ack_delta['archive_sha256']=='cc42d9aa8bb9773ff69f6ca4c3ec0c75b3f87caf37f63312f489087b94b1ddbe'
+assert ack_delta['qualification']['status']=='PASS_ACK_DELTA_ARITHMETIC_AND_SIX_REPLAY_TRAFFIC_CASES'
 assert os.environ['SOC_PCIE_ACK_STALE_PREFIX']=='1' and '-DSOC_PCIE_ACK_STALE_PREFIX' in ys
 assert json.loads(P('out/ack-prefix-qualification-gate.json').read_text())['current_source_sha256']==sha('hw/soc/rtl/pcie/soc_pcie_replay_tx.v')
 m=json.loads((syn/'soc_top.mapped.json').read_text())['modules']['soc_top']
@@ -98,6 +103,8 @@ assert all(len(v)==1 and v[0]['type'].startswith('sg13g2_') and v[0]['port']=='Q
 counts=collections.Counter(c['type'] for c in m['cells'].values());macros={k:v for k,v in counts.items() if k.startswith('RM_IHPSG13')}
 assert sum(macros.values())==20 and macros.get('RM_IHPSG13_2P_256x16_c2_bm_bist')==16,macros
 result={'status':'MAPPED_ACK_PREFIX_RX_CURSOR_CRC_SELECT_EOP_CHIP_REQUIRES_GATE_BOOT_AND_PHYSICAL_IMPLEMENTATION','accepted':False,'source_head':os.environ['GITHUB_SHA'],'selected_widths':widths,'registered_bit_count':len(qdrivers),'cached_eop_register':cached,'lowered_eop_origins':sorted(origins),'ack_stale_prefix_enabled':True,'rx_dllp_last_compare_enabled':True,'crc_select_enabled':True,'rx_cursor_local_reset_enabled':True,'rx_local_lane_next_enabled':True,'macros':macros,'cells':sum(counts.values()),'mapped_boot_passed':False,'final_timing_complete':False,'full_phy_accepted':False,'configuration':{k:v for k,v in os.environ.items() if k.startswith(('SOC_','IBEX_','NATIVE_'))},'inputs':{p:sha(p) for p in ['hw/soc/rtl/pcie/soc_pcie_rx_credit.v','hw/soc/rtl/pcie/soc_pcie_replay_tx.v','hw/soc/flow/syn_soc_top.sh','hw/soc/flow/sim_soc.sh','scripts/prepare_predecode_mainchip.sh']},'outputs':{str(p.relative_to(out)):sha(p) for p in out.rglob('*') if p.is_file()}}
+result['ack_delta_qualification']=ack_delta
+result['ack_delta_group_prefix_enabled']=True
 result['rx_eop_registers']=rxeop
 result['rx_eop_origins']=sorted(rxorigins)
 result['eop_qualification']=json.loads(P('out/eop-flags-qualification.json').read_text())
