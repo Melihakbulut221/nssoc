@@ -29,7 +29,8 @@ try:
   dest=source/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
  member='run/6-nssoc-corrprebankedafterslow/max.rpt';data=safe.read(member);assert hashlib.sha256(data).hexdigest()==report['outputs'][member]
  first=data.decode().split('Startpoint:')[1].split('data arrival time')[0].split('/Q (',1)[1]
- targets=[('fanout9730', 'sg13g2_buf_1', 'sg13g2_buf_4'), ('fanout9729', 'sg13g2_buf_1', 'sg13g2_buf_4'), ('$abc$735341$auto$blifparse.cc:397:parse_blif$770517', 'sg13g2_o21ai_1', 'sg13g2_o21ai_2'), ('$abc$735341$auto$blifparse.cc:397:parse_blif$770552', 'sg13g2_buf_1', 'sg13g2_buf_4')]
+ targets=[('fanout9730', 'sg13g2_buf_1', 'sg13g2_buf_4'), ('fanout9729', 'sg13g2_buf_1', 'sg13g2_buf_4'), ('$abc$735341$auto$blifparse.cc:397:parse_blif$770552', 'sg13g2_buf_1', 'sg13g2_buf_4')]
+ assert 'wire3244/A' in first and '$abc$735341$auto$blifparse.cc:397:parse_blif$770517/Y' in first
  for cell,old,new in targets:assert cell+'/' in first and '('+old+')' in first
  r.update(source_run=run['id'],source_odb_sha256=report['repaired_odb_sha256'],targets=targets,source_before=report['measurements']['after'],path_report_sha256=report['outputs'][member]);save()
  safe.close();native.close()
@@ -42,13 +43,14 @@ try:
  (OUT/'run').mkdir()
  with (OUT/'native.log').open('w')as log:code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
  r['returncode']=code;assert code==0
+ assert 'NSSOC_LINKUP_TAPER_STRUCTURAL_PASS' in (OUT/'native.log').read_text()
  assert all(prior.sha(Path(p))==h for p,h in protected.items())
  measurements={}
  for short,corner in prior.CORNERS:
   dirs=list((OUT/'run').glob('*-nssoc-sized'+short));assert len(dirs)==1
   assert not(dirs[0]/'unpropagated.rpt').read_text().strip()
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
- r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_DRIVER_SIZING_TRIAL_REQUIRES_REVIEW_AND_LOGIC_PROOF',scope='Four exact NEW EOP link-up data drivers resized with native graph/master/port guards and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
+ r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_DRIVER_SIZING_TRIAL_REQUIRES_REVIEW_AND_LOGIC_PROOF',scope='Three exact NEW EOP link-up drivers resized and one buf2 inserted at measured buf8 input with native graph/master/port guards and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'and p.suffix!='.zip'};save()
