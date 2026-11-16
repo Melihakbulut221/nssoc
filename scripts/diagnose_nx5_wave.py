@@ -86,5 +86,48 @@ for label,ip,inn,bits_expected in [('UA',273,274,current),('UC',294,297,previous
   points=start+(indices+.5+phase)*ui;vals=np.interp(points,t,delta)*sign;cm=np.interp(points,t,(vp+vn)/2)
   measurements.append({'phase_ui':phase,'wrong':int((vals<=0).sum()),'below100mv':int((vals<.1).sum()),'min_signed_v':float(vals.min()),'median_signed_v':float(np.median(vals)),'commonmode_min_v':float(cm.min()),'commonmode_max_v':float(cm.max())})
  result['divider_base_checks'][label]={'positive_device':ip,'negative_device':inn,'positive_node':p['nodes'][1],'negative_node':n['nodes'][1],'samples':measurements}
+
+# Read-only latency localization on native samples. Censor within one UI;
+# ten-ps stability rejects a momentary crossing. This is NOT a new gate.
+stage_specs={}
+for key,bitkey in [('a','a'),('c','c'),('d','d')]:
+ stage_specs[key]=(v('xpd.'+key+'qp')-v('xpd.'+key+'qn'),expected[bitkey])
+for key,bitkey in [('UA','a'),('UC','c'),('US0','d'),('US1','d')]:
+ item=result['divider_base_checks'][key]
+ stage_specs[key]=(v(item['positive_node'])-v(item['negative_node']),expected[bitkey])
+for key,pin,bitkey in [('AD','ad','a'),('CD','cd','c'),('S0','s0','d'),('S1','s1','d')]:
+ stage_specs[key]=(v('xpd.'+pin+'p')-v('xpd.'+pin+'n'),expected[bitkey])
+latencies={};records={}
+def stats(values):
+ return dict(count=len(values),minimum_ps=float(np.min(values)) if values else None,
+  median_ps=float(np.median(values)) if values else None,
+  p95_ps=float(np.percentile(values,95)) if values else None,
+  maximum_ps=float(np.max(values)) if values else None)
+for key,(delta,bitvalues) in stage_specs.items():
+ for threshold in [0.,.1]:
+  label=key+('@zero'if threshold==0 else'@100mv');rows=[];times={}
+  for k in range(1,len(indices)):
+   if bitvalues[k]==bitvalues[k-1]:continue
+   edge=start+(indices[k]+.5)*ui
+   lo=int(np.searchsorted(t,edge));hi=int(np.searchsorted(t,edge+ui))
+   sign=2*int(bitvalues[k])-1;signed=delta[lo:hi]*sign
+   valid=signed>0 if threshold==0 else signed>=threshold;hit=None
+   for j in np.flatnonzero(valid):
+    end=int(np.searchsorted(t,t[lo+j]+10e-12,side='left'))-lo
+    if end>=len(valid):break
+    if np.all(valid[j:end+1]):hit=float(t[lo+j]);break
+   rows.append(dict(bit_index=int(indices[k]),settled_native_time_s=hit,
+    latency_ps=(hit-edge)*1e12 if hit is not None else None))
+   if hit is not None:times[int(indices[k])]=hit
+  records[label]=rows;latencies[label]=dict(transitions=len(rows),missing_before_one_ui=sum(x['latency_ps']is None for x in rows),**stats([x['latency_ps']for x in rows if x['latency_ps']is not None]))
+increments={}
+for left,right in [('a','UA'),('UA','AD'),('c','UC'),('UC','CD'),('d','US0'),('US0','S0'),('d','US1'),('US1','S1')]:
+ for suffix in ['@zero','@100mv']:
+  a={x['bit_index']:x['settled_native_time_s']for x in records[left+suffix]if x['settled_native_time_s']is not None}
+  b={x['bit_index']:x['settled_native_time_s']for x in records[right+suffix]if x['settled_native_time_s']is not None}
+  increments[left+'->'+right+suffix]=stats([(b[k]-a[k])*1e12 for k in sorted(set(a)&set(b))])
+result['stage_latency']=dict(scope='Transition-only native-sample first crossing sustained ten ps, censored at one UI after original clock edge. Paired increments can be negative; missing crossings excluded and counted. Not physical acceptance, not shifted sample gates.',
+ native_sample_only=True,stability_ps=10,censor_ui=1,summary=latencies,paired_increment=increments,per_transition=records)
+
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
 print(json.dumps({k:min(v['phase_sweep'],key=lambda x:(x['wrong'],x['below_100mv']))for k,v in result['signals'].items()}))
