@@ -1,22 +1,25 @@
-name: Verify FC CRC snapshot cycle equivalence
+name: Prove FC CRC snapshot sequential equivalence
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  verify:
+  prove:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends iverilog
-      - run: python3 scripts/check_fc_crc_snapshot.py
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: python3 scripts/prove_fc_crc_snapshot.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: fc-crc-snapshot-${{ github.run_id }}
-          path: fc-crc-snapshot-results/
+          name: fc-crc-formal-${{ github.run_id }}
+          path: fc-crc-formal/
           if-no-files-found: error
           retention-days: 90
