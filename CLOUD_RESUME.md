@@ -8,6 +8,16 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: older functional boot passes; peer-ready proof remains unproven
+
+Older-map supplemental boot43811938338 /ac3c3cd7f32164e10e3a7e28940b95d9d0d6b1f9 SUCCESS. Artifact14205550738 SHA290503f10b954012cfe2804ba9148e0b7daf021f80e35399bd4b43cfa5395190 wholeverifiedRAM;bothbootloghashesverified. Run5521.039s,LOGICROM_GL2,267,527cycles/28checks/0fails/code0/magic600dc0de/watchdog1/0/0/flash0/UART1/framing0;PCIeidle5,668,736samplesPASS;systemEthernetMBISTbusy1,310,691/done1,310,724/ethdone3PASS. RunlogSHAa30f79912825b4eb91dcf74db7976ef81e0e19f74d46de48c5d55c86de1e53af. Native_model_equivalent/native_gate_boot_accepted=false. This does not supersede newACKboot or qualify serialPHY/SDF. InitialreaderKeyError source_binding was reader-only: oldreportdoesnotcontainnewreportfield; correctedreaderverifiedactualschema/logs.
+
+Peer-ready43822718074 /050b4d1793fe177a6b3e4e6df75c417f2609d126 FAILED formaldefaultcasebeforetraffic. Artifact14205680308 SHA5e641eacd27be7ea677cbf6b2ae75b43ac868d2c4751f6cada2ffcaa271c1dfb wholeverified. Candidate35b0b71994d793797c86f074f4d0d774789d64cf986049c5aec254b29121c530;referencee69f70857c984ef5c86001cf5427a417d35665942a449f8cc25ec0b237c5cb70. Yosys simpleproved1011,induction761additional;7remainunproven:next[0].seen_n[0:2],next[1].seen_n[0:2],initialized_o. Not accepted; no prooftheseareRTLbugsorjustcutpointlimitations. No counterexampleyet. Never treatunprovenaspass.
+
+Collector follow-up43823081125 /88bef38ce245be2bccecb8dedc0112f897aeb234 running samebranch/sameRTL. Continues allfourformalconfigs and all16trafficseeds evenifformalunproven, adds unchanged-referenceformalcontrol and stillrequiresallchecksforfinalPASS. Adds equiv_status BEFORE asserting so actualunprovensareprinted. Found collector parser issue:two successfulstatuscommandswouldproduce2countsbutoldlen==1testwouldmarkfailure. Correctedbranchhead02a53a184900b3669cb3725129ea5ce8a20495a4 requiresnonemptycountsANDallproven/zero unproven. PythonASTvalid. THIS correctedhead NOT dispatchedyet, deliberatelyavoidduplicatingrunningdiagnostic. Readactualprooflogs independently; don'tmistakeoldparserfalsefailureforcounterexample. No weakened proof,reset/clockassumptionsortrafficthresholds.
+
+Physical43821353089,43821593059,DRT43798359649,analog43806909384 allconfirmedlive. Next inspectcollector/formal andtimingresults. FullgoalOPEN.
+
 ## 2026-11-16: peer-ready precomputation candidate dispatched, not qualified yet
 
 NEW43822718074 /050b4d1793fe177a6b3e4e6df75c417f2609d126, branchcodex/pcie-peer-ready-precompute, base506367db9accba350150ccd391294bef0cb025c3(newACKfunctionalboot). Independent candidate targets persistent initialized_o output logic; does NOT invalidate or replace running physical candidates.
