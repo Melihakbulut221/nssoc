@@ -20,6 +20,7 @@ def adapt(source):
    m=matches[0];temporary='nssoc_functional_nba_'+out
    replacement=('`ifdef NSSOC_CVC_ZERO_DELAY\nwire '+temporary+';\n'+m.group(1)+' ('+temporary+','+m.group(2)+');\n'
       +'// Defer only the derived sequential output to the NBA region.\n'
+      +'initial '+out+' <= '+temporary+';\n'
       +'always @('+temporary+') '+out+' <= '+temporary+';\n'
       +'`else\n'+m.group(0)+'\n`endif')
    body=body[:m.start()]+replacement+body[m.end():]
