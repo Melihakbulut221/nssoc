@@ -65,14 +65,36 @@ try:
            ("if_addr","instr_addr",32),("if_valid","instr_rvalid",1),
            ("if_data","instr_rdata",32),("if_err","instr_err",1),
            ("data_we","bus_data_we",1),("data_wdata","bus_data_wdata",32)]
+ alternatives={
+ "instr_req":["u_ibex.instr_req_o","u_bus.mi_req_i"],
+ "instr_gnt":["u_ibex.instr_gnt_i","u_bus.mi_gnt_o"],
+ "instr_addr":["u_ibex.instr_addr_o","u_bus.mi_addr_i"],
+ "instr_rvalid":["u_ibex.instr_rvalid_i","u_bus.mi_rvalid_o"],
+ "instr_rdata":["u_ibex.instr_rdata_i","u_bus.mi_rdata_o"],
+ "instr_err":["u_ibex.instr_err_i","u_bus.mi_err_o"],
+ "bus_data_we":["u_bus.md_we_i"],"bus_data_wdata":["u_bus.md_wdata_i"]}
+ resolved=[]
+ for label,name,width in boundary:
+  candidates=[n for n in [name]+alternatives.get(name,[]) if n in mapped["core_signals"] and len(mapped["core_signals"][n]["bits"])==width]
+  assert candidates,("Missing exact boundary",name)
+  bits=mapped["core_signals"][candidates[0]]["bits"]
+  assert all(mapped["core_signals"][n]["bits"]==bits for n in candidates),("Conflicting aliases",candidates)
+  resolved.append((label,candidates[0],width))
+ boundary=resolved
  signals+=boundary
  suffixes={"row_en","row_we","row_addr","row_din","row_bm","row_dout",
            "func_row_en","func_row_we","func_row_addr","func_row_din","func_row_bm",
            "bank_q","rd_word","raw_q","req_i","addr_i","rvalid_o","rdata_o"}
  memory_names=sorted(n for n in mapped["core_signals"] if n.startswith("u_ram.") and n.rsplit(".",1)[-1] in suffixes)
- assert 6<=len(memory_names)<=96, memory_names
- for required in ("row_addr","row_dout","row_we"):
-  assert any(n.endswith("."+required) for n in memory_names),required
+ assert 1<=len(memory_names)<=96, memory_names
+ macro_cells={n:c for n,c in mapped_json["modules"]["soc_top"]["cells"].items() if c["type"]=="RM_IHPSG13_1P_2048x64_c2_bm_bist"}
+ assert len(macro_cells)==4 and all(n.startswith("u_ram.") for n in macro_cells),list(macro_cells)
+ macro_signals=[]
+ for i,(name,cell) in enumerate(sorted(macro_cells.items())):
+  for port,width in [("A_ADDR",11),("A_DOUT",64),("A_DIN",64),("A_BM",64),("A_MEN",1),("A_WEN",1),("A_REN",1)]:
+   assert len(cell["connections"][port])==width,(name,port)
+   macro_signals.append(("ram"+str(i)+"_"+port.lower(),name,port,width))
+ r["native_macro_port_inventory"]=dict(mapped_sha256=digest(mapped_path),signals=macro_signals,connections={n:c["connections"]for n,c in macro_cells.items()},read_only=True)
  for i,name in enumerate(memory_names):
   width=len(mapped["core_signals"][name]["bits"])
   assert 1<=width<=64,(name,width)
@@ -82,9 +104,12 @@ try:
   assert name in mapped["core_signals"] and len(mapped["core_signals"][name]["bits"])==width
  fields=" ".join(label+"=%h" for label,name,width in signals)
  refs=", ".join("tb_logicrom_gl.dut.\\"+name+" " for label,name,width in signals)
+ fields+=" "+" ".join(label+"=%h" for label,cell,port,width in macro_signals)
+ refs+=", "+", ".join("tb_logicrom_gl.dut."+chr(92)+cell+" ."+port for label,cell,port,width in macro_signals)
  observer=out/"boot_observer.v"
  prefix="tb_logicrom_gl.dut."+chr(92)
- write_condition="("+prefix+"bus_data_req  && "+prefix+"bus_data_we  && ("+prefix+"bus_data_addr  < 32'h00000080))"
+ actual_write=next(name for label,name,width in boundary if label=="data_we")
+ write_condition="("+prefix+"bus_data_req  && "+prefix+actual_write+"  && ("+prefix+"bus_data_addr  < 32'h00000080))"
  lines=[chr(96)+"timescale 1ns/1ps","module nssoc_cloud_boot_observer;",
         "always @(negedge tb_logicrom_gl.clk) begin",
         " if (tb_logicrom_gl.rst_n && ("+write_condition+" || tb_logicrom_gl.cycles<300 || tb_logicrom_gl.cycles%1000==0 || (tb_logicrom_gl.cycles>=2179000 && tb_logicrom_gl.cycles<=2185000) || (tb_logicrom_gl.cycles>=2370000 && tb_logicrom_gl.cycles<=2374000)))",
