@@ -42,7 +42,7 @@ try:
  (OUT/'run').mkdir()
  with (OUT/'native.log').open('w')as log:code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
  r['returncode']=code;assert code==0
- assert 'NSSOC_INPUT_DELAY_STRUCTURAL_PASS ports=3 cells=5' in (OUT/'native.log').read_text()
+ assert 'NSSOC_ENDPOINT_DELAY_STRUCTURAL_PASS ports=3 cells=5' in (OUT/'native.log').read_text()
  assert all(prior.sha(Path(p))==h for p,h in protected.items())
  measurements={}
  for short,corner in prior.CORNERS:
@@ -52,7 +52,7 @@ try:
    for mode in ['max','min']:
     targeted=(dirs[0]/('targeted_'+label+'_'+mode+'.rpt')).read_text();assert 'Startpoint:' in targeted and 'Endpoint:' in targeted, (corner,label,mode,'Targeted report missing path')
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
- r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_INPUT_DELAY_REQUIRES_LOGIC_AND_TIMING_REVIEW',scope='Three data driver resizes plus five input delay cells with guarded isolated D sinks and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
+ r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_ENDPOINT_DELAY_REQUIRES_LOGIC_AND_TIMING_REVIEW',scope='Three data driver resizes plus five input delay cells with guarded exact D sink branches and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'and p.suffix!='.zip'};save()
