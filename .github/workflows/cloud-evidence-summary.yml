@@ -1,4 +1,4 @@
-name: Continue bounded timing repair from first after-batch result
+name: Continue bounded timing repair from second after-batch result
 on:
   workflow_dispatch:
 permissions:
@@ -37,7 +37,7 @@ jobs:
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('after-buffer-second');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('after-buffer-third');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,27 +50,27 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: after-buffer-second-incremental-repair-derived-${{ github.run_id }}
+          name: after-buffer-third-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: after-buffer-second-incremental-repair-native-${{ github.run_id }}
+          name: after-buffer-third-incremental-repair-native-${{ github.run_id }}
           path: |
-            after-buffer-second/run/
-            after-buffer-second/result.json
-            after-buffer-second/native.log
-            after-buffer-second/config.json
-            after-buffer-second/initial.json
+            after-buffer-third/run/
+            after-buffer-third/result.json
+            after-buffer-third/native.log
+            after-buffer-third/config.json
+            after-buffer-third/initial.json
           if-no-files-found: error
           retention-days: 90
       - name: Publish compact authenticated measurements without large report download
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: after-buffer-second-summary-${{ github.run_id }}
-          path: after-buffer-second/result.json
+          name: after-buffer-third-summary-${{ github.run_id }}
+          path: after-buffer-third/result.json
           retention-days: 90
           if-no-files-found: error
