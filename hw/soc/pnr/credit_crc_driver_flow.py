@@ -1,6 +1,6 @@
 from pathlib import Path
 from librelane.flows import Flow
-from interface_flow import Interfaces
+from interface_flow import Interfaces, BoundedPostCTS
 from corrpre_postcts_flow import ElectricalPostCTS,CORNERS
 from corrpre_postcts_flow import SingleCornerSTA as BranchSTA
 ECO = r"""
@@ -100,7 +100,7 @@ class ResetBufferECO(ElectricalPostCTS):
         return str(q)
 @Flow.factory.register()
 class AckChipResetSized(Interfaces):
- Steps=[ResetBufferECO]+[type("Sized"+n,(BranchSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS]
+ Steps=[ResetBufferECO, BoundedPostCTS]+[type("Sized"+n,(BranchSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS]
 if __name__=="__main__":
  from librelane.__main__ import cli
  cli()
