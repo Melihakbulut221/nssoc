@@ -1,4 +1,4 @@
-name: Supplemental NBA functional boot with replayed SRAM and cell gates
+name: Supplemental NBA boot with qualified MBIST monitor and unchanged gates
 on:
   workflow_dispatch:
 permissions:
@@ -33,6 +33,8 @@ jobs:
           test "$(git -C cvc-source rev-parse HEAD)" = 1c5e043ec33ef6f1fdbf38565501c944893a83cf
           make -C cvc-source/src -j2 cvc64 > cvc-build.log 2>&1
           python3 hw/soc/flow/prepare_ihp_native_boot.py
+      - name: Fresh five-engine MBIST observer and exhaustive four-state qualification
+        run: python3 scripts/diagnose_mbist_monitor_engines.py
       - name: Restore exact successful mapped candidate and prepare unchanged functional bench
         run: |
           set -euo pipefail
@@ -53,7 +55,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: boot-nba-functional-diagnostic-${{ github.run_id }}
+          name: boot-nba-qualified-monitor-${{ github.run_id }}
           path: |
             cvc-probe/**/*.json
             cvc-probe/**/*.log
@@ -67,6 +69,9 @@ jobs:
             sram-sequence-qualification/**/*.log
             cvc-sram-qualification/**/*.json
             cvc-sram-qualification/**/*.log
+            mbist-monitor-probe/**/*.json
+            mbist-monitor-probe/**/*.log
+            mbist-monitor-probe/**/*.v
             cvc-build.log
             cvc-source/OSS-CVC-MODIFIED-ARTISTIC-LIC.TXT
             cvc-source/CHANGES.md

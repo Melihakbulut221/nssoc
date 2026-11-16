@@ -10,6 +10,22 @@ r=dict(source_head=os.environ['GITHUB_SHA'],passed=False,native_gate_boot_accept
  scope='Supplemental four-state zero-delay derived-standard-cell functional gate boot. NBA-output functional diagnostic ONLY. Native zero-delay library differs on deep clock compositions; compiled CVC wide X/Z comparison defect is independently documented. Replayed directed SRAM/cell gates do not establish whole-chip native or SDF equivalence. No physical/timing acceptance.')
 def save():(out/'result.json').write_text(json.dumps(r,indent=2)+'\n')
 try:
+ # Fresh monitor proof is mandatory before the four-million-cycle boot.
+ monitor=ROOT/'hw/soc/tb/mapped_mbist_boot_monitor.v'
+ proof_path=ROOT/'mbist-monitor-probe/result.json'
+ proof=json.loads(proof_path.read_text())
+ assert proof['source_head']==os.environ['GITHUB_SHA']
+ assert proof['status']=='PASS_SIGNED32_AND_BITWISE_UNKNOWN_MONITOR_CONTROLS'
+ assert digest(monitor)==proof['fixed_sha256']=='6d6b7c1aa116ba428cc7d7401cecec23c3ee66645254dd7550a81460ffbff7df'
+ assert len(proof['cases'])==10 and len(proof['controls'])==8 and len(proof['unknown_truth_table'])==5
+ assert all(c['identical_to_original_iverilog'] and c['returncode']==0 and c['rows']==210 for c in proof['cases']if c['label'].startswith('fixed-'))
+ assert all(c['detected'] for c in proof['controls'])
+ assert all(c['rows']==16384 and c['mismatch_count']==0 and c['returncode']==0 for c in proof['unknown_truth_table'])
+ for name,sha in proof['outputs'].items():
+  path=ROOT/'mbist-monitor-probe'/name
+  assert path.resolve().is_relative_to((ROOT/'mbist-monitor-probe').resolve())
+  assert digest(path)==sha
+ r['fresh_monitor_proof']=dict(sha256=digest(proof_path),monitor_sha256=digest(monitor),scope='Observer only; no DUT or native-model equivalence claim')
  q=json.loads((ROOT/'cvc-cell-qualification/result.json').read_text())
  assert q['passed'] and q['source_unchanged'] and len(q['cells'])==16 and q['mutation']['mismatches']>0
  assert q['total_reference_trace_rows']==374784
@@ -32,6 +48,7 @@ try:
  assert all('-D'+x in defines for x in ['FUNCTIONAL','NSSOC_GL_MBIST','NSSOC_GL_PCIE','NSSOC_GL_PCIE_ASYNC'])
  for p,info in record['sources'].items():assert digest(p)==info['sha256'] and pathlib.Path(p).stat().st_size==info['bytes']
  sources=[s for s in command if s.endswith('.v')]
+ assert str(monitor) in sources or any(pathlib.Path(s).resolve()==monitor for s in sources)
  libs=[s for s in sources if s.endswith('/sg13g2_stdcell.v')];assert len(libs)==1
  lib=pathlib.Path(libs[0]);assert digest(lib)==SOURCE_SHA
  derived,changes=adapt(lib.read_text());model=out/'derived-functional-standard-cells.v';model.write_text(derived)
