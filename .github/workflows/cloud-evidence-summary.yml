@@ -1,4 +1,4 @@
-name: Explore shorter data-select dividers at original widths and unchanged gates
+name: Explore single clock bias resistor change with unchanged full loaded gates
 on:
   workflow_dispatch:
 permissions:
@@ -41,14 +41,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: divider-short-length-exploration-derived-${{ github.run_id }}
+          name: clock-bias-2800-exploration-derived-${{ github.run_id }}
           path: paired650-full-composition/derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: divider-short-length-exploration-native-${{ github.run_id }}
+          name: clock-bias-2800-exploration-native-${{ github.run_id }}
           path: paired650-full-composition/
           if-no-files-found: error
           retention-days: 90
