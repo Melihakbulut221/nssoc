@@ -28,7 +28,7 @@ for corner in ['slow','typical','fast']:
   dst=out/(corner+'-'+kind+'.txt')
   dst.write_text('Authenticated excerpt of '+name+'; full source SHA256 '+h+'\n'+''.join('Startpoint:'+block for _,block in selected))
   result['reports'][corner+'-'+kind]=dict(source=name,source_sha256=h,total_paths=len(rows),excerpt_paths=len(selected),worst_slack_ns=rows[0][0],excerpt_sha256=hashlib.sha256(dst.read_bytes()).hexdigest())
-logs=[n for n in z.namelist()if n.endswith('/resizertimingpostcts.log')];assert len(logs)==1,logs
+logs=[n for n in z.namelist()if n == 'run/5-openroad-resizertimingpostcts/openroad-resizertimingpostcts.log'];assert len(logs)==1,logs
 log=z.read(logs[0]);assert hashlib.sha256(log).hexdigest()==r['outputs'][logs[0]]
 (out/'repair-native.txt').write_bytes(log)
 result['repair_log_sha256']=hashlib.sha256(log).hexdigest()
