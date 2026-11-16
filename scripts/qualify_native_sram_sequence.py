@@ -18,6 +18,17 @@ r=dict(source_head=os.environ['GITHUB_SHA'],passed=False,chip_accepted=False,mod
 def run(cmd,log):
  with log.open('w')as f:return subprocess.run(cmd,stdout=f,stderr=subprocess.STDOUT,timeout=180).returncode
 try:
+ import zipfile,io
+ def api(path):return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path]))
+ pr=api('actions/runs/43804069756');assert pr['head_sha']=='9759bb82e933e73fe70a3687a0ef0edb0fce249b' and pr['conclusion']=='failure' and pr['run_attempt']==1
+ meta=api('actions/artifacts/14197712837');h='0036c6745330290efa319b0f9781ab83f86ec7a7aef660187ccbf3b9f40ed8ac'
+ assert not meta['expired'] and meta['digest']=='sha256:'+h and meta['workflow_run']['id']==pr['id'] and meta['workflow_run']['head_sha']==pr['head_sha']
+ blob=subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14197712837/zip']);assert hashlib.sha256(blob).hexdigest()==h
+ proof=json.loads(zipfile.ZipFile(io.BytesIO(blob)).read('case-condition-probe/result.json'))
+ assert proof['source_head']==pr['head_sha'] and proof['bankwise_passed'] and not proof['passed'] and len(proof['cases'])==5
+ assert all(c['trace_rows']==512 and c['bankwise_mismatch_count']==0 for c in proof['cases'])
+ assert {c['kind']:c['mismatch_count']for c in proof['cases']}=={'iverilog':0,'cvc':128,'cvc-Ogate':128,'cvc-O':128,'cvc-interp':0}
+ r['comparison_workaround']=dict(proof_run=pr['id'],artifact=meta['id'],sha256=h,scope='All 576 capture bits compared as nine 64-bit case-inequalities; preserves X/Z distinction and original scoreboard. No model or reset change. Original wide compiled expression known incorrect.')
  traces={}
  for engine in ['iverilog','iverilog-derived','cvc','cvc-interp']:
   for mutant in [False,True]:

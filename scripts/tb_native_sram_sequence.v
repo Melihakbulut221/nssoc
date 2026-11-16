@@ -13,7 +13,7 @@ genvar depth,bitidx;generate for(depth=0;depth<9;depth=depth+1)begin: depth_prob
  end
 end endgenerate
 reg [63:0] memory[0:2047];
-integer cycles=0,i,k;reg [31:0] random_state=32'h91a42d37;
+reg bank_mismatch;integer cycles=0,i,k;reg [31:0] random_state=32'h91a42d37;
 RM_IHPSG13_1P_2048x64_c2_bm_bist dut(.A_CLK(clk),.A_MEN(men),.A_WEN(wen),.A_REN(ren),.A_ADDR(addr),.A_DIN(din),.A_BM(bm),.A_DLY(1'b1),.A_DOUT(dout),.A_BIST_CLK(1'b0),.A_BIST_EN(1'b0),.A_BIST_MEN(1'b0),.A_BIST_WEN(1'b0),.A_BIST_REN(1'b0),.A_BIST_ADDR(11'b0),.A_BIST_DIN(64'b0),.A_BIST_BM(64'b0));
 always @(posedge clk) captured<=dout;
 always @(posedge clk) if(started) begin
@@ -27,7 +27,11 @@ always @(posedge clk) if(started) begin
 `endif
  end
  #1;
- if(dout!==expected || captured!==previous || cell_captures!=={9{previous}}) begin
+ // Exact four-state comparison of all 9 x 64 bits. Compiled CVC wide
+ // repetition comparison is independently demonstrated incorrect for X/Z.
+ bank_mismatch=0;
+ for(k=0;k<9;k=k+1)if(cell_captures[k*64+:64]!==previous)bank_mismatch=1;
+ if(dout!==expected || captured!==previous || bank_mismatch) begin
   $display("SRAM_COMPARE_FLAGS dout=%b rtl=%b cells=%b",dout!==expected,captured!==previous,cell_captures!=={9{previous}});
   $display("SRAM_COMPARE_BITS dout=%b expected=%b rtl=%b previous=%b cells=%b replicated=%b",dout,expected,captured,previous,cell_captures,{9{previous}});
   for(k=0;k<9;k=k+1) $display("SRAM_COMPARE_BANK depth=%0d mismatch=%b bits=%b",k,cell_captures[k*64+:64]!==previous,cell_captures[k*64+:64]);
