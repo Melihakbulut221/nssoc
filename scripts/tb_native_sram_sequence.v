@@ -28,7 +28,7 @@ always @(posedge clk) if(started) begin
  end
  #1;
  if(dout!==expected || captured!==previous || cell_captures!=={9{previous}}) begin
-  $display("SRAM_COMPARE_FLAGS dout=%b rtl=%b cells=%b expected_width=%0d vector_width=%0d",dout!==expected,captured!==previous,cell_captures!=={9{previous}},$bits({9{previous}}),$bits(cell_captures));
+  $display("SRAM_COMPARE_FLAGS dout=%b rtl=%b cells=%b",dout!==expected,captured!==previous,cell_captures!=={9{previous}});
   $display("SRAM_COMPARE_BITS dout=%b expected=%b rtl=%b previous=%b cells=%b replicated=%b",dout,expected,captured,previous,cell_captures,{9{previous}});
   for(k=0;k<9;k=k+1) $display("SRAM_COMPARE_BANK depth=%0d mismatch=%b bits=%b",k,cell_captures[k*64+:64]!==previous,cell_captures[k*64+:64]);
   $display("SRAM_SEQUENCE_FAIL cycle=%0d addr=%h got=%h expected=%h capture=%h previous=%h cell_captures=%h",cycles,addr,dout,expected,captured,previous,cell_captures);$fatal(1,"SRAM sequence or capture latency mismatch");
