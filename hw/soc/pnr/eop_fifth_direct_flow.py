@@ -3,23 +3,23 @@ from librelane.flows import Flow
 from interface_flow import Interfaces,BoundedPostCTS
 from corrpre_postcts_flow import CORNERS
 from corrpre_postcts_flow import SingleCornerSTA as BranchSTA
-class AfterBatchThirdBoundedPostCTS(BoundedPostCTS):
-    id = "NSSOC.AfterBatchThirdBoundedPostCTS"
+class AfterBatchFourthBoundedPostCTS(BoundedPostCTS):
+    id = "NSSOC.AfterBatchFourthBoundedPostCTS"
     name = "Continue setup repair only after reproducing measured three-corner baseline"
     def run(self, state_in, **kwargs):
         import hashlib, io, json, math, subprocess, zipfile
         repo = "repos/Melihakbulut221/nssoc/"
         def api(path):
             return json.loads(subprocess.check_output(["gh", "api", repo + path]))
-        run = api("actions/runs/43818263628")
-        assert run["head_sha"] == "59295d1bf016d9e40031dffa2e6dbcd40120cc89"
+        run = api("actions/runs/43821353089")
+        assert run["head_sha"] == "e89e1020e518428d4db12dde0905cb7e0dc56329"
         assert run["conclusion"] == "success" and run["run_attempt"] == 1
-        digest = "4de7a3d9c3bc578dc87afa6740abbddb75d1f636fe043d45cd35bff9ba3974dc"
-        meta = api("actions/artifacts/14203930966")
+        digest = "8988f4c396c5f9e162764670719ac5e0d49baec60cbf637d8d8ae0439640c3fc"
+        meta = api("actions/artifacts/14205930008")
         assert not meta["expired"] and meta["digest"] == "sha256:" + digest
         assert meta["workflow_run"]["id"] == run["id"]
         assert meta["workflow_run"]["head_sha"] == run["head_sha"]
-        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14203930966/zip"])
+        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14205930008/zip"])
         assert hashlib.sha256(data).hexdigest() == digest
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
             expected = json.loads(archive.read("result.json"))
@@ -28,7 +28,7 @@ class AfterBatchThirdBoundedPostCTS(BoundedPostCTS):
         assert expected["accepted"] is False
         comparisons = {}
         for short, corner in CORNERS:
-            dirs = list(Path(self.step_dir).parent.glob("*-nssoc-afterbatchthirdbefore" + short.lower()))
+            dirs = list(Path(self.step_dir).parent.glob("*-nssoc-afterbatchfourthbefore" + short.lower()))
             assert len(dirs) == 1, (short, dirs)
             assert not (dirs[0] / "unpropagated.rpt").read_text().strip()
             metrics = json.loads((dirs[0] / "state_out.json").read_text())["metrics"]
@@ -47,9 +47,9 @@ class AfterBatchThirdBoundedPostCTS(BoundedPostCTS):
         return super().run(state_in, **kwargs)
 
 @Flow.factory.register()
-class EopAfterBatchThirdDirect(Interfaces):
- Steps=([type('AfterBatchThirdBefore'+n,(BranchSTA,),dict(id='NSSOC.AfterBatchThirdBefore'+n,corner=c))for n,c in CORNERS]
-       +[AfterBatchThirdBoundedPostCTS]
+class EopAfterBatchFourthDirect(Interfaces):
+ Steps=([type('AfterBatchFourthBefore'+n,(BranchSTA,),dict(id='NSSOC.AfterBatchFourthBefore'+n,corner=c))for n,c in CORNERS]
+       +[AfterBatchFourthBoundedPostCTS]
        +[type('Sized'+n,(BranchSTA,),dict(id='NSSOC.Sized'+n,corner=c))for n,c in CORNERS])
 if __name__=='__main__':
  from librelane.__main__ import cli
