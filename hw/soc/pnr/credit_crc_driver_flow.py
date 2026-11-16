@@ -1,3 +1,4 @@
+from corrpre_banked_grt_flow import BankedGlobalRouting
 from pathlib import Path
 from librelane.flows import Flow
 from interface_flow import Interfaces, BoundedPostCTS
@@ -142,12 +143,55 @@ class SecondBoundedPostCTS(BoundedPostCTS):
                             measured_baseline_matches=True, corners=comparisons), indent=2))
         return super().run(state_in, **kwargs)
 
+class ValidatedGlobalRouting(BankedGlobalRouting):
+    id = "NSSOC.ValidatedGlobalRouting"
+    name = "Fresh global routing from reproduced second EOP continuation"
+    def run(self, state_in, **kwargs):
+        import hashlib, io, json, math, subprocess, zipfile
+        repo = "repos/Melihakbulut221/nssoc/"
+        def api(path):
+            return json.loads(subprocess.check_output(["gh", "api", repo + path]))
+        run = api("actions/runs/43791735845")
+        assert run["head_sha"] == "dc057ddbca86530214846164e767b53b9cc1165f"
+        assert run["conclusion"] == "success" and run["run_attempt"] == 1
+        digest = "6b1283de222e8621f0f06380d4c0beb9f4121decd79399a510bc417c62d2aba2"
+        meta = api("actions/artifacts/14193400320")
+        assert not meta["expired"] and meta["digest"] == "sha256:" + digest
+        assert meta["workflow_run"]["id"] == run["id"]
+        assert meta["workflow_run"]["head_sha"] == run["head_sha"]
+        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14193400320/zip"])
+        assert hashlib.sha256(data).hexdigest() == digest
+        with zipfile.ZipFile(io.BytesIO(data)) as archive:
+            expected = json.loads(archive.read("result.json"))
+        assert expected["source_head"] == run["head_sha"]
+        assert expected["sources_unchanged"] and expected["returncode"] == 0
+        assert expected["accepted"] is False
+        comparisons = {}
+        for short, corner in CORNERS:
+            dirs = list(Path(self.step_dir).parent.glob("*-nssoc-sized" + short.lower()))
+            assert len(dirs) == 1, (short, dirs)
+            assert not (dirs[0] / "unpropagated.rpt").read_text().strip()
+            metrics = json.loads((dirs[0] / "state_out.json").read_text())["metrics"]
+            reference = expected["measurements"][corner]
+            assert reference
+            for key, value in reference.items():
+                actual = metrics[key]
+                if isinstance(value, (int, float)) and not isinstance(value, bool):
+                    assert math.isclose(actual, value, rel_tol=1e-9, abs_tol=1e-6), (key, actual, value)
+                else:
+                    assert actual == value, (key, actual, value)
+            comparisons[corner] = reference
+        (Path(self.step_dir) / "baseline-reproduction.json").write_text(
+            json.dumps(dict(source_run=run["id"], artifact_sha256=digest,
+                            measured_baseline_matches=True, corners=comparisons), indent=2))
+        return super().run(state_in, **kwargs)
+
 @Flow.factory.register()
 class AckChipResetSized(Interfaces):
  Steps=([ResetBufferECO, BoundedPostCTS]
         +[type("ContinuationBefore"+n,(BranchSTA,),dict(id="NSSOC.ContinuationBefore"+n,corner=c))for n,c in CORNERS]
         +[SecondBoundedPostCTS]
-        +[type("Sized"+n,(BranchSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS])
+        +[type("Sized"+n,(BranchSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS]+[ValidatedGlobalRouting])
 if __name__=="__main__":
  from librelane.__main__ import cli
  cli()
