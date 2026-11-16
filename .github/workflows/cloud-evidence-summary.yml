@@ -1,4 +1,4 @@
-name: Validate exact native ECO cell functions and inverted delay rejection
+name: Validate native buf2 taper and feedback delay cell functions
 on:
   workflow_dispatch:
 permissions:
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: delay-eco-cell-functions-${{ github.run_id }}
+          name: taper-feedback-cell-functions-${{ github.run_id }}
           path: eco-cell-proof/
           if-no-files-found: error
           retention-days: 90
