@@ -1,4 +1,4 @@
-name: Diagnose mapped instruction fetch and SRAM request response boundary
+name: Supplemental NBA functional boot with replayed SRAM and cell gates
 on:
   workflow_dispatch:
 permissions:
@@ -42,12 +42,18 @@ jobs:
         run: python3 scripts/probe_native_cvc.py
       - name: Exhaustive affected-cell four-state transition comparison
         run: python3 scripts/qualify_cvc_cells.py
+      - name: Replay original 1P and 2P SRAM directed equivalence and mutations
+        run: python3 scripts/qualify_cvc_sram.py
+      - name: Replay SRAM standard-cell capture and proven equivalent comparisons
+        run: python3 scripts/qualify_native_sram_sequence.py
+      - name: Record known native composition disagreement and restrict diagnostic scope
+        run: python3 scripts/gate_nba_boot_diagnostics.py
       - name: Supplemental whole-chip functional boot with unchanged firmware PCIe and MBIST gates
         run: python3 scripts/run_cvc_observed_chip_boot.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: boot-fetch-memory-boundary-${{ github.run_id }}
+          name: boot-nba-functional-diagnostic-${{ github.run_id }}
           path: |
             cvc-probe/**/*.json
             cvc-probe/**/*.log
@@ -57,6 +63,10 @@ jobs:
             cvc-cell-qualification/**/*.v
             out/**/*.json
             out/**/*.log
+            sram-sequence-qualification/**/*.json
+            sram-sequence-qualification/**/*.log
+            cvc-sram-qualification/**/*.json
+            cvc-sram-qualification/**/*.log
             cvc-build.log
             cvc-source/OSS-CVC-MODIFIED-ARTISTIC-LIC.TXT
             cvc-source/CHANGES.md

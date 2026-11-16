@@ -10,7 +10,7 @@ assert sha(lib)=='28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942e
 cvc=root/'cvc-source/build64/cvc64'
 bench=CELL_PROBE.replace(' $display("NATIVE_CELL_GATE PASS");', '  d=1\'bx;\n  #20; if(q!==1\'bx) $fatal(1,"Four-state X capture failed");\n  rst=0;\n  #1; if(q!==0) $fatal(1,"Reset must clear X state");\n  $display("FOUR_STATE_GATE PASS");\n  $display("NATIVE_CELL_GATE PASS");')
 assert 'FOUR_STATE_GATE PASS' in bench
-from ihp_zero_delay_aliases import adapt
+from ihp_functional_nba import adapt
 adapted,aliases=adapt(lib.read_text())
 model=out/'derived-zero-delay.v';model.write_text(adapted)
 r={'source_head':os.environ['GITHUB_SHA'],'cvc_source':'1c5e043ec33ef6f1fdbf38565501c944893a83cf','library_sha256':sha(lib),'chip_accepted':False,'native_unmodified_model_compatible':False,'functional_aliases':aliases,'derived_model_sha256':sha(model),'scope':'Derived zero-delay functional model only. Original CVC/native model compatibility failed; no timing or SDF acceptance.','cases':[]}

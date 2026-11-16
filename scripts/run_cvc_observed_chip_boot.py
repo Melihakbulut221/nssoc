@@ -4,18 +4,28 @@ ROOT=pathlib.Path.cwd()
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 sys.path.insert(0,str(ROOT/'hw/soc/flow'))
 from sim_logic_boot_gl import boot_checks,run_logged,digest
-from ihp_zero_delay_aliases import adapt,SOURCE_SHA
+from ihp_functional_nba import adapt,SOURCE_SHA
 out=ROOT/'out/cvc-chip-boot';out.mkdir(parents=True,exist_ok=False)
 r=dict(source_head=os.environ['GITHUB_SHA'],passed=False,native_gate_boot_accepted=False,full_phy_accepted=False,final_timing_complete=False,
- scope='Supplemental four-state zero-delay derived-standard-cell functional gate boot. No native/SDF/timing acceptance; SRAM simulator equivalence not independently established. No simultaneous-transition equivalence claim.')
+ scope='Supplemental four-state zero-delay derived-standard-cell functional gate boot. NBA-output functional diagnostic ONLY. Native zero-delay library differs on deep clock compositions; compiled CVC wide X/Z comparison defect is independently documented. Replayed directed SRAM/cell gates do not establish whole-chip native or SDF equivalence. No physical/timing acceptance.')
 def save():(out/'result.json').write_text(json.dumps(r,indent=2)+'\n')
 try:
  q=json.loads((ROOT/'cvc-cell-qualification/result.json').read_text())
  assert q['passed'] and q['source_unchanged'] and len(q['cells'])==16 and q['mutation']['mismatches']>0
  assert q['total_reference_trace_rows']==374784
- assert q['derived_sha256']=='b1280e76c1e322681066805af26b7405d93cae36b58de079045c85342b5b101f'
+ assert q['derived_sha256']=='45b335d8e543ab7b70afa0d269e6b59b08fd85227420dfe20f4255862c4c7a34'
  for c in q['cells']:
-  assert c['iverilog-derived_mismatch_count']==c['cvc-derived_mismatch_count']==0
+  assert c['iverilog-derived_mismatch_count']==c['iverilog-derived-enabled_mismatch_count']==c['cvc-derived_mismatch_count']==0
+ # Bind this diagnostic to fresh directed gates, without promoting model equivalence.
+ seq=json.loads((ROOT/'sram-sequence-qualification/result.json').read_text())
+ assert seq['source_head']==os.environ['GITHUB_SHA'] and seq['passed'] and seq['sources_unchanged'] and seq['identical_traces'] and len(seq['cases'])==8
+ assert all(c.get('detected') and c.get('meaningful_control') if c['mutation']else c.get('passed') and c.get('trace_rows')==12289 for c in seq['cases'])
+ ram=json.loads((ROOT/'cvc-sram-qualification/result.json').read_text())
+ assert ram['source_head']==os.environ['GITHUB_SHA'] and ram['passed'] and ram['sources_unchanged'] and len(ram['cases'])==2
+ assert all(c['mismatches']==0 and c['mutation_mismatches']>0 for c in ram['cases'])
+ diagnostic=json.loads((ROOT/'out/nba-diagnostic-scope.json').read_text());assert diagnostic['native_model_equivalent'] is False and diagnostic['derived_ideal_composition_passed']
+ r['fresh_directed_gates']={p:digest(ROOT/p)for p in ['sram-sequence-qualification/result.json','cvc-sram-qualification/result.json','out/nba-diagnostic-scope.json']}
+ r['native_model_equivalent']=False;r['compiler_known_wide_case_defect']=True
  inp=ROOT/'out/cvc-boot-preparation/inputs.json';record=json.loads(inp.read_text())
  assert record['simulator']=='iverilog' and record['cycle_bound']==4000000
  command=record['compile_command'];defines=[s for s in command if s.startswith('-D')]

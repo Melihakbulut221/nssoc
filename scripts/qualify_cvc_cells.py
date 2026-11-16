@@ -1,8 +1,8 @@
 """Compare every affected cell across all four-state single-pin transitions.
-Original Icarus vs derived Icarus vs derived CVC. Functional-only, no SDF.
+Original Icarus vs derived Icarus vs derived CVC. Experimental NBA-scheduled functional outputs only, no SDF.
 """
 import pathlib,re,os,json,hashlib,subprocess,time
-from ihp_zero_delay_aliases import adapt,SOURCE_SHA
+from ihp_functional_nba import adapt,SOURCE_SHA
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 root=pathlib.Path.cwd();out=root/'cvc-cell-qualification';out.mkdir(exist_ok=False)
 lib=root/'hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v'
@@ -35,7 +35,7 @@ def bench(name,body):
  return text,2*num*n*4,inputs,outputs
 def execute(name,kind,src,library,expected):
  folder=out/(name+'-'+kind);folder.mkdir();exe=folder/'sim'
- command=([str(cvc),'-sv','+nospecify','+define+NSSOC_CVC_ZERO_DELAY','-o',str(exe),str(src),'-v',str(library)]if kind.startswith('cvc')else['iverilog','-g2005-sv','-s','cell_probe','-o',str(exe),str(src),str(library)])
+ command=([str(cvc),'-sv','+nospecify','+define+NSSOC_CVC_ZERO_DELAY','-o',str(exe),str(src),'-v',str(library)]if kind.startswith('cvc')else['iverilog','-g2005-sv']+(['-DNSSOC_CVC_ZERO_DELAY']if kind=='iverilog-derived-enabled' else [])+['-s','cell_probe','-o',str(exe),str(src),str(library)])
  result={'compile':run(command,folder,'compile.log',300)};assert result['compile']['returncode']==0 and exe.is_file(),result
  result['run']=run([str(exe)]if kind.startswith('cvc')else['vvp','-i',str(exe)],folder,'run.log',300)
  log=(folder/'run.log').read_text();assert result['run']['returncode']==0 and 'CELL_TRANSITIONS_COMPLETE'in log
@@ -46,7 +46,7 @@ try:
  for change in changed:
   name=change['module'];text,expected,ins,outs=bench(name,bodies[name]);src=out/(name+'.v');src.write_text(text)
   item=dict(module=name,inputs=ins,outputs=outs,expected_trace_rows=expected,bench_sha256=sha(src),runs={});records.append(item);gold=None
-  for kind,library in [('iverilog-original',lib),('iverilog-derived',model),('cvc-derived',model)]:
+  for kind,library in [('iverilog-original',lib),('iverilog-derived',model),('iverilog-derived-enabled',model),('cvc-derived',model)]:
    result,lines=execute(name,kind,src,library,expected);item['runs'][kind]=result
    if gold is None:gold=lines
    else:
