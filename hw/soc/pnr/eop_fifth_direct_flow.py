@@ -1,25 +1,34 @@
 from pathlib import Path
 from librelane.flows import Flow
 from interface_flow import Interfaces,BoundedPostCTS
-from corrpre_postcts_flow import CORNERS
+from corrpre_postcts_flow import CORNERS,ElectricalPostCTS
 from corrpre_postcts_flow import SingleCornerSTA as BranchSTA
-class TenthBoundedPostCTS(BoundedPostCTS):
-    id = "NSSOC.TenthBoundedPostCTS"
-    name = "Continue setup repair only after reproducing measured three-corner baseline"
+ECO = '\nset block [ord::get_db_block]\nset before {}\nforeach inst [$block getInsts] {\n set pins {}\n foreach pin [$inst getITerms] {dict set pins [[$pin getMTerm] getName] [$pin getNet]}\n dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]\n}\nset choices {\n {$abc$735341$auto$blifparse.cc:397:parse_blif$762655} {sg13g2_buf_1 sg13g2_buf_4}\n {fanout8216} {sg13g2_buf_1 sg13g2_buf_4}\n {$abc$735341$auto$blifparse.cc:397:parse_blif$762656} {sg13g2_buf_1 sg13g2_buf_4}\n {fanout7309} {sg13g2_buf_1 sg13g2_buf_4}\n}\nset targets [dict keys $choices]\nif {[llength $targets]!=4} {error "Wrong measured resize census"}\nif {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}\nforeach name $targets {\n set inst [$block findInst $name]\n if {$inst eq "NULL" || [[$inst getMaster] getName] ne [lindex [dict get $choices $name] 0]} {error "Replay target preflight mismatch $name"}\n}\nset ports_before {}\nforeach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}\nforeach name $targets {\n lassign [dict get $choices $name] old_master new_master\n set inst [$block findInst $name]\n if {$inst eq "NULL" || [[$inst getMaster] getName] ne $old_master} {error "Unexpected measured driver $name"}\n replace_cell $name $new_master\n if {[[$inst getMaster] getName] ne $new_master} {error "Replacement failed"}\n}\nif {[llength [$block getInsts]] != [dict size $before]} {error "Instance census changed"}\nforeach inst [$block getInsts] {\n set name [$inst getName]\n lassign [dict get $before $name] master pins\n if {$name in $targets} {set master [lindex [dict get $choices $name] 1]}\n if {[[$inst getMaster] getName] ne $master} {error "Unexpected master change"}\n foreach pin [$inst getITerms] {\n  if {[$pin getNet] ne [dict get $pins [[$pin getMTerm] getName]]} {error "Incidence changed"}\n }\n}\nforeach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}\ndetailed_placement\ncheck_placement -verbose\nputs "NSSOC_REPLAY_FOUR_DRIVERS_SAME_INCIDENCE"\n'
+
+class ReplayFourBoundedPostCTS(ElectricalPostCTS):
+    id = "NSSOC.ReplayFourBoundedPostCTS"
+    name = "Size four measured replay drivers after reproducing tenth baseline"
+    def get_script_path(self):
+        p=Path(super().get_script_path());s=p.read_text()
+        a=s.index('# Buffer I/O');b=s.index('report_floating_nets -verbose',a)
+        s=s[:a]+ECO+'\n'+s[b:]
+        if 'log_cmd repair_design' in s or 'unset_propagated_clock [all_clocks]' in s:
+            raise RuntimeError('Unexpected broad repair or ideal clock')
+        p=Path(self.step_dir)/'replay_four_drivers.tcl';p.write_text(s);return str(p)
     def run(self, state_in, **kwargs):
         import hashlib, io, json, math, subprocess, zipfile
         repo = "repos/Melihakbulut221/nssoc/"
         def api(path):
             return json.loads(subprocess.check_output(["gh", "api", repo + path]))
-        run = api("actions/runs/43808046126")
-        assert run["head_sha"] == "f87c521d905a71f43dbd42520aa21c5f0102d77b"
+        run = api("actions/runs/43809912857")
+        assert run["head_sha"] == "469c34d082e7d91a3b72fa5c0c74b018f2259fa1"
         assert run["conclusion"] == "success" and run["run_attempt"] == 1
-        digest = "0ef02965ce11d0e199a5fd9eac2a5391a5d9045fa6b782076873edc1e798e25a"
-        meta = api("actions/artifacts/14200151046")
+        digest = "d6c8fd5b34938d7a883f29ce3a887f0d2e77b5052f37e3766e69545263389d31"
+        meta = api("actions/artifacts/14200681484")
         assert not meta["expired"] and meta["digest"] == "sha256:" + digest
         assert meta["workflow_run"]["id"] == run["id"]
         assert meta["workflow_run"]["head_sha"] == run["head_sha"]
-        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14200151046/zip"])
+        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14200681484/zip"])
         assert hashlib.sha256(data).hexdigest() == digest
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
             expected = json.loads(archive.read("result.json"))
@@ -28,7 +37,7 @@ class TenthBoundedPostCTS(BoundedPostCTS):
         assert expected["accepted"] is False
         comparisons = {}
         for short, corner in CORNERS:
-            dirs = list(Path(self.step_dir).parent.glob("*-nssoc-tenthbefore" + short.lower()))
+            dirs = list(Path(self.step_dir).parent.glob("*-nssoc-replayfourbefore" + short.lower()))
             assert len(dirs) == 1, (short, dirs)
             assert not (dirs[0] / "unpropagated.rpt").read_text().strip()
             metrics = json.loads((dirs[0] / "state_out.json").read_text())["metrics"]
@@ -47,9 +56,9 @@ class TenthBoundedPostCTS(BoundedPostCTS):
         return super().run(state_in, **kwargs)
 
 @Flow.factory.register()
-class EopTenthDirect(Interfaces):
- Steps=([type('TenthBefore'+n,(BranchSTA,),dict(id='NSSOC.TenthBefore'+n,corner=c))for n,c in CORNERS]
-       +[TenthBoundedPostCTS]
+class EopReplayFourDirect(Interfaces):
+ Steps=([type('ReplayFourBefore'+n,(BranchSTA,),dict(id='NSSOC.ReplayFourBefore'+n,corner=c))for n,c in CORNERS]
+       +[ReplayFourBoundedPostCTS]
        +[type('Sized'+n,(BranchSTA,),dict(id='NSSOC.Sized'+n,corner=c))for n,c in CORNERS])
 if __name__=='__main__':
  from librelane.__main__ import cli
