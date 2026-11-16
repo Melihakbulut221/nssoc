@@ -1,4 +1,4 @@
-name: Fresh three-corner STA and repair on exact credit-sign CRC-upper mainchip CTS
+name: Measure targeted PCIe input setup and hold paths on reproduced driver trial
 on:
   workflow_dispatch:
 permissions:
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-driver-trial-derived-${{ github.run_id }}
+          name: credit-crc-targeted-input-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-driver-trial-native-${{ github.run_id }}
+          name: credit-crc-targeted-input-native-${{ github.run_id }}
           path: |
             credit-crc-driver-trial/run/
             credit-crc-driver-trial/result.json

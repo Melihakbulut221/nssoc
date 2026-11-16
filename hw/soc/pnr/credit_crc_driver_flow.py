@@ -61,9 +61,33 @@ class ResetBufferECO(ElectricalPostCTS):
         q = Path(self.step_dir) / "reset_buffer_eco.tcl"
         q.write_text(s)
         return str(q)
+TARGETED = r"""
+foreach {label instance} {
+ training {$auto$ff.cc:337:slice$183526}
+ rx_error {$auto$ff.cc:337:slice$172492}
+ rx_data7 {$auto$ff.cc:337:slice$172502}
+} {
+ set endpoint [get_pins "$instance/D"]
+ if {[llength $endpoint]!=1} {error "Missing exact mapped data pin $instance"}
+ foreach mode {max min} {
+  puts "%OL_CREATE_REPORT targeted_${label}_${mode}.rpt"
+  report_checks -to $endpoint -path_delay $mode -format full_clock_expanded -digits 6 -group_path_count 10 -endpoint_path_count 2
+  puts "%OL_END_REPORT"
+ }
+}
+"""
+class TargetedSTA(BranchSTA):
+    def get_script_path(self):
+        original=Path(super().get_script_path())
+        text=original.read_text()
+        import re
+        if re.search(r'^\s*exit(?:\s|$)',text,re.M):raise RuntimeError('Native STA exits before targeted report insertion')
+        output=Path(self.step_dir)/'targeted_native.tcl'
+        output.write_text(text+'\n'+TARGETED)
+        return str(output)
 @Flow.factory.register()
 class AckChipResetSized(Interfaces):
- Steps=[ResetBufferECO]+[type("Sized"+n,(BranchSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS]
+ Steps=[ResetBufferECO]+[type("Sized"+n,(TargetedSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS]
 if __name__=="__main__":
  from librelane.__main__ import cli
  cli()
