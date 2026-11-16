@@ -50,7 +50,7 @@ try:
   dirs=list((OUT/'run').glob('*-nssoc-sized'+short));assert len(dirs)==1
   assert not(dirs[0]/'unpropagated.rpt').read_text().strip()
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
- r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_DRIVER_SIZING_TRIAL_REQUIRES_REVIEW_AND_LOGIC_PROOF',scope='Three exact NEW EOP link-up drivers resized and one buf2 inserted at measured buf8 input with native graph/master/port guards and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
+ r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_INCREMENTAL_POSTCTS_REPAIR_REQUIRES_REVIEW',scope='Reconstruct qualified source and three driver resizes plus buf2 taper, then continue native bounded100 setup and1000 hold repair with unchanged propagated clocks, derates and constraints. Measure all3corners. Not routed or physical PHY acceptance.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'and p.suffix!='.zip'};save()
