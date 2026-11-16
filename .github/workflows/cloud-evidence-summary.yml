@@ -1,4 +1,4 @@
-name: ACK distance group-prefix arithmetic qualification
+name: ACK distance group-prefix arithmetic and replay traffic
 on:
   workflow_dispatch:
 permissions:
@@ -6,7 +6,7 @@ permissions:
 jobs:
   proof:
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -16,10 +16,13 @@ jobs:
           version: '2026-08-04'
           github-token: ${{ github.token }}
       - run: python3 scripts/qualify_ack_delta_prefix.py
+      - run: python3 scripts/qualify_ack_delta_traffic.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-delta-prefix-proof-${{ github.run_id }}
-          path: ack-delta-proof/
+          name: ack-delta-traffic-${{ github.run_id }}
+          path: |
+            ack-delta-proof/
+            ack-delta-traffic/
           if-no-files-found: error
           retention-days: 90
