@@ -1,4 +1,4 @@
-name: Qualify native SRAM fetch sequences across simulators
+name: Qualify clock-gated sequential cell composition
 on:
   workflow_dispatch:
 permissions:
@@ -33,15 +33,15 @@ jobs:
           test "$(git -C cvc-source rev-parse HEAD)" = 1c5e043ec33ef6f1fdbf38565501c944893a83cf
           make -C cvc-source/src -j2 cvc64 > cvc-build.log 2>&1
           python3 hw/soc/flow/prepare_ihp_native_boot.py
-      - name: Cross simulator native SRAM sequential reads writes masks and capture latency
-        run: python3 scripts/qualify_native_sram_sequence.py
+      - name: Compare native and derived sequential clock compositions
+        run: python3 scripts/qualify_clock_composition.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: native-sram-sequence-${{ github.run_id }}
+          name: clock-composition-${{ github.run_id }}
           path: |
-            sram-sequence-qualification/**/*.json
-            sram-sequence-qualification/**/*.log
+            clock-composition-qualification/**/*.json
+            clock-composition-qualification/**/*.log
             cvc-build.log
           retention-days: 90
           if-no-files-found: error
