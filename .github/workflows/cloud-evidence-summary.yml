@@ -1,4 +1,4 @@
-name: Fresh three-corner STA and repair on exact cached EOP mainchip CTS
+name: Repair measured link-up critical drivers in new EOP mapping
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/cloud_predecode_postcts.py
+          python3 -m py_compile scripts/credit_crc_driver_trial.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -31,13 +31,13 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Native before and after STA with electrical and setup hold repair
-        run: python3 scripts/cloud_predecode_postcts.py
+        run: python3 scripts/credit_crc_driver_trial.py
       - name: Collect derived diagnostics
         if: always()
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('hw/soc/out/cloud-predecode-postcts');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('credit-crc-driver-trial');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,14 +50,19 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-credit-crc-chip-postcts-derived-${{ github.run_id }}
+          name: eop-linkup-driver-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-credit-crc-chip-postcts-native-${{ github.run_id }}
-          path: hw/soc/out/cloud-predecode-postcts/
+          name: eop-linkup-driver-native-${{ github.run_id }}
+          path: |
+            credit-crc-driver-trial/run/
+            credit-crc-driver-trial/result.json
+            credit-crc-driver-trial/native.log
+            credit-crc-driver-trial/config.json
+            credit-crc-driver-trial/initial.json
           if-no-files-found: error
           retention-days: 90
