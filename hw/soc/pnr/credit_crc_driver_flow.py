@@ -54,10 +54,19 @@ foreach {label pname count endpoint} {
 } {
  set port [$block findBTerm $pname]
  if {$port eq "NULL" || [$port getIoType] ne "INPUT"} {error "Input missing $pname"}
- set net [$port getNet]
- if {[$net getSigType] ne "SIGNAL" || [llength [$net getITerms]]!=1 || [llength [$net getBTerms]]!=1} {error "Input not isolated $pname"}
- set sink [lindex [$net getITerms] 0];set origin [$sink getInst]
- if {[$origin getName] ne $endpoint || [[$sink getMTerm] getName] ne "D" || [$sink getIoType] ne "INPUT"} {error "Wrong sink"}
+ # Insert only at the measured endpoint D branch; input buffers are preserved.
+ set origin [$block findInst $endpoint]
+ if {$origin eq "NULL"} {error "Measured endpoint missing"}
+ set sink [$origin findITerm D]
+ if {$sink eq "NULL" || [$sink getIoType] ne "INPUT"} {error "Measured endpoint D missing"}
+ set net [$sink getNet]
+ if {$net eq "NULL" || [$net getSigType] ne "SIGNAL"} {error "Endpoint net not signal"}
+ set driver_count 0
+ foreach pin [$net getITerms] {if {[$pin getIoType] eq "OUTPUT"} {incr driver_count}}
+ foreach bp [$net getBTerms] {if {[$bp getIoType] eq "INPUT"} {incr driver_count}}
+ if {$driver_count!=1} {error "Endpoint net must have exactly one driver"}
+ set original_iterm_count [llength [$net getITerms]]
+ puts "NSSOC_ENDPOINT_DELAY $label endpoint=$endpoint net=[$net getName] sinks=$original_iterm_count stages=$count"
  set supply {}
  foreach pin [$origin getITerms] {
   if {[[$pin getMTerm] getSigType] in {POWER GROUND}} {
@@ -81,7 +90,7 @@ foreach {label pname count endpoint} {
   set previous $next;lappend added $name
  }
  $sink connect $previous;dict set changed "$endpoint/D" $previous
- if {[llength [$net getITerms]]!=1 || [llength [$previous getITerms]]!=2} {error "Chain mismatch"}
+ if {[llength [$net getITerms]]!=$original_iterm_count || [llength [$previous getITerms]]!=2} {error "Chain mismatch"}
 }
 if {[llength $added]!=5 || [dict size $changed]!=3 || [llength [$block getInsts]]!=[dict size $before]+5} {error "ECO census"}
 foreach inst [$block getInsts] {
@@ -95,7 +104,7 @@ foreach inst [$block getInsts] {
  }
 }
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port net changed"}}
-puts "NSSOC_INPUT_DELAY_STRUCTURAL_PASS ports=3 cells=5"
+puts "NSSOC_ENDPOINT_DELAY_STRUCTURAL_PASS ports=3 cells=5"
 
 detailed_placement
 check_placement -verbose
