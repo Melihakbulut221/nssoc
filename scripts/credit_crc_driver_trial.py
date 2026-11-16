@@ -136,6 +136,29 @@ try:
   getter='get_ports'if kind=='port'else'get_pins';option='-through'if kind=='through'else'-to'
   commands+=['set target ['+getter+' {'+pin+'}]','if {[llength $target]!=1} {error "Remaining target not unique"}','foreach mode {max min} {',' puts "%OL_CREATE_REPORT targeted_'+label+'_${mode}.rpt"',' report_checks '+option+' $target -path_delay $mode -format full_clock_expanded -digits 6 -group_path_count 10 -endpoint_path_count 2',' puts "%OL_END_REPORT"','}']
  (OUT/'remaining-targets.json').write_text(json.dumps(remaining,indent=2));r['remaining_headroom_source']=dict(run=43787907036,artifact=14191054749,sha256=rd,internal_paths=internal_paths,branches=len(branches),external_endpoints=len(external))
+ # Authenticate all remaining through-branch and endpoint setup margins.
+ hrun=prior.api('actions/runs/43789231835');assert hrun['head_sha']=='92c753190b1eaae1492748b43c5c2f19f6fa119d' and hrun['conclusion']=='success' and hrun['run_attempt']==1
+ hm=prior.api('actions/artifacts/14191638958');hd='ffff873f4d54e1342a49bd93afa732d6a75194e834fa754c7465fe169661fd3c'
+ assert hm['workflow_run']['id']==43789231835 and hm['digest']=='sha256:'+hd and not hm['expired']
+ hb=subprocess.check_output(['gh','api',prior.REPO+'actions/artifacts/14191638958/zip']);assert hashlib.sha256(hb).hexdigest()==hd
+ with zipfile.ZipFile(io.BytesIO(hb))as hz:
+  hr=json.loads(hz.read('result.json'));assert hr['returncode']==0 and hr['sources_unchanged']
+  content=hz.read('remaining-targets.json');assert hashlib.sha256(content).hexdigest()==hr['outputs']['remaining-targets.json'];assert json.loads(content)==remaining and len(remaining)==122
+  assert sum(x['kind']=='through'for x in remaining)==109 and sum(x['kind']=='pin'for x in remaining)==12
+  assert [x['pin']for x in remaining if x['kind']=='port']==['eth_tx_er_o']
+  for item in remaining:
+   for step in ['2-nssoc-sizedslow','3-nssoc-sizedtypical','4-nssoc-sizedfast']:
+    name=f"run/{step}/targeted_{item['label']}_max.rpt";content=hz.read(name);assert hashlib.sha256(content).hexdigest()==hr['outputs'][name]
+    vals=re.findall(r'([-+\d.]+)\s+slack\s+\(',content.decode());assert vals and min(map(float,vals))>1.0
+ r['remaining_delay_setup_source']=dict(run=43789231835,artifact=14191638958,sha256=hd,internal_branches=109,input_endpoints=12,output_ports=1)
+ entries=[]
+ for item in remaining:
+  if item['kind']=='port':continue
+  instance,terminal=item['pin'].rsplit('/',1);driver=item.get('expected_driver','__single_driver__')
+  fields=[item['label'],instance,terminal,driver];assert all(not any(c in x for c in '{}\n\r\\')for x in fields)
+  entries.append(' '+' '.join('{'+x+'}'for x in fields))
+ assert len(entries)==121
+ (OUT/'remaining-eco.tcl').write_text('\nset feedback_before {};set feedback_ports {};set feedback_new {};set feedback_changed {}\nset feedback_count [llength [$block getInsts]]\nforeach inst [$block getInsts] {\n foreach pin [$inst getITerms] {dict set feedback_before "[$inst getName]/[[$pin getMTerm] getName]" [$pin getNet]}\n}\nforeach port [$block getBTerms] {dict set feedback_ports [$port getName] [$port getNet]}\nforeach {label instance terminal expected_driver} {\nENTRIES\n} {\n set origin [$block findInst $instance]\n if {$origin eq "NULL"} {error "Feedback cell missing"}\n set sink [$origin findITerm $terminal]\n if {$sink eq "NULL" || [$sink getIoType] ne "INPUT"} {error "Feedback input missing"}\n set net [$sink getNet]\n if {$net eq "NULL" || [$net getSigType] ne "SIGNAL" || [llength [$net getBTerms]]!=0} {error "Feedback net invalid"}\n set drivers {}\n foreach pin [$net getITerms] {if {[$pin getIoType] eq "OUTPUT"} {lappend drivers "[[$pin getInst] getName]/[[$pin getMTerm] getName]"}}\n if {[llength $drivers]!=1 || ($expected_driver ne "__single_driver__" && [lindex $drivers 0] ne $expected_driver)} {error "Feedback driver mismatch"}\n set old_count [llength [$net getITerms]];set supply {}\n foreach pin [$origin getITerms] {\n  set kind [[$pin getMTerm] getSigType]\n  if {$kind in {POWER GROUND}} {\n   set rail [$pin getNet]\n   if {$rail eq "NULL"} {error "Feedback supply missing"}\n   if {[dict exists $supply $kind] && [dict get $supply $kind] ne $rail} {error "Ambiguous feedback supply"}\n   dict set supply $kind $rail\n  }\n }\n if {[dict size $supply]!=2} {error "Feedback supply census"}\n set name nssoc_remaining_hold_$label\n if {[$block findInst $name] ne "NULL" || [$block findNet ${name}_out] ne "NULL"} {error "Feedback ECO collision"}\n set cell [odb::dbInst_create $block $delay_master $name];set next [odb::dbNet_create $block ${name}_out]\n lassign [$origin getLocation] x y;$cell setLocation $x $y;$cell setOrient [$origin getOrient];$cell setPlacementStatus PLACED\n foreach pin [$cell getITerms] {\n  set kind [[$pin getMTerm] getSigType];set pn [[$pin getMTerm] getName]\n  if {$kind in {POWER GROUND}} {$pin connect [dict get $supply $kind]} elseif {$pn ni {A X}} {error "Unknown feedback delay pin"}\n }\n [$cell findITerm A] connect $net;[$cell findITerm X] connect $next;$sink connect $next\n dict set feedback_changed "$instance/$terminal" $next;lappend feedback_new $name\n if {[llength [$net getITerms]]!=$old_count || [llength [$next getITerms]]!=2} {error "Feedback chain incidence"}\n}\nif {[llength $feedback_new]!=121 || [dict size $feedback_changed]!=121 || [llength [$block getInsts]]!=$feedback_count+121} {error "Feedback ECO census"}\nforeach inst [$block getInsts] {\n if {[$inst getName] in $feedback_new} {continue}\n foreach pin [$inst getITerms] {\n  set key "[$inst getName]/[[$pin getMTerm] getName]";set expected [dict get $feedback_before $key]\n  if {[dict exists $feedback_changed $key]} {set expected [dict get $feedback_changed $key]}\n  if {[$pin getNet] ne $expected} {error "Unrelated feedback incidence changed"}\n }\n}\nforeach port [$block getBTerms] {if {[$port getNet] ne [dict get $feedback_ports [$port getName]]} {error "Feedback ECO changed port"}}\nputs "NSSOC_REMAINING_HOLD_STRUCTURAL_PASS branches=121 cells=121"\n'.replace('ENTRIES','\n'.join(entries)))
  (OUT/'internal-targets.tcl').write_text('\n'.join(commands)+'\n')
  (OUT/'internal-targets.json').write_text(json.dumps(catalog,indent=2))
  r['internal_endpoint_count']=len(catalog);r['internal_endpoint_source']=dict(run=43782739036,artifact=14189336194,sha256=dh)
@@ -157,13 +180,13 @@ try:
    if min(slacks)>1:selected.append(item['pin'])
  assert sorted(selected)==['u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_ADDR[3]', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_ADDR[5]', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[2].u_mem/A_MEN', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[3].u_mem/A_MEN', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[4].u_mem/A_MEN']
  r['safe_internal_delay_pins']=selected;r['paired_headroom_artifact']=14189917738
- flow=ROOT/'hw/soc/pnr/credit_crc_driver_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,OUT/'internal-targets.tcl',OUT/'internal-targets.json',OUT/'feedback-targets.json',OUT/'feedback-eco.tcl',OUT/'remaining-targets.json',Path(__file__),prior.SOURCE/'prepared/physical.sdc']}
+ flow=ROOT/'hw/soc/pnr/credit_crc_driver_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,OUT/'internal-targets.tcl',OUT/'internal-targets.json',OUT/'feedback-targets.json',OUT/'feedback-eco.tcl',OUT/'remaining-targets.json',OUT/'remaining-eco.tcl',Path(__file__),prior.SOURCE/'prepared/physical.sdc']}
  command=[str(app),'python',str(flow),'--flow','AckChipResetSized','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(cfg)]
  (OUT/'run').mkdir()
  with (OUT/'native.log').open('w')as log:code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
  r['returncode']=code;assert code==0
  assert 'NSSOC_ENDPOINT_DELAY_STRUCTURAL_PASS ports=18 cells=20' in (OUT/'native.log').read_text()
- assert 'NSSOC_ETH_OUTPUT_DELAY_STRUCTURAL_PASS ports=9 cells=18' in (OUT/'native.log').read_text()
+ assert 'NSSOC_ETH_OUTPUT_DELAY_STRUCTURAL_PASS ports=10 cells=20' in (OUT/'native.log').read_text()
  assert all(prior.sha(Path(p))==h for p,h in protected.items())
  measurements={}
  for short,corner in prior.CORNERS:
@@ -178,7 +201,8 @@ try:
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
  assert 'NSSOC_SAFE_INTERNAL_HOLD_STRUCTURAL_PASS cells=5 endpoints=5' in (OUT/'native.log').read_text()
  assert 'NSSOC_FEEDBACK_HOLD_STRUCTURAL_PASS branches=129 cells=129' in (OUT/'native.log').read_text()
- r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_EXPANDED_IO_DELAY_REQUIRES_LOGIC_AND_TIMING_REVIEW',scope='Three driver resizes plus twenty PCIe, eighteen Ethernet output, five safe SRAM and129 isolated feedback delay cells; native incidence guards and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
+ assert 'NSSOC_REMAINING_HOLD_STRUCTURAL_PASS branches=121 cells=121' in (OUT/'native.log').read_text()
+ r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_EXPANDED_IO_DELAY_REQUIRES_LOGIC_AND_TIMING_REVIEW',scope='Three driver resizes plus295 delay cells:20 PCIe,20 Ethernet output,5 SRAM,129 feedback,109 remaining internal branches and12 remaining PCIe inputs; native incidence guards and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'and p.suffix!='.zip'};save()
