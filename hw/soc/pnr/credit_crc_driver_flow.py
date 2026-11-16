@@ -205,9 +205,21 @@ foreach {label instance terminal} {
  {internal_241} {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[3].u_mem} {A_MEN}
  {internal_242} {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[4].u_mem} {A_MEN}
 } {
- set origin [$block findInst $instance]
- if {$origin eq "NULL"} {error "Internal endpoint missing"}
- set sink [$origin findITerm $terminal]
+ # OpenSTA prints normalized bus brackets; OpenDB may retain Verilog escapes.
+ set matches {}
+ foreach candidate [$block getInsts] {
+  set actual [$candidate getName]
+  if {[string map {\\ {}} $actual] eq $instance} {lappend matches $candidate}
+ }
+ if {[llength $matches]!=1} {error "Internal endpoint not uniquely resolved: $instance"}
+ set origin [lindex $matches 0];set instance [$origin getName]
+ set pins {}
+ foreach candidate [$origin getITerms] {
+  if {[string map {\\ {}} [[$candidate getMTerm] getName]] eq $terminal} {lappend pins $candidate}
+ }
+ if {[llength $pins]!=1} {error "Internal terminal not uniquely resolved: $terminal"}
+ set sink [lindex $pins 0];set terminal [[$sink getMTerm] getName]
+ puts "NSSOC_INTERNAL_ENDPOINT_RESOLVED $label $instance/$terminal"
  if {$sink eq "NULL" || [$sink getIoType] ne "INPUT"} {error "Internal endpoint is not input"}
  set net [$sink getNet]
  if {$net eq "NULL" || [$net getSigType] ne "SIGNAL"} {error "Internal endpoint is not signal"}
