@@ -1,3 +1,9 @@
+## Targeted PCIe input max/min STA dispatched
+
+Run43778028957/8b14f4b12f02b090ea852aaa9e18189ae032c0b0 on codex/credit-crc-targeted-input-sta. Base504756 three-driver trial. Re-authenticates original e59 repaired ODBd4b55e and reproduces the same three guarded master changes/legal placement. Adds targeted native report_checks after each independent propagated-clock corner STA: FF183526/D(training), FF172492/D(rx_error), FF172502/D(rx_data7), both max/min, endpoint_path_count2/group_path_count10. Exactly one pin required; every report must contain Startpoint and Endpoint, or fail. No SDC, clock, derate, delay gate or accept threshold changes. New runner results are measurement evidence only, not automatically equivalent/final timing acceptance.
+
+Artifacts credit-crc-targeted-input-derived/native-RUN. Wait for actual targeted setup margins before adding PCIe input delay. Ethernet output pair headroom already measured in43777683538 but no delay ECO yet. Existing queue postCTS43775507971, old/new mapped boot43771666469/43777168665, short-length analog43776904300 are still authoritatively running. No duplicates/restarts. Experimental workflow is not merged into integration. Full chip production objective remains OPEN.
+
 ## Paired residual hold/setup path evidence: output headroom, missing input max paths
 
 Diagnostic43777683538/109dc3da02d45dea92dc31650f8bfa4c2d4fc3a1 SUCCESS; artifact14186468674 SHA25658d96340f095a63c9e597bb2d3526407eb638c68c2c794675922776ea9f5b4bc verified. Exact three-driver trial5e8a ODB lineage only. Worker authenticates original derived archive and all included reports. Full pairing saved at docs/timing/credit-crc-hold-setup-pairs-43777683538.json.
