@@ -37,7 +37,7 @@ jobs:
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('peer-quarantine-nor');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('peer-advertiser-place');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,27 +50,27 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: peer-quarantine-nor-incremental-repair-derived-${{ github.run_id }}
+          name: peer-advertiser-place-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: peer-quarantine-nor-incremental-repair-native-${{ github.run_id }}
+          name: peer-advertiser-place-incremental-repair-native-${{ github.run_id }}
           path: |
-            peer-quarantine-nor/run/
-            peer-quarantine-nor/result.json
-            peer-quarantine-nor/native.log
-            peer-quarantine-nor/config.json
-            peer-quarantine-nor/initial.json
+            peer-advertiser-place/run/
+            peer-advertiser-place/result.json
+            peer-advertiser-place/native.log
+            peer-advertiser-place/config.json
+            peer-advertiser-place/initial.json
           if-no-files-found: error
           retention-days: 90
       - name: Publish compact authenticated measurements without large report download
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: peer-quarantine-nor-summary-${{ github.run_id }}
-          path: peer-quarantine-nor/result.json
+          name: peer-advertiser-place-summary-${{ github.run_id }}
+          path: peer-advertiser-place/result.json
           retention-days: 90
           if-no-files-found: error
