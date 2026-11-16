@@ -213,7 +213,7 @@ with zipfile.ZipFile(archive) as z:
     def terminals(d):
         value=d['logical_terminals']
         return set(value.values()) if isinstance(value,dict) else set(value)
-    watched=set().union(*(terminals(d) for d in selected))-{'avdd','avss','0'}
+    watched=set().union(*(terminals(d) for d in selected))-{'avdd','avss','bulk','0'}
     neighbors=[d for d in devices if d['model']=='npn13g2' and terminals(d)&watched]
     models=[n for n in z.namelist() if n.endswith('/candidate-model.cir')]
     assert len(models)==1
@@ -236,3 +236,70 @@ with zipfile.ZipFile(archive) as z:
                 scope='Exact rejected drive2 circuit topology and native waveform terminal voltages. Diagnostic only; no shifted acceptance gates.')
     (out/'divider-topology.json').write_text(json.dumps(record,indent=2))
     (out/'candidate-contract.json').write_bytes(contract_data)
+
+# Linear wire network only: native rppd/MIM/HBT devices remain excluded.
+# Shortest series path is an upper bound on effective R, not a delay estimate.
+import re,heapq,math
+def spice_number(value):
+    match=re.fullmatch(r'([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)([a-zA-Z]*)',value)
+    assert match,value
+    scales={'':1.,'t':1e12,'g':1e9,'meg':1e6,'k':1e3,'m':1e-3,'u':1e-6,'n':1e-9,'p':1e-12,'f':1e-15}
+    suffix=match[2].lower();assert suffix in scales,value
+    return float(match[1])*scales[suffix]
+graph={};caps=[];resistors=[]
+for line in model_data.decode().splitlines():
+    fields=line.split()
+    if not fields or fields[0][0].lower() not in ('r','c') or len(fields)<4:continue
+    name,left,right,value=fields[:4]
+    left=left.lower();right=right.lower()
+    value=spice_number(value);assert math.isfinite(value)
+    if name[0].lower()=='r':
+        assert value>0
+        graph.setdefault(left,[]).append((right,value,name))
+        graph.setdefault(right,[]).append((left,value,name))
+        resistors.append((name,left,right,value))
+    else:
+        assert value>=0
+        caps.append((name,left,right,value))
+def shortest(left,right):
+    queue=[(0.,left)];dist={left:0.};parent={}
+    while queue:
+        cost,node=heapq.heappop(queue)
+        if cost!=dist[node]:continue
+        if node==right:
+            path=[];cur=right
+            while cur!=left:
+                prev,name,value=parent[cur];path.append(dict(name=name,ohm=value));cur=prev
+            return dict(series_path_upper_bound_ohm=cost,resistors=list(reversed(path)))
+        for nxt,value,name in graph.get(node,[]):
+            alt=cost+value
+            if alt<dist.get(nxt,float('inf')):
+                dist[nxt]=alt;parent[nxt]=(node,name,value);heapq.heappush(queue,(alt,nxt))
+    raise AssertionError(('No metal path',left,right))
+pairs=[]
+for cap_id,out_id,base_ids in [(425,242,[273]),(426,241,[274]),(427,262,[294]),(428,261,[297]),(423,201,[295,296]),(424,202,[298,299])]:
+    cap=next(d for d in devices if d['native_id']==cap_id)
+    # Match terminal names, never assume sampler collector IDs.
+    source_net=cap['logical_terminals']['MIM_TOP'];target_net=cap['logical_terminals']['MIM_BTM']
+    source_devices=[d for d in devices if d['model']=='npn13g2' and d['logical_terminals'].get('C')==source_net]
+    assert source_devices
+    source_id=min(d['native_id']for d in source_devices)
+    for label,left,right in [('source-to-mim-top','w_t'+str(source_id)+'_c','w_t'+str(cap_id)+'_mim_top')]+[
+        ('mim-bottom-to-base','w_t'+str(cap_id)+'_mim_btm','w_t'+str(bid)+'_b')for bid in base_ids]:
+        answer=shortest(left,right)
+        assert left in graph and right in graph
+        reachable={left};stack=[left]
+        while stack:
+            node=stack.pop()
+            for nxt,_,_ in graph[node]:
+                if nxt not in reachable:reachable.add(nxt);stack.append(nxt)
+        touching=[c for c in caps if c[1]in reachable or c[2]in reachable]
+        pairs.append(dict(cap_id=cap_id,label=label,left=left,right=right,logical_source=source_net,logical_target=target_net,
+                          wire_component_nodes=len(reachable),touching_linear_capacitance_f=sum(c[3]for c in touching),
+                          capacitance_scope='Sum of each linear C touching component once, includes coupling, excludes intrinsic device capacitance; not an effective load.',
+                          **answer))
+(out/'divider-wire-network.json').write_text(json.dumps(dict(
+ source_run=43837314582,model_sha256=hashlib.sha256(model_data).hexdigest(),
+ resistor_cards=len(resistors),capacitor_cards=len(caps),pairs=pairs,
+ scope='Native linear wire network only. Series shortest path bounds effective resistance from above, not a lumped RC delay or proof of physical qualification.',
+ full_phy_accepted=False,physical_geometry_matches=False),indent=2))

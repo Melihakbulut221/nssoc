@@ -1,4 +1,4 @@
-name: Inspect exact divider topology and terminal swing in rejected drive2
+name: Measure actual divider attachment wire resistance and capacitance
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: phy-divider-topology-${{ github.run_id }}
+          name: phy-divider-wire-network-${{ github.run_id }}
           path: diagnosis/
           if-no-files-found: error
           retention-days: 90
