@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"mos650-metal-rc";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-metal-rc-inputs.json";PINS="scripts/cdr-mos650-metal-rc-pins.json"
 METHODS="docs/evidence/mos650-metal-rc-original-methods.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/select-width2-current-clock-mim-rc"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/compact650-mim-rc"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
