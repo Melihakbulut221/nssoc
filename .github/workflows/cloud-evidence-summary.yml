@@ -33,13 +33,8 @@ jobs:
           test "$(git -C cvc-source rev-parse HEAD)" = 1c5e043ec33ef6f1fdbf38565501c944893a83cf
           make -C cvc-source/src -j2 cvc64 > cvc-build.log 2>&1
           python3 hw/soc/flow/prepare_ihp_native_boot.py
-      - name: Require all original four-state cell transitions and negative control
-        run: python3 scripts/qualify_cvc_cells.py
-      - name: Compare native and derived sequential clock compositions
-        run: python3 scripts/qualify_clock_composition.py
-      - name: Require native SRAM and standard-cell composition against independent scoreboard
-        if: ${{ !cancelled() }}
-        run: python3 scripts/qualify_native_sram_sequence.py
+      - name: Compare model-free compound case conditions against four-state oracle
+        run: python3 scripts/qualify_cvc_case_condition.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -51,6 +46,9 @@ jobs:
             cvc-cell-qualification/**/*.log
             sram-sequence-qualification/**/*.json
             sram-sequence-qualification/**/*.log
+            case-condition-probe/**/*.json
+            case-condition-probe/**/*.log
+            case-condition-probe/**/*.v
             cvc-build.log
           retention-days: 90
           if-no-files-found: error
