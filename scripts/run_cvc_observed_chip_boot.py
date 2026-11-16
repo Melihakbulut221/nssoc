@@ -61,26 +61,11 @@ try:
  signals+=extras
  r['operand_inventory']=dict(run=43783831123,artifact=14189567411,sha256=ihash,exact_extra_signals=len(extras))
  # Bind every boundary observation to the exact restored mapped net inventory.
- boundary=[("if_req","instr_req",1),("if_gnt","instr_gnt",1),
-           ("if_addr","instr_addr",32),("if_valid","instr_rvalid",1),
-           ("if_data","instr_rdata",32),("if_err","instr_err",1),
-           ("data_we","bus_data_we",1),("data_wdata","bus_data_wdata",32)]
- alternatives={
- "instr_req":["u_ibex.instr_req_o","u_bus.mi_req_i"],
- "instr_gnt":["u_ibex.instr_gnt_i","u_bus.mi_gnt_o"],
- "instr_addr":["u_ibex.instr_addr_o","u_bus.mi_addr_i"],
- "instr_rvalid":["u_ibex.instr_rvalid_i","u_bus.mi_rvalid_o"],
- "instr_rdata":["u_ibex.instr_rdata_i","u_bus.mi_rdata_o"],
- "instr_err":["u_ibex.instr_err_i","u_bus.mi_err_o"],
- "bus_data_we":["u_bus.md_we_i"],"bus_data_wdata":["u_bus.md_wdata_i"]}
- resolved=[]
- for label,name,width in boundary:
-  candidates=[n for n in [name]+alternatives.get(name,[]) if n in mapped["core_signals"] and len(mapped["core_signals"][n]["bits"])==width]
-  assert candidates,("Missing exact boundary",name)
-  bits=mapped["core_signals"][candidates[0]]["bits"]
-  assert all(mapped["core_signals"][n]["bits"]==bits for n in candidates),("Conflicting aliases",candidates)
-  resolved.append((label,candidates[0],width))
- boundary=resolved
+ # Primary combinational IF aliases were removed by synthesis. Observe retained
+ # FIFO state and native SRAM ports, without claiming full IF handshake coverage.
+ boundary=[('data_we', 'bus_data_we', 1), ('data_wdata', 'bus_data_wdata', 32), ('fetch_addr', 'u_ibex.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.fetch_addr_q', 32), ('stored_addr', 'u_ibex.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.stored_addr_q', 32), ('fetch_fifo_words', 'u_ibex.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.fifo_i.rdata_q', 96), ('fetch_fifo_errors', 'u_ibex.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.fifo_i.err_q', 3), ('fetch_outstanding', 'u_ibex.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.rdata_outstanding_q', 2), ('fetch_valid_req', 'u_ibex.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.valid_req_q', 1), ('fetch_discard_req', 'u_ibex.u_ibex_core.if_stage_i.gen_prefetch_buffer.prefetch_buffer_i.discard_req_q', 1)]
+ r['fetch_observation_scope']='Retained prefetch FIFO state and SRAM macro ports; original IF request/response aliases absent. Not full boundary handshake coverage.'
+ r['fetch_inventory']=dict(run=43797213202,artifact=14194957387,sha256='acf4d1bfe724714e585bf421a23b2e927cd05882f3de3f7494f8c8dde3a5c39d')
  signals+=boundary
  suffixes={"row_en","row_we","row_addr","row_din","row_bm","row_dout",
            "func_row_en","func_row_we","func_row_addr","func_row_din","func_row_bm",
@@ -117,7 +102,7 @@ try:
         "end","endmodule"]
  observer.write_text(chr(10).join(lines)+chr(10))
 
- r["observer"]=dict(sha256=digest(observer),signals=signals,source_map_run=43768772862,source_map_sha256=digest(mapped_path),read_only=True,cycle_bound_unchanged=4000000,dense_cycle_windows=[[2179000,2185000],[2370000,2374000]],purpose='Observe instruction request/response and native SRAM row boundary plus low-address firmware writes. Preserve original firmware/netlist/watchdog and four-million-cycle acceptance.')
+ r["observer"]=dict(sha256=digest(observer),signals=signals,source_map_run=43768772862,source_map_sha256=digest(mapped_path),read_only=True,cycle_bound_unchanged=4000000,dense_cycle_windows=[[2179000,2185000],[2370000,2374000]],purpose='Observe retained prefetch FIFO state and native SRAM row ports plus low-address firmware writes; full IF handshake aliases unavailable. Preserve original firmware/netlist/watchdog and four-million-cycle acceptance.')
  cc.append(str(observer))
 
  r.update(qualification_sha256=digest(ROOT/'cvc-cell-qualification/result.json'),input_manifest_sha256=digest(inp),derived_sha256=digest(model),compiler_sha256=digest(cvc))
