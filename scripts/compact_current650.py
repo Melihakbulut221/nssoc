@@ -112,3 +112,7 @@ r=dict(status='GENERATED_COMPACT_CURRENT650_REQUIRES_DRC_LVS_FRESH_RC_AND_ELECTR
        full_phy_accepted=False,physical_acceptance=False,qualified_pex=False,
        limitation='Native DRC/LVS and complete actual RC/electrical validation pending. No LEF/mainchip integration or production acceptance.')
 (out/'compact-result.json').write_text(json.dumps(r,indent=2))
+
+def text_rows(layout,cell):
+    return [dict(layer=str(layout.get_info(li)),string=sh.text.string,x=sh.text.x,y=sh.text.y,trans=str(sh.text.trans)) for li in layout.layer_indexes() for sh in cell.each_shape(li) if sh.is_text()]
+(out/'text-diagnostic.json').write_text(json.dumps(dict(source=text_rows(L,old),candidate=text_rows(L,new),serialized=text_rows(check,check.top_cell()),offsets=shift),indent=2))
