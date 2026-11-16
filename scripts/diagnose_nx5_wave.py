@@ -246,8 +246,25 @@ def spice_number(value):
     scales={'':1.,'t':1e12,'g':1e9,'meg':1e6,'k':1e3,'m':1e-3,'u':1e-6,'n':1e-9,'p':1e-12,'f':1e-15}
     suffix=match[2].lower();assert suffix in scales,value
     return float(match[1])*scales[suffix]
+def parent_cards(text, target):
+    scope=None;selected=[];seen=0
+    for line in text.splitlines():
+        fields=line.split()
+        if not fields:continue
+        if fields[0].lower()=='.subckt':
+            assert scope is None, 'Nested subcircuit'
+            scope=fields[1]
+            if scope==target:seen+=1
+            continue
+        if fields[0].lower()=='.ends':
+            assert scope is not None
+            scope=None
+            continue
+        if scope==target:selected.append(line)
+    assert scope is None and seen==1, (scope,seen,target)
+    return selected
 graph={};caps=[];resistors=[]
-for line in model_data.decode().splitlines():
+for line in parent_cards(model_data.decode(),contract['model']):
     fields=line.split()
     if not fields or fields[0][0].lower() not in ('r','c') or len(fields)<4:continue
     name,left,right,value=fields[:4]
@@ -261,6 +278,7 @@ for line in model_data.decode().splitlines():
     else:
         assert value>=0
         caps.append((name,left,right,value))
+assert len(resistors)==contract['metal_R'] and len(caps)==contract['metal_C'], (len(resistors),len(caps))
 def shortest(left,right):
     queue=[(0.,left)];dist={left:0.};parent={}
     while queue:
