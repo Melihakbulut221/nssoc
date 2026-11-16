@@ -50,4 +50,34 @@ r=dict(source_head=os.environ['GITHUB_SHA'],source_gds_sha256=hashlib.sha256(dat
        source_unchanged=hashlib.sha256(gds.read_bytes()).hexdigest()==hashlib.sha256(data).hexdigest(),
        geometry_modified=False,full_phy_accepted=False,
        scope='Read-only exact650 hierarchy and candidate band-boundary audit. Crossings require explicit rerouting, never cutting or dropping material. Parent remainder is full geometry minus union of child geometry; overlapping material ownership is not resolved by this audit.')
+
+# Locate cuts with a full 1um clear margin from all non-trunk material.
+# This is a feasibility test, not permission to discard crossing TM1.
+cut_plans=[]
+for gap in gaps:
+    candidates=range(gap['low_dbu']+1000,gap['high_dbu']-999,5)
+    forbidden=[]
+    for (layer,datatype),region in parent.items():
+        if (layer,datatype)==(126,0):continue
+        for poly in region.each():
+            box=poly.bbox()
+            if box.top>=gap['low_dbu'] and box.bottom<=gap['high_dbu']:
+                forbidden.append((box.bottom-1000,box.top+1000))
+    allowed=[y for y in candidates if not any(lo<=y<=hi for lo,hi in forbidden)]
+    cut=min(allowed,key=lambda y:abs(y-gap['cut_dbu']))if allowed else None
+    trunks=[]
+    if cut is not None:
+        for poly in parent.get((126,0),db.Region()).each():
+            box=poly.bbox()
+            if box.bottom<cut<box.top:
+                trunks.append(dict(bbox_dbu=bounds(box),rectangle=poly.area()==box.area(),
+                                   area_dbu2=poly.area()))
+    cut_plans.append(dict(lower=gap['lower'],upper=gap['upper'],low_dbu=gap['low_dbu'],
+                          high_dbu=gap['high_dbu'],selected_cut_dbu=cut,
+                          nontrunk_clearance_dbu=1000,allowed_grid_sites=len(allowed),
+                          crossing_tm1_polygons=trunks))
+r['cut_feasibility']=cut_plans
+r['all_boundaries_have_nontrunk_clear_cut']=all(x['selected_cut_dbu']is not None for x in cut_plans)
+r['no_geometry_change_or_electrical_acceptance']=True
+
 (out/'result.json').write_text(json.dumps(r,indent=2))
