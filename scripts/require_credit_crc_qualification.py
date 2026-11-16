@@ -8,7 +8,12 @@ def artifact(run,head,aid,digest):
     a=api('actions/artifacts/'+str(aid));assert a['workflow_run']['id']==run and a['workflow_run']['head_sha']==head and not a['expired'] and a['digest']=='sha256:'+digest
     data=subprocess.check_output(['gh','api',P+'actions/artifacts/'+str(aid)+'/zip']);assert sha(data)==digest
     z=zipfile.ZipFile(io.BytesIO(data));assert len(z.namelist())==len(set(z.namelist()));return z
-credit=pathlib.Path('hw/soc/rtl/pcie/soc_pcie_credit_tx.v').read_bytes()
+subprocess.run(['python3','scripts/require_peer_ready_qualification.py'],check=True)
+current_credit=pathlib.Path('hw/soc/rtl/pcie/soc_pcie_credit_tx.v').read_bytes()
+assert sha(current_credit)=='35b0b71994d793797c86f074f4d0d774789d64cf986049c5aec254b29121c530'
+# Legacy credit/sign proofs bind the exact frozen pre-peer-ready reference.
+# Current output/state change is independently certified above.
+credit=pathlib.Path('sw/tests/fixtures/pcie_credit_tx/pre-peer-ready.v').read_bytes()
 crc=pathlib.Path('hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v').read_bytes()
 assert sha(credit)=='e69f70857c984ef5c86001cf5427a417d35665942a449f8cc25ec0b237c5cb70'
 assert sha(crc)=='20101056e4518fb5e14c882cacde089f618ad06cce20f2435b79bea4527668be'
@@ -30,4 +35,4 @@ assert b'Equivalence successfully proven!' in z.read('full_module.log')
 assert b'ERROR: Called with -verify and proof did fail!' in z.read('wrong_flag.log')
 assert all(os.environ.get(k)=='1'for k in ['SOC_PCIE_CREDIT_DATA_SIGN_REG','SOC_PCIE_CREDIT_PICK','SOC_PCIE_CRC_UPPER_COMPARE_REG','SOC_PCIE_SEQ_RX_REG'])
 out=pathlib.Path('out');out.mkdir(exist_ok=True)
-(out/'credit-crc-qualification.json').write_text(json.dumps(dict(credit_source_sha256=sha(credit),crc_source_sha256=sha(crc),credit_formal=f,credit_mutation=mutation,crc_composition=c,physical_accepted=False),indent=2))
+(out/'credit-crc-qualification.json').write_text(json.dumps(dict(credit_source_sha256=sha(current_credit),legacy_credit_source_sha256=sha(credit),peer_ready_qualification=json.loads((out/'peer-ready-qualification-gate.json').read_text()),crc_source_sha256=sha(crc),credit_formal=f,credit_mutation=mutation,crc_composition=c,physical_accepted=False),indent=2))

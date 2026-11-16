@@ -24,7 +24,7 @@ assert q['crc_source_sha256']==sha('hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v')
 for knob in ['SOC_PCIE_CREDIT_DATA_SIGN_REG','SOC_PCIE_CRC_UPPER_COMPARE_REG']:
  assert os.environ[knob]=='1' and '-D'+knob in ys
 new_registers={}
-for suffix in ['.b_di_negative','.b_dd_negative','.crc_upper_ok']:
+for suffix in ['.b_di_negative','.b_dd_negative','.crc_upper_ok','.peer_ready']:
  selected=[(n,v)for n,v in m['netnames'].items()if n.endswith(suffix)]
  assert len(selected)==1,(suffix,selected)
  name,net=selected[0];assert len(net['bits'])==1 and isinstance(net['bits'][0],int)
@@ -32,7 +32,7 @@ for suffix in ['.b_di_negative','.b_dd_negative','.crc_upper_ok']:
  assert len(drivers)==1 and drivers[0][1]['type'].startswith('sg13g2_df'),(name,drivers)
  assert drivers[0][1]['connections']['CLK']==m['ports']['pcie_clk_i']['bits']
  new_registers[name]={'bit':bit,'cell':drivers[0][0],'type':drivers[0][1]['type']}
-assert len({v['bit']for v in new_registers.values()})==3
+assert len({v['bit']for v in new_registers.values()})==4
 
 assert os.environ['SOC_PCIE_REPLAY_CRC_SELECT']=='1' and '-DSOC_PCIE_REPLAY_CRC_SELECT' in ys
 assert os.environ['SOC_PCIE_RX_CURSOR_LOCAL_RESET']=='1' and '-DSOC_PCIE_RX_CURSOR_LOCAL_RESET' in ys
@@ -108,6 +108,9 @@ result['ack_delta_group_prefix_enabled']=True
 result['rx_eop_registers']=rxeop
 result['rx_eop_origins']=sorted(rxorigins)
 result['eop_qualification']=json.loads(P('out/eop-flags-qualification.json').read_text())
+result['peer_ready_qualification']=json.loads(P('out/peer-ready-qualification-gate.json').read_text())
+assert result['peer_ready_qualification']['current']['candidate_sha256']==sha('hw/soc/rtl/pcie/soc_pcie_credit_tx.v')
+result['inputs']['hw/soc/rtl/pcie/soc_pcie_credit_tx.v']=sha('hw/soc/rtl/pcie/soc_pcie_credit_tx.v')
 result['credit_crc_registers']=new_registers
 result['credit_crc_qualification']=q
 P('out').mkdir(exist_ok=True);P('out/mapping.json').write_text(json.dumps(result,indent=2))
