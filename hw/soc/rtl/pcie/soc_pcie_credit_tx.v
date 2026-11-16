@@ -24,11 +24,15 @@ module soc_pcie_credit_tx (
     reg [11:0] dl[0:2],dc[0:2];
     reg [2:0] seen,hi,di;
     reg confirmed;
+    // Precompute the peer-ready conjunction alongside its source registers.
+    // External reset/link/local-init qualification remains combinational.
+    reg peer_ready;
+
     integer i;
     wire all_seen=&seen;
     assign peer_init1_done_o=rst_ni && link_up_i && all_seen;
     assign peer_init2_seen_o=rst_ni && link_up_i && confirmed;
-    assign initialized_o=peer_init1_done_o && confirmed && local_init_done_i;
+    assign initialized_o=rst_ni && link_up_i && peer_ready && local_init_done_i;
     assign header_limit_o={hl[2],hl[1],hl[0]};
     assign header_consumed_o={hc[2],hc[1],hc[0]};
     assign data_limit_o={dl[2],dl[1],dl[0]};
@@ -332,12 +336,12 @@ module soc_pcie_credit_tx (
 `endif
     always @(posedge clk_i or negedge rst_ni) begin
         if (!rst_ni) begin
-            seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
+            seen<=0;hi<=0;di<=0;confirmed<=0;peer_ready<=0;protocol_error_o<=0;
             for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
             verdict<=0;consumed<=0;request_stable<=0;request_class<=0;request_dw<=0;request_replay<=0;
             request_data<=0;request_data_negated<=0;update_valid<=0;a_valid<=0;applied<=0;
         end else if (!link_up_i) begin
-            seen<=0;hi<=0;di<=0;confirmed<=0;protocol_error_o<=0;
+            seen<=0;hi<=0;di<=0;confirmed<=0;peer_ready<=0;protocol_error_o<=0;
             for(i=0;i<3;i=i+1) begin hl[i]<=0;hc[i]<=0;dl[i]<=0;dc[i]<=0;ah[i]<=0;ad[i]<=0;end
             verdict<=0;consumed<=0;request_stable<=0;update_valid<=0;a_valid<=0;applied<=0;
         end else begin
@@ -379,6 +383,7 @@ module soc_pcie_credit_tx (
             end
             seen<=picked_seen;hi<=picked_hi;di<=picked_di;
             confirmed<=picked_confirmed;protocol_error_o<=picked_error;
+            peer_ready<=(&picked_seen) && picked_confirmed;
 `else
                 hl[i]<=consume ? next[1].hl_n[i*8+:8] : next[0].hl_n[i*8+:8];
                 hc[i]<=consume ? next[1].hc_n[i*8+:8] : next[0].hc_n[i*8+:8];
@@ -391,6 +396,8 @@ module soc_pcie_credit_tx (
             hi<=consume ? next[1].hi_n : next[0].hi_n;
             di<=consume ? next[1].di_n : next[0].di_n;
             confirmed<=consume ? next[1].confirmed_n : next[0].confirmed_n;
+            peer_ready<=consume ? ((&next[1].seen_n) && next[1].confirmed_n) :
+                                  ((&next[0].seen_n) && next[0].confirmed_n);
             protocol_error_o<=consume ? next[1].error_n : next[0].error_n;
 `endif
         end
