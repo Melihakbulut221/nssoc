@@ -8,6 +8,12 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: compound condition disagreement isolated in SRAM diagnostic
+
+43803308452 /4959f9f84a274997bcffe51d08f16ad336b5bccc CVC compiled and ran, but SRAMpositive failedcycle0. Artifact14197795462 SHAe8953424906cfaff127ccb77bc8eda2c3c40bc1204066cde40bc019a9700f236 wholeverified afterslowdownload (not restarted). Failure branch printed SRAM_COMPARE_FLAGS dout=0 rtl=0 cells=0. Fullbinarydout/expected/captured/previous/cells/replicated allX; EACH64bitbankdepth0..8 mismatch=0. Nonetheless compound if(dout!==expected || captured!==previous || cell_captures!=={9{previous}}) enteredfailurebranch. Evidence now suggests expressioncompilation/evaluation problem ratherthan demonstrated data mismatch; do not change SRAMRTL/reset orwaive unknowns.
+Dispatched model-free reproducer43803778031 /9fc2f6cb5da87000e4109f76f55bb7b03ff6e193 on codex/cvc-case-condition-reproducer. scripts/qualify_cvc_case_condition.py generates512deterministic four-state64/576bit cases includinginitialallX; compares directcompoundif, stagedscalarpredicates andPythonbitstringoracle across Icarus,CVCdefault,-Ogate,-O,+interp. No chipmodels/RTLneeded. Outputcase-condition-probe/result.json andlogs. Await result before claiming confirmedcompilerrootcause/workaround. OriginalSRAMassertionsremain.
+Sixth43803149533 confirmedliveatnativeSTA/repair; detailedroute43798359649 andold-modeldiagnosticboot43797484050 confirmedlive atturnstart. Fullgoalactive. Thisturn produced new counterexample evidence and runnableisolatedprobe.
+
 ## 2026-11-16: portable SRAM binary diagnostic rerun
 
 43802959565 /bb50adc6e761e602da16a80e2b70ad3b89d51c10 FAILED CVC compilation before simulation: pinned CVC does not implement $bits (ERROR1102). Artifact14196847570 SHA80104db383b61e23318e9ed50e7b2596bfb242812644ba32dabaccffb828f056 verified. Native+derivedIcarus positives passed12289rows withsamef5f1cbd249a9389051a0cae1cfb37cc2c20384da72870490a30a51c5ec6141b9 trace. Not a new circuitfailure.
