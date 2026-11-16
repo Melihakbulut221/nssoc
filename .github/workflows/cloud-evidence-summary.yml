@@ -1,4 +1,4 @@
-name: Continue new EOP native timing repair after measured iteration limit
+name: Second bounded EOP repair with authenticated intermediate baseline
 on:
   workflow_dispatch:
 permissions:
@@ -44,20 +44,20 @@ jobs:
               if p.is_file():
                 q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
             for p in (root/'run').rglob('*'):
-              if p.is_file() and (p.suffix=='.rpt' or p.name in ('state_out.json','or_metrics_out.json','config.json')):
+              if p.is_file() and (p.suffix=='.rpt' or p.name in ('state_out.json','or_metrics_out.json','config.json','baseline-reproduction.json')):
                 q=out/p.relative_to(root);q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
           PYCODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-incremental-repair-derived-${{ github.run_id }}
+          name: eop-second-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-incremental-repair-native-${{ github.run_id }}
+          name: eop-second-incremental-repair-native-${{ github.run_id }}
           path: |
             credit-crc-driver-trial/run/
             credit-crc-driver-trial/result.json
