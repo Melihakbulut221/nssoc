@@ -44,13 +44,27 @@ try:
  ("cause","u_ibex.u_ibex_core.cs_registers_i.mcause_q",7),
  ("mtvec","u_ibex.u_ibex_core.cs_registers_i.csr_mtvec_o",32),
  ("addr","bus_data_addr",32),("req","bus_data_req",1)]
+ # Add exact mapped CSR/register operands; require both classes before simulation.
+ import re
+ csr_suffixes={'csr_addr_i','csr_wdata_i','csr_op_i','csr_we_int','mtvec_q','mepc_q','csr_save_cause_i','csr_save_id_i','csr_save_if_i'}
+ reg_suffixes={'rf_raddr_a','rf_raddr_b','rf_rdata_a','rf_rdata_b','rf_waddr_wb','rf_wdata_wb','rf_we_wb','rf_wdata_wb_ecc','branch_decision_i','branch_taken','pc_set_o'}
+ extras=[];groups={'csr':0,'reg':0}
+ for name,net in sorted(mapped['core_signals'].items()):
+  leaf=name.rsplit('.',1)[-1];group='csr'if leaf in csr_suffixes else'reg'if leaf in reg_suffixes else None
+  if group is None or not name.startswith('u_ibex.') or not 1<=len(net['bits'])<=39:continue
+  if any(name==n for _,n,_ in signals):continue
+  label=group+str(groups[group]);groups[group]+=1;extras.append((label,name,len(net['bits'])))
+ assert groups['csr']>=3 and groups['reg']>=3,('Missing first-divergence observability',groups)
+ assert len(extras)<=80,('Unexpected signal ambiguity',len(extras))
+ signals+=extras
+ r['extra_signal_groups']=groups
  for label,name,width in signals:
   assert name in mapped["core_signals"] and len(mapped["core_signals"][name]["bits"])==width
  fields=" ".join(label+"=%h" for label,name,width in signals)
  refs=", ".join("tb_logicrom_gl.dut.\\"+name+" " for label,name,width in signals)
  observer=out/"boot_observer.v"
- observer.write_text(chr(96)+'timescale 1ns/1ps\nmodule nssoc_cloud_boot_observer;\nalways @(negedge tb_logicrom_gl.clk) begin\n if (tb_logicrom_gl.rst_n && (tb_logicrom_gl.cycles<300 || tb_logicrom_gl.cycles%1000==0))\n  $display("NSSOC_BOOT_TRACE cycle=%0d '+fields+'", tb_logicrom_gl.cycles, '+refs+');\nend\nendmodule\n')
- r["observer"]=dict(sha256=digest(observer),signals=signals,source_map_run=43768772862,source_map_sha256=digest(mapped_path),read_only=True,cycle_bound_unchanged=4000000)
+ observer.write_text(chr(96)+'timescale 1ns/1ps\nmodule nssoc_cloud_boot_observer;\nalways @(negedge tb_logicrom_gl.clk) begin\n if (tb_logicrom_gl.rst_n && (tb_logicrom_gl.cycles<300 || tb_logicrom_gl.cycles%1000==0 || (tb_logicrom_gl.cycles>=2179000 && tb_logicrom_gl.cycles<=2185000) || (tb_logicrom_gl.cycles>=2370000 && tb_logicrom_gl.cycles<=2374000)))\n  $display("NSSOC_BOOT_TRACE cycle=%0d '+fields+'", tb_logicrom_gl.cycles, '+refs+');\nend\nendmodule\n')
+ r["observer"]=dict(sha256=digest(observer),signals=signals,source_map_run=43768772862,source_map_sha256=digest(mapped_path),read_only=True,cycle_bound_unchanged=4000000,dense_cycle_windows=[[2179000,2185000],[2370000,2374000]],purpose='Diagnose first app copy-loop divergence and first trap, preserving original firmware/netlist/watchdog')
  cc.append(str(observer))
 
  r.update(qualification_sha256=digest(ROOT/'cvc-cell-qualification/result.json'),input_manifest_sha256=digest(inp),derived_sha256=digest(model),compiler_sha256=digest(cvc))
