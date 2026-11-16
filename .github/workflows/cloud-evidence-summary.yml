@@ -1,4 +1,4 @@
-name: Size seven peer-ready link buffers then guarded setup hold repair
+name: Size four peer-ready packet drivers then guarded setup hold repair
 on:
   workflow_dispatch:
 permissions:
@@ -37,7 +37,7 @@ jobs:
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('peer-link-buffers');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('peer-packet-buffers');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,27 +50,27 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: peer-link-buffers-incremental-repair-derived-${{ github.run_id }}
+          name: peer-packet-buffers-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: peer-link-buffers-incremental-repair-native-${{ github.run_id }}
+          name: peer-packet-buffers-incremental-repair-native-${{ github.run_id }}
           path: |
-            peer-link-buffers/run/
-            peer-link-buffers/result.json
-            peer-link-buffers/native.log
-            peer-link-buffers/config.json
-            peer-link-buffers/initial.json
+            peer-packet-buffers/run/
+            peer-packet-buffers/result.json
+            peer-packet-buffers/native.log
+            peer-packet-buffers/config.json
+            peer-packet-buffers/initial.json
           if-no-files-found: error
           retention-days: 90
       - name: Publish compact authenticated measurements without large report download
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: peer-link-buffers-summary-${{ github.run_id }}
-          path: peer-link-buffers/result.json
+          name: peer-packet-buffers-summary-${{ github.run_id }}
+          path: peer-packet-buffers/result.json
           retention-days: 90
           if-no-files-found: error

@@ -1,15 +1,15 @@
 import os,json,subprocess,hashlib,zipfile,io,stat
 from pathlib import Path
 import cloud_peer_ready_postcts as prior
-ROOT=Path.cwd();OUT=ROOT/'peer-link-buffers';OUT.mkdir()
+ROOT=Path.cwd();OUT=ROOT/'peer-packet-buffers';OUT.mkdir()
 r=dict(source_head=os.environ['GITHUB_SHA'],accepted=False,final_timing_complete=False,full_phy_accepted=False,status='RUNNING')
 def save():(OUT/'result.json').write_text(json.dumps(r,indent=2))
 try:
  assert os.environ.get('GITHUB_ACTIONS')=='true'
  prior.OUT=OUT/'restore';prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api('actions/runs/43840995744')
- assert run['head_sha']=='ed948b9d411c6e399fbb5216936c20b5ea5b3fef' and run['conclusion']=='success' and run['run_attempt']==1
- aid=14215011991;digest='602b6d9c6ea0b83e91f8583fce17ab873b2b639351bed17c07df0b449ad24854'
+ run=prior.api('actions/runs/43846553091')
+ assert run['head_sha']=='5e59db61a03dec59fc0f5aa1bd04c3bc76ce6cdd' and run['conclusion']=='success' and run['run_attempt']==1
+ aid=14216862284;digest='6e75c2006cf76abedefe31463a2363a76df9415403840b84faa211b54c710b6d'
  meta=prior.api('actions/artifacts/'+str(aid))
  assert meta['digest']=='sha256:'+digest and not meta['expired'] and meta['workflow_run']['id']==run['id'] and meta['workflow_run']['head_sha']==run['head_sha']
  blob=subprocess.check_output(['gh','api',prior.REPO+'actions/artifacts/'+str(aid)+'/zip'])
@@ -17,16 +17,16 @@ try:
  z=zipfile.ZipFile(io.BytesIO(blob));assert len(z.namelist())==len(set(z.namelist()))
  report=json.loads(z.read('result.json'))
  assert report['source_head']==run['head_sha'] and report['returncode']==0 and report['sources_unchanged'] and report['accepted'] is False
- expected='393915791238bc936bc87b06ee57054a26fa88cd7cf0bd755b500d1c96c6fed5'
- assert report['repaired_odb_sha256']==expected
- source=ROOT/'hw/soc/out/cloud-predecode-postcts';source.mkdir();restored={}
+ expected='19336c05731f493d36db8f54585c9f9002e1242ec24bf3115e85658c35e81c82'
+ assert report['candidate_odb_sha256']==expected
+ source=ROOT/'peer-link-buffers';source.mkdir();restored={}
  def member(name):
   rel=prior.relative(name);info=z.getinfo(name)
   assert not info.is_dir() and not stat.S_ISLNK(info.external_attr>>16)
   data=z.read(info);assert hashlib.sha256(data).hexdigest()==report['outputs'][name]
   dest=source/rel;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
   restored[name]=report['outputs'][name];return dest
- state=json.loads(member(report['repaired_state']).read_text());state['metrics']={};state.pop('sdf',None)
+ state=json.loads(member('run/5-openroad-resizertimingpostcts/state_out.json').read_text());state['metrics']={};state.pop('sdf',None)
  def restore_paths(v):
   if isinstance(v,str):
    path=Path(v)
@@ -38,7 +38,7 @@ try:
   elif isinstance(v,list):
    for x in v:restore_paths(x)
  restore_paths(state);odb=Path(state['odb']);assert odb.is_relative_to(source) and prior.sha(odb)==expected
- config=json.loads(member('trial-config.json').read_text())
+ config=json.loads(member('config.json').read_text())
  assert config['CLOCK_PERIOD']==20 and config['TIME_DERATING_CONSTRAINT']==5.0
  assert config['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']
  assert config['SETUP_VIOLATION_CORNERS']==config['HOLD_VIOLATION_CORNERS']==['*']
@@ -61,7 +61,7 @@ try:
   measurements[corner]={k:v for k,v in final['metrics'].items()if k.endswith('__corner:'+corner)}
  gates=list((OUT/'run').glob('*-nssoc-peerlinkboundedpostcts/baseline-reproduction.json'));assert len(gates)==1
  baseline=json.loads(gates[0].read_text());assert baseline['measured_baseline_matches']
- r.update(status='MEASURED_PEER_LINK_BUFFERS_AND_REPAIR_REQUIRES_REVIEW',sources_unchanged=True,baseline_reproduction=baseline,measurements=measurements,candidate_odb_sha256=prior.sha(final['odb']),scope='Exact new peer-ready state, baseline reproduction, seven measured link ownership buf1 to buf4 changes, then original guarded setup/hold repair. No removed hold cells in targeted ECO. No routed timing, native boot or fullPHY acceptance.')
+ r.update(status='MEASURED_PEER_LINK_BUFFERS_AND_REPAIR_REQUIRES_REVIEW',sources_unchanged=True,baseline_reproduction=baseline,measurements=measurements,candidate_odb_sha256=prior.sha(final['odb']),scope='Exact new peer-ready state, baseline reproduction, four measured packet path driver changes, then original guarded setup/hold repair. No removed hold cells in targeted ECO. No routed timing, native boot or fullPHY acceptance.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json' and 'restore'not in p.relative_to(OUT).parts};save()
