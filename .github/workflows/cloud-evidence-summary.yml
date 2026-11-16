@@ -1,4 +1,4 @@
-name: Build qualified credit sign and CRC upper comparison mainchip candidate
+name: Build qualified cached EOP credit CRC mainchip candidate
 on:
   workflow_dispatch:
 permissions:
@@ -10,6 +10,7 @@ jobs:
     timeout-minutes: 240
     env:
       GH_TOKEN: ${{ github.token }}
+      SOC_PCIE_RX_EOP_FLAGS: '1'
       SOC_PCIE_CREDIT_DATA_SIGN_REG: '1'
       SOC_PCIE_CRC_UPPER_COMPARE_REG: '1'
 
@@ -81,16 +82,17 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-mainchip-source-native-${{ github.run_id }}
+          name: eop-credit-crc-mainchip-source-native-${{ github.run_id }}
           path: native/build.tgz
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-mainchip-mapping-${{ github.run_id }}
+          name: eop-credit-crc-mainchip-mapping-${{ github.run_id }}
           path: |
             out/mapping.json
+            out/eop-flags-qualification.json
             out/credit-crc-qualification.json
             out/rx-qualification-gate.json
             out/ack-prefix-qualification-gate.json
@@ -99,7 +101,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-replay-regressions-${{ github.run_id }}
+          name: eop-credit-crc-replay-regressions-${{ github.run_id }}
           path: |
             out/qualification.json
             out/case-*.log
