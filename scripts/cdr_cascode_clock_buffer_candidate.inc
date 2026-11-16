@@ -38,5 +38,5 @@ Rdown_n cn 0 430
 Rcas_hi avdd cas 100
 Rcas_lo cas 0 355
 * Supply-referenced bias avoids forcing reference current above a rising rail.
-* 3.2 kohm nominal estimate: (2.5 V - 0.9 V) / 0.5 mA; actual current measured by native model.
-Rref avdd bias 3200
+* 2.8 kohm exploration: about (2.5 V - 0.9 V) / 0.57 mA; actual current measured by native model.
+Rref avdd bias 2800
