@@ -1,4 +1,4 @@
-name: Diagnose mapped startup copy loop and first trap with dense CSR operands
+name: Diagnose mapped instruction fetch and SRAM request response boundary
 on:
   workflow_dispatch:
 permissions:
@@ -47,7 +47,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-exact-operands-${{ github.run_id }}
+          name: boot-fetch-memory-boundary-${{ github.run_id }}
           path: |
             cvc-probe/**/*.json
             cvc-probe/**/*.log
