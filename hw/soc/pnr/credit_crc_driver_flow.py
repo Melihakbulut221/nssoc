@@ -43,6 +43,60 @@ foreach inst [$block getInsts] {
  }
 }
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
+
+set master [[ord::get_db] findMaster sg13g2_dlygate4sd3_1]
+if {$master eq "NULL"} {error "Delay master missing"}
+set changed {};set added {}
+foreach {label pname count endpoint} {
+ training pcie_training_i 3 {$auto$ff.cc:337:slice$183526}
+ rx_error pcie_rx_error_i 1 {$auto$ff.cc:337:slice$172492}
+ rx_data7 {pcie_rx_data_i[7]} 1 {$auto$ff.cc:337:slice$172502}
+} {
+ set port [$block findBTerm $pname]
+ if {$port eq "NULL" || [$port getIoType] ne "INPUT"} {error "Input missing $pname"}
+ set net [$port getNet]
+ if {[$net getSigType] ne "SIGNAL" || [llength [$net getITerms]]!=1 || [llength [$net getBTerms]]!=1} {error "Input not isolated $pname"}
+ set sink [lindex [$net getITerms] 0];set origin [$sink getInst]
+ if {[$origin getName] ne $endpoint || [[$sink getMTerm] getName] ne "D" || [$sink getIoType] ne "INPUT"} {error "Wrong sink"}
+ set supply {}
+ foreach pin [$origin getITerms] {
+  if {[[$pin getMTerm] getSigType] in {POWER GROUND}} {
+   if {[$pin getNet] eq "NULL"} {error "Supply disconnected"}
+   dict set supply [[$pin getMTerm] getName] [$pin getNet]
+  }
+ }
+ if {[dict size $supply]!=2} {error "Supply census"}
+ set previous $net
+ for {set i 0} {$i<$count} {incr i} {
+  set name nssoc_input_hold_${label}_${i}
+  if {[$block findInst $name] ne "NULL" || [$block findNet ${name}_out] ne "NULL"} {error "ECO collision"}
+  set cell [odb::dbInst_create $block $master $name];set next [odb::dbNet_create $block ${name}_out]
+  lassign [$origin getLocation] x y
+  $cell setLocation $x $y;$cell setOrient [$origin getOrient];$cell setPlacementStatus PLACED
+  foreach pin [$cell getITerms] {
+   set pn [[$pin getMTerm] getName]
+   if {[[$pin getMTerm] getSigType] in {POWER GROUND}} {$pin connect [dict get $supply $pn]} elseif {$pn ni {A X}} {error "Unknown delay pin"}
+  }
+  [$cell findITerm A] connect $previous;[$cell findITerm X] connect $next
+  set previous $next;lappend added $name
+ }
+ $sink connect $previous;dict set changed "$endpoint/D" $previous
+ if {[llength [$net getITerms]]!=1 || [llength [$previous getITerms]]!=2} {error "Chain mismatch"}
+}
+if {[llength $added]!=5 || [dict size $changed]!=3 || [llength [$block getInsts]]!=[dict size $before]+5} {error "ECO census"}
+foreach inst [$block getInsts] {
+ set name [$inst getName]
+ if {$name in $added} {continue}
+ lassign [dict get $before $name] old pins
+ foreach pin [$inst getITerms] {
+  set pn [[$pin getMTerm] getName];set key "$name/$pn";set expected [dict get $pins $pn]
+  if {[dict exists $changed $key]} {set expected [dict get $changed $key]}
+  if {[$pin getNet] ne $expected} {error "Unrelated incidence changed"}
+ }
+}
+foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port net changed"}}
+puts "NSSOC_INPUT_DELAY_STRUCTURAL_PASS ports=3 cells=5"
+
 detailed_placement
 check_placement -verbose
 puts "NSSOC_SHARED_PCIE_DRIVERS_SAME_INCIDENCE"
