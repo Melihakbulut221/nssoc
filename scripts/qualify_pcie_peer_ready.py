@@ -26,7 +26,7 @@ try:
   (folder/'proof.ys').write_text(recipe)
   rc,log=run(['yosys','-s','proof.ys'],folder,'proof.log')
   counts=re.findall(r'Of those cells (\d+) are proven and (\d+) are unproven',log)
-  formal=rc==0 and len(counts)==1 and int(counts[0][0])>0 and int(counts[0][1])==0 and 'Equivalence successfully proven!'in log
+  formal=rc==0 and bool(counts) and all(int(a)>0 and int(b)==0 for a,b in counts) and 'Equivalence successfully proven!'in log
   case=dict(defines=defs,formal_returncode=rc,formal_passed=formal,counts=counts,seeds=[])
   r['cases'].append(case);save()
   # Collect all traffic evidence even when formal proof is inconclusive.
