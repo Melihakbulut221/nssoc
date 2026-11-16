@@ -96,7 +96,13 @@ for (layer,dt),r in moved.items():new.shapes(L.layer(layer,dt)).insert(r)
 for li in L.layer_indexes():
     for shape in old.each_shape(li):
         if shape.is_text():
-            text=shape.text.dup();text.trans=db.Trans(text.trans.rot,text.trans.disp.x,text.trans.disp.y+shift[owner(text.trans.disp.y)])
+            original=shape.text
+            text=original.dup()
+            delta=shift[owner(original.y)]
+            # Four arguments disambiguate rotation/mirror from displacement.
+            text.trans=db.Trans(0,False,0,delta)*original.trans
+            assert text.x==original.x and text.y==original.y+delta
+            assert text.trans.rot==original.trans.rot
             new.shapes(li).insert(text)
 def regions(layout,cell):
     return {(layout.get_info(li).layer,layout.get_info(li).datatype):db.Region(cell.begin_shapes_rec(li)).merged()for li in layout.layer_indexes()}
@@ -116,3 +122,10 @@ r=dict(status='GENERATED_COMPACT_CURRENT650_REQUIRES_DRC_LVS_FRESH_RC_AND_ELECTR
 def text_rows(layout,cell):
     return [dict(layer=str(layout.get_info(li)),string=sh.text.string,x=sh.text.x,y=sh.text.y,trans=str(sh.text.trans)) for li in layout.layer_indexes() for sh in cell.each_shape(li) if sh.is_text()]
 (out/'text-diagnostic.json').write_text(json.dumps(dict(source=text_rows(L,old),candidate=text_rows(L,new),serialized=text_rows(check,check.top_cell()),offsets=shift),indent=2))
+
+src=text_rows(L,old);dst=text_rows(check,check.top_cell())
+expected_labels=sorted((q['layer'],q['string'],q['x'],q['y']+shift[owner(q['y'])]) for q in src)
+actual_labels=sorted((q['layer'],q['string'],q['x'],q['y']) for q in dst)
+assert len(src)==25 and actual_labels==expected_labels,'Serialized pin label mismatch'
+r['serialized_pin_labels_verified']=True
+(out/'compact-result.json').write_text(json.dumps(r,indent=2))
