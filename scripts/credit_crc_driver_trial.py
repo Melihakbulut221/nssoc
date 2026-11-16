@@ -61,10 +61,35 @@ try:
  for i,(pin,slack) in enumerate(sorted(endpoints.items())):
   label='internal_'+str(i);catalog.append(dict(label=label,pin=pin,source_fast_hold_slack=slack))
   commands+=['set target [get_pins {'+pin+'}]','if {[llength $target]!=1} {error "Missing internal endpoint"}','foreach mode {max min} {',' puts "%OL_CREATE_REPORT targeted_'+label+'_${mode}.rpt"',' report_checks -to $target -path_delay $mode -format full_clock_expanded -digits 6 -group_path_count 3 -endpoint_path_count 2',' puts "%OL_END_REPORT"','}']
+ # Measure all endpoints through each short self-feedback branch, not only its original FF.
+ feedback={}
+ for path in data.decode().split('Startpoint:')[1:]:
+  start=path.splitlines()[0].strip();end=re.search(r'^Endpoint: (.*)',path,re.M)
+  if not end or end[1]!=start or not re.search(r'slack \(VIOLATED\)',path):continue
+  cells=[re.search(r'\s(\S+/\S+) \(([^)]+)\)\s*$',line)for line in path.split('data arrival time',1)[0].splitlines()]
+  cells=[m for m in cells if m];indices=[j for j,m in enumerate(cells)if m[1]==start+'/Q'];assert len(indices)==1
+  j=indices[0];assert j+1<len(cells);pin=cells[j+1][1]
+  assert pin!=start+'/D' and all(c not in pin for c in '{}\n\r\\')
+  if pin in feedback:assert feedback[pin]==start+'/Q'
+  feedback[pin]=start+'/Q'
+ assert feedback
+ fc=[]
+ for i,(pin,driver)in enumerate(sorted(feedback.items())):
+  label='feedback_'+str(i);fc.append(dict(label=label,pin=pin,expected_driver=driver));instance,terminal=pin.rsplit('/',1)
+  commands+=['set inst [[ord::get_db_block] findInst {'+instance+'}]','if {$inst eq "NULL"} {error "Feedback instance missing"}',
+   'set pin [$inst findITerm {'+terminal+'}]','if {$pin eq "NULL" || [$pin getIoType] ne "INPUT"} {error "Feedback input missing"}',
+   'set net [$pin getNet]','if {$net eq "NULL" || [$net getSigType] ne "SIGNAL"} {error "Feedback net invalid"}',
+   'set drivers {}','foreach p [$net getITerms] {if {[$p getIoType] eq "OUTPUT"} {lappend drivers "[[$p getInst] getName]/[[$p getMTerm] getName]"}}',
+   'if {[llength $drivers]!=1 || [lindex $drivers 0] ne {'+driver+'} || [llength [$net getBTerms]]!=0} {error "Feedback source mismatch"}',
+   'set target [get_pins {'+pin+'}]','if {[llength $target]!=1} {error "Feedback pin not unique"}',
+   'foreach mode {max min} {',' puts "%OL_CREATE_REPORT targeted_'+label+'_${mode}.rpt"',
+   ' report_checks -through $target -path_delay $mode -format full_clock_expanded -digits 6 -group_path_count 10 -endpoint_path_count 2',
+   ' puts "%OL_END_REPORT"','}']
+ (OUT/'feedback-targets.json').write_text(json.dumps(fc,indent=2));r['feedback_branch_count']=len(fc)
  (OUT/'internal-targets.tcl').write_text('\n'.join(commands)+'\n')
  (OUT/'internal-targets.json').write_text(json.dumps(catalog,indent=2))
  r['internal_endpoint_count']=len(catalog);r['internal_endpoint_source']=dict(run=43782739036,artifact=14189336194,sha256=dh)
- flow=ROOT/'hw/soc/pnr/credit_crc_driver_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,OUT/'internal-targets.tcl',OUT/'internal-targets.json',Path(__file__),prior.SOURCE/'prepared/physical.sdc']}
+ flow=ROOT/'hw/soc/pnr/credit_crc_driver_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,OUT/'internal-targets.tcl',OUT/'internal-targets.json',OUT/'feedback-targets.json',Path(__file__),prior.SOURCE/'prepared/physical.sdc']}
  command=[str(app),'python',str(flow),'--flow','AckChipResetSized','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(cfg)]
  (OUT/'run').mkdir()
  with (OUT/'native.log').open('w')as log:code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
@@ -79,7 +104,7 @@ try:
   for label in ['training', 'rx_error', 'rx_data7', 'rx_valid', 'rx_sop', 'rx_eop', 'rx_dllp', 'rx_data0', 'rx_data1', 'rx_data2', 'rx_data3', 'rx_data4', 'rx_data5', 'rx_data6', 'function_id3', 'function_id7', 'function_id8', 'function_id13', 'eth0', 'eth1', 'eth2', 'eth3', 'eth4', 'eth5', 'eth6', 'eth7', 'eth_enable']:
    for mode in ['max','min']:
     targeted=(dirs[0]/('targeted_'+label+'_'+mode+'.rpt')).read_text();assert 'Startpoint:' in targeted and 'Endpoint:' in targeted, (corner,label,mode,'Targeted report missing path')
-  for item in catalog:
+  for item in catalog+fc:
    for mode in ['max','min']:
     content=(dirs[0]/('targeted_'+item['label']+'_'+mode+'.rpt')).read_text();assert 'Startpoint:' in content and 'Endpoint:' in content
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
