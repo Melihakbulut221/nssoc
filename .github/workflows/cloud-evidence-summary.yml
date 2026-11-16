@@ -1,4 +1,4 @@
-name: Measure PCIe isolated input hold delay trial
+name: Measure PCIe exact endpoint branch hold delay trial
 on:
   workflow_dispatch:
 permissions:
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-input-delay-derived-${{ github.run_id }}
+          name: credit-crc-endpoint-delay-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-input-delay-native-${{ github.run_id }}
+          name: credit-crc-endpoint-delay-native-${{ github.run_id }}
           path: |
             credit-crc-driver-trial/run/
             credit-crc-driver-trial/result.json
