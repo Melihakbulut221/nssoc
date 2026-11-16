@@ -1,3 +1,11 @@
+## Controlled two-port Ethernet delay trial dispatched
+
+Run43778376607/7fac4b4c3f5f3c30c5a1e18015653a707747aada, branch codex/credit-crc-eth-output-delay. Based on exact504756 e59 driver trial, restores/authenticates d4b55e and reproduces prior three master sizes, then inserts TWO sg13g2_dlygate4sd3_1 positive delay cells each on eth_txd_o[5] and[2]. Four cells total, two new nets per port. BTerms stay on original nets; only original isolated output driver pin moves. Preconditions: SIGNAL net, exactly one driver ITerm and one output BTerm, two connected supply terminals, known master A/X signature, no duplicate names. Existing signal/clock pin incidences and all BTerms checked after insertion, supply connections copied from original driver, detailed placement/check_placement and all-three-corner STA follow. No constraints/clock changes or automatic adoption. Requires real measured benefit and independent logic check before accepting downstream.
+
+Output prefixes eth-output-delay-derived/native-. Runner checks structural marker in native.log; if native execution succeeds but that log omits tool stdout, inspect stage .log before diagnosing a hardware failure (marker scope is observation, not logic proof). Any native API/preflight error must be fixed from actual output, not bypassed.
+
+Current other jobs: targeted PCIe inputSTA43778028957, queue postCTS43775507971, old/new mapped boots43771666469/43777168665, short-length analog43776904300. Last authoritative observations live, no terminal restart. Full chip timing/serial PHY/production objective remains OPEN.
+
 ## Targeted PCIe input max/min STA dispatched
 
 Run43778028957/8b14f4b12f02b090ea852aaa9e18189ae032c0b0 on codex/credit-crc-targeted-input-sta. Base504756 three-driver trial. Re-authenticates original e59 repaired ODBd4b55e and reproduces the same three guarded master changes/legal placement. Adds targeted native report_checks after each independent propagated-clock corner STA: FF183526/D(training), FF172492/D(rx_error), FF172502/D(rx_data7), both max/min, endpoint_path_count2/group_path_count10. Exactly one pin required; every report must contain Startpoint and Endpoint, or fail. No SDC, clock, derate, delay gate or accept threshold changes. New runner results are measurement evidence only, not automatically equivalent/final timing acceptance.
