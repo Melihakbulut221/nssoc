@@ -33,6 +33,7 @@ try:
  flow=ROOT/'hw/soc/pnr/replay_onehot_detailed_route_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,P(__file__),prior.SOURCE/'prepared/physical.sdc']}
  r.update(parent_run=43793553628,guide_audit_run=43797316134,source_odb_sha256=ar['odb_sha256'],protected_inputs=protected,scope='Detailed routing from second EOP global database with independently verified native guides. No full PHY, gate boot or extracted timing acceptance.');save()
  cmd=[str(app),'python',str(flow),'--flow','ReplayOnehotDetailedRoute','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(cfg)]
+ (OUT/'run').mkdir()
  with (OUT/'native.log').open('w')as log:r['returncode']=subprocess.call(cmd,stdout=log,stderr=subprocess.STDOUT)
  assert r['returncode']==0
  assert all(prior.sha(p)==h for p,h in protected.items());r['sources_unchanged']=True
@@ -41,6 +42,6 @@ try:
   final_states=sorted((OUT/'run').glob('*/state_out.json'));assert final_states;final=final_states[-1]
  fs=json.loads(final.read_text());candidate=P(fs['odb']);assert candidate.is_relative_to(OUT/'run') and candidate.is_file()
  r.update(status='DETAILED_ROUTE_COMPLETE_REQUIRES_DRC_ANTENNA_CONNECTIVITY_AND_EXTRACTED_STA_REVIEW',candidate_odb_sha256=prior.sha(candidate),final_state=str(final.relative_to(OUT)),metrics=fs['metrics'])
-except BaseException as e:r['error']=repr(e);raise
+except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p) for p in (OUT/'run').rglob('*') if p.is_file()};save()
