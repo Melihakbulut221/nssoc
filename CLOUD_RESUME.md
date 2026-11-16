@@ -8,6 +8,18 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: new ACK residual hold paths audited; second exact-source repair started
+
+Inspection43818955974 /f7c40a30a9fadff32bb2a713ed743ee0f1384860 SUCCESS. Artifact14203493725 SHA1a4e0d862ff8915d9a33f347120669f58ecd989b96af2342f5900e0990afb9b7/17200081bytes whole ZIP verified RAM. Reports and repair Tcl/logs inspected.
+Fast worstholds: FF371440->eth_txd_o[4] -.253045ns; FF170628->eth_tx_er_o -.250744; FF371441->eth_txd_o[5] -.250359; FF371438->eth_txd_o[2] -.244886; FF371439->eth_txd_o[3] -.244683.
+Typical worst pcie_training_i->FF183595 -.069253ns, also Ethernetoutputs ~-.010ns. Slow worst hold sameinput +.101877ns. Slow worstsetup FF366046->FF365953 -2.091138ns; several sibling endpoints below-2ns. Typical onlyworst pcie_initialized_o -.247270ns.
+
+Native repair log explicitly loads fast,slow,typical stdcell/I/O/SRAM libraries: NOT a missing-fast-corner defect. repair_timing -hold -max_iterations1000 -setup_margin.05 -hold_margin.1 -max_buffer_percent50. Found16752hold endpoints, inserted19335holdbuffers; warningRSZ-0064 unable to repair all hold checks withinmargin. Setup warningRSZ-0062 alsoopen. Legal placement and fresh RC estimates followrepair. No invented rootcause about buffer limits or missing corners; remainingviolationsrequire measuredcontinuation.
+
+NEW43819886766 /20f1fa07e7e1a9281959dbe64e900b1f07a5f59e on codex/ack-second-postcts. Basedefb293. NEWdriver scripts/run_ack_second_postcts.py andflow hw/soc/pnr/ack_second_postcts_flow.py. First restores newACKCTS via pinned cloud_predecode_postcts.restore, then authenticates firstpostCTS nativeartifact14203119130/d5e432.../run43815423153/head efb293 and exact repairedODBedd942.... Selectivelyrestores state-referencedviews andtrial-config, clearsinheritedmetrics. Requiresoriginal clocks/allcorners/5%derate; normalizes5.0 lexicalfloat withoutchangingvalue. New GuardedPropagated+BoundedPostCTS class verifies every measured firstaftercorner against derived14203197705/999d9ca... before100setup/1000hold; no waiver. Outputack-second-postcts, flowAckSecondPostCTS, beforeIDsAckSecondBefore, repairIDAckSecondBoundedPostCTS. Freshthreecorneraftermeasurements required. Original I/O budgets and holdmargin retained. ASTpassed beforeatomiccommit. Artifactack-second-postcts-summary/derived/native-RUN, allfalseacceptanceflagsuntilactualproof. Waitactualbaselineandrepairbeforeclaimingfixed.
+
+EarlierAPIpoll TLS handshake timeout forDRT43798359649 was observationfailure, NOTterminalCADstatus; subsequent followup needed. Otherlastknownlive after-buffer-second43818263628,93batch43818692740,newACKboot43814779296,olderboot43811938338,analog43806909384. Exec56512endedAPIerror;46567/19716 artifactreadscompleted;77159commitcompleted. No pendinglocalprocess or persistentartifact. Goal remainsactive/fullproduction.
+
 ## 2026-11-16: second93buffer experiment; new ACK first post-CTS has232fast hold violations
 
 Pending local RAM downloadsession54506 COMPLETED exit0. Derived14203461443 SHA708bb93c6b82672c71a6a68f07037d2807f04a35e5aa32a8c1b5999192c104da now wholeverified. Parsed1004reportedslowviolatingpaths,93remainingbuf1arcs>=.30ns; highestfanout7851/7849 delays1.1731/1.167467ns. No local files. Do not poll54506again.
