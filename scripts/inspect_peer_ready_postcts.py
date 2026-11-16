@@ -3,15 +3,15 @@ from pathlib import Path
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 P='repos/Melihakbulut221/nssoc/'
 def api(p):return json.loads(subprocess.check_output(['gh','api',P+p]))
-run=api('actions/runs/43859556826')
-assert run['head_sha']=='34b1457546207ce60348d24de7c76079b69fdf80' and run['conclusion']=='success' and run['run_attempt']==1
-aid=14223691057;digest='7c5c700f77fd3822c295400545a0f161f3dbb315e75b9ee55e388d35e3322032'
+run=api('actions/runs/43862700423')
+assert run['head_sha']=='04c3a9933d266246ee17babbbfa529958123c1be' and run['conclusion']=='success' and run['run_attempt']==1
+aid=14224069973;digest='c01f1cdb54c09351ddf5d3edcc1709f77bef4bd926f6cfd4ac411c7f18599804'
 meta=api('actions/artifacts/'+str(aid))
 assert meta['digest']=='sha256:'+digest and not meta['expired'] and meta['workflow_run']['id']==run['id'] and meta['workflow_run']['head_sha']==run['head_sha']
 b=subprocess.check_output(['gh','api',P+'actions/artifacts/'+str(aid)+'/zip']);assert hashlib.sha256(b).hexdigest()==digest
 z=zipfile.ZipFile(io.BytesIO(b));assert len(z.namelist())==len(set(z.namelist()))
 r=json.loads(z.read('result.json'));assert r['source_head']==run['head_sha'] and r['sources_unchanged'] and r['returncode']==0
-assert r['candidate_odb_sha256']=='e76b0a5ce00ae583c4bd4d6c47d82cfe2b38a5d5fa4c409b8f792bc0e9878d60'
+assert r['candidate_odb_sha256']=='9f1e01d804ff6cf56d2396136e1da6a8e0b84d2a690173fe6c7bfce2deaa28a7'
 out=Path('peer-ready-postcts-review');out.mkdir()
 result=dict(source_head=os.environ['GITHUB_SHA'],producer=run['id'],artifact=aid,archive_sha256=digest,accepted=False,full_phy_accepted=False,final_timing_complete=False,reports={})
 for corner in ['slow','typical','fast']:
@@ -35,7 +35,7 @@ result['repair_log_sha256']=hashlib.sha256(log).hexdigest()
 state_path='run/5-openroad-resizertimingpostcts/state_out.json';state_data=z.read(state_path);assert hashlib.sha256(state_data).hexdigest()==r['outputs'][state_path]
 state=json.loads(state_data)
 odb_name='run/5-openroad-resizertimingpostcts/soc_top.odb'
-assert state['odb'].endswith('/peer-advertiser-place/'+odb_name)
+assert state['odb'].endswith('/peer-advertiser-buffers/'+odb_name)
 data=z.read(odb_name);assert hashlib.sha256(data).hexdigest()==r['candidate_odb_sha256']==r['outputs'][odb_name]
 result['odb_sha256']=r['candidate_odb_sha256']
 result['measurements']=r['measurements']
