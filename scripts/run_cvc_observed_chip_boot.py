@@ -59,11 +59,11 @@ try:
 
  # Observe this exact new ACK map. No inherited historical signal inventory.
  binding=json.loads((ROOT/'out/source-binding.json').read_text())
- assert binding['source_run']==43812773466 and binding['source_head']=='990f37537d3d82f7a97c418fc144727abb18e655'
+ assert binding['source_run']==43833891130 and binding['source_head']=='d941f409e24243f8f16d09c4a60f6385f9fb6bb9'
  assert binding['accepted'] is False
  mapped_path=ROOT/'hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis/soc_top.mapped.json'
- assert digest(mapped_path)==binding['mapped_json_sha256']=='e6b2b44049da71b74e9dd2adb30a551f7bb0883072f21d83e9bac93b70bc2ecd'
- assert binding['netlist_sha256']=='5b4f45a0919975a9a5da7d9dd11f4c59349dc17b361fa32282bf170a2db00165'
+ assert digest(mapped_path)==binding['mapped_json_sha256']
+ assert digest(ROOT/'hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis/soc_top.netlist.v')==binding['netlist_sha256']
  mapped_json=json.loads(mapped_path.read_text())
  module=mapped_json['modules']['soc_top']
  signals=[("pc","u_ibex.u_ibex_core.exs_id_pc_id",32),
@@ -85,7 +85,7 @@ try:
   "end","endmodule"])+"\n")
  r['observer']=dict(sha256=digest(observer),signals=signals,mapped_sha256=digest(mapped_path),
   read_only=True,cycle_bound_unchanged=4000000,
-  scope='Current ACK map only. Diagnostic PC/CSR/bus sampling; original bench retains firmware, watchdog, PCIe idle and system/Ethernet MBIST acceptance.')
+  scope='Current certified peer-ready ACK map only. Diagnostic PC/CSR/bus sampling; original bench retains firmware, watchdog, PCIe idle and system/Ethernet MBIST acceptance.')
  r['source_binding']=binding
  r['macro_inventory']=macros
  cc.append(str(observer))
