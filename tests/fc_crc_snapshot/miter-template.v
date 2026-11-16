@@ -29,6 +29,11 @@ always @* begin
  assert(dut.crc==ref_dut.crc);
  assert(dut.index==ref_dut.index);
  assert(dut.active==ref_dut.active);
+ assert(dut.phase==ref_dut.phase);
+ assert(dut.class_index==ref_dut.class_index);
+ assert(dut.refresh==ref_dut.refresh);
+ assert(dut.first_triplet==ref_dut.first_triplet);
+ assert(dut.second_triplet==ref_dut.second_triplet);
  assert(dut.header==ref_dut.header);
  assert(dut.data_credit==ref_dut.data_credit);
  assert(dut.frame_phase==ref_dut.frame_phase);

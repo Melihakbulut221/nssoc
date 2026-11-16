@@ -3,7 +3,7 @@ from pathlib import Path
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 out=Path('fc-crc-formal');out.mkdir()
 candidate=Path('hw/soc/rtl/pcie/soc_pcie_fc_tx.v');reference=Path('tests/fc_crc_snapshot/reference.v');crc=Path('hw/soc/rtl/pcie/soc_pcie_crc16_byte.v')
-fields=dict(crc=16,index=3,active=1,header=8,data_credit=12,frame_phase=2,frame_class=2,phase=2,class_index=2)
+fields=dict(crc=16,index=3,active=1,header=8,data_credit=12,frame_phase=2,frame_class=2,phase=2,class_index=2,refresh=32,first_triplet=1,second_triplet=1)
 extra={f'payload_crc{i}':16 for i in range(4)}
 def observed(src,extra_fields,dest):
  fs=dict(fields,**extra_fields)
