@@ -14,11 +14,10 @@ foreach inst [$block getInsts] {
 set choices {
  {fanout9730} {sg13g2_buf_1 sg13g2_buf_4}
  {fanout9729} {sg13g2_buf_1 sg13g2_buf_4}
- {$abc$735341$auto$blifparse.cc:397:parse_blif$770517} {sg13g2_o21ai_1 sg13g2_o21ai_2}
  {$abc$735341$auto$blifparse.cc:397:parse_blif$770552} {sg13g2_buf_1 sg13g2_buf_4}
 }
 set targets [dict keys $choices]
-if {[llength $targets]!=4} {error "Wrong measured resize census"}
+if {[llength $targets]!=3} {error "Wrong measured resize census"}
 if {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}
 foreach name $targets {
  set inst [$block findInst $name]
@@ -44,6 +43,43 @@ foreach inst [$block getInsts] {
  }
 }
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}
+# Taper the measured high-capacitance buf8 input with native buf2.
+set origin [$block findInst wire3244]
+if {$origin eq "NULL" || [[$origin getMaster] getName] ne "sg13g2_buf_8"} {error "Taper sink mismatch"}
+set sink [$origin findITerm A];set net [$sink getNet];set drivers {}
+if {$net eq "NULL" || [llength [$net getBTerms]]!=0 || [llength [$net getITerms]]!=2} {error "Taper source is not isolated"}
+foreach pin [$net getITerms] {if {[$pin getIoType] eq "OUTPUT"} {lappend drivers "[[$pin getInst] getName]/[[$pin getMTerm] getName]"}}
+if {[llength $drivers]!=1 || [lindex $drivers 0] ne {$abc$735341$auto$blifparse.cc:397:parse_blif$770517/Y}} {error "Taper driver mismatch"}
+set supply {}
+foreach pin [$origin getITerms] {
+ if {[[$pin getMTerm] getSigType] in {POWER GROUND}} {
+  if {[$pin getNet] eq "NULL"} {error "Taper supply missing"}
+  dict set supply [[$pin getMTerm] getName] [$pin getNet]
+ }
+}
+if {[dict size $supply]!=2} {error "Taper supply census"}
+set master [[ord::get_db] findMaster sg13g2_buf_2]
+if {$master eq "NULL" || [$block findInst nssoc_linkup_taper] ne "NULL" || [$block findNet nssoc_linkup_taper_out] ne "NULL"} {error "Taper master or collision"}
+set cell [odb::dbInst_create $block $master nssoc_linkup_taper];set next [odb::dbNet_create $block nssoc_linkup_taper_out]
+lassign [$origin getLocation] x y;$cell setLocation $x $y;$cell setOrient [$origin getOrient];$cell setPlacementStatus PLACED
+foreach pin [$cell getITerms] {
+ set pn [[$pin getMTerm] getName]
+ if {[[$pin getMTerm] getSigType] in {POWER GROUND}} {$pin connect [dict get $supply $pn]} elseif {$pn ni {A X}} {error "Taper terminal"}
+}
+[$cell findITerm A] connect $net;[$cell findITerm X] connect $next;$sink connect $next
+if {[llength [$block getInsts]]!=[dict size $before]+1 || [llength [$net getITerms]]!=2 || [llength [$next getITerms]]!=2} {error "Taper census"}
+foreach inst [$block getInsts] {
+ set name [$inst getName];if {$name eq "nssoc_linkup_taper"} {continue}
+ lassign [dict get $before $name] master pins
+ foreach pin [$inst getITerms] {
+  set pn [[$pin getMTerm] getName];set expected [dict get $pins $pn]
+  if {$name eq "wire3244" && $pn eq "A"} {set expected $next}
+  if {[$pin getNet] ne $expected} {error "Taper unrelated incidence changed"}
+ }
+}
+foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Taper port changed"}}
+puts "NSSOC_LINKUP_TAPER_STRUCTURAL_PASS"
+
 detailed_placement
 check_placement -verbose
 puts "NSSOC_SHARED_PCIE_DRIVERS_SAME_INCIDENCE"
