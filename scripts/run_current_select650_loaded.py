@@ -43,7 +43,7 @@ assert len(changes)==12
 # feed-forward capacitors; no ideal capacitors or extra devices. Metal RC remains
 # OLD, so this exploratory model is explicitly not geometry-matched or signoff.
 clock=source.ROOT/'scripts/cdr_cascode_clock_buffer_candidate.inc'
-assert source.pin(clock)['sha256']=='395cc60b48ce1d8e9cb1f25ae9070ddbd72a26c1ee7ca2702b4854d68d7b2b11'
+assert source.pin(clock)['sha256']=='9fe065eb58122f85d484dbb5977585b550403c15afd5a7f44167c40b2e78b77d'
 cap_changes=[]
 expected_caps={423:('dqp','usp'),424:('dqn','usn'),425:('aqp','uap'),426:('aqn','uan'),427:('cqp','ucp'),428:('cqn','ucn')}
 for d in candidate_contract['devices']:

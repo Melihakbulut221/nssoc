@@ -31,6 +31,21 @@ Xtn_0 outn bias 0 0 npn13G2 Nx=4
 Xtn_1 outn bias 0 0 npn13G2 Nx=4
 Xtn_2 outn bias 0 0 npn13G2 Nx=4
 Xtn_3 outn bias 0 0 npn13G2 Nx=4
+* Double only output follower and matched sink area/current for measured output-stage delay.
+Xfp_3 avdd cn outp 0 npn13G2 Nx=5
+Xfp_4 avdd cn outp 0 npn13G2 Nx=5
+Xfp_5 avdd cn outp 0 npn13G2 Nx=5
+Xfn_3 avdd cp outn 0 npn13G2 Nx=5
+Xfn_4 avdd cp outn 0 npn13G2 Nx=5
+Xfn_5 avdd cp outn 0 npn13G2 Nx=5
+Xtp_4 outp bias 0 0 npn13G2 Nx=4
+Xtp_5 outp bias 0 0 npn13G2 Nx=4
+Xtp_6 outp bias 0 0 npn13G2 Nx=4
+Xtp_7 outp bias 0 0 npn13G2 Nx=4
+Xtn_4 outn bias 0 0 npn13G2 Nx=4
+Xtn_5 outn bias 0 0 npn13G2 Nx=4
+Xtn_6 outn bias 0 0 npn13G2 Nx=4
+Xtn_7 outn bias 0 0 npn13G2 Nx=4
 Rup_p avdd cp 50
 Rup_n avdd cn 50
 Rdown_p cp 0 430

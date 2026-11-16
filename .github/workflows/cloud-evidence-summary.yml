@@ -1,4 +1,4 @@
-name: Explore native MIM divider compensation at unchanged loaded acceptance gates
+name: Test doubled clock output drive against unchanged full loaded gates
 on:
   workflow_dispatch:
 permissions:
@@ -41,14 +41,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: divider-mim-area4-exploration-derived-${{ github.run_id }}
+          name: clock-output-drive2-exploration-derived-${{ github.run_id }}
           path: paired650-full-composition/derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: divider-mim-area4-exploration-native-${{ github.run_id }}
+          name: clock-output-drive2-exploration-native-${{ github.run_id }}
           path: paired650-full-composition/
           if-no-files-found: error
           retention-days: 90

@@ -254,7 +254,7 @@ def run_loaded(worker,models,variant,engine,model,contract,bound,case):
     folder=worker.NATIVE/('loaded-n'+str(bound['partition'])+'-'+case);folder.mkdir()
     r=dict(status='RUNNING',case=case,partition=bound['partition'],corner=corner,accepted=False,
         full_phy_accepted=False,final_timing_complete=False,closed_loop=False,full_pex_qualified=False,
-        scope='Exploratory twelve A/C/select divider resistors widened to4um with OLD metal/gate RC. NOT geometry-matched layout/PEX. Exploratory reduced-input/cascode clock driver with30valid-Nx HBTs (99totalemitters; output followers Nx5) and7ideal sizing resistors added before unchanged physical650 clock ports. NOT physically implemented buffer or PHY signoff. Actual650 nonlinear devices with current MIM-aware metal and physical gate-port reductions. External8GHz clock; full original256bits, loads and electrical gates. One selected partition/case; full serial PHY, gate extrinsicC, substrate, PVT/refinement and chip integration remain unqualified.',
+        scope='Exploratory twelve shortened divider resistors and six native MIM plate dimensions doubled with OLD metal/gate RC. NOT geometry-matched layout/PEX. Exploratory reduced-input/cascode clock driver with44valid-Nx HBTs (161totalemitters; six parallel Nx5 followers and eight parallel Nx4 sinks per output) and7ideal sizing resistors added before unchanged physical650 clock ports. NOT physically implemented buffer or PHY signoff. Actual650 nonlinear devices with current MIM-aware metal and physical gate-port reductions. External8GHz clock; full original256bits, loads and electrical gates. One selected partition/case; full serial PHY, gate extrinsicC, substrate, PVT/refinement and chip integration remain unqualified.',
         source_head=os.environ['GITHUB_SHA'],data_offset_s=offset,readback_controls=readback_controls())
     result=worker.DERIVED/('loaded-n'+str(bound['partition'])+'-'+case+'.json')
     def save():result.write_bytes(worker.enc(r))
@@ -271,12 +271,12 @@ def run_loaded(worker,models,variant,engine,model,contract,bound,case):
             expected_nx=2 if fields[0].startswith(("xip_","xin_","xcp_","xcn_")) else 1 if fields[0]=="xref" else 5 if fields[0].startswith(("xfp_","xfn_")) else 4
             assert nx==expected_nx, "Exact reduced-input candidate census"
             buffer_devices['xclock.'+fields[0]]=dict(nodes=[bound_node(n)for n in fields[1:5]],nx=nx)
-        assert len(buffer_devices)==30 and sum(x['nx']for x in buffer_devices.values())==99
+        assert len(buffer_devices)==44 and sum(x['nx']for x in buffer_devices.values())==161
         cards=list(models.rglob('sg13g2_hbt_mod.lib'));assert len(cards)==1
         text=cards[0].read_bytes().decode('latin-1')
         assert 'Valid numbers: NX = 1 - 10' in text and '2.30E-14-(1.50E-15*Nx)' in text
         all_devices=list(devices)+list(buffer_devices)
-        assert len(all_devices)==154 and len(set(all_devices))==154
+        assert len(all_devices)==168 and len(set(all_devices))==154
         nodes={n for group in groups.values()for dev in group.values()for n in dev['nodes']}|set(ports)|set(bound['aliases'].values());nodes.discard('0')
         nodes|={n for dev in buffer_devices.values()for n in dev['nodes']};nodes.discard('0')
         vectors=['v('+n+')'for n in sorted(nodes)]+['@q.'+n+'.qnpn13g2[ic]'for n in all_devices]+['@n.'+n+'.nsg13_lv_nmos[ids]'for n in mos]
@@ -346,7 +346,7 @@ def run_loaded(worker,models,variant,engine,model,contract,bound,case):
             record=dict(minimum_active_vce_v=float(vce[active].min()),maximum_alltime_abs_vce_v=float(abs(vce).max()),maximum_alltime_abs_vbe_v=float(abs(vbe).max()),maximum_model_ic_per_emitter_a=float(abs(ic).max()))
             record['voltage_and_model_ic_screen_passed']=record['minimum_active_vce_v']>=.4 and record['maximum_alltime_abs_vce_v']<=1.6 and record['maximum_alltime_abs_vbe_v']<=1.6 and record['maximum_model_ic_per_emitter_a']<=.003
             buffer_checks[name]=record
-        r['clock_buffer']=dict(devices=buffer_checks,circuit_sha256=digest(circuit),instances=30,ideal_sizing_resistors=7,physically_implemented=False,terminal_current_soa_qualified=False,passed=all(x['voltage_and_model_ic_screen_passed']for x in buffer_checks.values()))
+        r['clock_buffer']=dict(devices=buffer_checks,circuit_sha256=digest(circuit),instances=44,ideal_sizing_resistors=7,physically_implemented=False,terminal_current_soa_qualified=False,passed=all(x['voltage_and_model_ic_screen_passed']for x in buffer_checks.values()))
         save()
         measure_wave(bound,t,d,bits,offset,protected,r,constant,fault)
         assert r['clock_buffer']['passed'],'Added buffer voltage/model-current screen failed'
