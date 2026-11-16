@@ -1,22 +1,31 @@
-name: Prove full receive module after cached EOP invariants
+name: Admit exact cached EOP RTL against formal and traffic evidence
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  formal:
+  admission:
     runs-on: ubuntu-24.04
-    timeout-minutes: 145
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SOC_PCIE_RX_EOP_FLAGS: '1'
+      SOC_PCIE_RX_READ2: '1'
+      SOC_PCIE_RESET_COPIES: '1'
+      SOC_PCIE_RX_COMMIT_COPIES: '1'
+      SOC_PCIE_RX_CURSOR_LOCAL_RESET: '1'
+      SOC_PCIE_RX_LOCAL_LANE_NEXT: '1'
+      SOC_PCIE_RX_DLLP_LAST_COMPARE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - run: sudo apt-get update -qq && sudo apt-get install -y yosys
-      - run: python3 formal/eop_flags/composition.py
+      - run: python3 scripts/require_eop_flags_qualification.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-flags-composition-${{ github.run_id }}
-          path: eop-flag-proof/
+          name: eop-flags-admission-${{ github.run_id }}
+          path: out/eop-flags-qualification.json
           if-no-files-found: error
           retention-days: 90
