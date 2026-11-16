@@ -1,4 +1,4 @@
-name: Measure setup headroom at every remaining internal hold endpoint
+name: Repair five internal holds with measured setup headroom
 on:
   workflow_dispatch:
 permissions:
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-internal-headroom-derived-${{ github.run_id }}
+          name: credit-crc-safe-internal-hold-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-internal-headroom-native-${{ github.run_id }}
+          name: credit-crc-safe-internal-hold-native-${{ github.run_id }}
           path: |
             credit-crc-driver-trial/run/
             credit-crc-driver-trial/result.json

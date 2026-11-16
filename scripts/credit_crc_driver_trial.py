@@ -64,6 +64,24 @@ try:
  (OUT/'internal-targets.tcl').write_text('\n'.join(commands)+'\n')
  (OUT/'internal-targets.json').write_text(json.dumps(catalog,indent=2))
  r['internal_endpoint_count']=len(catalog);r['internal_endpoint_source']=dict(run=43782739036,artifact=14189336194,sha256=dh)
+ # Authenticate paired setup evidence before inserting five endpoint delays.
+ headroom_run=prior.api('actions/runs/43784527556')
+ assert headroom_run['head_sha']=='6226ebbfca922251e5d0d899da52b27bc79fc4d5' and headroom_run['conclusion']=='success' and headroom_run['run_attempt']==1
+ hm=prior.api('actions/artifacts/14189917738');hd='f6b5211b0a0cdc62414b431ca851191c4f64ecac478f468b3fad9c6d4f96095c'
+ assert hm['workflow_run']['id']==43784527556 and hm['digest']=='sha256:'+hd and not hm['expired']
+ hb=subprocess.check_output(['gh','api',prior.REPO+'actions/artifacts/14189917738/zip']);assert hashlib.sha256(hb).hexdigest()==hd
+ with zipfile.ZipFile(io.BytesIO(hb)) as hz:
+  hr=json.loads(hz.read('result.json'));assert hr['sources_unchanged'] and hr['returncode']==0
+  selected=[]
+  for item in json.loads(hz.read('internal-targets.json')):
+   slacks=[]
+   for step in ['2-nssoc-sizedslow','3-nssoc-sizedtypical','4-nssoc-sizedfast']:
+    name=f"run/{step}/targeted_{item['label']}_max.rpt";content=hz.read(name);assert hashlib.sha256(content).hexdigest()==hr['outputs'][name]
+    found=re.findall(r'([-+\d.]+)\s+slack\s+\(',content.decode());assert found
+    slacks.extend(map(float,found))
+   if min(slacks)>1:selected.append(item['pin'])
+ assert sorted(selected)==['u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_ADDR[3]', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_ADDR[5]', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[2].u_mem/A_MEN', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[3].u_mem/A_MEN', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[4].u_mem/A_MEN']
+ r['safe_internal_delay_pins']=selected;r['paired_headroom_artifact']=14189917738
  flow=ROOT/'hw/soc/pnr/credit_crc_driver_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,OUT/'internal-targets.tcl',OUT/'internal-targets.json',Path(__file__),prior.SOURCE/'prepared/physical.sdc']}
  command=[str(app),'python',str(flow),'--flow','AckChipResetSized','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(cfg)]
  (OUT/'run').mkdir()
@@ -83,7 +101,8 @@ try:
    for mode in ['max','min']:
     content=(dirs[0]/('targeted_'+item['label']+'_'+mode+'.rpt')).read_text();assert 'Startpoint:' in content and 'Endpoint:' in content
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
- r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_EXPANDED_IO_DELAY_REQUIRES_LOGIC_AND_TIMING_REVIEW',scope='Three driver resizes plus twenty exact PCIe D-branch delay cells and eighteen isolated Ethernet output delay cells; native incidence guards and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
+ assert 'NSSOC_SAFE_INTERNAL_HOLD_STRUCTURAL_PASS cells=5 endpoints=5' in (OUT/'native.log').read_text()
+ r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_EXPANDED_IO_DELAY_REQUIRES_LOGIC_AND_TIMING_REVIEW',scope='Three driver resizes plus twenty PCIe, eighteen Ethernet output and five measured safe internal endpoint delay cells; native incidence guards and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'and p.suffix!='.zip'};save()

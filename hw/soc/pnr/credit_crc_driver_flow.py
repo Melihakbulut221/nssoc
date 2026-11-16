@@ -191,6 +191,67 @@ puts "NSSOC_ETH_OUTPUT_DELAY_STRUCTURAL_PASS ports=9 cells=18"
 
 if {[llength [$block getInsts]]!=$before_eth_count+18} {error "Combined ECO cell census mismatch"}
 
+# Only endpoints with measured >1ns worst setup headroom in all three corners.
+set internal_before {};set internal_ports {};set internal_new {};set internal_changed {}
+foreach inst [$block getInsts] {
+ foreach pin [$inst getITerms] {dict set internal_before "[$inst getName]/[[$pin getMTerm] getName]" [$pin getNet]}
+}
+foreach port [$block getBTerms] {dict set internal_ports [$port getName] [$port getNet]}
+set internal_count [llength [$block getInsts]]
+foreach {label instance terminal} {
+ {internal_238} {u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem} {A_ADDR[3]}
+ {internal_239} {u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem} {A_ADDR[5]}
+ {internal_240} {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[2].u_mem} {A_MEN}
+ {internal_241} {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[3].u_mem} {A_MEN}
+ {internal_242} {u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[4].u_mem} {A_MEN}
+} {
+ set origin [$block findInst $instance]
+ if {$origin eq "NULL"} {error "Internal endpoint missing"}
+ set sink [$origin findITerm $terminal]
+ if {$sink eq "NULL" || [$sink getIoType] ne "INPUT"} {error "Internal endpoint is not input"}
+ set net [$sink getNet]
+ if {$net eq "NULL" || [$net getSigType] ne "SIGNAL"} {error "Internal endpoint is not signal"}
+ set drivers 0
+ foreach pin [$net getITerms] {if {[$pin getIoType] eq "OUTPUT"} {incr drivers}}
+ foreach pin [$net getBTerms] {if {[$pin getIoType] eq "INPUT"} {incr drivers}}
+ if {$drivers!=1} {error "Internal net driver census"}
+ set count [llength [$net getITerms]]
+ set supply {}
+ foreach pin [$origin getITerms] {
+  set kind [[$pin getMTerm] getSigType]
+  if {$kind in {POWER GROUND}} {
+   set rail [$pin getNet]
+   if {$rail eq "NULL"} {error "Internal endpoint supply disconnected"}
+   if {[dict exists $supply $kind] && [dict get $supply $kind] ne $rail} {error "Ambiguous supply domain"}
+   dict set supply $kind $rail
+  }
+ }
+ if {[dict size $supply]!=2} {error "Internal endpoint supply census"}
+ set name nssoc_safe_hold_$label
+ if {[$block findInst $name] ne "NULL" || [$block findNet ${name}_out] ne "NULL"} {error "Internal ECO collision"}
+ set cell [odb::dbInst_create $block $delay_master $name];set next [odb::dbNet_create $block ${name}_out]
+ lassign [$origin getLocation] x y
+ $cell setLocation $x $y;$cell setPlacementStatus PLACED
+ foreach pin [$cell getITerms] {
+  set kind [[$pin getMTerm] getSigType];set pn [[$pin getMTerm] getName]
+  if {$kind in {POWER GROUND}} {$pin connect [dict get $supply $kind]} elseif {$pn ni {A X}} {error "Unknown internal delay terminal"}
+ }
+ [$cell findITerm A] connect $net;[$cell findITerm X] connect $next;$sink connect $next
+ dict set internal_changed "$instance/$terminal" $next;lappend internal_new $name
+ if {[llength [$net getITerms]]!=$count || [llength [$next getITerms]]!=2} {error "Internal delay chain incidence"}
+}
+if {[llength $internal_new]!=5 || [dict size $internal_changed]!=5 || [llength [$block getInsts]]!=$internal_count+5} {error "Internal ECO census"}
+foreach inst [$block getInsts] {
+ if {[$inst getName] in $internal_new} {continue}
+ foreach pin [$inst getITerms] {
+  set key "[$inst getName]/[[$pin getMTerm] getName]";set expected [dict get $internal_before $key]
+  if {[dict exists $internal_changed $key]} {set expected [dict get $internal_changed $key]}
+  if {[$pin getNet] ne $expected} {error "Unrelated internal incidence changed"}
+ }
+}
+foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $internal_ports [$port getName]]} {error "Internal ECO changed port"}}
+puts "NSSOC_SAFE_INTERNAL_HOLD_STRUCTURAL_PASS cells=5 endpoints=5"
+
 detailed_placement
 check_placement -verbose
 puts "NSSOC_SHARED_PCIE_DRIVERS_SAME_INCIDENCE"
