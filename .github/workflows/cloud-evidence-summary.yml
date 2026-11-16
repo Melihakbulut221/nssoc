@@ -1,4 +1,4 @@
-name: Certified peer-ready postCTS electrical setup and hold repair
+name: Size seven peer-ready link buffers then guarded setup hold repair
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/cloud_peer_ready_postcts.py
+          python3 -m py_compile scripts/run_peer_link_buffers.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -30,31 +30,47 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native three-corner baseline electrical setup hold repair and remeasurement
-        run: python3 scripts/cloud_peer_ready_postcts.py
+      - name: Native before and after STA with electrical and setup hold repair
+        run: python3 scripts/run_peer_link_buffers.py
       - name: Collect derived diagnostics
         if: always()
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('hw/soc/out/cloud-predecode-postcts');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('peer-link-buffers');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
               if p.is_file():
                 q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
+            for p in (root/'run').rglob('*'):
+              if p.is_file() and (p.suffix=='.rpt' or p.name in ('state_out.json','or_metrics_out.json','config.json','baseline-reproduction.json')):
+                q=out/p.relative_to(root);q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
           PYCODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: peer-ready-postcts-derived-${{ github.run_id }}
+          name: peer-link-buffers-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: peer-ready-postcts-native-${{ github.run_id }}
-          path: hw/soc/out/cloud-predecode-postcts/
+          name: peer-link-buffers-incremental-repair-native-${{ github.run_id }}
+          path: |
+            peer-link-buffers/run/
+            peer-link-buffers/result.json
+            peer-link-buffers/native.log
+            peer-link-buffers/config.json
+            peer-link-buffers/initial.json
           if-no-files-found: error
           retention-days: 90
+      - name: Publish compact authenticated measurements without large report download
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: peer-link-buffers-summary-${{ github.run_id }}
+          path: peer-link-buffers/result.json
+          retention-days: 90
+          if-no-files-found: error
