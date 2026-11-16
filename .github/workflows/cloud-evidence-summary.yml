@@ -1,4 +1,4 @@
-name: Measure combined PCIe endpoint and Ethernet output hold delay
+name: Measure remaining PCIe and Ethernet endpoint setup hold headroom
 on:
   workflow_dispatch:
 permissions:
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-combined-io-delay-derived-${{ github.run_id }}
+          name: credit-crc-remaining-io-sta-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-combined-io-delay-native-${{ github.run_id }}
+          name: credit-crc-remaining-io-sta-native-${{ github.run_id }}
           path: |
             credit-crc-driver-trial/run/
             credit-crc-driver-trial/result.json
