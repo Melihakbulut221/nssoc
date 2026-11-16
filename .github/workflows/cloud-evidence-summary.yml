@@ -1,16 +1,15 @@
-name: Size seven peer-ready link buffers then guarded setup hold repair
+name: Inspect exact peer-ready setup hold paths and native repair limits
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  candidate:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 355
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
-      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -18,59 +17,11 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Restore exact newly mapped candidate without inherited boot acceptance
-        run: |
-          set -euo pipefail
-          python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/run_peer_link_buffers.py
-      - name: Prepare pinned native physical runtime
-        run: |
-          set -euo pipefail
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2
-          python3 scripts/bootstrap_flow.py
-          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native before and after STA with electrical and setup hold repair
-        run: python3 scripts/run_peer_link_buffers.py
-      - name: Collect derived diagnostics
-        if: always()
-        run: |
-          python3 - <<'PYCODE'
-          import pathlib,shutil
-          root=pathlib.Path('peer-link-buffers');out=pathlib.Path('placement-derived');out.mkdir()
-          if root.exists():
-            for name in ['result.json','native.log']:
-              p=root/name
-              if p.is_file():
-                q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
-            for p in (root/'run').rglob('*'):
-              if p.is_file() and (p.suffix=='.rpt' or p.name in ('state_out.json','or_metrics_out.json','config.json','baseline-reproduction.json')):
-                q=out/p.relative_to(root);q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
-          PYCODE
+      - run: python3 scripts/inspect_peer_ready_postcts.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: peer-link-buffers-incremental-repair-derived-${{ github.run_id }}
-          path: placement-derived/
+          name: peer-ready-postcts-review-${{ github.run_id }}
+          path: peer-ready-postcts-review/
           if-no-files-found: error
           retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: peer-link-buffers-incremental-repair-native-${{ github.run_id }}
-          path: |
-            peer-link-buffers/run/
-            peer-link-buffers/result.json
-            peer-link-buffers/native.log
-            peer-link-buffers/config.json
-            peer-link-buffers/initial.json
-          if-no-files-found: error
-          retention-days: 90
-      - name: Publish compact authenticated measurements without large report download
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: peer-link-buffers-summary-${{ github.run_id }}
-          path: peer-link-buffers/result.json
-          retention-days: 90
-          if-no-files-found: error
