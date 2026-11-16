@@ -38,8 +38,32 @@ for d in candidate_contract['devices']:
  tokens=lines[hits[0]].split();assert tokens.count('l='+old)==1;tokens[tokens.index('l='+old)]='l='+new;lines[hits[0]]=' '.join(tokens);text='\n'.join(lines)+'\n'
  inst['parameters']['l']=new;d['native_parameters']['l']=new_length;changes.append(dict(native_id=d['native_id'],width_um=width,old_length_um=length,new_length_um=new_length,nominal_l_over_w=new_length/width))
 assert len(changes)==12
+# Controlled native-MIM compensation experiment: retain original3200ohm clock bias
+# and shortened-resistor baseline. Double both plate dimensions of six existing
+# feed-forward capacitors; no ideal capacitors or extra devices. Metal RC remains
+# OLD, so this exploratory model is explicitly not geometry-matched or signoff.
+clock=source.ROOT/'scripts/cdr_cascode_clock_buffer_candidate.inc'
+assert source.pin(clock)['sha256']=='395cc60b48ce1d8e9cb1f25ae9070ddbd72a26c1ee7ca2702b4854d68d7b2b11'
+cap_changes=[]
+expected_caps={423:('dqp','usp'),424:('dqn','usn'),425:('aqp','uap'),426:('aqn','uan'),427:('cqp','ucp'),428:('cqn','ucn')}
+for d in candidate_contract['devices']:
+ if d['native_id']not in expected_caps:continue
+ assert d['model']=='cap_cmim' and len(d['instances'])==1
+ assert (d['logical_terminals']['MIM_TOP'],d['logical_terminals']['MIM_BTM'])==expected_caps[d['native_id']]
+ inst=d['instances'][0];before=copy.deepcopy(d['native_parameters']);old_parameters=copy.deepcopy(inst['parameters'])
+ lines=text.splitlines();hits=[i for i,line in enumerate(lines)if line.split()and line.split()[0]==inst['name']];assert len(hits)==1
+ tokens=lines[hits[0]].split()
+ for axis in ['l','w']:
+  old=inst['parameters'][axis];value=float(old.removesuffix('u'));assert abs(value-before[axis])<1e-9
+  new=format(value*2,'.12g')+'u';assert tokens.count(axis+'='+old)==1
+  tokens[tokens.index(axis+'='+old)]=axis+'='+new;inst['parameters'][axis]=new;d['native_parameters'][axis]=value*2
+ d['native_parameters']['A']=before['A']*4;d['native_parameters']['P']=before['P']*2
+ lines[hits[0]]=' '.join(tokens);text='\n'.join(lines)+'\n'
+ cap_changes.append(dict(native_id=d['native_id'],logical_terminals=d['logical_terminals'],old_parameters=old_parameters,new_parameters=copy.deepcopy(inst['parameters']),native_before=before,native_after=copy.deepcopy(d['native_parameters'])))
+assert len(cap_changes)==6 and len(candidate_contract['devices'])==650
+source.save('divider-mim-area4-experiment.json',dict(baseline_run=43776904300,changes=cap_changes,clock=source.pin(clock),native_device_count=650,native_mim_count=7,physical_geometry_matches=False,full_phy_accepted=False,unchanged_original_electrical_gates=True,scope='Existing six native MIM feed-forward plates get4x area/2x perimeter relative to shortened-resistor3200ohm baseline. OLD metal RC and original substrate model; not extracted candidate or layout acceptance.'))
 candidate_contract['physical_geometry_matches']=False
-candidate_contract['scope']='Exploratory twelve divider resistor length changes at original widths with OLD baseline metal/gate RC. Not a physically extracted candidate, not layout or PHY acceptance.'
+candidate_contract['scope']='Exploratory twelve shortened divider resistors plus six existing native MIM plate dimensions doubled, using OLD baseline metal/gate RC. Not a physically extracted candidate, not layout or PHY acceptance.'
 candidate=target/'candidate-model.cir';candidate.write_text(text)
 (target/'candidate-contract.json').write_bytes(source.enc(candidate_contract))
 source.save('divider-short-length-experiment.json',dict(changes=changes,baseline_model_sha256=source.pin(target/'model.cir'),candidate_model=source.pin(candidate),physical_geometry_matches=False,full_phy_accepted=False,scope=candidate_contract['scope']))
