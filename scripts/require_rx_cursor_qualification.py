@@ -4,6 +4,10 @@ assert os.environ.get('GITHUB_ACTIONS')=='true'
 P='repos/Melihakbulut221/nssoc/'
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
 source=pathlib.Path('hw/soc/rtl/pcie/soc_pcie_rx_credit.v').read_bytes();digest=hashlib.sha256(source).hexdigest()
+current_digest=digest
+assert digest=='a83699c6311ba0ac6414060f68699ee29510bf5ed99fee64f92168546bf16223'
+subprocess.run(['python3','scripts/require_eop_flags_qualification.py'],check=True)
+source=pathlib.Path('formal/eop_flags/reference.v').read_bytes();digest=hashlib.sha256(source).hexdigest()
 assert digest=='865d687a272faf4a5077f79af21ace3b4afbe5085b640dd20f3512c8a43ff7d5'
 legacy_raw=base64.b64decode(api('contents/hw/soc/rtl/pcie/soc_pcie_rx_credit.v?ref=7b3d47cd6bd0666f035f6c231f5edefb705ca1c6')['content']);legacy=legacy_raw.decode()
 legacy_hash=hashlib.sha256(legacy_raw).hexdigest();assert legacy_hash=='2a345ba4082873f73fd8f308880a1f8d29651e24c12bbeaf9ac20b8f4082636e'
@@ -42,4 +46,4 @@ for run,head,name,kind,count in [(43659882138,'7b3d47cd6bd0666f035f6c231f5edefb7
  assert all(c['mutation_rejected']if c['mutation']else c['proven'if kind=='formal'else'passed']for c in result['cases'])
  assert result['status']==('TWO_FULL_MODULE_PROOFS_AND_TWO_MUTATIONS_COMPLETE_NOT_PHYSICAL_SIGNOFF'if kind=='formal'else'EIGHT_TRAFFIC_PASSES_AND_EIGHT_MUTATION_REJECTIONS_NOT_SIGNOFF')
  results.append({'run':run,'source_head':head,'job_id':selected[0]['id'],'artifact_id':art['id'],'artifact_sha256':sha,'result':result})
-(out/'rx-qualification-gate.json').write_text(json.dumps({'source_sha256':digest,'legacy_source_sha256':legacy_hash,'qualified_inputs':results,'physical_acceptance':False},indent=2))
+(out/'rx-qualification-gate.json').write_text(json.dumps({'current_source_sha256':current_digest,'source_sha256':digest,'legacy_source_sha256':legacy_hash,'qualified_inputs':results,'physical_acceptance':False},indent=2))
