@@ -99,9 +99,63 @@ class ResetBufferECO(ElectricalPostCTS):
         q.write_text(s)
         return str(q)
 
-class SecondBoundedPostCTS(BoundedPostCTS):
-    id = "NSSOC.SecondBoundedPostCTS"
-    name = "Continue setup repair only after reproducing measured three-corner baseline"
+class DriverAdjacentTaper(ElectricalPostCTS):
+    id = "NSSOC.DriverAdjacentTaper"
+    name = "Move existing taper beside weak source after reproducing measured baseline"
+
+    def get_script_path(self):
+        source = Path(super().get_script_path()).read_text()
+        a = source.index("# Buffer I/O")
+        b = source.index("report_floating_nets -verbose", a)
+        move = r"""
+set block [ord::get_db_block]
+set taper [$block findInst nssoc_linkup_taper]
+set driver [$block findInst {$abc$735341$auto$blifparse.cc:397:parse_blif$770517}]
+set sink [$block findInst wire3244]
+if {$taper eq "NULL" || $driver eq "NULL" || $sink eq "NULL"} {error "Missing measured taper path"}
+if {[[$taper getMaster] getName] ne "sg13g2_buf_2" || [[$driver getMaster] getName] ne "sg13g2_o21ai_1"} {error "Taper source master drift"}
+set input [[$taper findITerm A] getNet]
+set output [[$taper findITerm X] getNet]
+if {$input eq "NULL" || $output eq "NULL" || $input ne [[$driver findITerm Y] getNet] || $output ne [[$sink findITerm A] getNet]} {error "Taper connectivity drift"}
+if {[llength [$input getITerms]]!=2 || [llength [$output getITerms]]!=2 || [llength [$input getBTerms]] || [llength [$output getBTerms]]} {error "Taper branch is not isolated"}
+set before {}
+foreach inst [$block getInsts] {
+ set pins {}
+ foreach pin [$inst getITerms] {dict set pins [[$pin getMTerm] getName] [$pin getNet]}
+ dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]
+}
+set ports {}
+foreach port [$block getBTerms] {dict set ports [$port getName] [$port getNet]}
+lassign [$driver getLocation] dx dy
+lassign [$taper getLocation] tx ty
+set old_distance [expr {abs($dx-$tx)+abs($dy-$ty)}]
+$taper setLocation $dx $dy
+$taper setOrient [$driver getOrient]
+$taper setPlacementStatus PLACED
+detailed_placement
+check_placement -verbose
+lassign [$driver getLocation] dx dy
+lassign [$taper getLocation] tx ty
+set new_distance [expr {abs($dx-$tx)+abs($dy-$ty)}]
+if {$new_distance >= $old_distance} {error "Legalized taper did not move closer to source"}
+if {[llength [$block getInsts]]!=[dict size $before]} {error "Taper move changed instance census"}
+foreach inst [$block getInsts] {
+ lassign [dict get $before [$inst getName]] master pins
+ if {[[$inst getMaster] getName] ne $master} {error "Taper move changed master"}
+ foreach pin [$inst getITerms] {
+  if {[$pin getNet] ne [dict get $pins [[$pin getMTerm] getName]]} {error "Taper move changed connectivity"}
+ }
+}
+foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports [$port getName]]} {error "Taper move changed port"}}
+puts "NSSOC_DRIVER_ADJACENT_TAPER_PASS old_distance_dbu=$old_distance new_distance_dbu=$new_distance"
+"""
+        source = source[:a] + move + chr(10) + source[b:]
+        if "log_cmd repair_design" in source or "unset_propagated_clock [all_clocks]" in source:
+            raise RuntimeError("Unexpected broad repair or ideal clock")
+        out = Path(self.step_dir) / "driver_adjacent_taper.tcl"
+        out.write_text(source)
+        return str(out)
+
     def run(self, state_in, **kwargs):
         import hashlib, io, json, math, subprocess, zipfile
         repo = "repos/Melihakbulut221/nssoc/"
@@ -146,7 +200,7 @@ class SecondBoundedPostCTS(BoundedPostCTS):
 class AckChipResetSized(Interfaces):
  Steps=([ResetBufferECO, BoundedPostCTS]
         +[type("ContinuationBefore"+n,(BranchSTA,),dict(id="NSSOC.ContinuationBefore"+n,corner=c))for n,c in CORNERS]
-        +[SecondBoundedPostCTS]
+        +[DriverAdjacentTaper]
         +[type("Sized"+n,(BranchSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS])
 if __name__=="__main__":
  from librelane.__main__ import cli
