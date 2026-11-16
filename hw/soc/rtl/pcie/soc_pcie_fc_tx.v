@@ -42,7 +42,45 @@ module soc_pcie_fc_tx #(
     wire dirty=class_dirty[class_index];
     reg [7:0] octet;
     wire [15:0] next_crc;
-    soc_pcie_crc16_byte step(.state_i(crc),.data_i(octet),.state_o(next_crc));
+    // CRC is linear over GF(2): T(state,data)=T(state,0)^T(0,data).
+    // Snapshot data-only contributions with the same idle-cycle fields as the
+    // packet. The byte index then selects after the data CRC logic, without
+    // changing frame latency, backpressure, or accepted-EOP commits.
+    function [15:0] data_crc;
+        input [7:0] value;
+        integer k;
+        reg [15:0] c;
+        begin
+            c=0;
+            for(k=0;k<8;k=k+1)
+                c=(c>>1)^({16{c[0]^value[k]}}&16'hd008);
+            data_crc=c;
+        end
+    endfunction
+    reg [15:0] payload_crc0,payload_crc1,payload_crc2,payload_crc3;
+    reg [15:0] selected_data_crc;
+    wire [15:0] state_crc;
+    soc_pcie_crc16_byte state_step(.state_i(crc),.data_i(8'b0),.state_o(state_crc));
+    always @* begin
+        case(index)
+            0:selected_data_crc=payload_crc0;
+            1:selected_data_crc=payload_crc1;
+            2:selected_data_crc=payload_crc2;
+            default:selected_data_crc=payload_crc3;
+        endcase
+    end
+    assign next_crc=state_crc^selected_data_crc;
+    always @(posedge clk_i or negedge rst_ni) begin
+        if(!rst_ni) begin
+            payload_crc0<=0;payload_crc1<=0;payload_crc2<=0;payload_crc3<=0;
+        end else if(link_up_i && !active) begin
+            payload_crc0<=data_crc((phase==0 ? 8'h40 : phase==1 ? 8'hc0 : 8'h80) |
+                                  {2'b00,class_index,4'b0000});
+            payload_crc1<=data_crc({2'b00,current_header[7:2]});
+            payload_crc2<=data_crc({current_header[1:0],2'b00,current_data[11:8]});
+            payload_crc3<=data_crc(current_data[7:0]);
+        end
+    end
     always @* begin
         case(index)
             0: octet=(frame_phase==0 ? 8'h40 : frame_phase==1 ? 8'hc0 : 8'h80) |
