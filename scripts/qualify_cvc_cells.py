@@ -1,8 +1,8 @@
 """Compare every affected cell across all four-state single-pin transitions.
-Original Icarus vs derived Icarus vs derived CVC. Functional-only, no SDF.
+Original Icarus vs derived Icarus vs derived CVC. Experimental NBA-scheduled functional outputs only, no SDF.
 """
 import pathlib,re,os,json,hashlib,subprocess,time
-from ihp_zero_delay_aliases import adapt,SOURCE_SHA
+from ihp_functional_nba import adapt,SOURCE_SHA
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 root=pathlib.Path.cwd();out=root/'cvc-cell-qualification';out.mkdir(exist_ok=False)
 lib=root/'hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v'
