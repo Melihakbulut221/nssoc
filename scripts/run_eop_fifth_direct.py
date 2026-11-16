@@ -1,7 +1,7 @@
 import os,json,subprocess,hashlib,zipfile,io,stat
 from pathlib import Path
 import cloud_predecode_postcts as prior
-ROOT=Path.cwd();OUT=ROOT/'eop-eighth-direct';OUT.mkdir()
+ROOT=Path.cwd();OUT=ROOT/'replay-five-driver-trial';OUT.mkdir()
 r=dict(source_head=os.environ['GITHUB_SHA'],accepted=False,final_timing_complete=False,full_phy_accepted=False,status='RUNNING')
 def save():(OUT/'result.json').write_text(json.dumps(r,indent=2))
 try:
@@ -85,7 +85,7 @@ try:
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
  gates=list((OUT/'run').glob('*-nssoc-eighthboundedpostcts/baseline-reproduction.json'));assert len(gates)==1
  baseline=json.loads(gates[0].read_text());assert baseline['measured_baseline_matches']
- r.update(status='MEASURED_EIGHTH_DIRECT_REPAIR_REQUIRES_REVIEW',sources_unchanged=True,baseline_reproduction=baseline,measurements=measurements,candidate_odb_sha256=prior.sha(state['odb']),scope='Restore exact seventh ODB and inherited views without replaying repairs; reproduce every seventh corner metric before eighth bounded100 setup/1000 hold. No routed timing or full PHY acceptance.')
+ r.update(status='MEASURED_REPLAY_FIVE_DRIVER_TRIAL_REQUIRES_REVIEW',sources_unchanged=True,baseline_reproduction=baseline,measurements=measurements,candidate_odb_sha256=prior.sha(state['odb']),scope='Restore exact seventh ODB and inherited views; reproduce every seventh metric before five same-function driver replacements and legal placement. Exact pin/port incidence and instance count preserved. No broad resizer, no clock/constraint waiver. No routed timing or full PHY acceptance.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json' and 'restore'not in p.relative_to(OUT).parts};save()

@@ -30,14 +30,14 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native before and after STA with electrical and setup hold repair
+      - name: Native before and after STA with five measured same-function driver replacements
         run: python3 scripts/run_eop_fifth_direct.py
       - name: Collect derived diagnostics
         if: always()
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('eop-eighth-direct');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('replay-five-driver-trial');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,27 +50,27 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-eighth-direct-incremental-repair-derived-${{ github.run_id }}
+          name: replay-five-driver-trial-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-eighth-direct-incremental-repair-native-${{ github.run_id }}
+          name: replay-five-driver-trial-incremental-repair-native-${{ github.run_id }}
           path: |
-            eop-eighth-direct/run/
-            eop-eighth-direct/result.json
-            eop-eighth-direct/native.log
-            eop-eighth-direct/config.json
-            eop-eighth-direct/initial.json
+            replay-five-driver-trial/run/
+            replay-five-driver-trial/result.json
+            replay-five-driver-trial/native.log
+            replay-five-driver-trial/config.json
+            replay-five-driver-trial/initial.json
           if-no-files-found: error
           retention-days: 90
       - name: Publish compact authenticated measurements without large report download
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-eighth-direct-summary-${{ github.run_id }}
-          path: eop-eighth-direct/result.json
+          name: replay-five-driver-trial-summary-${{ github.run_id }}
+          path: replay-five-driver-trial/result.json
           retention-days: 90
           if-no-files-found: error
