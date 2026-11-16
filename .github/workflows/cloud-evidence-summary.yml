@@ -38,6 +38,7 @@ jobs:
       - name: Compare native and derived sequential clock compositions
         run: python3 scripts/qualify_clock_composition.py
       - name: Require native SRAM and standard-cell composition against independent scoreboard
+        if: ${{ !cancelled() }}
         run: python3 scripts/qualify_native_sram_sequence.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
