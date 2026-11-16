@@ -8,6 +8,18 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: after-batch repair improves setup1527->1417 and restores100ps fast hold margin
+
+After-batch43816245771 /de530bb5ad714c210ebfd1fd1b966d0be39dc933 completed SUCCESS. Compact14203151767 SHA42aff2251a85d4ac8ddc9033a5525c7a59a2d888492636507a71f22fe8b1eed8 whole ZIP verified RAM. Native14202752465 SHA279fbaef596814d8b88c1aa7b65e9853125126a9e396686a226409015a5b445a metadata. Derived14203461443 SHA708bb93c6b82672c71a6a68f07037d2807f04a35e5aa32a8c1b5999192c104da download still pending (see handle below); do not claim whole ZIP verified.
+
+Report returncode0/sourcesunchanged, ODB523485188fff0b5e44c54b1ecf9de8fa95499e97a3c347ee02b365361cf4fb0a. Setup slow/typ/fast1417/0/0, WS-.445424/+.715755/+1.37422ns; slowTNS-289.973. Hold0allcorners, margins+.247908/+.184387/+.10001ns. Fast minmargin restored from+.050605; electrical slew17/7/0,cap0,fanout1348 unchanged. Placement estimates only. Best measured pre-route candidate now after-batch.
+
+NEW43818263628 /59295d1bf016d9e40031dffa2e6dbcd40120cc89 on codex/after-buffer-second-repair. Basedde530. Restores exact first after-batch ODB and all prior inherited views, authenticates every first after-batch corner metric from compact report before100setup/1000hold repair. EopAfterBatchSecondDirect/AfterBatchSecondBoundedPostCTS; output after-buffer-second. AST checked before commit, no constraints relaxation, no blind repetition of completed earlier repairs. Chosen continuation based on verified compact improvement while detailed report fetch pending.
+
+PENDING LOCAL READ-ONLY RAM SESSION54506: Python subprocess gh api download of derived14203461443 ZIP, then SHA check and parse1000slowviolatingpaths for remaining buf1 arcs>=.30ns. No files written, no CAD locally. Latest write_stdin reports running, no output; ps independently shows Python waiting on pipe and gh live, so observation timeout is not terminal. DO NOT launch duplicate or infer failed download. Poll same session54506 on continuation. Exec94705 atomiccommit completed. All other localexec sessions finished.
+
+Other jobs last verifiedlive:43811938338 older-mapNBAboot;43814779296 newACKboot;43815423153 newACKpostCTS;43798359649 DRT;43806909384 loadedanalog. Oldermapboot exceeds preceding2882s runtime but remains authoritative in_progress, not failure. Full production goal remains active.
+
 ## 2026-11-16:143-buffer batch improves setup1803->1527 without hold violations; continuation queued
 
 Batch43814362727 /9ce9950e91842dc245679a39e87c77dc068cab48 completed SUCCESS as measurement. Compact14201404863 SHA000c831a0e59021ddf1e1243e6f49558a0c6826d2161d760a4c1c766e5ac1b4d and derived14201748791 SHA40166289a7b2819b463ca0baa3302e7582a09cabd83c4208f56c28ed54314a94 whole ZIP verified RAM. Native14201983241 SHA616c5f685743c865f5c4f0d796908377bc0a26204c7e52f5fa7791f1d86168bf metadata only. ODB83c52383510227cbe4b0e515945b168b9553d11342b9dbec8d3a6f6187c041fd,returncode0/sourcesunchanged. Target manifest confirms143targets/reportSHA c111fdfc21a1220f07ee6918e0e5bd4075a93de7b14fb5784480a20e9d69e830.
