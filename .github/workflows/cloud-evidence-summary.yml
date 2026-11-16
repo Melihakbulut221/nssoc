@@ -1,14 +1,15 @@
-name: Prove direct PCIe peer-ready reset and transition invariant
+name: Certify peer-ready output using proved invariant and exact source identity
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  proof:
+  certificate:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 30
     env:
-      REFERENCE_SHA: e69f70857c984ef5c86001cf5427a417d35665942a449f8cc25ec0b237c5cb70
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -17,23 +18,12 @@ jobs:
           sparse-checkout: |
             scripts
             hw/soc/rtl/pcie
-            hw/soc/tb
             sw/tests/fixtures/pcie_credit_tx
-      - name: Install formal and four-state simulators
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends yosys iverilog
-      - name: Prove direct reset base and temporal invariant with reset fault controls
-        run: python3 scripts/prove_pcie_peer_ready_invariant.py
+      - run: python3 scripts/qualify_pcie_peer_ready_certificate.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-peer-ready-invariant-${{ github.run_id }}
-          path: |
-            peer-ready-invariant/**/*.json
-            peer-ready-invariant/**/*.log
-            peer-ready-invariant/**/*.ys
-            peer-ready-invariant/**/*.v
-            peer-ready-invariant/**/*.vcd
+          name: peer-ready-certificate-${{ github.run_id }}
+          path: peer-ready-certificate/
           if-no-files-found: error
           retention-days: 90
