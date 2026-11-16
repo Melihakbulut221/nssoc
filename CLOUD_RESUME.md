@@ -815,3 +815,14 @@ Cloud source search dispatched run43853832218 headad56040e5f034211b2666183b7f583
 ## Exact650 physical band feasibility audit dispatched
 
 Run43854708907 head5bfd88d2268a2735ba22ad352e6f6272cf47ad39 branchcodex/current650-placement-audit. scripts/audit_current650_placement.py authenticates actual650GDS from43748270188/artifact14175765192/a1381011a37b531184deedcca9e57e6bdba3ce18ac9d7a280ff0f00c1747504a, sourceGDS5f66ce0c..., and previouscurrentclockmetadata from43695046876/artifact14154400256/c79134c.... CloudKLayout0.30.4.post1 inspects actual pd_child_ instances, boxes/transforms, gaps, and parentconductor polygons crossing midpointcuts. Doesnotchangegeometry. Fullregion-minuschildunion is a diagnostic remainder, NOT a proof of overlapping shape ownership; crossband conductors mustreroute, neverdrop. Actual currentphysical hierarchy/bandguards required before adapting old484reorder recipe. ASTpassed; awaitnative result.json/source-metadata.json. LocalhasnoCADartifacts. Reset43853079697,antenna43852001431,boot43844625398 confirmedlive afterdispatch. Goalactiveunachieved.
+
+
+## Current650 band audit verified; choose cuts around preserved power metal
+
+-43854708907/5bfd88d2268a2735ba22ad352e6f6272cf47ad39 SUCCESS. Artifact14220971054 SHA256295a5328e24280a66e194467677bfcebbb709fab8e89a27538d4f162506891e4 wholeverifiedRAM. ExactGDS has16pd_child instances, noarrays; all x993.6um. Ypositions: sampler_cd272,rc_retime563.63,sampler814.26,sampler1137.89,sampler_cd1461.52,rc_retime1785.15,rc_select2003.78,rc_data2191.41,data2419.04,xor2669.67,select2951.3,rc_data3161.93,data3389.56,select3640.19,xor3890.82,vi4172.45.
+- Priorcurrentclock layout/result.json metadata has ONLYports/provenance/flags, no placements/routes/source_plan. Thus oldbandreorder cannotdirectlyconsumeit; derivecurrentmapping fromactualhierarchy+nativeidentity, never fabricateoldmetadata.
+- All15midpointcuts cross8-12TM1(126/0)parentpolygons, expectedglobaltrunks. EightalsocrossoneTM2(134/0)32umhighhorizontalpowerbar fromx68.8to979.6um. Eg gap740.26..814.26 bar774.26..806.26; gap2362.04..2419.04 bar2379.04..2411.04. Othercuts haveonlyTM1. Midpointcut recipewouldcutpowerbars; chooseactualclearcuts beforeanymovement.
+- Followup cutfeasibility dispatched oncodex/current650-placement-audit, latesthead/run printedbyAPI thisturn. Addssearch5nmgrid forboundary>=1umfromallnonTM1parentmaterial, reportschosenlimits, allowedsitecounts andcrossingTM1polygonbbox/rectangleflags. No geometrymodified; lackofclearcutmustnotbe waived. Parentdifference region stilldoesnotresolveoverlappinggeometryownership. Awaitresultbeforeimplementingreorderedlayout.
+- Existingreset43853079697,antenna43852001431,boot43844625398 remainedlive atlastpoll. Productiongoalactiveunachieved.
+
+Cut audit handle: 43855322864 / 8db11843ca0a6796e08e890ad4bf1ae8ceaafecd.
