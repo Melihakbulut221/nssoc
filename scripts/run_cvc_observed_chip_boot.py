@@ -44,20 +44,22 @@ try:
  ("cause","u_ibex.u_ibex_core.cs_registers_i.mcause_q",7),
  ("mtvec","u_ibex.u_ibex_core.cs_registers_i.csr_mtvec_o",32),
  ("addr","bus_data_addr",32),("req","bus_data_req",1)]
- # Add exact mapped CSR/register operands; require both classes before simulation.
- import re
- csr_suffixes={'csr_addr_i','csr_wdata_i','csr_op_i','csr_we_int','mtvec_q','mepc_q','csr_save_cause_i','csr_save_id_i','csr_save_if_i'}
- reg_suffixes={'rf_raddr_a','rf_raddr_b','rf_rdata_a','rf_rdata_b','rf_waddr_wb','rf_wdata_wb','rf_we_wb','rf_wdata_wb_ecc','branch_decision_i','branch_taken','pc_set_o'}
- extras=[];groups={'csr':0,'reg':0}
- for name,net in sorted(mapped['core_signals'].items()):
-  leaf=name.rsplit('.',1)[-1];group='csr'if leaf in csr_suffixes else'reg'if leaf in reg_suffixes else None
-  if group is None or not name.startswith('u_ibex.') or not 1<=len(net['bits'])<=39:continue
-  if any(name==n for _,n,_ in signals):continue
-  label=group+str(groups[group]);groups[group]+=1;extras.append((label,name,len(net['bits'])))
- assert groups['csr']>=3 and groups['reg']>=3,('Missing first-divergence observability',groups)
- assert len(extras)<=80,('Unexpected signal ambiguity',len(extras))
+ # Exact named operands from authenticated inventory; never accept empty selectors.
+ inventory_run=api('actions/runs/43783831123')
+ assert inventory_run['head_sha']=='63500c3cecadb6658b3709afdbcf98b5fe446a5d' and inventory_run['conclusion']=='success' and inventory_run['run_attempt']==1
+ meta=api('actions/artifacts/14189567411')
+ ihash='f1a0d6137d88855f4297973d05449ac3a064bf71428dc1414e64474bf3c6886a'
+ assert meta['workflow_run']['id']==43783831123 and meta['digest']=='sha256:'+ihash and not meta['expired']
+ ib=subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14189567411/zip'])
+ assert hashlib.sha256(ib).hexdigest()==ihash
+ inventory=json.loads(zipfile.ZipFile(io.BytesIO(ib)).read('result.json'))
+ assert inventory['mapped_sha256']==digest(mapped_path)
+ extras=[('x1', 'u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[1].rf_reg_q', 32), ('x2', 'u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[2].rf_reg_q', 32), ('x3', 'u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[3].rf_reg_q', 32), ('x5', 'u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[5].rf_reg_q', 32), ('x6', 'u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[6].rf_reg_q', 32), ('x7', 'u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[7].rf_reg_q', 32), ('x28', 'u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.g_rf_flops[28].rf_reg_q', 32), ('raddr_a', 'u_ibex.gen_regfile_ff.register_file_i.raddr_a_i', 5), ('raddr_b', 'u_ibex.gen_regfile_ff.register_file_i.raddr_b_i', 5), ('waddr', 'u_ibex.gen_regfile_ff.register_file_i.waddr_a_i', 5), ('wraddr', 'u_ibex.gen_regfile_ff.register_file_i.g_plain_rf.wr_addr', 5), ('csraddr', 'u_ibex.u_ibex_core.cs_registers_i.csr_addr', 12), ('id_valid', 'u_ibex.u_ibex_core.exs_id_instr_valid_id', 1), ('ex_valid', 'u_ibex.u_ibex_core.g_ex_stage.exs_ex_valid_q', 1), ('ex_insn', 'u_ibex.u_ibex_core.g_ex_stage.exs_ex_instr_rdata_alu_id_q', 32), ('ex_compressed', 'u_ibex.u_ibex_core.g_ex_stage.exs_ex_instr_is_compressed_id_q', 1), ('branch_raw', 'u_ibex.u_ibex_core.id_stage_i.branch_set_raw', 1), ('branch_done', 'u_ibex.u_ibex_core.id_stage_i.branch_jump_set_done_q', 1)]
+ for label,name,width in extras:
+  actual=mapped['core_signals'][name];known=inventory['signals'][name]
+  assert known['width']==width and len(actual['bits'])==width and actual['bits']==known['bits'],name
  signals+=extras
- r['extra_signal_groups']=groups
+ r['operand_inventory']=dict(run=43783831123,artifact=14189567411,sha256=ihash,exact_extra_signals=len(extras))
  for label,name,width in signals:
   assert name in mapped["core_signals"] and len(mapped["core_signals"][name]["bits"])==width
  fields=" ".join(label+"=%h" for label,name,width in signals)
