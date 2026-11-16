@@ -1,4 +1,4 @@
-name: Repair measured link-up critical drivers in new EOP mapping
+name: Continue new EOP native timing repair after measured iteration limit
 on:
   workflow_dispatch:
 permissions:
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-linkup-driver-derived-${{ github.run_id }}
+          name: eop-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-linkup-driver-native-${{ github.run_id }}
+          name: eop-incremental-repair-native-${{ github.run_id }}
           path: |
             credit-crc-driver-trial/run/
             credit-crc-driver-trial/result.json
