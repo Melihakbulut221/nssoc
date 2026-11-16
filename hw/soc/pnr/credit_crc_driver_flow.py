@@ -51,6 +51,21 @@ foreach {label pname count endpoint} {
  training pcie_training_i 3 {$auto$ff.cc:337:slice$183526}
  rx_error pcie_rx_error_i 1 {$auto$ff.cc:337:slice$172492}
  rx_data7 {pcie_rx_data_i[7]} 1 {$auto$ff.cc:337:slice$172502}
+ rx_valid {pcie_rx_valid_i} 1 {$auto$ff.cc:337:slice$172503}
+ rx_sop {pcie_rx_sop_i} 1 {$auto$ff.cc:337:slice$172494}
+ rx_eop {pcie_rx_eop_i} 1 {$auto$ff.cc:337:slice$172493}
+ rx_dllp {pcie_rx_dllp_i} 1 {$auto$ff.cc:337:slice$172491}
+ rx_data0 {pcie_rx_data_i[0]} 1 {$auto$ff.cc:337:slice$172495}
+ rx_data1 {pcie_rx_data_i[1]} 1 {$auto$ff.cc:337:slice$172496}
+ rx_data2 {pcie_rx_data_i[2]} 1 {$auto$ff.cc:337:slice$172497}
+ rx_data3 {pcie_rx_data_i[3]} 1 {$auto$ff.cc:337:slice$172498}
+ rx_data4 {pcie_rx_data_i[4]} 1 {$auto$ff.cc:337:slice$172499}
+ rx_data5 {pcie_rx_data_i[5]} 1 {$auto$ff.cc:337:slice$172500}
+ rx_data6 {pcie_rx_data_i[6]} 1 {$auto$ff.cc:337:slice$172501}
+ function_id3 {pcie_function_id_i[3]} 1 {$auto$ff.cc:337:slice$365940}
+ function_id7 {pcie_function_id_i[7]} 1 {$auto$ff.cc:337:slice$365944}
+ function_id8 {pcie_function_id_i[8]} 1 {$auto$ff.cc:337:slice$365945}
+ function_id13 {pcie_function_id_i[13]} 1 {$auto$ff.cc:337:slice$365950}
 } {
  set port [$block findBTerm $pname]
  if {$port eq "NULL" || [$port getIoType] ne "INPUT"} {error "Input missing $pname"}
@@ -92,7 +107,7 @@ foreach {label pname count endpoint} {
  $sink connect $previous;dict set changed "$endpoint/D" $previous
  if {[llength [$net getITerms]]!=$original_iterm_count || [llength [$previous getITerms]]!=2} {error "Chain mismatch"}
 }
-if {[llength $added]!=5 || [dict size $changed]!=3 || [llength [$block getInsts]]!=[dict size $before]+5} {error "ECO census"}
+if {[llength $added]!=20 || [dict size $changed]!=18 || [llength [$block getInsts]]!=[dict size $before]+20} {error "ECO census"}
 foreach inst [$block getInsts] {
  set name [$inst getName]
  if {$name in $added} {continue}
@@ -104,10 +119,10 @@ foreach inst [$block getInsts] {
  }
 }
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port net changed"}}
-puts "NSSOC_ENDPOINT_DELAY_STRUCTURAL_PASS ports=3 cells=5"
+puts "NSSOC_ENDPOINT_DELAY_STRUCTURAL_PASS ports=18 cells=20"
 
 set before_eth_count [llength [$block getInsts]]
-# Two positive delay cells on each of two measured Ethernet output ports.
+# Two positive delay cells on each of nine measured Ethernet output ports.
 set delay_master [[ord::get_db] findMaster sg13g2_dlygate4sd3_1]
 if {$delay_master eq "NULL"} {error "Missing characterized delay master"}
 set snapshot {};set ports_snapshot {}
@@ -116,8 +131,8 @@ foreach inst [$block getInsts] {
 }
 foreach port [$block getBTerms] {dict set ports_snapshot [$port getName] [$port getNet]}
 set changed {};set additions {}
-foreach bit {5 2} {
- set port_name [format {eth_txd_o[%d]} $bit]
+foreach bit {0 1 2 3 4 5 6 7 enable} {
+ if {$bit eq "enable"} {set port_name eth_tx_en_o} else {set port_name [format {eth_txd_o[%d]} $bit]}
  set port [$block findBTerm $port_name]
  if {$port eq "NULL" || [$port getIoType] ne "OUTPUT"} {error "Expected Ethernet output missing"}
  set net [$port getNet]
@@ -160,7 +175,7 @@ foreach bit {5 2} {
  [$c1 findITerm A] connect $n1;[$c1 findITerm X] connect $net
  if {[llength [$n0 getITerms]]!=2 || [llength [$n1 getITerms]]!=2 || [llength [$net getITerms]]!=1} {error "Delay chain incidence mismatch"}
 }
-if {[llength $additions]!=4 || [dict size $changed]!=2} {error "Unexpected delay ECO census"}
+if {[llength $additions]!=18 || [dict size $changed]!=9} {error "Unexpected delay ECO census"}
 foreach inst [$block getInsts] {
  if {[$inst getName] in $additions} {continue}
  foreach pin [$inst getITerms] {
@@ -171,10 +186,10 @@ foreach inst [$block getInsts] {
  }
 }
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_snapshot [$port getName]]} {error "Port net changed"}}
-puts "NSSOC_ETH_OUTPUT_DELAY_STRUCTURAL_PASS ports=2 cells=4"
+puts "NSSOC_ETH_OUTPUT_DELAY_STRUCTURAL_PASS ports=9 cells=18"
 
 
-if {[llength [$block getInsts]]!=$before_eth_count+4} {error "Combined ECO cell census mismatch"}
+if {[llength [$block getInsts]]!=$before_eth_count+18} {error "Combined ECO cell census mismatch"}
 
 detailed_placement
 check_placement -verbose
