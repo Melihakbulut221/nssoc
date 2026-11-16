@@ -1,4 +1,4 @@
-name: Measure setup headroom at every remaining internal hold endpoint
+name: Measure isolated feedback branch setup headroom for hold repair
 on:
   workflow_dispatch:
 permissions:
@@ -39,7 +39,7 @@ jobs:
           import pathlib,shutil
           root=pathlib.Path('credit-crc-driver-trial');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
-            for name in ['result.json','native.log','internal-targets.json','internal-targets.tcl']:
+            for name in ['result.json','native.log','internal-targets.json','internal-targets.tcl','feedback-targets.json']:
               p=root/name
               if p.is_file():
                 q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
@@ -50,14 +50,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-internal-headroom-derived-${{ github.run_id }}
+          name: credit-crc-feedback-headroom-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: credit-crc-internal-headroom-native-${{ github.run_id }}
+          name: credit-crc-feedback-headroom-native-${{ github.run_id }}
           path: |
             credit-crc-driver-trial/run/
             credit-crc-driver-trial/result.json
