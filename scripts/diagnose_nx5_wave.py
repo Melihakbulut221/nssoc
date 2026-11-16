@@ -86,5 +86,20 @@ for label,ip,inn,bits_expected in [('UA',273,274,current),('UC',294,297,previous
   points=start+(indices+.5+phase)*ui;vals=np.interp(points,t,delta)*sign;cm=np.interp(points,t,(vp+vn)/2)
   measurements.append({'phase_ui':phase,'wrong':int((vals<=0).sum()),'below100mv':int((vals<.1).sum()),'min_signed_v':float(vals.min()),'median_signed_v':float(np.median(vals)),'commonmode_min_v':float(cm.min()),'commonmode_max_v':float(cm.max())})
  result['divider_base_checks'][label]={'positive_device':ip,'negative_device':inn,'positive_node':p['nodes'][1],'negative_node':n['nodes'][1],'samples':measurements}
+
+# Read original zero crossings; do not move acceptance sampling times.
+def crossings(delta):
+ result=[]
+ for polarity in (1,-1):
+  d=delta*polarity
+  hits=np.flatnonzero((d[:-1]<0)&(d[1:]>=0))
+  times=t[hits]+(-d[hits])*(t[hits+1]-t[hits])/(d[hits+1]-d[hits])
+  times=times[(times>=start)&(times<=start+32*ui)]
+  result.append({'polarity':polarity,'first32_edge_times_ps':(times[:32]*1e12).tolist(),'edge_count_in_32_ui':len(times)})
+ return result
+result['original_clock_edge_observations']={name:crossings(v(p)-v(n))for name,p,n in [('external','clk_inp','clk_inn'),('buffered','cp','cn')]}
+result['original_data_edge_observations']={name:crossings(v(p)-v(n))for name,p,n in [('external','dp','dn'),('sampler_a','xpd.aqp','xpd.aqn'),('sampler_b','xpd.bqp','xpd.bqn'),('sampler_c','xpd.cqp','xpd.cqn'),('sampler_d','xpd.dqp','xpd.dqn')]}
+result['clock_edge_scope']='Raw zero crossings, both polarities; causal edge pairing and clock-to-Q attribution require topology review. No stimulus, gate, waveform or acceptance-window change.'
+
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
 print(json.dumps({k:min(v['phase_sweep'],key=lambda x:(x['wrong'],x['below_100mv']))for k,v in result['signals'].items()}))
