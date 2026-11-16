@@ -34,3 +34,43 @@ for elf in elfs:
 (OUT/"focused-trace.json").write_text(json.dumps(traces,indent=2))
 (OUT/"result.json").write_text(json.dumps(dict(source_head=os.environ["GITHUB_SHA"],source_run=run["id"],source_artifact=meta["id"],artifact_sha256=digest,run_log_sha256=sha(raw),firmware=files,trace_rows=len(traces),chip_accepted=False,root_cause_proven=False,scope="Exact mapped-source ELF disassembly and authenticated dense instruction operands. ID/EX observations are not retirement proof. Diagnostic only; no firmware, watchdog, gate model or acceptance changes."),indent=2))
 print("BOOT_PAIRING_AUDIT_COMPLETE",len(traces),len(elfs))
+
+# Compare the exact flash bytes, not only the ELF disassembly.
+app=firmware/"app.elf";flash=firmware/"flash0.hex"
+assert app.is_file() and flash.is_file()
+flat=OUT/"app-flat.bin"
+subprocess.run(["riscv64-linux-gnu-objcopy","-O","binary",str(app),str(flat)],check=True)
+payload=flat.read_bytes();assert len(payload)>=128
+text=flash.read_text()
+text=re.sub(r"/\*.*?\*/","",text,flags=re.S)
+text=re.sub(r"//[^\n]*","",text)
+memory={};address=0
+for token in text.split():
+ if token.startswith("@"):
+  address=int(token[1:],16)
+ else:
+  assert re.fullmatch(r"[0-9a-fA-F]{1,2}",token),repr(token)
+  assert 0<=address<16*1024*1024 and address not in memory
+  memory[address]=int(token,16);address+=1
+assert memory
+image=bytearray([255])*(max(memory)+1)
+for address,value in memory.items():image[address]=value
+def offsets(pattern):
+ values=[];start=0
+ while True:
+  pos=image.find(pattern,start)
+  if pos<0:break
+  values.append(pos);assert len(values)<100
+  start=pos+1
+ return values
+comparison=dict(flash_sha256=sha(flash.read_bytes()),elf_sha256=sha(app.read_bytes()),
+ flat_binary_sha256=sha(payload),flat_binary_bytes=len(payload),
+ flash_specified_bytes=len(memory),flash_address_extent=len(image),
+ first128_offsets=offsets(payload[:128]),full_binary_offsets=offsets(payload),
+ expected_first32_hex=payload[:32].hex(),flash_contains_exact_flat_elf=bool(offsets(payload)))
+result_path=OUT/"result.json"
+summary=json.loads(result_path.read_text())
+summary["flash_comparison"]=comparison
+summary["scope"]+=" Flash HEX is parsed bytewise with explicit address validation and compared to objcopy of the authenticated ELF. This is image consistency only, not RAM copy or execution acceptance."
+result_path.write_text(json.dumps(summary,indent=2))
+print("FLASH_IMAGE_COMPARISON",json.dumps(comparison))
