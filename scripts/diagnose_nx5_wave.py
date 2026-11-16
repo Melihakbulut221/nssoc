@@ -199,3 +199,40 @@ result['clock_stage_latency']=dict(
 
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
 print(json.dumps({k:min(v['phase_sweep'],key=lambda x:(x['wrong'],x['below_100mv']))for k,v in result['signals'].items()}))
+
+# Preserve exact circuit connectivity alongside node wave statistics to select
+# a physical divider/driver change, rather than guessing from output delays.
+with zipfile.ZipFile(archive) as z:
+    contracts=[n for n in z.namelist() if n.endswith('/candidate-contract.json')]
+    assert len(contracts)==1, contracts
+    contract_data=z.read(contracts[0]);contract=json.loads(contract_data)
+    devices=contract['devices']
+    selected_ids=set(range(377,385))|set(range(400,404))|set(range(423,429))
+    selected=[d for d in devices if d['native_id'] in selected_ids]
+    assert len(selected)==18
+    def terminals(d):
+        value=d['logical_terminals']
+        return set(value.values()) if isinstance(value,dict) else set(value)
+    watched=set().union(*(terminals(d) for d in selected))-{'avdd','avss','0'}
+    neighbors=[d for d in devices if d['model']=='npn13g2' and terminals(d)&watched]
+    models=[n for n in z.namelist() if n.endswith('/candidate-model.cir')]
+    assert len(models)==1
+    model_data=z.read(models[0])
+    binding_nodes=set()
+    for group in bound['groups'].values():
+        for dev in group.values():
+            if dev['native_id'] in selected_ids or dev['native_id'] in {d['native_id'] for d in neighbors}:
+                binding_nodes.update(dev['nodes'])
+    wave_stats={}
+    active=t>=3e-9
+    for node in sorted(binding_nodes):
+        values=v(node)[active]
+        wave_stats[node]=dict(minimum_v=float(values.min()),maximum_v=float(values.max()),mean_v=float(values.mean()),peak_to_peak_v=float(np.ptp(values)))
+    record=dict(source_run=43837314582,archive_sha256=meta['digest'],
+                contract_path=contracts[0],contract_sha256=hashlib.sha256(contract_data).hexdigest(),
+                model_sha256=hashlib.sha256(model_data).hexdigest(),selected_devices=selected,
+                neighbor_hbts=neighbors,wave_stats=wave_stats,
+                physical_geometry_matches=False,full_phy_accepted=False,
+                scope='Exact rejected drive2 circuit topology and native waveform terminal voltages. Diagnostic only; no shifted acceptance gates.')
+    (out/'divider-topology.json').write_text(json.dumps(record,indent=2))
+    (out/'candidate-contract.json').write_bytes(contract_data)
