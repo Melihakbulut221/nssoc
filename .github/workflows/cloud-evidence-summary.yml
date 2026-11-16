@@ -1,40 +1,22 @@
-name: Qualify cached EOP predicates with exact mapped receive options
+name: Prove actual cached EOP invariants and two wrong-flag mutations
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  cosim:
+  formal:
     runs-on: ubuntu-24.04
-    timeout-minutes: 50
+    timeout-minutes: 105
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - run: sudo apt-get update -qq && sudo apt-get install -y iverilog
-      - name: Eight traffic configurations with all mapped receive switches
-        run: bash scripts/check_pcie_rx_read_ahead.sh exact-mapped-eop 300000 SOC_PCIE_RX_EOP_FLAGS SOC_PCIE_RX_READ2 SOC_PCIE_RESET_COPIES SOC_PCIE_RX_COMMIT_COPIES SOC_PCIE_RX_CURSOR_LOCAL_RESET SOC_PCIE_RX_LOCAL_LANE_NEXT SOC_PCIE_RX_DLLP_LAST_COMPARE
-      - name: Require real wrong-EOP RTL mutation to fail
-        run: |
-          python3 - <<'PYCODE'
-          import pathlib,subprocess,json,hashlib
-          p=pathlib.Path('hw/soc/rtl/pcie/soc_pcie_rx_credit.v');s=p.read_text()
-          old='assign out_eop_o=select_dllp ? eop_dllp_q : eop_tlp_q;';assert s.count(old)==1
-          try:
-              p.write_text(s.replace(old,'assign out_eop_o=select_dllp ? eop_dllp_q : !eop_tlp_q;'))
-              r=subprocess.run(['bash','scripts/check_pcie_rx_read_ahead.sh','exact-mapped-mutant','10000','SOC_PCIE_RX_EOP_FLAGS','SOC_PCIE_RX_READ2','SOC_PCIE_RESET_COPIES','SOC_PCIE_RX_COMMIT_COPIES','SOC_PCIE_RX_CURSOR_LOCAL_RESET','SOC_PCIE_RX_LOCAL_LANE_NEXT','SOC_PCIE_RX_DLLP_LAST_COMPARE'])
-              logs=list(pathlib.Path('exact-mapped-mutant').glob('*.log'))
-              detected=any('MISMATCH'in f.read_text()for f in logs)
-              pathlib.Path('exact-mapped-mutant/result.json').write_text(json.dumps(dict(returncode=r.returncode,detected=detected,source_sha256=hashlib.sha256(s.encode()).hexdigest())))
-              assert r.returncode!=0 and detected
-          finally:p.write_text(s)
-          PYCODE
+      - run: sudo apt-get update -qq && sudo apt-get install -y yosys
+      - run: python3 formal/eop_flags/prove.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-flags-mapped-cosim-${{ github.run_id }}
-          path: |
-            exact-mapped-eop/
-            exact-mapped-mutant/
+          name: eop-flag-invariants-${{ github.run_id }}
+          path: eop-flag-proof/
           if-no-files-found: error
           retention-days: 90
