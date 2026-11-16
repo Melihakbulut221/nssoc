@@ -6,8 +6,8 @@ module mapped_mbist_boot_monitor (
     input wire clk_i, rst_ni, busy_i, done_i, failed_i,
     input wire [1:0] eth_done_i, eth_failed_i,
     output reg passed_o = 1'b0,
-    output integer busy_cycles_o = 0,
-    output integer done_cycle_o = -1
+    output reg signed [31:0] busy_cycles_o = 0,
+    output reg signed [31:0] done_cycle_o = -1
 );
     integer cycles = 0;
     reg done_seen = 1'b0;
