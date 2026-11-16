@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Implement exact new grouped ACK-distance mapped chip as a non-adopted physical candidate.
+"""Implement exact certified peer-ready grouped ACK-distance mapped chip as a non-adopted physical candidate.
 Functional boot is not yet accepted; this is not a boot-qualified handoff.
 """
 import hashlib,json,os,subprocess,time
@@ -13,12 +13,12 @@ def sha(p):
 def main():
  assert os.environ.get('GITHUB_ACTIONS')=='true'
  OUT.mkdir(parents=True,exist_ok=False)
- r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,functional_boot_accepted=False,full_phy_accepted=False,final_timing_complete=False,qualified_pex=False,scope='Exact qualified credit-sign and CRC-upper register physical candidate with qualified cached RX EOP and qualified grouped ACK-distance source. New exact-source gate boot remains separate and pending; no old boot proof reused. Placement and CTS only, no routed timing, serial PHY or production acceptance.')
+ r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,functional_boot_accepted=False,full_phy_accepted=False,final_timing_complete=False,qualified_pex=False,scope='Exact FC CRC snapshot, certified peer-ready, qualified credit-sign and CRC-upper register physical candidate with qualified cached RX EOP and qualified grouped ACK-distance source. New exact-source gate boot remains separate and pending; no old boot proof reused. Placement and CTS only, no routed timing, serial PHY or production acceptance.')
  def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
  save()
  try:
   report=json.loads((ROOT/'out/source-binding.json').read_text())
-  assert report['source_run']==43812773466 and report['source_head']=='990f37537d3d82f7a97c418fc144727abb18e655' and report['authenticated_files']>=63
+  assert report['source_run']==43863638598 and report['source_head']=='9cc44d12883c192f9ab54b14908bed15d4ed3c3e' and report['authenticated_files']>=63
   assert report['accepted'] is False
   boot=ROOT/'hw/soc/out/corrpre-pcie-mbist-native-boot'
   assert sha(boot/'synthesis/soc_top.netlist.v')==report['netlist_sha256']
