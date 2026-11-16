@@ -1,6 +1,6 @@
 import os,json,subprocess,hashlib,zipfile,io,stat,pathlib
 import cloud_predecode_postcts as prior
-P=pathlib.Path;ROOT=P.cwd();OUT=ROOT/'eop-route-resume';OUT.mkdir()
+P=pathlib.Path;ROOT=P.cwd();OUT=ROOT/'eop-route-antenna-next';OUT.mkdir()
 r=dict(source_head=os.environ['GITHUB_SHA'],accepted=False,final_timing_complete=False,full_phy_accepted=False,status='RUNNING')
 def save():(OUT/'result.json').write_text(json.dumps(r,indent=2))
 def archive(aid,h,runid,head):
@@ -26,25 +26,27 @@ try:
   dest=source/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(data)
  states=list((source/'run').glob('*-nssoc-validatedglobalrouting/state_out.json'));assert len(states)==1
  state=json.loads(states[0].read_text());odb=P(state['odb']);assert odb.is_relative_to(source) and prior.sha(odb)==ar['odb_sha256']
- # Recover only the last fully saved, zero-DRC database, not the interrupted run-3 state.
- cancelled=prior.api('actions/runs/43798359649')
- assert cancelled['conclusion']=='cancelled' and cancelled['status']=='completed'
- recovery=archive(14212421939,'c2a45567ff4e7040e087ed78d42e16d7472e2ce1c2860db1dc84dff1b4741ad7',43798359649,'8d4e9c784bafd367c3e32cf47f48ded675ce5d74')
+ # Resume completed routed database with fresh independently checked antenna evidence.
+ completed=prior.api('actions/runs/43840853988')
+ assert completed['conclusion']=='success' and completed['status']=='completed'
+ recovery=archive(14217881901,'6085ab46bec84a6fd185878875d04b11437dc08b445028d2350005a4aa75cecd',43840853988,'2e269c00cb31c99531a060d95cfd0a39ba950cb5')
  names=recovery.namelist();assert len(names)==len(set(names))
- stale=json.loads(recovery.read('result.json'))
- assert stale['source_head']=='8d4e9c784bafd367c3e32cf47f48ded675ce5d74' and stale['accepted'] is False
- member='run/1-openroad-detailedrouting/drt-run-2/soc_top.odb'
- completed_drc='run/1-openroad-detailedrouting/drt-run-2/soc_top.drc'
+ previous=json.loads(recovery.read('result.json'))
+ assert previous['source_head']=='2e269c00cb31c99531a060d95cfd0a39ba950cb5' and previous['accepted'] is False
+ assert previous['sources_unchanged'] and previous['returncode']==0
+ assert previous['metrics']['route__drc_errors']==0 and previous['metrics']['design__disconnected_pin__count']==0
+ member='run/3-odb-reportdisconnectedpins/soc_top.odb'
+ completed_drc='run/1-openroad-detailedrouting/soc_top.drc'
  assert recovery.read(completed_drc)==b''
+ assert hashlib.sha256(recovery.read(completed_drc)).hexdigest()==previous['outputs'][completed_drc]
  data=recovery.read(member)
- digest='fac99b5bf4a980c6a82da5aa52eb9f1b271f8bf1fb461f5563783f3f420a0c64'
- assert len(data)==230640663 and hashlib.sha256(data).hexdigest()==digest
+ digest='849895c40ab81362d79fcf36b59fa0cef5c8d44b897dfce68d4417359c01ec36'
+ assert hashlib.sha256(data).hexdigest()==digest==previous['candidate_odb_sha256']==previous['outputs'][member]
  odb=OUT/'checkpoint.odb';odb.write_bytes(data);state['odb']=str(odb)
- # ODB is authoritative; discard stale global-route views and all timing evidence.
  for key in ['def','nl','pnl','spef','sdf']:
   state.pop(key,None)
  state['metrics']={}
- r['recovery']=dict(run=43798359649,artifact=14212421939,archive_sha256='c2a45567ff4e7040e087ed78d42e16d7472e2ce1c2860db1dc84dff1b4741ad7',member=member,odb_sha256=digest,completed_drc_bytes=0,checkpoint_index=2,interrupted_run_3_not_recovered=True)
+ r['recovery']=dict(run=43840853988,artifact=14217881901,archive_sha256='6085ab46bec84a6fd185878875d04b11437dc08b445028d2350005a4aa75cecd',member=member,odb_sha256=digest,completed_drc_bytes=0,previous_independent_antenna_count=previous['metrics']['route__antenna_violation__count'])
 
  initial=OUT/'initial.json';initial.write_text(json.dumps(state));config=json.loads((source/'config.json').read_text())
  assert config['CLOCK_PERIOD']==20 and config['TIME_DERATING_CONSTRAINT']==5.0 and config['SETUP_VIOLATION_CORNERS']==config['HOLD_VIOLATION_CORNERS']==['*']
