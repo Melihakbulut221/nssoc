@@ -33,9 +33,16 @@ try:
   exe=out/(name+'.sim')
   cmd=(['iverilog','-g2012','-s','tb','-o',str(exe)] if name=='iverilog' else [str(Path('cvc-source/build64/cvc64').resolve()),'-sv',*flags,'-o',str(exe)])
   cmd += [str(out/'tb.v'),str(monitor)]
-  p=subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-  (out/(name+'-compile.log')).write_bytes(p.stdout);assert p.returncode==0,p.stdout[-2000:]
-  p=subprocess.run((['vvp','-n',str(exe)] if name=='iverilog' else [str(exe)]),stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=60)
+  if name=='cvc-interp':
+   index=cmd.index('-o');del cmd[index:index+2]
+   # CVC interpreter executes during compiler invocation; it emits no binary.
+   p=subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=60)
+   (out/(name+'-compile.log')).write_bytes(p.stdout)
+  else:
+   p=subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=60)
+   (out/(name+'-compile.log')).write_bytes(p.stdout);assert p.returncode==0,p.stdout[-2000:]
+   assert exe.is_file()
+   p=subprocess.run((['vvp','-n',str(exe)] if name=='iverilog' else [str(exe)]),stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=60)
   (out/(name+'-run.log')).write_bytes(p.stdout)
   lines=[l for l in p.stdout.decode().splitlines() if l.startswith('TRACE ')]
   assert p.returncode==0 and len(lines)==210
