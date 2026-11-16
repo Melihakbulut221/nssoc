@@ -8,6 +8,12 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: delayed EOP fourth path report verified
+
+RAMdownloadsession9405 COMPLETEDsuccess; no pendinglocalreader. Derived14205554255 SHA9a6287be4f0be7b5dc6dac5d1e3fa11e6cee187c738ea7249849e01ee5c664c9 wholeverified;return0/sourcesunchanged/baselinereproductiontrue. Worstslowsetup stillpcie_initialized_o,nowFF343838 seen[2]dfrbpq1 launch1.847601ns,Q+.316439=2.164041 ->737884and3_1+.250777 ->737885buf8+.147206 ->761245nand4_1+.301926 ->761246nor2_2+.291714 ->output301buf1+.185957,arrival3.347490,required2.95,slack-.397490. Priorbuf16stage748493 no longeronthisworstpath; earlierseen[1]pathslack-.445424. Do not claim allpathimprovementsolelyfromonearcwithoutallfanoutanalysis. Sharedcreditlogic+lateclockinsertionstillcritical; peer_readycandidateaimsatsamecone,butformalnotyetpassed.
+
+BoundedPostCTS source retains100setup cap because historical140/600iterationshit300minhostedlimit; do not blindlyraise iteration budget or relax constraints. OldEOPfifthnotstarted. NewACKfifth43825457462,correctedpeerproof43825252405,DRT43798359649 allconfirmedlive. Analogdiagnosiscomplete/rejectedcandidateasabove; no newanalogSPICEcandidate. FullgoalOPEN.
+
 ## 2026-11-16: ACK fourth improved; fifth launched; proof model fixed and analog delay localized
 
 ACKfourth43823463651 /da2ce89e8ac13fa28000c87881a7fa8ea02a877c verified compact14206850043 SHA31b76f9680843eb80a422e9df8651d9dce7bc1a9884b3c2b83f1c1a2937e3df2 whole. Return0,unchangedsources,allcornerbaseline reproduced. Setup2287/0/0,WS-1.11187/+.338846/+1.17162ns,slowTNS-1295.6. Hold0all,WS+.288919/+.205369/+.100031. Slew18/4/0,cap0. ODB14c51b3a61588d9ee6d1bdfc7a0fa581c57ac7453dc1a3ecea929720be92260b. Native14206831104 SHA870ac8d6eb5ae778ca6a86674e3624b5eaaf7bcdc1e63b801c716767f4f13c0e;derived14205504588 SHA4f5e1c6c3b57cdcc4dd8385e6d04f4e6e8a173eefde1dec0e16ea2805eda42ee metadata. Placementonly.
