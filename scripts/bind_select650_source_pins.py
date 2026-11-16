@@ -13,9 +13,13 @@ oldbytes=subprocess.check_output(['gh','api',P+'actions/artifacts/14153204757/zi
 oldzip=zipfile.ZipFile(io.BytesIO(oldbytes));old=json.loads(oldzip.read('source-pins.json'))
 assert old['status']=='PASS_PAIRED650_PRIMITIVE_PINS_REBOUND_AFTER_VERIFIED_BAND_TRANSLATION'and old['target_gds_sha256']=='6023cf16271d3d49307b3967b056b4b11bfaa5534254dc89ba60f3dc21b6f82a'
 (out/'current-pin-parent.json').write_text(json.dumps(dict(run=oldrun['id'],artifact=oldmeta['id'],archive_sha256=oldmeta['digest'][7:],source_pins_sha256=hashlib.sha256(oldzip.read('source-pins.json')).hexdigest()),indent=2))
-r=api('actions/runs/43748270188');assert r['conclusion']=='success' and r['head_sha']=='4a37a0285be11fc7d424daa830887ec7bde5654b' and r['run_attempt']==1
-m=api('actions/artifacts/14175765192');assert m['workflow_run']['id']==r['id']and m['digest']=='sha256:a1381011a37b531184deedcca9e57e6bdba3ce18ac9d7a280ff0f00c1747504a'and not m['expired']
-b=subprocess.check_output(['gh','api',P+'actions/artifacts/14175765192/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];z=zipfile.ZipFile(io.BytesIO(b));gds=z.read('candidate650-select-width2.gds');assert hashlib.sha256(gds).hexdigest()=='5f66ce0cb46acfb580b517ba02b10f66560ba4200d9cfbba0b633a839cc59c5a'
+r=api('actions/runs/43858378437');assert r['conclusion']=='success' and r['head_sha']=='6004bd73bdccd9582e9e303487a22c8c38ad59fd' and r['run_attempt']==1
+m=api('actions/artifacts/14222641452');assert m['workflow_run']['id']==r['id']and m['digest']=='sha256:f379dc34ee62cbbf0ead4f62b3b13a4c6ed7e3d6e4a25a719170fb06a95ee7be'and not m['expired']
+b=subprocess.check_output(['gh','api',P+'actions/artifacts/14222641452/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];z=zipfile.ZipFile(io.BytesIO(b));gds=z.read('compact-current650.gds');assert hashlib.sha256(gds).hexdigest()=='1337c86e9bf28e68d93d3dcc2c80afc3040ecd7f21b32eb6b149896aa3490e11'
+report=json.loads(z.read('result.json'))
+assert report['status']=='PASS_COMPACT650_DRC_LVS_REQUIRES_FRESH_RC_AND_ELECTRICAL'
+assert report['steps']['drc']['measurement']['markers']==0 and report['steps']['drc']['measurement']['category_count']==560
+assert report['steps']['wrong_resistor']['status']=='REJECTED_EXPECTED_FAULT'
 gpath=archive.NATIVE/'candidate.gds';gpath.write_bytes(gds)
 original.NATIVE=archive.NATIVE/'pdk';original.NATIVE.mkdir();original.DERIVED=out/'pdk-receipt';original.DERIVED.mkdir()
 pdk=original.pdk(json.loads(Path(original.CFG).read_text()));source=pdk/'libs.tech/klayout/python';sys.path[:0]=[str(source),str(source/'pycell4klayout-api/source/python')]

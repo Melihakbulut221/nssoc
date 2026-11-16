@@ -6,20 +6,37 @@ gds=layout/'nssoc_cdr_pd500_resistor_v59.gds';shutil.copyfile(ctx['gpath'],gds)
 z=ctx['z'];physical.joinpath('result.lvsdb').write_bytes(z.read('lvs_flat/result.lvsdb'));physical.joinpath('audit.json').write_bytes(z.read('lvs_flat/audit.json'))
 P='repos/Melihakbulut221/nssoc/'
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
-pr=api('actions/runs/43695046876');assert pr['conclusion']=='success'and pr['head_sha']=='7c253a13438932af701b33f6c9d6c76f2ddfa6b5'and pr['run_attempt']==1
-pm=api('actions/artifacts/14154400256');assert pm['workflow_run']['id']==pr['id']and pm['digest']=='sha256:c79134cba9fcd33d749903b93d9a71b940771c3da7266ad4b1ed4ff051600248'and not pm['expired']
-pb=subprocess.check_output(['gh','api',P+'actions/artifacts/14154400256/zip']);assert 'sha256:'+hashlib.sha256(pb).hexdigest()==pm['digest'];pz=zipfile.ZipFile(io.BytesIO(pb))
-record=json.loads(pz.read('hw/soc/out/cloud-cdr-wire-shortcuts-physical/layout/result.json'));assert len(record['ports'])==25
-assert hashlib.sha256(pz.read('hw/soc/out/cloud-cdr-wire-shortcuts-physical/layout/nssoc_cdr_pd500_resistor_v59.gds')).hexdigest()=='6023cf16271d3d49307b3967b056b4b11bfaa5534254dc89ba60f3dc21b6f82a'
-
-record['outputs']={gds.name:hashlib.sha256(gds.read_bytes()).hexdigest()};record['scope']='Current clock650 unchanged top ports; candidate physical GDS explicitly rebound, not electrical acceptance.'
+pr=api('actions/runs/43858046204');assert pr['conclusion']=='success' and pr['head_sha']=='b192b6fc472d3e499d2cffc000c76570827a7bb3' and pr['run_attempt']==1
+pm=api('actions/artifacts/14222565886');assert pm['workflow_run']['id']==pr['id'] and pm['digest']=='sha256:d10b7501ffbaa69a2469aecd1acd0067b3646363448fc18489b3e272c2621544' and not pm['expired']
+pb=subprocess.check_output(['gh','api',P+'actions/artifacts/14222565886/zip']);assert 'sha256:'+hashlib.sha256(pb).hexdigest()==pm['digest'];pz=zipfile.ZipFile(io.BytesIO(pb))
+proof=json.loads(pz.read('compact-result.json'));assert proof['serialized_pin_labels_verified']
+assert hashlib.sha256(pz.read('compact-current650.gds')).hexdigest()==hashlib.sha256(gds.read_bytes()).hexdigest()=='1337c86e9bf28e68d93d3dcc2c80afc3040ecd7f21b32eb6b149896aa3490e11'
+record=json.loads(pz.read('source-metadata.json'));labels=json.loads(pz.read('text-diagnostic.json'))
+import klayout.db as db
+source_labels={q['string']:q for q in labels['source']}
+new_labels={q['string']:q for q in labels['serialized']}
+assert len(source_labels)==len(new_labels)==len(record['ports'])==25 and set(record['ports'])==set(new_labels)==set(source_labels)
+native=db.Layout();native.read(str(gds));top=native.top_cell();assert native.dbu==.001
+metal=db.Region(top.begin_shapes_rec(native.layer(134,0))).merged()
+for name,value in list(record['ports'].items()):
+ old=source_labels[name];new=new_labels[name]
+ assert old['layer']==new['layer']=='134/25' and old['x']==new['x']
+ rect=db.DBox.from_s(value)
+ assert abs(rect.center().x-old['x']*.001)<1e-9 and abs(rect.center().y-old['y']*.001)<1e-9
+ moved=rect.transformed(db.DTrans(0,False,0,(new['y']-old['y'])*.001))
+ assert abs(moved.center().x-new['x']*.001)<1e-9 and abs(moved.center().y-new['y']*.001)<1e-9
+ assert (db.Region(moved.to_itype(native.dbu))-metal).is_empty(),('port outside native metal',name)
+ record['ports'][name]=str(moved)
+record['outputs']={gds.name:hashlib.sha256(gds.read_bytes()).hexdigest()}
+record['scope']='Compact650 top ports rebound by verified serialized label displacement and actual metal enclosure. No electrical acceptance.'
+record['physical_acceptance']=False;record['qualified_pex']=False;record['serial_phy_complete']=False
 (layout/'result.json').write_text(json.dumps(record,indent=2))
 shutil.copyfile(ctx['out']/'source-pins.json',wire/'source-pins.json')
 P='repos/Melihakbulut221/nssoc/'
 def api(s):return json.loads(subprocess.check_output(['gh','api',P+s]))
-r=api('actions/runs/43748580179');assert r['conclusion']=='success'and r['head_sha']=='4602a2710cea2b2322cb035750dad9738d9583f4'and r['run_attempt']==1
-m=api('actions/artifacts/14175207602');assert m['workflow_run']['id']==r['id']and m['digest']=='sha256:0e41bbf406fb1518a17ee41e49814758ebd32ad9fc880e5adaaa864ae00630bc'and not m['expired']
-b=subprocess.check_output(['gh','api',P+'actions/artifacts/14175207602/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];ids=zipfile.ZipFile(io.BytesIO(b));flat=json.loads(ids.read('lvs_flat-identity.json'))
+r=api('actions/runs/43858886164');assert r['conclusion']=='success'and r['head_sha']=='556dd5c9bc992e3df924039bf04c731d49e2b98e'and r['run_attempt']==1
+m=api('actions/artifacts/14223215265');assert m['workflow_run']['id']==r['id']and m['digest']=='sha256:3c3e4373bbddf712150e445cacc58e0e6ffd4cc169c95eb691065cdedb6c0bbf'and not m['expired']
+b=subprocess.check_output(['gh','api',P+'actions/artifacts/14223215265/zip']);assert 'sha256:'+hashlib.sha256(b).hexdigest()==m['digest'];ids=zipfile.ZipFile(io.BytesIO(b));flat=json.loads(ids.read('lvs_flat-identity.json'))
 for n in ['device-locations01.json','pcell-inventory01.json']:(wire/n).write_bytes(ids.read(n))
 assert hashlib.sha256(physical.joinpath('result.lvsdb').read_bytes()).hexdigest()==flat['lvsdb']['sha256']
 origin=Path('docs/evidence/cdr-v59-tail-exact-wire-methods-20261026');derivations={}
