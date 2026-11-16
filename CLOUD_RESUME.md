@@ -8,6 +8,14 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: native MIM compensation candidate dispatched
+
+Inspected authenticatedcompositionartifact14176147111 SHA6233dc9e8514c834d50cbe5f0350fcfc6ce13e4cebc1060b1a0cf8634a059957 (6.9MB) inRAM. SixexistingnativeMIMcapsalreadybridgeupperdivider:423/424 DQP->USP,DQN->USN at4.8x4.8um;425/426 AQP->UAP,AQN->UAN and427/428 CQP->UCP,CQN->UCN at3.6x3.6um. Native42940x40um unaffected. Buffers273/274baseUAP/UAN collectorsADN/ADP;294/297baseUCP/UCN toCDN/CDP;295/296shareUSP and298/299shareUSN. Existingcompensation ispresent, notmissing; avoidaddinganidealcaporclaimingnewtopology.
+
+NEW43806909384 /c94a662ff03919edc93debca3712b52f11705a2a running on codex/divider-mim-area4-loaded. Exactbaseec96ca571a3da651658a92c85eff9490afba012f (shortened12resistors/original3200ohmclock). ChangesONLYsixexistingnativecap plateL/Wx2 ->areax4/perimeterx2 (9.6x9.6umfor423/424,7.2x7.2for425..428); originalclockSHA395cc60b48ce1d8e9cb1f25ae9070ddbd72a26c1ee7ca2702b4854d68d7b2b11 asserted. Baseline2800ohmclockwasrejectedforcurrent; thistrialusesoriginal3200ohmbaseline anddoesnotincreaseclockcurrent. Verifyexactlogicalterminals andoldnativeparametersbeforeupdatingbothSPICEcardsandcontractparameters. Still650devices/7nativeMIM; noidealdevices, noothercapschanged. Nativecapparasiticmodelchangeswithgeometry butOLDmetalRC retained; physical_geometry_matchesFALSE/full_phy_acceptedFALSE. IntendedexperimenttestsdividerACcompensation/loadtradeoff, notguaranteedimprovementandnotlayoutready. Original256bits,nominal_late,n1,37.5ps/100mV/load/3mAgates unchanged; sourcesreverifiedatend.
+Filesmodifiedrun_current_select650_loaded.py,cdr_mos650_gate_ac.py(BRANCH),workflow. ALLthreepinsbytecount/SHAupdatedincdr-mos650-gate-ac-pins.json; PythonASTverified. Newderiveddivider-mim-area4-experiment.json recordsbefore/after; artifactsdivider-mim-area4-exploration-derived/native. Watchpreflight/sourceclosureandactualelectricalstatus, notjobgreenalone.
+General8th43806377768,five-driver43806576150,NBAboot43804865150,DRT43798359649,oldmodelboot43797484050 confirmedliveatlastpoll. Fullgoalactive; currentturnconcreteanalogcandidatewithunchangedacceptance.
+
 ## 2026-11-16: isolated five-driver replay timing candidate launched
 
 43806576150 /5788881468455cf9e84b60c47ded00de571dc6cc running on codex/replay-five-driver-trial, exactbase d298e2efa84594bafb540c2070e68cf2d451ccdb. Same authenticatedseventhODB b7c7157d4d1afe240a580ca67b741557bbd89c703d9796de1e8ae718fa2f65ee andinheritedviews as eighthcontinuation; do not confuse candidates.
