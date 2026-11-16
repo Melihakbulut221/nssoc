@@ -1,4 +1,4 @@
-name: Buffer measured RX ownership long wire with topology and corner guards
+name: Size four measured reset and ACK buffers with exact topology and corner guards
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/run_ack_rx_wire_buffer.py
+          python3 -m py_compile scripts/run_ack_reset_buffers.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -31,13 +31,13 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Native before and after STA with electrical and setup hold repair
-        run: python3 scripts/run_ack_rx_wire_buffer.py
+        run: python3 scripts/run_ack_reset_buffers.py
       - name: Collect derived diagnostics
         if: always()
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('ack-rx-wire-buffer');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('ack-reset-buffers');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,27 +50,27 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-rx-wire-buffer-incremental-repair-derived-${{ github.run_id }}
+          name: ack-reset-buffers-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-rx-wire-buffer-incremental-repair-native-${{ github.run_id }}
+          name: ack-reset-buffers-incremental-repair-native-${{ github.run_id }}
           path: |
-            ack-rx-wire-buffer/run/
-            ack-rx-wire-buffer/result.json
-            ack-rx-wire-buffer/native.log
-            ack-rx-wire-buffer/config.json
-            ack-rx-wire-buffer/initial.json
+            ack-reset-buffers/run/
+            ack-reset-buffers/result.json
+            ack-reset-buffers/native.log
+            ack-reset-buffers/config.json
+            ack-reset-buffers/initial.json
           if-no-files-found: error
           retention-days: 90
       - name: Publish compact authenticated measurements without large report download
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-rx-wire-buffer-summary-${{ github.run_id }}
-          path: ack-rx-wire-buffer/result.json
+          name: ack-reset-buffers-summary-${{ github.run_id }}
+          path: ack-reset-buffers/result.json
           retention-days: 90
           if-no-files-found: error
