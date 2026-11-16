@@ -112,21 +112,24 @@ for key,(delta,bitvalues) in stage_specs.items():
    lo=int(np.searchsorted(t,edge));hi=int(np.searchsorted(t,edge+ui))
    sign=2*int(bitvalues[k])-1;signed=delta[lo:hi]*sign
    valid=signed>0 if threshold==0 else signed>=threshold;hit=None
-   for j in np.flatnonzero(valid):
+   seen_opposite=False
+   for j in range(len(valid)):
+    if signed[j]<0:seen_opposite=True
+    if not seen_opposite or not valid[j]:continue
     end=int(np.searchsorted(t,t[lo+j]+10e-12,side='left'))-lo
     if end>=len(valid):break
     if np.all(valid[j:end+1]):hit=float(t[lo+j]);break
-   rows.append(dict(bit_index=int(indices[k]),settled_native_time_s=hit,
+   rows.append(dict(bit_index=int(indices[k]),already_target_side_at_window_start=bool(signed[0]>0),settled_native_time_s=hit,
     latency_ps=(hit-edge)*1e12 if hit is not None else None))
    if hit is not None:times[int(indices[k])]=hit
-  records[label]=rows;latencies[label]=dict(transitions=len(rows),missing_before_one_ui=sum(x['latency_ps']is None for x in rows),**stats([x['latency_ps']for x in rows if x['latency_ps']is not None]))
+  records[label]=rows;latencies[label]=dict(transitions=len(rows),already_target_side_at_window_start=sum(x['already_target_side_at_window_start']for x in rows),missing_before_one_ui=sum(x['latency_ps']is None for x in rows),**stats([x['latency_ps']for x in rows if x['latency_ps']is not None]))
 increments={}
 for left,right in [('a','UA'),('UA','AD'),('c','UC'),('UC','CD'),('d','US0'),('US0','S0'),('d','US1'),('US1','S1')]:
  for suffix in ['@zero','@100mv']:
   a={x['bit_index']:x['settled_native_time_s']for x in records[left+suffix]if x['settled_native_time_s']is not None}
   b={x['bit_index']:x['settled_native_time_s']for x in records[right+suffix]if x['settled_native_time_s']is not None}
   increments[left+'->'+right+suffix]=stats([(b[k]-a[k])*1e12 for k in sorted(set(a)&set(b))])
-result['stage_latency']=dict(scope='Transition-only native-sample first crossing sustained ten ps, censored at one UI after original clock edge. Paired increments can be negative; missing crossings excluded and counted. Not physical acceptance, not shifted sample gates.',
+result['stage_latency']=dict(scope='Transition-only native-sample crossing requires an observed opposite-polarity sample first, then target threshold sustained ten ps; censored at one UI after original clock edge. Paired increments can be negative; missing crossings excluded and counted. Not physical acceptance, not shifted sample gates.',
  native_sample_only=True,stability_ps=10,censor_ui=1,summary=latencies,paired_increment=increments,per_transition=records)
 
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
