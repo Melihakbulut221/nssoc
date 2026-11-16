@@ -662,6 +662,32 @@ module soc_pcie_rx_credit #(
     end
     assign out_data_o=select_dllp ? (32'(output_index)<6 ? dllp[3'(output_index)] : 8'hxx) : tlp_byte;
     assign out_sop_o=output_index==0;
+`ifdef SOC_PCIE_RX_EOP_FLAGS
+    // Cache both predicates for the current cursor without changing latency.
+    // Link loss resets cursor/head_last, but deliberately holds dllp_length.
+    reg eop_tlp_q,eop_dllp_q;
+    wire [CW-1:0] eop_index_next=handshake ?
+        (out_eop_o ? {CW{1'b0}} : output_index+1'b1) : output_index;
+    wire [2:0] eop_dllp_length_next=
+        rx_valid_i && rx_ready_o && rx_eop_i && incoming_kind ?
+            (!input_active ? 3'd1 : input_count>=6 ? 3'd6 : 3'(input_count+1'b1)) : dllp_length;
+    always @(posedge clk_i or negedge rst_ni)
+        if(!rst_ni) begin eop_tlp_q<=1'b1;eop_dllp_q<=1'b0;end
+        else if(!link_up_i) begin
+            eop_tlp_q<=1'b1;
+            eop_dllp_q<=CW'(1)==CW'(dllp_length);
+        end else begin
+            eop_tlp_q<=eop_index_next==next_head_last;
+            eop_dllp_q<=(eop_index_next+1'b1)==CW'(eop_dllp_length_next);
+        end
+    assign out_eop_o=select_dllp ? eop_dllp_q : eop_tlp_q;
+`ifndef SYNTHESIS
+    always @(posedge clk_i) if(rst_ni===1'b1)
+        if({eop_tlp_q,eop_dllp_q}!==
+            {output_index==head_last,(output_index+1'b1)==CW'(dllp_length)})
+            $fatal(1,"RX_EOP_FLAGS_MISMATCH");
+`endif
+`else
 `ifdef SOC_PCIE_RX_DLLP_LAST_COMPARE
     // Move the increment off the read cursor path; retain CW-bit wrap at length zero.
     // Preserve the original expression when CW is narrower than dllp_length.
@@ -670,6 +696,7 @@ module soc_pcie_rx_credit #(
         (select_dllp ? output_index==dllp_last_compare : output_index==head_last);
 `else
     assign out_eop_o=select_dllp ? output_index+1'b1==CW'(dllp_length) : output_index==head_last;
+`endif
 `endif
     assign out_error_o=select_dllp ? dllp_bad : errors[head_slot];
     assign queued_o=8'(qcount);
