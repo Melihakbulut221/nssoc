@@ -276,7 +276,7 @@ def run_loaded(worker,models,variant,engine,model,contract,bound,case):
         text=cards[0].read_bytes().decode('latin-1')
         assert 'Valid numbers: NX = 1 - 10' in text and '2.30E-14-(1.50E-15*Nx)' in text
         all_devices=list(devices)+list(buffer_devices)
-        assert len(all_devices)==168 and len(set(all_devices))==154
+        assert len(all_devices)==len(set(all_devices))==168
         nodes={n for group in groups.values()for dev in group.values()for n in dev['nodes']}|set(ports)|set(bound['aliases'].values());nodes.discard('0')
         nodes|={n for dev in buffer_devices.values()for n in dev['nodes']};nodes.discard('0')
         vectors=['v('+n+')'for n in sorted(nodes)]+['@q.'+n+'.qnpn13g2[ic]'for n in all_devices]+['@n.'+n+'.nsg13_lv_nmos[ids]'for n in mos]
