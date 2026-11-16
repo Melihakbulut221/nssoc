@@ -17,7 +17,7 @@ jobs:
           from pathlib import Path
           import hashlib,json,subprocess
           out=Path('placement-source-audit');out.mkdir()
-          paths=subprocess.check_output(['rg','-l','pd_child_','--glob','*.py','hw/soc/flow','scripts','docs/evidence'],text=True).splitlines()
+          paths=subprocess.check_output(['git','grep','-l','pd_child_','--','hw/soc/flow/*.py','scripts/*.py','docs/evidence/**/*.py'],text=True).splitlines()
           assert paths
           report={}
           for name in paths:
