@@ -199,6 +199,21 @@ foreach {label instance} {
  training {$auto$ff.cc:337:slice$183526}
  rx_error {$auto$ff.cc:337:slice$172492}
  rx_data7 {$auto$ff.cc:337:slice$172502}
+ rx_valid {$auto$ff.cc:337:slice$172503}
+ rx_sop {$auto$ff.cc:337:slice$172494}
+ rx_eop {$auto$ff.cc:337:slice$172493}
+ rx_dllp {$auto$ff.cc:337:slice$172491}
+ rx_data0 {$auto$ff.cc:337:slice$172495}
+ rx_data1 {$auto$ff.cc:337:slice$172496}
+ rx_data2 {$auto$ff.cc:337:slice$172497}
+ rx_data3 {$auto$ff.cc:337:slice$172498}
+ rx_data4 {$auto$ff.cc:337:slice$172499}
+ rx_data5 {$auto$ff.cc:337:slice$172500}
+ rx_data6 {$auto$ff.cc:337:slice$172501}
+ function_id3 {$auto$ff.cc:337:slice$365940}
+ function_id7 {$auto$ff.cc:337:slice$365944}
+ function_id8 {$auto$ff.cc:337:slice$365945}
+ function_id13 {$auto$ff.cc:337:slice$365950}
 } {
  set endpoint [get_pins "$instance/D"]
  if {[llength $endpoint]!=1} {error "Missing exact mapped data pin $instance"}
@@ -208,7 +223,7 @@ foreach {label instance} {
   puts "%OL_END_REPORT"
  }
 }
-foreach bit {5 2} {
+foreach bit {0 1 2 3 4 5 6 7} {
  set port [get_ports [format {eth_txd_o[%d]} $bit]]
  if {[llength $port]!=1} {error "Ethernet report endpoint missing"}
  foreach mode {max min} {
@@ -216,6 +231,14 @@ foreach bit {5 2} {
   report_checks -to $port -path_delay $mode -format full_clock_expanded -digits 6 -group_path_count 10 -endpoint_path_count 2
   puts "%OL_END_REPORT"
  }
+}
+
+set port [get_ports eth_tx_en_o]
+if {[llength $port]!=1} {error "Ethernet enable endpoint missing"}
+foreach mode {max min} {
+ puts "%OL_CREATE_REPORT targeted_eth_enable_${mode}.rpt"
+ report_checks -to $port -path_delay $mode -format full_clock_expanded -digits 6 -group_path_count 10 -endpoint_path_count 2
+ puts "%OL_END_REPORT"
 }
 
 """
