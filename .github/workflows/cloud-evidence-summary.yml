@@ -1,4 +1,4 @@
-name: Qualify experimental functional NBA outputs against native cell and composition behavior
+name: Qualify native SRAM with sequential standard-cell clock compositions
 on:
   workflow_dispatch:
 permissions:
@@ -37,6 +37,8 @@ jobs:
         run: python3 scripts/qualify_cvc_cells.py
       - name: Compare native and derived sequential clock compositions
         run: python3 scripts/qualify_clock_composition.py
+      - name: Require native SRAM and standard-cell composition against independent scoreboard
+        run: python3 scripts/qualify_native_sram_sequence.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -46,6 +48,8 @@ jobs:
             clock-composition-qualification/**/*.log
             cvc-cell-qualification/**/*.json
             cvc-cell-qualification/**/*.log
+            sram-sequence-qualification/**/*.json
+            sram-sequence-qualification/**/*.log
             cvc-build.log
           retention-days: 90
           if-no-files-found: error
