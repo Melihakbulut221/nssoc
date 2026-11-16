@@ -19,13 +19,20 @@ def run(cmd,log):
  with log.open('w')as f:return subprocess.run(cmd,stdout=f,stderr=subprocess.STDOUT,timeout=180).returncode
 try:
  traces={}
- for engine in ['iverilog','iverilog-derived','cvc']:
+ for engine in ['iverilog','iverilog-derived','cvc','cvc-interp']:
   for mutant in [False,True]:
    folder=out/(engine+('-mutant'if mutant else'-positive'));folder.mkdir();exe=folder/'sim'
-   cmd=([str(cvc),'-sv','+nospecify','+define+FUNCTIONAL','+define+NSSOC_CVC_ZERO_DELAY']+(['+define+MUTATE_ADDRESS']if mutant else[])+['-o',str(exe),str(bench)]+models if engine=='cvc' else ['iverilog','-g2012','-DFUNCTIONAL']+(['-DNSSOC_CVC_ZERO_DELAY']if engine=='iverilog-derived'else[])+(['-DMUTATE_ADDRESS']if mutant else[])+['-s','tb_sram_sequence','-o',str(exe),str(bench)]+models)
-   cmd += ['-v',str(derived)]if engine=='cvc'else[str(derived if engine=='iverilog-derived'else lib)]
-   case=dict(engine=engine,mutation=mutant,compile_returncode=run(cmd,folder/'compile.log'));r['cases'].append(case);assert case['compile_returncode']==0 and exe.is_file()
-   code=run([str(exe)]if engine=='cvc'else['vvp',str(exe)],folder/'run.log');text=(folder/'run.log').read_text();case.update(run_returncode=code,log_sha256=sha(folder/'run.log'))
+   cmd=([str(cvc),'-sv','+nospecify','+define+FUNCTIONAL','+define+NSSOC_CVC_ZERO_DELAY']+(['+define+MUTATE_ADDRESS']if mutant else[])+['-o',str(exe),str(bench)]+models if engine.startswith('cvc') else ['iverilog','-g2012','-DFUNCTIONAL']+(['-DNSSOC_CVC_ZERO_DELAY']if engine=='iverilog-derived'else[])+(['-DMUTATE_ADDRESS']if mutant else[])+['-s','tb_sram_sequence','-o',str(exe),str(bench)]+models)
+   cmd += ['-v',str(derived)]if engine.startswith('cvc')else[str(derived if engine=='iverilog-derived'else lib)]
+   case=dict(engine=engine,mutation=mutant);r['cases'].append(case)
+   if engine=='cvc-interp':
+    idx=cmd.index('-o');del cmd[idx:idx+2];cmd.insert(2,'+interp')
+    case['compile_and_run_combined']=True;code=run(cmd,folder/'run.log')
+   else:
+    case['compile_returncode']=run(cmd,folder/'compile.log');assert case['compile_returncode']==0 and exe.is_file()
+    code=run([str(exe)]if engine.startswith('cvc')else['vvp',str(exe)],folder/'run.log')
+   text=(folder/'run.log').read_text();case.update(run_returncode=code,log_sha256=sha(folder/'run.log'))
+
    if mutant:
     case['detected']='SRAM_SEQUENCE_FAIL'in text and 'SRAM_SEQUENCE_PASS'not in text
     case['meaningful_control']=any(x.get('passed') and x['engine']==engine and not x['mutation']for x in r['cases'])
@@ -33,7 +40,8 @@ try:
     trace=[line for line in text.splitlines()if line.startswith('SRAM_TRACE ')]
     good=code==0 and 'SRAM_SEQUENCE_PASS cycles=12289'in text and 'SRAM_SEQUENCE_FAIL'not in text and len(trace)==12289
     traces[engine]=trace;case.update(passed=good,trace_rows=len(trace),trace_sha256=hashlib.sha256(('\n'.join(trace)).encode()).hexdigest())
- r['identical_traces']=traces['iverilog']==traces['cvc']==traces['iverilog-derived']
+ r['interpreter_matches_native']=traces['iverilog']==traces['cvc-interp']
+ r['identical_traces']=traces['iverilog']==traces['cvc']==traces['iverilog-derived']==traces['cvc-interp']
  assert all(x.get('detected') and x.get('meaningful_control') if x['mutation']else x.get('passed')for x in r['cases']), 'At least one engine fails the original scoreboard; retain every diagnostic'
  assert r['identical_traces']
  assert all(sha(p)==h for p,h in model_hashes.items()) and sha(bench)==r['bench_sha256'];r.update(passed=True,sources_unchanged=True,identical_traces=True)
