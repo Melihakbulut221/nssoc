@@ -1,4 +1,4 @@
-name: Inspect exact firmware words against failed dense mapped boot trace
+name: Compare exact flash image bytes with mapped-source ELF
 on:
   workflow_dispatch:
 permissions:
@@ -30,7 +30,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: boot-instruction-pairing-${{ github.run_id }}
+          name: boot-flash-image-pairing-${{ github.run_id }}
           path: boot-pairing-audit/
           if-no-files-found: error
           retention-days: 90
