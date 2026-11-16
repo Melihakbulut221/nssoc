@@ -515,3 +515,10 @@ Peer-ready formal43827501390 and old-EOP DRT43798359649 still confirmed live in 
 43827501390 /881a146c716f4b345489279c5841b88e39a00e83 completed FAILED qualification. Whole artifact14207468693 SHA2567337e607413eff444aa1944a9e06d58a59a109dd7dd1a38ea2e74be468bd6c12 verified. Default1322proven/1unproven; SIGN1324/1; remaining initialized_o. PICK and PICK+SIGN747/0. All16traffic runs4.8Mcycles passed, self-reference passed, inversion detected. No RTL promotion.
 
 New proof-wrapper-only commit61ec1b85975b89454dc73894c72659bb761e7037 dispatched on codex/pcie-peer-ready-precompute. Gate internal next,seen,confirmed,all_seen identifiers renamed so peer-ready invariant cone remains together instead of assuming independently cut internal nodes. External output equivalence, explicit clock/reset, all configs/seeds/self/mutant remain required. No new assumptions or RTL change. AST parsed before upload. This is an attempted stronger proof model, NOT a completed proof. Find run by exact SHA, do not duplicate. Sixth timing derived-download session21936 remains active; old-EOP DRT43798359649 still confirmed live.
+
+
+## Sixth ACK path review running
+
+RAM download session21936 completed successfully; full derived archive14207134815 SHA25663d7393f15ece4917f5da11ec33363d238355c95ae56decd035ff044142cd973 verified. Selected ws.max/wns.max reports contain scalar metrics only (-1.0821774893615652ns), not detailed paths. No archive persisted locally.
+
+Read-only cloud path extraction43829726202 /1eb13e5d5008ec2555d092fc10713338904b3299 on codex/ack-sixth-path-review running. Authenticates exact producer/run/archive/ODB and individual max.rpt/min.rpt file hashes; publishes worst20 full path blocks per corner/type plus original full report digests and total path counts. This is diagnostic evidence only, no CAD rerun or timing acceptance. Await artifact to choose targeted next timing action; no seventh repair launched. Peer-ready invariant-cone proof43829492452 /61ec1b85975b89454dc73894c72659bb761e7037 and DRT43798359649 remain live.
