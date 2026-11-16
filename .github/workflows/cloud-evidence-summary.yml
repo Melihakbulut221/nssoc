@@ -1,4 +1,4 @@
-name: Prove actual cached EOP invariants and two wrong-flag mutations
+name: Prove full receive module after cached EOP invariants
 on:
   workflow_dispatch:
 permissions:
@@ -6,17 +6,17 @@ permissions:
 jobs:
   formal:
     runs-on: ubuntu-24.04
-    timeout-minutes: 105
+    timeout-minutes: 145
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
       - run: sudo apt-get update -qq && sudo apt-get install -y yosys
-      - run: python3 formal/eop_flags/prove.py
+      - run: python3 formal/eop_flags/composition.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-flag-invariants-${{ github.run_id }}
+          name: eop-flags-composition-${{ github.run_id }}
           path: eop-flag-proof/
           if-no-files-found: error
           retention-days: 90
