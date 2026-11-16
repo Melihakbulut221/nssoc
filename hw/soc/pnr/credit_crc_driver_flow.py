@@ -131,8 +131,8 @@ foreach inst [$block getInsts] {
 }
 foreach port [$block getBTerms] {dict set ports_snapshot [$port getName] [$port getNet]}
 set changed {};set additions {}
-foreach bit {0 1 2 3 4 5 6 7 enable} {
- if {$bit eq "enable"} {set port_name eth_tx_en_o} else {set port_name [format {eth_txd_o[%d]} $bit]}
+foreach bit {0 1 2 3 4 5 6 7 enable error} {
+ if {$bit eq "enable"} {set port_name eth_tx_en_o} elseif {$bit eq "error"} {set port_name eth_tx_er_o} else {set port_name [format {eth_txd_o[%d]} $bit]}
  set port [$block findBTerm $port_name]
  if {$port eq "NULL" || [$port getIoType] ne "OUTPUT"} {error "Expected Ethernet output missing"}
  set net [$port getNet]
@@ -175,7 +175,7 @@ foreach bit {0 1 2 3 4 5 6 7 enable} {
  [$c1 findITerm A] connect $n1;[$c1 findITerm X] connect $net
  if {[llength [$n0 getITerms]]!=2 || [llength [$n1 getITerms]]!=2 || [llength [$net getITerms]]!=1} {error "Delay chain incidence mismatch"}
 }
-if {[llength $additions]!=18 || [dict size $changed]!=9} {error "Unexpected delay ECO census"}
+if {[llength $additions]!=20 || [dict size $changed]!=10} {error "Unexpected delay ECO census"}
 foreach inst [$block getInsts] {
  if {[$inst getName] in $additions} {continue}
  foreach pin [$inst getITerms] {
@@ -186,10 +186,10 @@ foreach inst [$block getInsts] {
  }
 }
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_snapshot [$port getName]]} {error "Port net changed"}}
-puts "NSSOC_ETH_OUTPUT_DELAY_STRUCTURAL_PASS ports=9 cells=18"
+puts "NSSOC_ETH_OUTPUT_DELAY_STRUCTURAL_PASS ports=10 cells=20"
 
 
-if {[llength [$block getInsts]]!=$before_eth_count+18} {error "Combined ECO cell census mismatch"}
+if {[llength [$block getInsts]]!=$before_eth_count+20} {error "Combined ECO cell census mismatch"}
 
 # Only endpoints with measured >1ns worst setup headroom in all three corners.
 set internal_before {};set internal_ports {};set internal_new {};set internal_changed {}
@@ -276,7 +276,7 @@ class ResetBufferECO(ElectricalPostCTS):
         s = p.read_text()
         a = s.index("# Buffer I/O")
         b = s.index("report_floating_nets -verbose", a)
-        s = s[:a] + ECO.replace("\ndetailed_placement\n", (Path(__file__).resolve().parents[3]/"credit-crc-driver-trial/feedback-eco.tcl").read_text()+"\ndetailed_placement\n") + "\n" + s[b:]
+        s = s[:a] + ECO.replace("\ndetailed_placement\n", (Path(__file__).resolve().parents[3]/"credit-crc-driver-trial/feedback-eco.tcl").read_text()+(Path(__file__).resolve().parents[3]/"credit-crc-driver-trial/remaining-eco.tcl").read_text()+"\ndetailed_placement\n") + "\n" + s[b:]
         if "log_cmd repair_design" in s or "unset_propagated_clock [all_clocks]" in s:
             raise RuntimeError("Unexpected broad repair or ideal clock")
         q = Path(self.step_dir) / "reset_buffer_eco.tcl"
