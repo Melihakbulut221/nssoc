@@ -98,9 +98,56 @@ class ResetBufferECO(ElectricalPostCTS):
         q = Path(self.step_dir) / "reset_buffer_eco.tcl"
         q.write_text(s)
         return str(q)
+
+class SecondBoundedPostCTS(BoundedPostCTS):
+    id = "NSSOC.SecondBoundedPostCTS"
+    name = "Continue setup repair only after reproducing measured three-corner baseline"
+    def run(self, state_in, **kwargs):
+        import hashlib, io, json, math, subprocess, zipfile
+        repo = "repos/Melihakbulut221/nssoc/"
+        def api(path):
+            return json.loads(subprocess.check_output(["gh", "api", repo + path]))
+        run = api("actions/runs/43789589953")
+        assert run["head_sha"] == "919cd5b37c139296ee0740ed58e921c6a62ce9c4"
+        assert run["conclusion"] == "success" and run["run_attempt"] == 1
+        digest = "337cc894ac328b82045555b663897c7a7ecbbb066bf01eb7590523bb546ff0f2"
+        meta = api("actions/artifacts/14191533295")
+        assert not meta["expired"] and meta["digest"] == "sha256:" + digest
+        assert meta["workflow_run"]["id"] == run["id"]
+        assert meta["workflow_run"]["head_sha"] == run["head_sha"]
+        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14191533295/zip"])
+        assert hashlib.sha256(data).hexdigest() == digest
+        with zipfile.ZipFile(io.BytesIO(data)) as archive:
+            expected = json.loads(archive.read("result.json"))
+        assert expected["source_head"] == run["head_sha"]
+        assert expected["sources_unchanged"] and expected["returncode"] == 0
+        assert expected["accepted"] is False
+        comparisons = {}
+        for short, corner in CORNERS:
+            dirs = list(Path(self.step_dir).parent.glob("*-nssoc-continuationbefore" + short.lower()))
+            assert len(dirs) == 1, (short, dirs)
+            assert not (dirs[0] / "unpropagated.rpt").read_text().strip()
+            metrics = json.loads((dirs[0] / "state_out.json").read_text())["metrics"]
+            reference = expected["measurements"][corner]
+            assert reference
+            for key, value in reference.items():
+                actual = metrics[key]
+                if isinstance(value, (int, float)) and not isinstance(value, bool):
+                    assert math.isclose(actual, value, rel_tol=1e-9, abs_tol=1e-6), (key, actual, value)
+                else:
+                    assert actual == value, (key, actual, value)
+            comparisons[corner] = reference
+        (Path(self.step_dir) / "baseline-reproduction.json").write_text(
+            json.dumps(dict(source_run=run["id"], artifact_sha256=digest,
+                            measured_baseline_matches=True, corners=comparisons), indent=2))
+        return super().run(state_in, **kwargs)
+
 @Flow.factory.register()
 class AckChipResetSized(Interfaces):
- Steps=[ResetBufferECO, BoundedPostCTS]+[type("Sized"+n,(BranchSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS]
+ Steps=([ResetBufferECO, BoundedPostCTS]
+        +[type("ContinuationBefore"+n,(BranchSTA,),dict(id="NSSOC.ContinuationBefore"+n,corner=c))for n,c in CORNERS]
+        +[SecondBoundedPostCTS]
+        +[type("Sized"+n,(BranchSTA,),dict(id="NSSOC.Sized"+n,corner=c))for n,c in CORNERS])
 if __name__=="__main__":
  from librelane.__main__ import cli
  cli()
