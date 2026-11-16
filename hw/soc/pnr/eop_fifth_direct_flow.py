@@ -3,23 +3,23 @@ from librelane.flows import Flow
 from interface_flow import Interfaces,BoundedPostCTS
 from corrpre_postcts_flow import CORNERS
 from corrpre_postcts_flow import SingleCornerSTA as BranchSTA
-class FifthBoundedPostCTS(BoundedPostCTS):
-    id = "NSSOC.FifthBoundedPostCTS"
+class SixthBoundedPostCTS(BoundedPostCTS):
+    id = "NSSOC.SixthBoundedPostCTS"
     name = "Continue setup repair only after reproducing measured three-corner baseline"
     def run(self, state_in, **kwargs):
         import hashlib, io, json, math, subprocess, zipfile
         repo = "repos/Melihakbulut221/nssoc/"
         def api(path):
             return json.loads(subprocess.check_output(["gh", "api", repo + path]))
-        run = api("actions/runs/43797581183")
-        assert run["head_sha"] == "ea55918740b7f140aae812f7eb22bb1c0a326f79"
+        run = api("actions/runs/43801167959")
+        assert run["head_sha"] == "119b202942c561b7797acdb9e9cc10f879c5ac3d"
         assert run["conclusion"] == "success" and run["run_attempt"] == 1
-        digest = "36e0d818a98d9f4e1047bba79866d70cb0b846f5f092be9079441366dbba4445"
-        meta = api("actions/artifacts/14195634663")
+        digest = "e210cd85d9e9d7231b9935f124922eb116ca5b0d87f29cf900dbf5869132f269"
+        meta = api("actions/artifacts/14196543944")
         assert not meta["expired"] and meta["digest"] == "sha256:" + digest
         assert meta["workflow_run"]["id"] == run["id"]
         assert meta["workflow_run"]["head_sha"] == run["head_sha"]
-        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14195634663/zip"])
+        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14196543944/zip"])
         assert hashlib.sha256(data).hexdigest() == digest
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
             expected = json.loads(archive.read("result.json"))
@@ -28,7 +28,7 @@ class FifthBoundedPostCTS(BoundedPostCTS):
         assert expected["accepted"] is False
         comparisons = {}
         for short, corner in CORNERS:
-            dirs = list(Path(self.step_dir).parent.glob("*-nssoc-fifthbefore" + short.lower()))
+            dirs = list(Path(self.step_dir).parent.glob("*-nssoc-sixthbefore" + short.lower()))
             assert len(dirs) == 1, (short, dirs)
             assert not (dirs[0] / "unpropagated.rpt").read_text().strip()
             metrics = json.loads((dirs[0] / "state_out.json").read_text())["metrics"]
@@ -47,9 +47,9 @@ class FifthBoundedPostCTS(BoundedPostCTS):
         return super().run(state_in, **kwargs)
 
 @Flow.factory.register()
-class EopFifthDirect(Interfaces):
- Steps=([type('FifthBefore'+n,(BranchSTA,),dict(id='NSSOC.FifthBefore'+n,corner=c))for n,c in CORNERS]
-       +[FifthBoundedPostCTS]
+class EopSixthDirect(Interfaces):
+ Steps=([type('SixthBefore'+n,(BranchSTA,),dict(id='NSSOC.SixthBefore'+n,corner=c))for n,c in CORNERS]
+       +[SixthBoundedPostCTS]
        +[type('Sized'+n,(BranchSTA,),dict(id='NSSOC.Sized'+n,corner=c))for n,c in CORNERS])
 if __name__=='__main__':
  from librelane.__main__ import cli
