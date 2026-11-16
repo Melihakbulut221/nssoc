@@ -8,7 +8,11 @@ r=api('actions/runs/'+str(run));assert r['head_sha']==head and r['status']=='com
 a=api('actions/artifacts/'+str(aid));assert a['workflow_run']['id']==run and a['workflow_run']['head_sha']==head and not a['expired'] and a['digest']=='sha256:'+digest
 raw=subprocess.check_output(['gh','api',P+'actions/artifacts/'+str(aid)+'/zip'],timeout=120);assert hashlib.sha256(raw).hexdigest()==digest
 z=zipfile.ZipFile(io.BytesIO(raw));result=json.loads(z.read('result.json'))
-source=Path('hw/soc/rtl/pcie/soc_pcie_replay_tx.v').read_bytes()
+# The legacy proof applies to the unchanged baseline; the new proof above
+# independently binds the sole arithmetic substitution to the current source.
+subprocess.run(['python3','scripts/require_ack_delta_qualification.py'],check=True)
+current_source=Path('hw/soc/rtl/pcie/soc_pcie_replay_tx.v').read_bytes()
+source=Path('hw/soc/tb/ack_delta_original.v').read_bytes()
 assert hashlib.sha256(source).hexdigest()==result['rtl_sha256']=='f5634cd4692abde4aa576aa11e392c4ef5c2787a35962aeec0ac444340ec4c7a'
 assert result['source_head']==head and result['status']=='PASS_24BIT_EQUIVALENCE_TWO_MUTANTS_AND_REPLAY_TRAFFIC'
 assert [(c['case'],c['status'])for c in result['cases']]==[('exact','PASS'),('mutant_half_distance','REJECTED_EXPECTED_MUTANT'),('mutant_borrow','REJECTED_EXPECTED_MUTANT')]
@@ -24,4 +28,4 @@ for x in result['traffic']:
  assert re.search(r'^RESULT PASS',text,re.M) and not re.search(r'MISMATCH|FATAL|RESULT FAIL',text)
  assert [l for l in text.splitlines()if l.startswith(('SUMMARY','RESULT'))]==x['summary']
 out=Path('out');out.mkdir(exist_ok=True)
-(out/'ack-prefix-qualification-gate.json').write_text(json.dumps(dict(run=run,source=head,artifact=aid,archive_sha256=digest,current_source_sha256=hashlib.sha256(source).hexdigest(),qualification=result,physical_accepted=False),indent=2)+'\n')
+(out/'ack-prefix-qualification-gate.json').write_text(json.dumps(dict(run=run,source=head,artifact=aid,archive_sha256=digest,current_source_sha256=hashlib.sha256(current_source).hexdigest(),legacy_reference_sha256=hashlib.sha256(source).hexdigest(),delta_qualification=json.loads((out/'ack-delta-qualification-gate.json').read_text()),qualification=result,physical_accepted=False),indent=2)+'\n')
