@@ -50,11 +50,22 @@ try:
   dirs=list((OUT/'run').glob('*-nssoc-sized'+short));assert len(dirs)==1
   assert not(dirs[0]/'unpropagated.rpt').read_text().strip()
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
- baseline_reports=list((OUT/'run').glob('*-nssoc-secondboundedpostcts/baseline-reproduction.json'))
+ baseline_reports=list((OUT/'run').glob('*-nssoc-validatedglobalrouting/baseline-reproduction.json'))
  assert len(baseline_reports)==1
  r['baseline_reproduction']=json.loads(baseline_reports[0].read_text())
  assert r['baseline_reproduction']['measured_baseline_matches']
- r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_SECOND_INCREMENTAL_REPAIR_REQUIRES_REVIEW',scope='Reconstruct qualified source and three driver resizes plus buf2 taper, then reproduce authenticated first continuation metrics before a second native bounded100 setup and1000 hold repair with unchanged propagated clocks, derates and constraints. Measure all3corners. Not routed or physical PHY acceptance.')
+ global_dirs=list((OUT/'run').glob('*-nssoc-validatedglobalrouting'));assert len(global_dirs)==1
+ global_state_path=global_dirs[0]/'state_out.json'
+ global_state=json.loads(global_state_path.read_text())
+ global_odb=Path(global_state['odb']);assert global_odb.is_relative_to(OUT/'run') and global_odb.is_file()
+ guides={k:v for k,v in global_state.items()if 'guide' in k.lower() and isinstance(v,str)}
+ assert len(guides)==1,guides
+ guide=Path(next(iter(guides.values())));assert guide.is_relative_to(OUT/'run') and guide.is_file() and guide.stat().st_size>0
+ r.update(pre_global_odb_sha256=prior.sha(Path(state['odb'])),placement_measurements_before_global=measurements,
+          global_state=str(global_state_path.relative_to(OUT)),global_guide_sha256=prior.sha(guide),
+          global_metrics=global_state['metrics'],measurement_scope='Placement before global; native global metrics separate; no detailed routing or extracted timing')
+ state=global_state
+ r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='GLOBAL_ROUTED_SECOND_EOP_REQUIRES_DRT_AND_EXTRACTED_STA',scope='Reproduce authenticated second EOP placement baseline, then native guarded global routing with original clocks and derates. Global guides only; no detailed routing, no extracted timing, no full PHY acceptance.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'and p.suffix!='.zip'};save()
