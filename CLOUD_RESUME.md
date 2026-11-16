@@ -1,3 +1,13 @@
+## Paired residual hold/setup path evidence: output headroom, missing input max paths
+
+Diagnostic43777683538/109dc3da02d45dea92dc31650f8bfa4c2d4fc3a1 SUCCESS; artifact14186468674 SHA25658d96340f095a63c9e597bb2d3526407eb638c68c2c794675922776ea9f5b4bc verified. Exact three-driver trial5e8a ODB lineage only. Worker authenticates original derived archive and all included reports. Full pairing saved at docs/timing/credit-crc-hold-setup-pairs-43777683538.json.
+
+eth_txd_o[5]/[2] setup slack slow3.582299/3.560809ns, typical4.220820/4.208108, fast4.570244/4.562104. Hold fast-.230339/-.223771ns; typical+.035650/+.046650; slow+.520488/+.539422. These two outputs are plausible targets for controlled data delay insertion with unchanged eth_gtx timing; NOT yet repaired/proven. Actual added cell delay and RC must be measured in all corners and netlist equivalence established.
+
+pcie_training_i -> FF183526 hold-.636595/-.539264/-.464779ns; pcie_rx_error_i -> FF172492 hold-.013107/-.151538/-.188448ns; pcie_rx_data_i[7] -> FF172502 hold-.000349/-.139763/-.177705ns. Their max paths are ABSENT from bounded max.rpt, so pairing is incomplete. Need targeted native report_checks to these exact D pins before inferring setup headroom or adding delays. Missing report path is not a passing path. pcie_initialized_o setup remains-2.119099/-.353682/+.691027ns.
+
+No timing waivers or hold changes performed by this read-only diagnostic. Queue postCTS43775507971, boot43771666469 and43777168665, short-length analog43776904300 were authoritatively live; preserve active jobs.
+
 ## Three-driver sizing measured: small improvement, no timing closure
 
 Trial43776325443/50475641846a50fcbb919ff9e218208079515008 SUCCESS. Authenticated summary43777270614/79889f277aad59c8e5bdcf504719c510b02d42f0 summary artifact14187320287 SHA256a1c1c43586f5438e5da0b66140c767a976e3af784a33f884a05054f131beadbe verified. Original derived14186344549 SHA256e6ef8008841e9d18436cb75f79326f3620b230b60a3b8b39df691d2f3a0e460e; native14186184994 SHA2560df7ae6963aa1f9e4024fb82a7ad3d028e6a40cb22d0403d1d3f74fa1b396de8. Summary worker verifies full archive and all included member hashes.
