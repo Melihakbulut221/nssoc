@@ -37,10 +37,10 @@ assert len(report['rx_eop_registers'])==2
 assert report['ack_delta_group_prefix_enabled']
 assert report['ack_delta_qualification']['current_source_sha256']==report['inputs']['hw/soc/rtl/pcie/soc_pcie_replay_tx.v']
 assert report['source_binding']['all_files_unchanged']
-assert report['inputs']['hw/soc/rtl/pcie/soc_pcie_fc_tx.v']=='1360051e88dc8c95fb7f3e896d47621b871887aa811d6dd2990c2959e4240f23'
+assert report['source_binding']['before']['hw/soc/rtl/pcie/soc_pcie_fc_tx.v']=='1360051e88dc8c95fb7f3e896d47621b871887aa811d6dd2990c2959e4240f23'
 subprocess.run(['python3','scripts/require_fc_crc_snapshot_qualification.py'],check=True)
 fc=json.loads(P('out/fc-crc-snapshot-qualification.json').read_text())
-assert fc['passed'] and fc['candidate_sha256']==report['inputs']['hw/soc/rtl/pcie/soc_pcie_fc_tx.v']
+assert fc['passed'] and fc['candidate_sha256']==report['source_binding']['before']['hw/soc/rtl/pcie/soc_pcie_fc_tx.v']
 for f,h in report['source_binding']['before'].items():
  assert hashlib.sha256(P(f).read_bytes()).hexdigest()==h,(f,'producer source mismatch')
 peer=report['peer_ready_qualification']
