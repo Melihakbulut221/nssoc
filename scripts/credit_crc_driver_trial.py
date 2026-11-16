@@ -44,17 +44,18 @@ try:
  with (OUT/'native.log').open('w')as log:code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
  r['returncode']=code;assert code==0
  assert 'NSSOC_LINKUP_TAPER_STRUCTURAL_PASS' in (OUT/'native.log').read_text()
+ assert 'NSSOC_DRIVER_ADJACENT_TAPER_PASS' in (OUT/'native.log').read_text()
  assert all(prior.sha(Path(p))==h for p,h in protected.items())
  measurements={}
  for short,corner in prior.CORNERS:
   dirs=list((OUT/'run').glob('*-nssoc-sized'+short));assert len(dirs)==1
   assert not(dirs[0]/'unpropagated.rpt').read_text().strip()
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
- baseline_reports=list((OUT/'run').glob('*-nssoc-secondboundedpostcts/baseline-reproduction.json'))
+ baseline_reports=list((OUT/'run').glob('*-nssoc-driveradjacenttaper/baseline-reproduction.json'))
  assert len(baseline_reports)==1
  r['baseline_reproduction']=json.loads(baseline_reports[0].read_text())
  assert r['baseline_reproduction']['measured_baseline_matches']
- r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_SECOND_INCREMENTAL_REPAIR_REQUIRES_REVIEW',scope='Reconstruct qualified source and three driver resizes plus buf2 taper, then reproduce authenticated first continuation metrics before a second native bounded100 setup and1000 hold repair with unchanged propagated clocks, derates and constraints. Measure all3corners. Not routed or physical PHY acceptance.')
+ r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_DRIVER_ADJACENT_TAPER_REQUIRES_REVIEW',scope='Reconstruct qualified source and three driver resizes plus buf2 taper, then reproduce authenticated first continuation metrics before moving only the existing buf2 taper toward its weak source and legalizing; no extra timing repair with unchanged propagated clocks, derates and constraints. Measure all3corners. Not routed or physical PHY acceptance.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e),traceback=traceback.format_exc());raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'and p.suffix!='.zip'};save()
