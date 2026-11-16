@@ -1,12 +1,12 @@
 import os,pathlib,json,hashlib,subprocess,re
-from ihp_zero_delay_aliases import adapt,SOURCE_SHA
+from ihp_functional_nba import adapt,SOURCE_SHA
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 root=pathlib.Path.cwd();out=root/'clock-composition-qualification';out.mkdir()
 sha=lambda p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
 lib=root/'hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v';assert sha(lib)==SOURCE_SHA
 model=out/'derived.v';derived,changes=adapt(lib.read_text());model.write_text(derived)
 bench=root/'scripts/tb_clock_composition.v';cvc=root/'cvc-source/build64/cvc64'
-r=dict(source_head=os.environ['GITHUB_SHA'],passed=False,chip_accepted=False,source_sha256=SOURCE_SHA,derived_sha256=sha(model),bench_sha256=sha(bench),cases=[],scope='Zero-delay sequential cell composition across direct, gated and buffered clocks. Compare native Icarus and explicitly enabled derived aliases; classify differences from ideal RTL, not SDF or chip acceptance.')
+r=dict(source_head=os.environ['GITHUB_SHA'],passed=False,chip_accepted=False,source_sha256=SOURCE_SHA,derived_sha256=sha(model),bench_sha256=sha(bench),cases=[],scope='Experimental NBA-scheduled sequential cell composition across direct, gated and buffered clocks. Compare native Icarus and explicitly enabled derived aliases; classify differences from ideal RTL, not SDF or chip acceptance.')
 def run(cmd,log):
  with log.open('w')as f:return subprocess.run(cmd,stdout=f,stderr=subprocess.STDOUT,timeout=180).returncode
 try:
