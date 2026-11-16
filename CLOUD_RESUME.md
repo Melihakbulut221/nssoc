@@ -8,6 +8,14 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: ACK full replay traffic passes; new chip build clears all qualification gates
+
+43808667103 /31a9b7349474229b511f101acb5249655e6ce9f2 SUCCESS. Artifact14199990698 SHA cc42d9aa8bb9773ff69f6ca4c3ec0c75b3f87caf37f63312f489087b94b1ddbe (1597832bytes) wholeauthenticated inRAM. Exactack-delta-traffic/result.json and sixtrafficlogschecked; everySUMMARY/RESULTmatchesJSON, noMISMATCH/FATAL/RESULTFAIL. PASS_ACK_DELTA_ARITHMETIC_AND_SIX_REPLAY_TRAFFIC_CASES. Candidate0833d4a4126272253fd0cd35e7eca118c163c435a803ef32930f61f16948f554,referencef5634cd4692abde4aa576aa11e392c4ef5c2787a35962aeec0ac444340ec4c7a. Fresharithmetic24bitSATpasses/borrowmutantfails. All6x300000cycles have0mismatches andoriginalcoveragegatespassed.
+
+Perseed1..6 observed framesout4682/4791/4693/4741/4624/4688; replayedout1231/1250/1082/1260/1821/1783; replays645/651/593/631/1104/1101; ACKconsumptions3815/3823/4034/3756/4618/4672; linkloss86/92/89/82/76/76; resets8/12/4/9/11/10. Stall/take-pair/take-gap/source-error gatesalsoallpassed. SummaryseedfieldisPRNGmutatedstate; configuredinputseedisJSONseed/plusarg1..6. Scopefullreplaymodulecomparison only; notarbitraryXZ/exhaustivesequential/fullPCIecompliance/physicaltiming.
+
+Build43809143447 /bfdc8d57daacba32ea4238b73678a3da19c8e82a nowPASSED RXartifactgate,ACKlegacy+newdeltagate,creditCRCproofgate andpinnedsource/toolpreparation. Currentlyrunning freshpositiveandsemanticmutationregressions(step9), beforewholechipfirmware/synthesis(step10). Thisconfirmsnewgateexecutesonexactnewsourcewithoutborrowingoldacceptance. No newmapping/STAresults availableyet. Ninth43808046126,NBAboot43804865150,analog43806909384 remainedliveatlastpoll; DRT43798359649 confirmedliveatturnstart. RAMdownload64266completed. Fullgoalactive; thisturnconcretefullmodulequalificationverificationandbuildgateprogress.
+
 ## 2026-11-16: full-chip ACK candidate build gated on exact pending qualification
 
 NEW43809143447 /bfdc8d57daacba32ea4238b73678a3da19c8e82a on codex/ack-delta-mainchip-build (exactbase31a9b7349474229b511f101acb5249655e6ce9f2) dispatched, APIin_progress. Workflow copied exactsuccessfulEOP/credit/CRCmainchipbuild recipe frombadd72fc; samefeatureenv, RTLfirmware/preparation, nativecell/scrub controls, negativeCRCselect regressions and20SRAMmainchipmapping. Artifactprefixack-delta-mainchip. No newmappedcandidate existsyet; notphysicalacceptance.
