@@ -170,7 +170,26 @@ module soc_pcie_replay_tx #(
     // Only an original transmitted EOP advances their modulo sum. Keep that
     // frontier directly, removing the adder from credit reservation metadata.
     reg [PW-1:0] new_slot;
-    wire [11:0] ack_delta=ack_sequence_i-acknowledged_sequence_o;
+    // BEGIN ACK_DELTA_GROUP_PREFIX
+    // Parallel three-bit borrow groups preserve the 12-bit modular distance.
+    wire [2:0] ack_delta_g, ack_delta_p;
+    genvar ack_group;
+    generate for(ack_group=0;ack_group<3;ack_group=ack_group+1) begin: ack_delta_groups
+        assign ack_delta_g[ack_group]=ack_sequence_i[ack_group*3+:3]<acknowledged_sequence_o[ack_group*3+:3];
+        assign ack_delta_p[ack_group]=ack_sequence_i[ack_group*3+:3]==acknowledged_sequence_o[ack_group*3+:3];
+    end endgenerate
+    wire [3:0] ack_delta_borrow;
+    assign ack_delta_borrow[0]=1'b0;
+    assign ack_delta_borrow[1]=ack_delta_g[0];
+    assign ack_delta_borrow[2]=ack_delta_g[1] | (ack_delta_p[1]&ack_delta_g[0]);
+    assign ack_delta_borrow[3]=ack_delta_g[2] | (ack_delta_p[2]&ack_delta_g[1]) |
+        (ack_delta_p[2]&ack_delta_p[1]&ack_delta_g[0]);
+    wire [11:0] ack_delta;
+    generate for(ack_group=0;ack_group<4;ack_group=ack_group+1) begin: ack_delta_subtract
+        assign ack_delta[ack_group*3+:3]=ack_sequence_i[ack_group*3+:3]-
+            acknowledged_sequence_o[ack_group*3+:3]-ack_delta_borrow[ack_group];
+    end endgenerate
+    // END ACK_DELTA_GROUP_PREFIX
     // Same 12-bit modulo comparison without a full subtract-then-compare.
     // Kept opt-in until mapped timing and full replay qualification pass.
 `ifdef SOC_PCIE_ACK_STALE_PREFIX
