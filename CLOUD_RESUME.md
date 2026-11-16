@@ -8,6 +8,15 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: new ACK supplemental fullchip boot passed; qualified monitor promoted
+
+43814779296 /506367db9accba350150ccd391294bef0cb025c3 SUCCESS. Artifact14205080681 SHAa210e2f9fcee80c5d8a16278e728d4d7c18620e230710d9e3aee6d51b4401ea8 whole verified RAM, both boot logs and ALL monitor proof outputs verified. LOGICROM_GL2,267,527cycles/28checks/0fails/code0/magic600dc0de/watchdog1/0/0/flash0/UARTpass1/framing0. PCIe packet-async IDLE PASS5,668,736samples. System+Ethernet MBIST PASS busy1,310,691/donecycle1,310,724/ethdone3. NewACK map e6b2b44049da71b74e9dd2adb30a551f7bb0883072f21d83e9bac93b70bc2ecd andnetlist5b4f45a0919975a9a5da7d9dd11f4c59349dc17b361fa32282bf170a2db00165;20macros;sourceunchanged. Bootrun3302.513s. Runlog4effd9e8db143b13be04681e07259ca2661bcca6e2930d5f8b9517dd5b3b34ce.
+STRICTscope: derivedNBAfunctional supplementary boot ONLY, native_model_equivalent=false/native_gate_boot_accepted=false/fullphyfalse/finaltimingfalse. Not native/SDF proof or serial PCIe traffic.
+
+Monitor qualification independently checked: five210rowfixedtraces matchoriginalIcarus;8negativecontrols detected;five16384row4statetruthtables0mismatch,alloutputhashesverified. Promoted ONLY monitor+originalreference+qualifier+evidence document to timing/combined commitb8281d403ed34f91f0c100256c985c57262912cf. No experimentalworkflow or derivedcellmodel merged. Correctedmonitor6d6b7c1aa116ba428cc7d7401cecec23c3ee66645254dd7550a81460ffbff7df explicit signed32ports/perbitunknownpredicate;originalc117d036... preserved. Detailed evidence docs/evidence/ack-functional-boot-20261116.md. Existing originalfirmware/MBIST/watchdog bounds unchanged. Earlier old-map boot43811938338 was stillrunning; don't restart.
+
+Continue live timing43821353089(old1264parent),43821593059(newACK2529parent),DRT43798359649,analog43806909384. All confirmed live this turn. Next inspect actualresults, retain exactsourceproof boundaries and route/PEX requirements. Fullproductgoalactive.
+
 ## 2026-11-16: both timing lineages improve; hold closed on new ACK candidate
 
 GitHub admin/push access reverified. Cloud-only, no local checkout/CAD/artifacts. Latest results are PLACEMENT estimates, not extracted/routed signoff; all acceptance flags remain false.
