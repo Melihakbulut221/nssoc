@@ -22,10 +22,11 @@ try:
   folder=out/str(idx);folder.mkdir()
   (folder/'gold.v').write_text(wrapped(original,'gold',defs))
   (folder/'gate.v').write_text(wrapped(candidate,'gate',defs))
-  recipe='\n'.join(['read_verilog -sv -DSYNTHESIS gold.v gate.v','proc','flatten gold gate','memory_map','opt','clk2fflogic','opt','equiv_make gold gate equiv','hierarchy -top equiv','equiv_simple','equiv_induct -seq 4','equiv_status','equiv_status -assert',''])
+  recipe='\n'.join(['read_verilog -sv -DSYNTHESIS gold.v gate.v','proc','setattr -mod -unset keep_hierarchy','flatten gold gate','memory_map','opt','clk2fflogic','opt','equiv_make gold gate equiv','hierarchy -top equiv','equiv_simple','equiv_induct -seq 4','equiv_simple','equiv_induct -seq 8','equiv_status','equiv_status -assert',''])
   (folder/'proof.ys').write_text(recipe)
   rc,log=run(['yosys','-s','proof.ys'],folder,'proof.log')
   counts=re.findall(r'Of those cells (\d+) are proven and (\d+) are unproven',log)
+  assert 'No SAT model available' not in log, 'Incomplete flattened formal model'
   formal=rc==0 and bool(counts) and all(int(a)>0 and int(b)==0 for a,b in counts) and 'Equivalence successfully proven!'in log
   case=dict(defines=defs,formal_returncode=rc,formal_passed=formal,counts=counts,seeds=[])
   r['cases'].append(case);save()
