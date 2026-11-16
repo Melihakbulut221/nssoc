@@ -132,5 +132,70 @@ for left,right in [('a','UA'),('UA','AD'),('c','UC'),('UC','CD'),('d','US0'),('U
 result['stage_latency']=dict(scope='Transition-only native-sample crossing requires an observed opposite-polarity sample first, then target threshold sustained ten ps; censored at one UI after original clock edge. Paired increments can be negative; missing crossings excluded and counted. Not physical acceptance, not shifted sample gates.',
  native_sample_only=True,stability_ps=10,censor_ui=1,summary=latencies,paired_increment=increments,per_transition=records)
 
+
+# Localize clock distribution delay from the same rejected, immutable capture.
+# Original loaded acceptance remains rejected; no sampling-window relaxation.
+clock_specs={
+ 'external_loaded_input':('clk_inp','clk_inn'),
+ 'buffer_crossed_collectors':('xclock.cn','xclock.cp'),
+ 'buffer_output_ports':('cp','cn')}
+for label,pi,ni in [('A_master',249,245),('A_slave',251,247),
+ ('B_master',229,233),('B_slave',231,235),
+ ('C_master',266,263),('C_slave',268,264),
+ ('D_master',216,211),('D_slave',215,213)]:
+ pdev=bound['groups']['npn13g2']['xpd.xd'+str(pi).zfill(4)]
+ ndev=bound['groups']['npn13g2']['xpd.xd'+str(ni).zfill(4)]
+ assert pdev['native_id']==pi and ndev['native_id']==ni
+ clock_specs[label]=(pdev['nodes'][1],ndev['nodes'][1])
+clock_rows={}
+for label,(p,n) in clock_specs.items():
+ delta=v(p)-v(n);rows=[]
+ for cycle in range(8,255):
+  for phase,sign in [(.5,1),(1.,-1)]:
+   edge=start+(cycle+phase)*ui
+   lo=int(np.searchsorted(t,edge));hi=int(np.searchsorted(t,edge+.5*ui))
+   assert hi>lo+1
+   signed=delta[lo:hi]*sign
+   for threshold in [0.,.1]:
+    valid=signed>0 if threshold==0 else signed>=threshold
+    hit=None;opposite=False
+    for j in range(len(valid)):
+     if signed[j]<0:opposite=True
+     if not opposite or not valid[j]:continue
+     end=int(np.searchsorted(t,t[lo+j]+5e-12,side='left'))-lo
+     if end>=len(valid):break
+     if valid[j:end+1].all():hit=float(t[lo+j]);break
+    rows.append(dict(cycle=cycle,direction='rise'if sign==1 else'fall',
+     threshold_v=threshold,settled_native_time_s=hit,
+     latency_ps=None if hit is None else (hit-edge)*1e12,
+     already_target_side_at_window_start=bool(signed[0]>0),
+     maximum_signed_v=float(signed.max())))
+ clock_rows[label]=rows
+clock_summary={}
+for label,rows in clock_rows.items():
+ clock_summary[label]={}
+ for direction in ['rise','fall']:
+  for threshold in [0.,.1]:
+   selected=[r for r in rows if r['direction']==direction and r['threshold_v']==threshold]
+   clock_summary[label][direction+'@'+str(threshold)]=dict(
+    transitions=len(selected),missing=sum(r['latency_ps']is None for r in selected),
+    already_target_side=sum(r['already_target_side_at_window_start']for r in selected),
+    **stats([r['latency_ps']for r in selected if r['latency_ps']is not None]))
+clock_increments={}
+for left,right in [('external_loaded_input','buffer_crossed_collectors'),
+ ('buffer_crossed_collectors','buffer_output_ports'),
+ *[('buffer_output_ports',k)for k in clock_specs if k.endswith(('_master','_slave'))]]:
+ a={(r['cycle'],r['direction'],r['threshold_v']):r['settled_native_time_s']for r in clock_rows[left]if r['settled_native_time_s']is not None}
+ b={(r['cycle'],r['direction'],r['threshold_v']):r['settled_native_time_s']for r in clock_rows[right]if r['settled_native_time_s']is not None}
+ clock_increments[left+'->'+right]={}
+ for direction in ['rise','fall']:
+  for threshold in [0.,.1]:
+   keys=[k for k in sorted(set(a)&set(b))if k[1]==direction and k[2]==threshold]
+   clock_increments[left+'->'+right][direction+'@'+str(threshold)]=stats([(b[k]-a[k])*1e12 for k in keys])
+result['clock_stage_latency']=dict(
+ scope='Read-only rejected-wave localization; original ideal external edge reference. Native sample crossings after an opposite-polarity sample, stable5ps, censored at halfUI. Missing and already-target-side cases counted, not accepted. No stimulus or acceptance gate changed.',
+ probe_nodes=clock_specs,summary=clock_summary,paired_increment=clock_increments,
+ per_transition=clock_rows,full_phy_accepted=False)
+
 (out/'wave-diagnosis.json').write_text(json.dumps(result,indent=2))
 print(json.dumps({k:min(v['phase_sweep'],key=lambda x:(x['wrong'],x['below_100mv']))for k,v in result['signals'].items()}))
