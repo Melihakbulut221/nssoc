@@ -27,11 +27,15 @@ try:
    case=dict(engine=engine,mutation=mutant,compile_returncode=run(cmd,folder/'compile.log'));r['cases'].append(case);assert case['compile_returncode']==0 and exe.is_file()
    code=run([str(exe)]if engine=='cvc'else['vvp',str(exe)],folder/'run.log');text=(folder/'run.log').read_text();case.update(run_returncode=code,log_sha256=sha(folder/'run.log'))
    if mutant:
-    case['detected']='SRAM_SEQUENCE_FAIL'in text and 'SRAM_SEQUENCE_PASS'not in text;assert case['detected']
+    case['detected']='SRAM_SEQUENCE_FAIL'in text and 'SRAM_SEQUENCE_PASS'not in text
+    case['meaningful_control']=any(x.get('passed') and x['engine']==engine and not x['mutation']for x in r['cases'])
    else:
-    trace=[line for line in text.splitlines()if line.startswith('SRAM_TRACE ')];assert code==0 and 'SRAM_SEQUENCE_PASS cycles=12289'in text and 'SRAM_SEQUENCE_FAIL'not in text and len(trace)==12289
-    traces[engine]=trace;case.update(passed=True,trace_rows=len(trace),trace_sha256=hashlib.sha256(('\n'.join(trace)).encode()).hexdigest())
- assert traces['iverilog']==traces['cvc']==traces['iverilog-derived']
+    trace=[line for line in text.splitlines()if line.startswith('SRAM_TRACE ')]
+    good=code==0 and 'SRAM_SEQUENCE_PASS cycles=12289'in text and 'SRAM_SEQUENCE_FAIL'not in text and len(trace)==12289
+    traces[engine]=trace;case.update(passed=good,trace_rows=len(trace),trace_sha256=hashlib.sha256(('\n'.join(trace)).encode()).hexdigest())
+ r['identical_traces']=traces['iverilog']==traces['cvc']==traces['iverilog-derived']
+ assert all(x.get('detected') and x.get('meaningful_control') if x['mutation']else x.get('passed')for x in r['cases']), 'At least one engine fails the original scoreboard; retain every diagnostic'
+ assert r['identical_traces']
  assert all(sha(p)==h for p,h in model_hashes.items()) and sha(bench)==r['bench_sha256'];r.update(passed=True,sources_unchanged=True,identical_traces=True)
 finally:
  (out/'result.json').write_text(json.dumps(r,indent=2))
