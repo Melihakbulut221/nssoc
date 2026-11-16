@@ -44,5 +44,8 @@ candidate=target/'candidate-model.cir';candidate.write_text(text)
 (target/'candidate-contract.json').write_bytes(source.enc(candidate_contract))
 source.save('divider-short-length-experiment.json',dict(changes=changes,baseline_model_sha256=source.pin(target/'model.cir'),candidate_model=source.pin(candidate),physical_geometry_matches=False,full_phy_accepted=False,scope=candidate_contract['scope']))
 bound=full.probes(candidate_contract)
+clock=source.ROOT/'scripts/cdr_cascode_clock_buffer_candidate.inc'
+assert 'Rref avdd bias 2800' in clock.read_text()
+source.save('clock-bias-experiment.json',dict(baseline_run=43776904300,baseline_clock_sha256='395cc60b48ce1d8e9cb1f25ae9070ddbd72a26c1ee7ca2702b4854d68d7b2b11',candidate_clock=source.pin(clock),changed_element='Rref',old_ohm=3200,new_ohm=2800,unchanged_short_length_divider=True,unchanged_original_electrical_gates=True,physical_geometry_matches=False,full_phy_accepted=False,scope='Single clock-buffer reference-resistor change relative to rejected short-length loaded case. Model exploration only; clock buffer remains pre-layout and baseline metal RC is retained. No relaxed current, voltage, load or sample deadlines.'))
 result=loaded.run_loaded(source,models,variant,engine,candidate,candidate_contract,bound,case)
 source.gate();source.save('selected-whole-loaded-summary.json',dict(case=case,partition=n,status=result['status'],all256bits_executed=True,unchanged_original_electrical_gates=True,full_phy_accepted=False,final_timing_complete=False))
