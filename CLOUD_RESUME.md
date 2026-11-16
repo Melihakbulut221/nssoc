@@ -490,3 +490,14 @@ Correctedcommit3a62a58e017267a2ca5ce3b55fa3177e8777b5af samecodex/boot-fetch-mem
 
 Next: usewrite/read/fetch traces toseparate firstpayloadcorruption fromduplicateexecution. No blind90minrerununtilthisqualifiedobserverpassespreflight. FullproductgoalOPEN.
 
+
+
+## 2026-11-16 authenticated fifth ACK results and proof continuation
+
+GitHub push/admin permission reverified. No local checkout or CAD artifacts created.
+
+- New ACK fifth run 43825457462, source 1d0e4d8ebcd07c54b5c0838b6c696d72baca605c: successful measurement, NOT final acceptance. Whole compact artifact 14207331190 SHA256 9d3f63b661022b075c89b6b59b84e5954381d9002f004002eff30f2926e5c665 verified in RAM. Exact fourth baseline reproduced, sources unchanged. Slow setup 2190 (was 2287), WS -1.07549ns, TNS -1203.33ns; typical/fast setup zero. Hold zero all three corners; WS .288919/.205369/.100031ns. Slew 18/4/0, capacitance zero. Placement estimates only. Candidate ODB 7f6a77a6d54d316ba9b89c9b1432c8080fb7b0306701c5f5ec6f8fba080cc0ae. Native artifact 14206464331 SHA256 751bc1c520d4adbe375b569da6c78875f62936563446ed9d14fd2578eca4b554 (metadata verified; sixth runner must verify whole archive).
+- Sixth bounded repair committed 5b65a92537678e07cb5c5c370106a497a0bc8215 on codex/ack-sixth-postcts and dispatched. Restores inherited first-fourth views plus exact fifth ODB, authenticates all archives, reproduces all measured fifth corner metrics before unchanged bounded repair. Python AST validation passed before upload. Discover run by exact branch/SHA; do not duplicate dispatch.
+- PCIe peer-ready run 43825252405 /14cca0bacd581ea2385379830428601615c8e46d FAILED qualification. Whole artifact 14206987087 SHA256 1c64b301c31c92649126cf067cabf3c00569e7851e10a4b1c999a64de9e4976f verified. PICK and PICK+SIGN formal passed (871 proven, zero unproven); default and SIGN still seven unproven each. All 16 traffic runs, 4.8M cycles passed; self-reference and inversion control passed. NOT promoted.
+- Follow-up 43827501390 /881a146c716f4b345489279c5841b88e39a00e83 running on codex/pcie-peer-ready-precompute. Formal wrapper renames only gate combinational next-state array to avoid artificial internal matching cuts. All output ports and sequential state remain matched, explicit clock/reset model retained, all configurations/traffic/self/mutant required. RTL unchanged. No proof acceptance until artifact reviewed.
+- Old-EOP DRT 43798359649 remains running at last observation; do not restart. No fresh extracted timing result yet. Analog MIM-area4 remains rejected as recorded above; full PHY, routed timing, production qualification remain open.
