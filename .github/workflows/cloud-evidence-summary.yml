@@ -1,4 +1,4 @@
-name: Third bounded new ACK timing repair with exact corner baseline
+name: Fourth bounded new ACK timing repair with exact corner baseline
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/run_ack_third_postcts.py
+          python3 -m py_compile scripts/run_ack_fourth_postcts.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -31,13 +31,13 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Native before and after STA with electrical and setup hold repair
-        run: python3 scripts/run_ack_third_postcts.py
+        run: python3 scripts/run_ack_fourth_postcts.py
       - name: Collect derived diagnostics
         if: always()
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('ack-third-postcts');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('ack-fourth-postcts');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,27 +50,27 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-third-postcts-incremental-repair-derived-${{ github.run_id }}
+          name: ack-fourth-postcts-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-third-postcts-incremental-repair-native-${{ github.run_id }}
+          name: ack-fourth-postcts-incremental-repair-native-${{ github.run_id }}
           path: |
-            ack-third-postcts/run/
-            ack-third-postcts/result.json
-            ack-third-postcts/native.log
-            ack-third-postcts/config.json
-            ack-third-postcts/initial.json
+            ack-fourth-postcts/run/
+            ack-fourth-postcts/result.json
+            ack-fourth-postcts/native.log
+            ack-fourth-postcts/config.json
+            ack-fourth-postcts/initial.json
           if-no-files-found: error
           retention-days: 90
       - name: Publish compact authenticated measurements without large report download
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-third-postcts-summary-${{ github.run_id }}
-          path: ack-third-postcts/result.json
+          name: ack-fourth-postcts-summary-${{ github.run_id }}
+          path: ack-fourth-postcts/result.json
           retention-days: 90
           if-no-files-found: error
