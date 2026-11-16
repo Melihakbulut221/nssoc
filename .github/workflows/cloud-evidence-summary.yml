@@ -1,4 +1,4 @@
-name: Qualify cycle-equivalent PCIe peer-ready precomputation
+name: Prove direct PCIe peer-ready reset and transition invariant
 on:
   workflow_dispatch:
 permissions:
@@ -23,16 +23,17 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends yosys iverilog
-      - name: Prove explicit clock reset equivalence and run original traffic coverage
-        run: python3 scripts/qualify_pcie_peer_ready.py
+      - name: Prove direct reset base and temporal invariant with reset fault controls
+        run: python3 scripts/prove_pcie_peer_ready_invariant.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pcie-peer-ready-qualification-${{ github.run_id }}
+          name: pcie-peer-ready-invariant-${{ github.run_id }}
           path: |
-            peer-ready-qualification/**/*.json
-            peer-ready-qualification/**/*.log
-            peer-ready-qualification/**/*.ys
-            peer-ready-qualification/**/*.v
+            peer-ready-invariant/**/*.json
+            peer-ready-invariant/**/*.log
+            peer-ready-invariant/**/*.ys
+            peer-ready-invariant/**/*.v
+            peer-ready-invariant/**/*.vcd
           if-no-files-found: error
           retention-days: 90
