@@ -2,7 +2,7 @@ import os,pathlib,subprocess,json,hashlib,random
 assert os.environ.get('GITHUB_ACTIONS')=='true'
 root=pathlib.Path.cwd();out=root/'case-condition-probe';out.mkdir()
 rng=random.Random(12345);patterns=['0'*64,'1'*64,'x'*64,'z'*64,'x0'*32,'z1'*32,'0'*63+'1','1'+'x'*63]
-lines=['`timescale 1ns/1ps','module probe;','reg [63:0] a,b,c,d,p;reg [575:0] v;reg direct,staged,fa,fb,fv;','initial begin'];gold=[]
+lines=['`timescale 1ns/1ps','module probe;','reg [63:0] a,b,c,d,p;reg [575:0] v;reg direct,staged,fa,fb,fv,bankwise;integer k;','initial begin'];gold=[]
 for i in range(512):
  p=patterns[2]if i==0 else rng.choice(patterns);aa=patterns[2]if i==0 else rng.choice(patterns);cc=patterns[2]if i==0 else rng.choice(patterns)
  bb=aa;dd=cc;vv=p*9
@@ -14,7 +14,8 @@ for i in range(512):
  lines+=['a=64\'b'+aa+';b=64\'b'+bb+';c=64\'b'+cc+';d=64\'b'+dd+';p=64\'b'+p+';v=576\'b'+vv+';#1;',
  'direct=0;if(a!==b || c!==d || v!=={9{p}})direct=1;',
  'fa=(a!==b);fb=(c!==d);fv=(v!=={9{p}});staged=fa||fb||fv;',
- '$display("COND_TRACE '+str(i)+' %b %b %b %b %b",direct,staged,fa,fb,fv);']
+ 'bankwise=fa||fb;for(k=0;k<9;k=k+1)if(v[k*64+:64]!==p)bankwise=1;',
+ '$display("COND_TRACE '+str(i)+' %b %b %b %b %b %b",direct,staged,fa,fb,fv,bankwise);']
 lines+=['$display("COND_DONE");$finish;end','endmodule'];bench=out/'probe.v';bench.write_text('\n'.join(lines)+'\n')
 sha=lambda p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
 r=dict(source_head=os.environ['GITHUB_SHA'],passed=False,scope='Model-free four-state case-inequality compound-if compiler comparison; no chip acceptance',bench_sha256=sha(bench),cases=[])
@@ -31,6 +32,7 @@ try:
    code=run(['vvp',str(exe)]if kind=='iverilog'else[str(exe)],folder/'run.log')
   text=(folder/'run.log').read_text();rows=[x.split()for x in text.splitlines()if x.startswith('COND_TRACE ')];assert code==0 and len(rows)==512 and 'COND_DONE'in text
   mismatches=[dict(row=i,expected=gold[i],observed=row)for i,row in enumerate(rows)if row[1]!=str(i) or row[2]!=str(gold[i]) or row[3]!=str(gold[i]) or int(row[4])|int(row[5])|int(row[6])!=gold[i]]
-  case.update(run_returncode=code,trace_rows=len(rows),mismatch_count=len(mismatches),first_mismatches=mismatches[:12],log_sha256=sha(folder/'run.log'))
+  case.update(bankwise_mismatch_count=sum(row[7]!=str(gold[i])for i,row in enumerate(rows)),run_returncode=code,trace_rows=len(rows),mismatch_count=len(mismatches),first_mismatches=mismatches[:12],log_sha256=sha(folder/'run.log'))
+ r['bankwise_passed']=all(c['bankwise_mismatch_count']==0 for c in r['cases'])
  r['passed']=all(c['mismatch_count']==0 for c in r['cases']);assert r['passed'],'Compound case condition differs from bitwise Python oracle'
 finally:(out/'result.json').write_text(json.dumps(r,indent=2))
