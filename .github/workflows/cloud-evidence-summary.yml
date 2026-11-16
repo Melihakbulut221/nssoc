@@ -1,30 +1,27 @@
-name: Apply select width2 to qualified current clock650 geometry
+name: Audit exact current650 child bands and crossing conductors before compaction
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  binding:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 45
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
-      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
-        with:
-          python-version: '3.12'
-      - run: python3 -m pip install --disable-pip-version-check --no-cache-dir numpy==2.3.3 klayout==0.30.4.post1
-      - run: python3 -B scripts/generate_select_width_candidate.py
-      - run: python3 -B scripts/bind_select_width_parent.py
+      - run: python3 -m pip install klayout==0.30.4.post1
+      - run: python3 scripts/audit_current650_placement.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: select-current-clock-binding-${{ github.run_id }}
-          path: select-parent-binding/
+          name: current650-placement-audit-${{ github.run_id }}
+          path: |
+            current650-placement-audit/result.json
+            current650-placement-audit/source-metadata.json
           if-no-files-found: error
           retention-days: 90
