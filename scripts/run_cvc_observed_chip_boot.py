@@ -60,13 +60,39 @@ try:
   assert known['width']==width and len(actual['bits'])==width and actual['bits']==known['bits'],name
  signals+=extras
  r['operand_inventory']=dict(run=43783831123,artifact=14189567411,sha256=ihash,exact_extra_signals=len(extras))
+ # Bind every boundary observation to the exact restored mapped net inventory.
+ boundary=[("if_req","instr_req",1),("if_gnt","instr_gnt",1),
+           ("if_addr","instr_addr",32),("if_valid","instr_rvalid",1),
+           ("if_data","instr_rdata",32),("if_err","instr_err",1),
+           ("data_we","bus_data_we",1),("data_wdata","bus_data_wdata",32)]
+ signals+=boundary
+ suffixes={"row_en","row_we","row_addr","row_din","row_bm","row_dout",
+           "func_row_en","func_row_we","func_row_addr","func_row_din","func_row_bm",
+           "bank_q","rd_word","raw_q","req_i","addr_i","rvalid_o","rdata_o"}
+ memory_names=sorted(n for n in mapped["core_signals"] if n.startswith("u_ram.") and n.rsplit(".",1)[-1] in suffixes)
+ assert 6<=len(memory_names)<=96, memory_names
+ for required in ("row_addr","row_dout","row_we"):
+  assert any(n.endswith("."+required) for n in memory_names),required
+ for i,name in enumerate(memory_names):
+  width=len(mapped["core_signals"][name]["bits"])
+  assert 1<=width<=64,(name,width)
+  signals.append(("mem_"+str(i),name,width))
+ r["memory_boundary_inventory"]=dict(mapped_sha256=digest(mapped_path),signals=boundary+signals[-len(memory_names):],read_only=True)
  for label,name,width in signals:
   assert name in mapped["core_signals"] and len(mapped["core_signals"][name]["bits"])==width
  fields=" ".join(label+"=%h" for label,name,width in signals)
  refs=", ".join("tb_logicrom_gl.dut.\\"+name+" " for label,name,width in signals)
  observer=out/"boot_observer.v"
- observer.write_text(chr(96)+'timescale 1ns/1ps\nmodule nssoc_cloud_boot_observer;\nalways @(negedge tb_logicrom_gl.clk) begin\n if (tb_logicrom_gl.rst_n && (tb_logicrom_gl.cycles<300 || tb_logicrom_gl.cycles%1000==0 || (tb_logicrom_gl.cycles>=2179000 && tb_logicrom_gl.cycles<=2185000) || (tb_logicrom_gl.cycles>=2370000 && tb_logicrom_gl.cycles<=2374000)))\n  $display("NSSOC_BOOT_TRACE cycle=%0d '+fields+'", tb_logicrom_gl.cycles, '+refs+');\nend\nendmodule\n')
- r["observer"]=dict(sha256=digest(observer),signals=signals,source_map_run=43768772862,source_map_sha256=digest(mapped_path),read_only=True,cycle_bound_unchanged=4000000,dense_cycle_windows=[[2179000,2185000],[2370000,2374000]],purpose='Diagnose first app copy-loop divergence and first trap, preserving original firmware/netlist/watchdog')
+ prefix="tb_logicrom_gl.dut."+chr(92)
+ write_condition="("+prefix+"bus_data_req  && "+prefix+"bus_data_we  && ("+prefix+"bus_data_addr  < 32'h00000080))"
+ lines=[chr(96)+"timescale 1ns/1ps","module nssoc_cloud_boot_observer;",
+        "always @(negedge tb_logicrom_gl.clk) begin",
+        " if (tb_logicrom_gl.rst_n && ("+write_condition+" || tb_logicrom_gl.cycles<300 || tb_logicrom_gl.cycles%1000==0 || (tb_logicrom_gl.cycles>=2179000 && tb_logicrom_gl.cycles<=2185000) || (tb_logicrom_gl.cycles>=2370000 && tb_logicrom_gl.cycles<=2374000)))",
+        '  $display("NSSOC_BOOT_TRACE cycle=%0d '+fields+'", tb_logicrom_gl.cycles, '+refs+');',
+        "end","endmodule"]
+ observer.write_text(chr(10).join(lines)+chr(10))
+
+ r["observer"]=dict(sha256=digest(observer),signals=signals,source_map_run=43768772862,source_map_sha256=digest(mapped_path),read_only=True,cycle_bound_unchanged=4000000,dense_cycle_windows=[[2179000,2185000],[2370000,2374000]],purpose='Observe instruction request/response and native SRAM row boundary plus low-address firmware writes. Preserve original firmware/netlist/watchdog and four-million-cycle acceptance.')
  cc.append(str(observer))
 
  r.update(qualification_sha256=digest(ROOT/'cvc-cell-qualification/result.json'),input_manifest_sha256=digest(inp),derived_sha256=digest(model),compiler_sha256=digest(cvc))
