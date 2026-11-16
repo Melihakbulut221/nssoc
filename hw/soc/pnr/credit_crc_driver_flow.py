@@ -276,7 +276,7 @@ class ResetBufferECO(ElectricalPostCTS):
         s = p.read_text()
         a = s.index("# Buffer I/O")
         b = s.index("report_floating_nets -verbose", a)
-        s = s[:a] + ECO + "\n" + s[b:]
+        s = s[:a] + ECO.replace("\ndetailed_placement\n", (Path(__file__).resolve().parents[3]/"credit-crc-driver-trial/feedback-eco.tcl").read_text()+"\ndetailed_placement\n") + "\n" + s[b:]
         if "log_cmd repair_design" in s or "unset_propagated_clock [all_clocks]" in s:
             raise RuntimeError("Unexpected broad repair or ideal clock")
         q = Path(self.step_dir) / "reset_buffer_eco.tcl"
