@@ -5,7 +5,7 @@ from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"paired650-full-composition";NATIVE=OUT/"native";DERIVED=OUT/"derived"
 CFG="scripts/cdr-mos650-gate-ac-inputs.json";PINS="scripts/cdr-mos650-gate-ac-pins.json"
-REPO="Melihakbulut221/nssoc";BRANCH="codex/select-width2-full650-composition"
+REPO="Melihakbulut221/nssoc";BRANCH="codex/compact650-composition"
 FLAGS=dict(gate_poly_RC_extracted=False,mim_intrinsic_composition_qualified=False,substrate_r_modeled=False,
  full_pex_qualified=False,electrical_accepted=False,full_phy_accepted=False,final_timing_complete=False)
 def need(ok,msg):
@@ -380,8 +380,8 @@ def new_metal(dest):
  save('current-metal-acquisition.json',dict(run=43696429827,files={str(p.relative_to(dest)):pin(p)for p in dest.rglob('*')if p.is_file()},**FLAGS))
 
 def new_reduction(dest):
- z=new_archive(14155092029,'ce0ba53fab63b8a952d9d0c8f6a5542f9b5cc95cfaf946ef0c4f591d9c240d80',43697011992,'385dcedd4c42a5353c5fd930e5e882c94e7378c7','paired-reduction-native.zip')
- s=new_archive(14154732668,'a59051eea20ed2a9bec8a4fcc47b74071396bc9466bb717568d393a79cecd50e',43697011992,'385dcedd4c42a5353c5fd930e5e882c94e7378c7','paired-reduction-safe.zip')
+ z=new_archive(14222104422,'f15ff44ffabdc675ddc6cacf718e00bb60d3c32f51618b30d3dc48640a295a84',43860719107,'88361396125c6e2a9da2536585f99b47212377b5','paired-reduction-native.zip')
+ s=new_archive(14223540358,'93168cf1b8d5adc1d716f6d65828f4caac709e6e0587273571ebc194434bf0fa',43860719107,'88361396125c6e2a9da2536585f99b47212377b5','paired-reduction-safe.zip')
  report=json.loads(s.read('physical-gate-port-reduction.json'))
  need(report['native_simulator_executions']==503 and report['port_networks']==250 and report['native_fault_controls']==2 and report['nominal_R_network_port_reduction_qualified'],'complete native reduction qualification')
  need(len(report['groups'])==250,'all physical partition records')
@@ -390,7 +390,7 @@ def new_reduction(dest):
   for leaf,key in [('ports-and-matrices.json','matrices'),('reduced-positive-resistors.cir','reduced')]:
    name=f"native/reduction-g{row['group']}-n{row['copies']}/{leaf}"
    need(name not in files,'unique physical reduction member');path=dest/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(z.read(name));need(pin(path)==row[key],'exact qualified reduction member');files[name]=pin(path)
- save('current-reduction-acquisition.json',dict(run=43697011992,files=files,**FLAGS))
+ save('current-reduction-acquisition.json',dict(run=43860719107,files=files,**FLAGS))
 
 
 def main():

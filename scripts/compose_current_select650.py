@@ -10,13 +10,18 @@ def archive(run,head,aid,digest):
  m=source.api('actions/artifacts/'+str(aid));assert m['workflow_run']['id']==run and m['workflow_run']['head_sha']==head and m['digest']=='sha256:'+digest and not m['expired']
  b=subprocess.check_output(['gh','api','repos/'+source.REPO+'/actions/artifacts/'+str(aid)+'/zip']);assert hashlib.sha256(b).hexdigest()==digest
  z=zipfile.ZipFile(io.BytesIO(b));assert len(z.namelist())==len(set(z.namelist()));return z
-proof=archive(43749998803,'c6cbea424e531f0fdacd95739860db9280e85fe6',14175753278,'d28e28bbddb9dff88e55006ef9ea9aca9e02b7f1796941bf3c544d4c3f6f6707')
-gateproof=json.loads(proof.read('result.json'));assert gateproof['status']=='PASS_EXACT_CURRENT_GATE_GEOMETRY_AND_NATIVE_IDENTITY'and all(gateproof['checks'].values())
-ids=archive(43748580179,'4602a2710cea2b2322cb035750dad9738d9583f4',14175207602,'0e41bbf406fb1518a17ee41e49814758ebd32ad9fc880e5adaaa864ae00630bc')
+proof=archive(43860719107,'88361396125c6e2a9da2536585f99b47212377b5',14223540358,'93168cf1b8d5adc1d716f6d65828f4caac709e6e0587273571ebc194434bf0fa')
+gateproof=json.loads(proof.read('result.json'));assert gateproof['status']=='PASS_NOMINAL_PHYSICAL_GATE_PORT_REDUCTION_REQUIRES_FULL_NONLINEAR_AND_METAL_INTEGRATION'
+fresh_cases=json.loads(proof.read('current-physical-cases.json'))
+assert fresh_cases['source']['native/selected/layout/nssoc_cdr_pd500_resistor_v59.gds']['sha256']=='1337c86e9bf28e68d93d3dcc2c80afc3040ecd7f21b32eb6b149896aa3490e11'
+ids=archive(43858886164,'556dd5c9bc992e3df924039bf04c731d49e2b98e',14223215265,'3c3e4373bbddf712150e445cacc58e0e6ffd4cc169c95eb691065cdedb6c0bbf')
 identity=json.loads(ids.read('lvs_flat-identity.json'))
-wire=archive(43748923684,'e7aef3e3e4b3d7b2c93190649d0981cdee1b9bd5',14175890238,'5495ebccb905ede137d893a1d8a43b448dc988b370c0c58cdd03307ff2b63e4a')
+wire=archive(43859272466,'02362d83177e828b9b422255423d6bb76b716029',14222347687,'f8c9d6ef41e7656ad7a8b03dce1fe7865de10441813b31811533008aa30f8c9c')
 fixture=dict(devices=source.current_cases(identity,json.loads(wire.read('gate-poly-access.json'))))
-rc=archive(43749558120,'9ca8ae6070b11a67626f0aa611c8a3e9a3905e71',14175583524,'54b260a566ebf0c98103559ec7a24dedd6a7a29d8b7cb4d41b89f54412351c8a')
+assert fixture['devices']==fresh_cases['devices'], 'fresh geometry exact gate cases'
+for member, raw in [('derived/lvs_flat-identity.json',ids.read('lvs_flat-identity.json')),('derived/gate-poly-access.json',wire.read('gate-poly-access.json'))]:
+ assert fresh_cases['source'][member]==dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()), 'fresh gate source identity'
+rc=archive(43864620012,'f3b8afa8ececf5663127ebe8643910aed4013ee7',14225206115,'82cd73377b84233e6a11abc654e2b43ce1331b1515dec7da2d24eef8128ed699')
 result=json.loads(rc.read('derived/result.json'));assert result['status']=='PASS_CURRENT650_MIM_AWARE_TWO_ORDER_RC_AND22_FAULTS_EACH_REQUIRES_FULL_COMPOSITION'and result['actual_resistors']==28458 and result['actual_capacitors']==18384 and result['both_native_orders_verified']
 anchors=json.loads(rc.read('native/mim-precise/wire/anchors08.json'));metal=rc.read('native/mim-precise/wire/rc03/wires.spice').decode()
 measure=json.loads(rc.read('derived/precise-mim-result.json'))['result'];assert hashlib.sha256(metal.encode()).hexdigest()==measure['native_spice']['sha256'];capture=measure['capture']
