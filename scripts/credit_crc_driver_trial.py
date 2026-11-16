@@ -37,7 +37,34 @@ try:
  initial=OUT/'initial.json';initial.write_text(json.dumps(state))
  config=json.loads((source/'trial-config.json').read_text());assert config['CLOCK_PERIOD']==20 and config['TIME_DERATING_CONSTRAINT']==5.0 and config['SETUP_VIOLATION_CORNERS']==config['HOLD_VIOLATION_CORNERS']==['*']
  cfg=OUT/'config.json';cfg.write_text(json.dumps(config));app=Path(os.environ['CLOUD_APPIMAGE']);prior.verify(app,'x86_64')
- flow=ROOT/'hw/soc/pnr/credit_crc_driver_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,Path(__file__),prior.SOURCE/'prepared/physical.sdc']}
+ # Recover actual violating internal endpoint PINs, not instance-only names.
+ import io,re
+ producer=prior.api('actions/runs/43782739036')
+ assert producer['conclusion']=='success' and producer['head_sha']=='c7dac385cf8f42e685f57315b3845e2afc79b3c6' and producer['run_attempt']==1
+ meta=prior.api('actions/artifacts/14189336194');dh='e79d1f340e67090110fcb020ca5226cca80a258978dd7af393c4bf9e74a11b2e'
+ assert meta['workflow_run']['id']==43782739036 and meta['digest']=='sha256:'+dh and not meta['expired']
+ db=subprocess.check_output(['gh','api',prior.REPO+'actions/artifacts/14189336194/zip']);assert hashlib.sha256(db).hexdigest()==dh
+ with zipfile.ZipFile(io.BytesIO(db)) as dz:
+  dr=json.loads(dz.read('result.json'));member='run/4-nssoc-sizedfast/min.rpt';data=dz.read(member)
+  assert hashlib.sha256(data).hexdigest()==dr['outputs'][member]
+ endpoints={}
+ for path in data.decode().split('Startpoint:')[1:]:
+  ep=re.search(r'^Endpoint: (.*)',path,re.M);slack=re.search(r'(-?[0-9.]+)\s+slack \(VIOLATED\)',path)
+  if not slack or 'input port'in path.split('Endpoint:')[0] or 'output port'in ep[1]:continue
+  lines=path.split('data arrival time',1)[0].splitlines()
+  cells=[re.search(r'\s(\S+/\S+) \(([^)]+)\)\s*$',line)for line in lines]
+  cells=[x for x in cells if x];assert cells,path[-500:]
+  pin=cells[-1][1];assert pin.startswith(ep[1]+'/') and all(c not in pin for c in '{}\n\r\\'),pin
+  endpoints[pin]=min(float(slack[1]),endpoints.get(pin,0))
+ assert 240<=len(endpoints)<=243,len(endpoints)
+ commands=[];catalog=[]
+ for i,(pin,slack) in enumerate(sorted(endpoints.items())):
+  label='internal_'+str(i);catalog.append(dict(label=label,pin=pin,source_fast_hold_slack=slack))
+  commands+=['set target [get_pins {'+pin+'}]','if {[llength $target]!=1} {error "Missing internal endpoint"}','foreach mode {max min} {',' puts "%OL_CREATE_REPORT targeted_'+label+'_${mode}.rpt"',' report_checks -to $target -path_delay $mode -format full_clock_expanded -digits 6 -group_path_count 3 -endpoint_path_count 2',' puts "%OL_END_REPORT"','}']
+ (OUT/'internal-targets.tcl').write_text('\n'.join(commands)+'\n')
+ (OUT/'internal-targets.json').write_text(json.dumps(catalog,indent=2))
+ r['internal_endpoint_count']=len(catalog);r['internal_endpoint_source']=dict(run=43782739036,artifact=14189336194,sha256=dh)
+ flow=ROOT/'hw/soc/pnr/credit_crc_driver_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,OUT/'internal-targets.tcl',OUT/'internal-targets.json',Path(__file__),prior.SOURCE/'prepared/physical.sdc']}
  command=[str(app),'python',str(flow),'--flow','AckChipResetSized','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(cfg)]
  (OUT/'run').mkdir()
  with (OUT/'native.log').open('w')as log:code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
@@ -52,6 +79,9 @@ try:
   for label in ['training', 'rx_error', 'rx_data7', 'rx_valid', 'rx_sop', 'rx_eop', 'rx_dllp', 'rx_data0', 'rx_data1', 'rx_data2', 'rx_data3', 'rx_data4', 'rx_data5', 'rx_data6', 'function_id3', 'function_id7', 'function_id8', 'function_id13', 'eth0', 'eth1', 'eth2', 'eth3', 'eth4', 'eth5', 'eth6', 'eth7', 'eth_enable']:
    for mode in ['max','min']:
     targeted=(dirs[0]/('targeted_'+label+'_'+mode+'.rpt')).read_text();assert 'Startpoint:' in targeted and 'Endpoint:' in targeted, (corner,label,mode,'Targeted report missing path')
+  for item in catalog:
+   for mode in ['max','min']:
+    content=(dirs[0]/('targeted_'+item['label']+'_'+mode+'.rpt')).read_text();assert 'Startpoint:' in content and 'Endpoint:' in content
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
  r.update(measurements=measurements,candidate_odb_sha256=prior.sha(Path(state['odb'])),sources_unchanged=True,status='MEASURED_EXPANDED_IO_DELAY_REQUIRES_LOGIC_AND_TIMING_REVIEW',scope='Three driver resizes plus twenty exact PCIe D-branch delay cells and eighteen isolated Ethernet output delay cells; native incidence guards and legal placement. Three-corner propagated placement-RC STA; no automatic adoption, no routed timing or full PHY qualification.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e),traceback=traceback.format_exc());raise
