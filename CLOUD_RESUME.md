@@ -8,6 +8,21 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: second93buffer experiment; new ACK first post-CTS has232fast hold violations
+
+Pending local RAM downloadsession54506 COMPLETED exit0. Derived14203461443 SHA708bb93c6b82672c71a6a68f07037d2807f04a35e5aa32a8c1b5999192c104da now wholeverified. Parsed1004reportedslowviolatingpaths,93remainingbuf1arcs>=.30ns; highestfanout7851/7849 delays1.1731/1.167467ns. No local files. Do not poll54506again.
+
+NEW43818692740 /598d1ea0cdb7e73bcd14c4e2cac7ca4765fbc60a on codex/measured-buffer-second-batch. Same starting firstafter-batch ODB52348518... as ongoingbounded43818263628, allowing fair candidate comparison. All prior views preserved; exact firstafter-batch baseline metrics authenticated; selects93targets from exact currentderivedartifact,requires1004paths/93targets/safeTclnames, buf1->buf4 only with instance/pin/port guards and legalplacement,thenallcorners. No broadrepair/noholdwaiver. Output measured-buffer-second-batch, EopBufferBatchSecondDirect. ASTpassed, pushed+dispatched; no resultyet.
+
+NEW ACK firstpostCTS43815423153 /efb293a481fd73730761e5571ff2db4057bc50dd completed SUCCESS as measurement ONLY. Derived14203197705 SHA999d9ca1b4990ee68db58d6bb5b5688db0a27e1be501e39a9c6411dae713aab1 wholeverifiedRAM. Native14203119130 SHAd5e432dfc6625cb1053de9371a661be40fcc74de33defd7c0b69cfef8d0f9b60/435817393bytes metadata only. Returncode0/sourcesunchanged, repaired state run/5-openroad-resizertimingpostcts/state_out.json, ODBedd9421227b46d829eadf1ef6fa9902ce9e0ecc2a8efb10a69bc0ed22b1e1220.
+Before slow/typ/fast: setup2574/648/0,WS-5.24728/-1.93342/+.0183289ns; hold510/1064/14036,WS-1.3655/-.969371/-.736657ns; slew121/8/0.
+After: setup2606/1/0,WS-2.09114/-.24727/+.775328ns; hold0/4/232,WS+.101877/-.0692527/-.253045ns; slew18/4/0,cap0,fanout1351.
+Do NOT conflate these NEW ACK netlist metrics with previous EOP candidate1417setup/0hold aftermanyrepairs. Newcandidate not yet better/closed/accepted.
+
+NEW43818955974 /f7c40a30a9fadff32bb2a713ed743ee0f1384860 on codex/ack-postcts-path-review. Read-only cloud inspection of exact newACKnativeartifact: authenticates run/head/attempt/artifactdigest/repairedODB, reportmemberhashes; extracts allaftercorner min/max/checks+repairTcl/logs and30worst paths percorner/kind. Artifact ack-postcts-path-review-RUN. This avoids435MB localdownload whilepreparing targetedholdrepair. Check these actual fast minpaths and repair script corner selection before deciding fix; don'tspeculateorwaive232holds. Script ASTchecked beforecommit.
+
+Lastverifiedlive older-mapNBAboot43811938338,newACKboot43814779296,DRT43798359649,analog43806909384,after-buffer-second43818263628. Exec90317/15718completed. No pendinglocalprocess/files. Fullgoalactive; production/serialPHY notaccepted.
+
 ## 2026-11-16: after-batch repair improves setup1527->1417 and restores100ps fast hold margin
 
 After-batch43816245771 /de530bb5ad714c210ebfd1fd1b966d0be39dc933 completed SUCCESS. Compact14203151767 SHA42aff2251a85d4ac8ddc9033a5525c7a59a2d888492636507a71f22fe8b1eed8 whole ZIP verified RAM. Native14202752465 SHA279fbaef596814d8b88c1aa7b65e9853125126a9e396686a226409015a5b445a metadata. Derived14203461443 SHA708bb93c6b82672c71a6a68f07037d2807f04a35e5aa32a8c1b5999192c104da download still pending (see handle below); do not claim whole ZIP verified.
