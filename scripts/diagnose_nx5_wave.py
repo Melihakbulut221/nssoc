@@ -1,11 +1,11 @@
 import subprocess,json,hashlib,zipfile,pathlib,numpy as np
 out=pathlib.Path('diagnosis');out.mkdir()
-meta=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14186681046']))
-expected='4e1e9c9e5b012945f74658c9f196a003cffc18862a202051de363085905a0262'
-assert not meta['expired'] and meta['workflow_run']['id']==43771339958 and meta['digest']=='sha256:'+expected
-assert meta['workflow_run']['head_sha']=='eb91ad683d872e83567aabac1fedc1d2b5593404'
+meta=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14190026288']))
+expected='ac3c3e317a26cdd8a0f680ff20eb43d35d115e1e0eb60f2db879cdb3985572af'
+assert not meta['expired'] and meta['workflow_run']['id']==43776904300 and meta['digest']=='sha256:'+expected
+assert meta['workflow_run']['head_sha']=='ec96ca571a3da651658a92c85eff9490afba012f'
 archive=pathlib.Path('/tmp/native.zip')
-with archive.open('wb')as f:subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14186681046/zip'],stdout=f,check=True)
+with archive.open('wb')as f:subprocess.run(['gh','api','repos/Melihakbulut221/nssoc/actions/artifacts/14190026288/zip'],stdout=f,check=True)
 with archive.open('rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()==expected
 with zipfile.ZipFile(archive)as z:
  names=z.namelist();raw=[n for n in names if n.endswith('/wave.raw')];probes=[n for n in names if n.endswith('/loaded-n1-nominal_late.json') or n=='loaded-n1-nominal_late.json']
@@ -16,7 +16,7 @@ with zipfile.ZipFile(archive)as z:
  import shutil
  with z.open(raw[0])as src,target.open('wb')as dst:shutil.copyfileobj(src,dst)
 with target.open('rb')as f:
- assert hashlib.file_digest(f,'sha256').hexdigest()=='85a0a527505f80f328d0005f71aef71e810d057e4e4eb44d7ae1fd28f30c0fb0'
+ assert hashlib.file_digest(f,'sha256').hexdigest()=='afa4c72136e92d6fff086253f93471062151facc59f8203e306baa983f547997'
 with target.open('rb')as f:
  rows=[]
  while True:
@@ -33,7 +33,7 @@ state=127;bits=[]
 for _ in range(256):bits.append(state&1);state=((state<<1)|(((state>>6)^(state>>5))&1))&127
 ui=125e-12;start=2e-9;indices=np.arange(1,256);current=np.array(bits)[indices];previous=np.array(bits)[indices-1]
 expected={'a':current,'b':previous,'c':previous,'d':previous,'x':current^previous,'y':previous^previous}
-result={'physical_geometry_matches':False,'scope':'Width4 exploratory divider model with old RC. Diagnostic only: fixed original waveform, no changes to stimulus, expected bits, electrical gates or acceptance. Phase sweep locates delay; it does not qualify a shifted sampling window.','source_run':43771339958,'archive_sha256':expected if False else meta['digest'],'raw_sha256':'85a0a527505f80f328d0005f71aef71e810d057e4e4eb44d7ae1fd28f30c0fb0','signals':{}}
+result={'physical_geometry_matches':False,'scope':'Short-length exploratory divider model with old RC. Diagnostic only: fixed original waveform, no changes to stimulus, expected bits, electrical gates or acceptance. Phase sweep locates delay; it does not qualify a shifted sampling window.','source_run':43776904300,'archive_sha256':expected if False else meta['digest'],'raw_sha256':'afa4c72136e92d6fff086253f93471062151facc59f8203e306baa983f547997','signals':{}}
 for tag in 'abcdxy':
  p,n=('xpd.'+tag+'qp','xpd.'+tag+'qn')if tag in 'abcd'else(tag+'p',tag+'n')
  delta=v(p)-v(n);edges=start+(indices+(0 if tag=='b'else .5))*ui;sign=2*expected[tag]-1
