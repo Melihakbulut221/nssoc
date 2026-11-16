@@ -1,6 +1,6 @@
 import os,json,subprocess,hashlib,zipfile,io,stat,pathlib
 import cloud_predecode_postcts as prior
-P=pathlib.Path;ROOT=P.cwd();OUT=ROOT/'eop-route-antenna-next';OUT.mkdir()
+P=pathlib.Path;ROOT=P.cwd();OUT=ROOT/'eop-route-antenna-third';OUT.mkdir()
 r=dict(source_head=os.environ['GITHUB_SHA'],accepted=False,final_timing_complete=False,full_phy_accepted=False,status='RUNNING')
 def save():(OUT/'result.json').write_text(json.dumps(r,indent=2))
 def archive(aid,h,runid,head):
@@ -27,12 +27,12 @@ try:
  states=list((source/'run').glob('*-nssoc-validatedglobalrouting/state_out.json'));assert len(states)==1
  state=json.loads(states[0].read_text());odb=P(state['odb']);assert odb.is_relative_to(source) and prior.sha(odb)==ar['odb_sha256']
  # Resume completed routed database with fresh independently checked antenna evidence.
- completed=prior.api('actions/runs/43840853988')
+ completed=prior.api('actions/runs/43852001431')
  assert completed['conclusion']=='success' and completed['status']=='completed'
- recovery=archive(14217881901,'6085ab46bec84a6fd185878875d04b11437dc08b445028d2350005a4aa75cecd',43840853988,'2e269c00cb31c99531a060d95cfd0a39ba950cb5')
+ recovery=archive(14221538212,'416de9ac40da51125484fe735922114e7082afe5f723510825ec3634a9d032c1',43852001431,'1afc96ba0377c030235212c2a3c0c41f7d6009f0')
  names=recovery.namelist();assert len(names)==len(set(names))
  previous=json.loads(recovery.read('result.json'))
- assert previous['source_head']=='2e269c00cb31c99531a060d95cfd0a39ba950cb5' and previous['accepted'] is False
+ assert previous['source_head']=='1afc96ba0377c030235212c2a3c0c41f7d6009f0' and previous['accepted'] is False
  assert previous['sources_unchanged'] and previous['returncode']==0
  assert previous['metrics']['route__drc_errors']==0 and previous['metrics']['design__disconnected_pin__count']==0
  member='run/3-odb-reportdisconnectedpins/soc_top.odb'
@@ -40,13 +40,13 @@ try:
  assert recovery.read(completed_drc)==b''
  assert hashlib.sha256(recovery.read(completed_drc)).hexdigest()==previous['outputs'][completed_drc]
  data=recovery.read(member)
- digest='849895c40ab81362d79fcf36b59fa0cef5c8d44b897dfce68d4417359c01ec36'
+ digest='4696815dfdd06cbb8ac12ac7d2c98b32e60008f9ef37a2d9e1b8591d1ff20218'
  assert hashlib.sha256(data).hexdigest()==digest==previous['candidate_odb_sha256']==previous['outputs'][member]
  odb=OUT/'checkpoint.odb';odb.write_bytes(data);state['odb']=str(odb)
  for key in ['def','nl','pnl','spef','sdf']:
   state.pop(key,None)
  state['metrics']={}
- r['recovery']=dict(run=43840853988,artifact=14217881901,archive_sha256='6085ab46bec84a6fd185878875d04b11437dc08b445028d2350005a4aa75cecd',member=member,odb_sha256=digest,completed_drc_bytes=0,previous_independent_antenna_count=previous['metrics']['route__antenna_violation__count'])
+ r['recovery']=dict(run=43852001431,artifact=14221538212,archive_sha256='416de9ac40da51125484fe735922114e7082afe5f723510825ec3634a9d032c1',member=member,odb_sha256=digest,completed_drc_bytes=0,previous_independent_antenna_count=previous['metrics']['route__antenna_violation__count'])
 
  initial=OUT/'initial.json';initial.write_text(json.dumps(state));config=json.loads((source/'config.json').read_text())
  assert config['CLOCK_PERIOD']==20 and config['TIME_DERATING_CONSTRAINT']==5.0 and config['SETUP_VIOLATION_CORNERS']==config['HOLD_VIOLATION_CORNERS']==['*']

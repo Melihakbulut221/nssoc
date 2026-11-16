@@ -37,7 +37,7 @@ jobs:
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('eop-route-antenna-next');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('eop-route-antenna-third');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,19 +50,19 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-route-antenna-next-derived-${{ github.run_id }}
+          name: eop-route-antenna-third-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-route-antenna-next-native-${{ github.run_id }}
+          name: eop-route-antenna-third-native-${{ github.run_id }}
           path: |
-            eop-route-antenna-next/run/
-            eop-route-antenna-next/result.json
-            eop-route-antenna-next/native.log
-            eop-route-antenna-next/config.json
-            eop-route-antenna-next/initial.json
+            eop-route-antenna-third/run/
+            eop-route-antenna-third/result.json
+            eop-route-antenna-third/native.log
+            eop-route-antenna-third/config.json
+            eop-route-antenna-third/initial.json
           if-no-files-found: error
           retention-days: 90
