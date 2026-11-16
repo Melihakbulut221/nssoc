@@ -106,6 +106,76 @@ foreach inst [$block getInsts] {
 foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port net changed"}}
 puts "NSSOC_ENDPOINT_DELAY_STRUCTURAL_PASS ports=3 cells=5"
 
+set before_eth_count [llength [$block getInsts]]
+# Two positive delay cells on each of two measured Ethernet output ports.
+set delay_master [[ord::get_db] findMaster sg13g2_dlygate4sd3_1]
+if {$delay_master eq "NULL"} {error "Missing characterized delay master"}
+set snapshot {};set ports_snapshot {}
+foreach inst [$block getInsts] {
+ foreach pin [$inst getITerms] {dict set snapshot "[$inst getName]/[[$pin getMTerm] getName]" [$pin getNet]}
+}
+foreach port [$block getBTerms] {dict set ports_snapshot [$port getName] [$port getNet]}
+set changed {};set additions {}
+foreach bit {5 2} {
+ set port_name [format {eth_txd_o[%d]} $bit]
+ set port [$block findBTerm $port_name]
+ if {$port eq "NULL" || [$port getIoType] ne "OUTPUT"} {error "Expected Ethernet output missing"}
+ set net [$port getNet]
+ if {[$net getSigType] ne "SIGNAL" || [llength [$net getBTerms]]!=1 || [llength [$net getITerms]]!=1} {error "Output net is not isolated one-driver port"}
+ set driver [lindex [$net getITerms] 0]
+ if {[$driver getIoType] ne "OUTPUT"} {error "Output driver mismatch"}
+ set origin [$driver getInst];set supply {}
+ foreach pin [$origin getITerms] {
+  if {[[$pin getMTerm] getSigType] in {POWER GROUND}} {
+   if {[$pin getNet] eq "NULL"} {error "Driver supply unconnected"}
+   dict set supply [[$pin getMTerm] getName] [$pin getNet]
+  }
+ }
+ if {[dict size $supply]!=2} {error "Expected connected source cell power and ground"}
+ set n0_name nssoc_eth_hold_${bit}_source;set n1_name nssoc_eth_hold_${bit}_mid
+ foreach name [list $n0_name $n1_name] {if {[$block findNet $name] ne "NULL"} {error "ECO net already exists"}}
+ set n0 [odb::dbNet_create $block $n0_name];set n1 [odb::dbNet_create $block $n1_name]
+ set insts {}
+ foreach stage {0 1} {
+  set name nssoc_eth_hold_${bit}_${stage}
+  if {[$block findInst $name] ne "NULL"} {error "ECO instance already exists"}
+  set cell [odb::dbInst_create $block $delay_master $name]
+  lassign [$origin getLocation] x y
+  $cell setLocation $x $y
+  $cell setOrient [$origin getOrient]
+  $cell setPlacementStatus PLACED
+  foreach pin [$cell getITerms] {
+   set pname [[$pin getMTerm] getName]
+   if {[[$pin getMTerm] getSigType] in {POWER GROUND}} {
+    if {![dict exists $supply $pname]} {error "Delay cell supply signature mismatch"}
+    $pin connect [dict get $supply $pname]
+   } elseif {$pname ni {A X}} {error "Unexpected delay signal terminal"}
+  }
+  lappend insts $cell;lappend additions $name
+ }
+ $driver connect $n0
+ dict set changed "[$origin getName]/[[$driver getMTerm] getName]" $n0
+ lassign $insts c0 c1
+ [$c0 findITerm A] connect $n0;[$c0 findITerm X] connect $n1
+ [$c1 findITerm A] connect $n1;[$c1 findITerm X] connect $net
+ if {[llength [$n0 getITerms]]!=2 || [llength [$n1 getITerms]]!=2 || [llength [$net getITerms]]!=1} {error "Delay chain incidence mismatch"}
+}
+if {[llength $additions]!=4 || [dict size $changed]!=2} {error "Unexpected delay ECO census"}
+foreach inst [$block getInsts] {
+ if {[$inst getName] in $additions} {continue}
+ foreach pin [$inst getITerms] {
+  set key "[$inst getName]/[[$pin getMTerm] getName]"
+  set expected [dict get $snapshot $key]
+  if {[dict exists $changed $key]} {set expected [dict get $changed $key]}
+  if {[$pin getNet] ne $expected} {error "Unrelated signal or clock incidence changed"}
+ }
+}
+foreach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_snapshot [$port getName]]} {error "Port net changed"}}
+puts "NSSOC_ETH_OUTPUT_DELAY_STRUCTURAL_PASS ports=2 cells=4"
+
+
+if {[llength [$block getInsts]]!=$before_eth_count+4} {error "Combined ECO cell census mismatch"}
+
 detailed_placement
 check_placement -verbose
 puts "NSSOC_SHARED_PCIE_DRIVERS_SAME_INCIDENCE"
@@ -138,6 +208,16 @@ foreach {label instance} {
   puts "%OL_END_REPORT"
  }
 }
+foreach bit {5 2} {
+ set port [get_ports [format {eth_txd_o[%d]} $bit]]
+ if {[llength $port]!=1} {error "Ethernet report endpoint missing"}
+ foreach mode {max min} {
+  puts "%OL_CREATE_REPORT targeted_eth${bit}_${mode}.rpt"
+  report_checks -to $port -path_delay $mode -format full_clock_expanded -digits 6 -group_path_count 10 -endpoint_path_count 2
+  puts "%OL_END_REPORT"
+ }
+}
+
 """
 class TargetedSTA(BranchSTA):
     def get_script_path(self):
