@@ -264,7 +264,7 @@ class TargetedSTA(BranchSTA):
         import re
         if re.search(r'^\s*exit(?:\s|$)',text,re.M):raise RuntimeError('Native STA exits before targeted report insertion')
         output=Path(self.step_dir)/'targeted_native.tcl'
-        output.write_text(text+'\n'+TARGETED)
+        output.write_text(text+'\n'+TARGETED+'\n'+(Path(__file__).resolve().parents[3]/'credit-crc-driver-trial/internal-targets.tcl').read_text())
         return str(output)
 @Flow.factory.register()
 class AckChipResetSized(Interfaces):
