@@ -1,3 +1,11 @@
+## Full EOP composition passed; source-bound admission running
+
+43780244322/68a9f6438b6c31314a78aa1f287595e0c7208b1e SUCCESS. Artifact14187863524 SHA256acbdee94d7b223978843765935d552b2d259f236e285298ae94746495f4ce5fe whole archive and lemma output members authenticated RAM-only. Fresh six lemma cases all passed; full module equivalence DW8/S2 proves9122 points (5820simple+3302induct), DW4/S1 proves3747 (2337simple+1410induct). Both logs two Equivalence successfully proven markers. Actual sourcea83699c6311ba0ac6414060f68699ee29510bf5ed99fee64f92168546bf16223 vs reference865d687a272faf4a5077f79af21ace3b4afbe5085b640dd20f3512c8a43ff7d5. Initial reset/zero init scope, not physical timing.
+
+New admission43780685402/04d23497224bd93ef2059965ff5683b26d84a75d on codex/eop-flags-admission. scripts/require_eop_flags_qualification.py binds exact source, seven exact mapped flags, producer run/head/attempt/artifact digest, all six lemmas and actual mutation logs, full equivalence counts, 2.4M exact compiled traffic source and actual output inversion. Requires every check; writes out/eop-flags-qualification.json. Artifact eop-flags-admission-RUN. Await pass before preparing new synthesis from e59 credit/CRC baseline plus qualified EOP only (do not re-enable regressing countflags). Existing original RX qualification must retain prior proofs using original865 reference plus this new qualification; never arbitrary hash bypass.
+
+Verified live this turn endpoint hold43780344851, shortlength analog43776904300, mappedboots43771666469/43777168665. No restarts or duplicate jobs. Original port-target trial failure documented below. Full serial PHY/routed mainchip/production gates still OPEN.
+
 ## EOP invariants and traffic passed; endpoint hold trial replaces failed port topology assumption
 
 EOP invariant43780030498/f1795adb810a0cd17288033854f4d4d4c873648f SUCCESS. Artifact14188017005 SHA2564607db5cbc69945aad4084ec1033fb558ee5a03706b291dd64bff6f558f941e0 whole archive AND all result-listed members authenticated RAM-only. Six required cases: DW8/S2 and DW4/S1 positive induction, TLP mutation rejection, DLLP mutation rejection. Exact candidate a83699c6311ba0ac6414060f68699ee29510bf5ed99fee64f92168546bf16223. No physical acceptance.
