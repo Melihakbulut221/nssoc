@@ -14,6 +14,9 @@ def run(cmd,folder,name,timeout=900):
  return p.returncode,(folder/name).read_text()
 def wrapped(text,name,defs):
  text=text.replace('soc_pcie_credit_pick',name+'_pick').replace('module soc_pcie_credit_tx (','module '+name+' (')
+ # Avoid artificial equivalence cuts through the combinational next-state array.
+ # All ports and sequential state remain matched; the cone is proved end to end.
+ if name=='gate':text=re.sub(r'\bnext\b','proof_gate_next',text)
  return ''.join('`define '+d+'\n'for d in defs)+text+''.join('\n`undef '+d+'\n'for d in defs)
 try:
  assert sha(ref)==os.environ['REFERENCE_SHA']
