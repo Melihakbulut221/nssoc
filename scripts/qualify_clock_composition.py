@@ -11,11 +11,18 @@ def run(cmd,log):
  with log.open('w')as f:return subprocess.run(cmd,stdout=f,stderr=subprocess.STDOUT,timeout=180).returncode
 try:
  traces={}
- for kind in ['iverilog-original','iverilog-derived-disabled','iverilog-derived-enabled','cvc-derived']:
+ for kind in ['iverilog-original','iverilog-derived-disabled','iverilog-derived-enabled','cvc-derived','cvc-Ogate','cvc-O','cvc-interp']:
   folder=out/kind;folder.mkdir();exe=folder/'sim';library=lib if kind=='iverilog-original' else model
-  cmd=([str(cvc),'-sv','+nospecify','+define+NSSOC_CVC_ZERO_DELAY','-o',str(exe),str(bench),'-v',str(library)]if kind=='cvc-derived' else ['iverilog','-g2012']+(['-DNSSOC_CVC_ZERO_DELAY']if kind=='iverilog-derived-enabled' else [])+['-s','clock_composition','-o',str(exe),str(bench),str(library)])
-  case=dict(kind=kind,compile_returncode=run(cmd,folder/'compile.log'));r['cases'].append(case);assert case['compile_returncode']==0 and exe.is_file()
-  code=run([str(exe)]if kind=='cvc-derived'else['vvp',str(exe)],folder/'run.log');text=(folder/'run.log').read_text();case.update(run_returncode=code,log_sha256=sha(folder/'run.log'))
+  is_cvc=kind.startswith('cvc')
+  options={'cvc-derived':[],'cvc-Ogate':['-Ogate'],'cvc-O':['-O'],'cvc-interp':['+interp']}.get(kind,[])
+  cmd=([str(cvc),'-sv','+nospecify','+define+NSSOC_CVC_ZERO_DELAY']+options+([]if kind=='cvc-interp'else['-o',str(exe)])+[str(bench),'-v',str(library)] if is_cvc else ['iverilog','-g2012']+(['-DNSSOC_CVC_ZERO_DELAY']if kind=='iverilog-derived-enabled' else [])+['-s','clock_composition','-o',str(exe),str(bench),str(library)])
+  case=dict(kind=kind,command=cmd);r['cases'].append(case)
+  if kind=='cvc-interp':
+   case['compile_and_run_combined']=True;code=run(cmd,folder/'run.log')
+  else:
+   case['compile_returncode']=run(cmd,folder/'compile.log');assert case['compile_returncode']==0 and exe.is_file()
+   code=run([str(exe)]if is_cvc else ['vvp',str(exe)],folder/'run.log')
+  text=(folder/'run.log').read_text();case.update(run_returncode=code,log_sha256=sha(folder/'run.log'))
   done=re.findall(r'COMPOSITION_DONE cycles=(\d+) ideal_mismatches=(\d+)',text);assert code==0 and len(done)==1 and int(done[0][0])==513
   trace=[line for line in text.splitlines()if line.startswith('COMPOSITION_TRACE ')];assert len(trace)==513;traces[kind]=trace;case.update(trace_rows=513,ideal_mismatch_count=int(done[0][1]))
  gold=traces['iverilog-original'];r['comparison']={}
