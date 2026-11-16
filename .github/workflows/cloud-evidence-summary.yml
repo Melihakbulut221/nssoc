@@ -1,4 +1,4 @@
-name: Qualified ACK distance mainchip placement and CTS; gate boot pending
+name: Exact new ACK mainchip three-corner post-CTS timing and repair
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/cloud_predecode_chip_placement.py
+          python3 -m py_compile scripts/cloud_predecode_postcts.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -30,16 +30,16 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Native floorplan placement and CTS of new candidate
-        run: python3 scripts/cloud_predecode_chip_placement.py
+      - name: Measure all corners before and after bounded native electrical setup hold repair
+        run: python3 scripts/cloud_predecode_postcts.py
       - name: Collect derived diagnostics
         if: always()
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('hw/soc/out/cloud-predecode-chip-placement');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('hw/soc/out/cloud-predecode-postcts');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
-            for name in ['result.json','run.log','prepared/preparation.json','prepared/inventory.json']:
+            for name in ['result.json','native.log']:
               p=root/name
               if p.is_file():
                 q=out/name;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
@@ -47,14 +47,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-delta-chip-placement-derived-${{ github.run_id }}
+          name: ack-delta-postcts-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: ack-delta-chip-placement-native-${{ github.run_id }}
-          path: hw/soc/out/cloud-predecode-chip-placement/
+          name: ack-delta-postcts-native-${{ github.run_id }}
+          path: hw/soc/out/cloud-predecode-postcts/
           if-no-files-found: error
           retention-days: 90
