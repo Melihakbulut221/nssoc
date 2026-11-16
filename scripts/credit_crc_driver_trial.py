@@ -108,6 +108,34 @@ try:
   fields=[item['label'],instance,terminal,item['expected_driver']];assert all(not any(c in x for c in '{}\n\r\\')for x in fields)
   entries.append(' '+' '.join('{'+x+'}'for x in fields))
  (OUT/'feedback-eco.tcl').write_text('\nset feedback_before {};set feedback_ports {};set feedback_new {};set feedback_changed {}\nset feedback_count [llength [$block getInsts]]\nforeach inst [$block getInsts] {\n foreach pin [$inst getITerms] {dict set feedback_before "[$inst getName]/[[$pin getMTerm] getName]" [$pin getNet]}\n}\nforeach port [$block getBTerms] {dict set feedback_ports [$port getName] [$port getNet]}\nforeach {label instance terminal expected_driver} {\nENTRIES\n} {\n set origin [$block findInst $instance]\n if {$origin eq "NULL"} {error "Feedback cell missing"}\n set sink [$origin findITerm $terminal]\n if {$sink eq "NULL" || [$sink getIoType] ne "INPUT"} {error "Feedback input missing"}\n set net [$sink getNet]\n if {$net eq "NULL" || [$net getSigType] ne "SIGNAL" || [llength [$net getBTerms]]!=0} {error "Feedback net invalid"}\n set drivers {}\n foreach pin [$net getITerms] {if {[$pin getIoType] eq "OUTPUT"} {lappend drivers "[[$pin getInst] getName]/[[$pin getMTerm] getName]"}}\n if {[llength $drivers]!=1 || [lindex $drivers 0] ne $expected_driver} {error "Feedback driver mismatch"}\n set old_count [llength [$net getITerms]];set supply {}\n foreach pin [$origin getITerms] {\n  set kind [[$pin getMTerm] getSigType]\n  if {$kind in {POWER GROUND}} {\n   set rail [$pin getNet]\n   if {$rail eq "NULL"} {error "Feedback supply missing"}\n   if {[dict exists $supply $kind] && [dict get $supply $kind] ne $rail} {error "Ambiguous feedback supply"}\n   dict set supply $kind $rail\n  }\n }\n if {[dict size $supply]!=2} {error "Feedback supply census"}\n set name nssoc_feedback_hold_$label\n if {[$block findInst $name] ne "NULL" || [$block findNet ${name}_out] ne "NULL"} {error "Feedback ECO collision"}\n set cell [odb::dbInst_create $block $delay_master $name];set next [odb::dbNet_create $block ${name}_out]\n lassign [$origin getLocation] x y;$cell setLocation $x $y;$cell setOrient [$origin getOrient];$cell setPlacementStatus PLACED\n foreach pin [$cell getITerms] {\n  set kind [[$pin getMTerm] getSigType];set pn [[$pin getMTerm] getName]\n  if {$kind in {POWER GROUND}} {$pin connect [dict get $supply $kind]} elseif {$pn ni {A X}} {error "Unknown feedback delay pin"}\n }\n [$cell findITerm A] connect $net;[$cell findITerm X] connect $next;$sink connect $next\n dict set feedback_changed "$instance/$terminal" $next;lappend feedback_new $name\n if {[llength [$net getITerms]]!=$old_count || [llength [$next getITerms]]!=2} {error "Feedback chain incidence"}\n}\nif {[llength $feedback_new]!=129 || [dict size $feedback_changed]!=129 || [llength [$block getInsts]]!=$feedback_count+129} {error "Feedback ECO census"}\nforeach inst [$block getInsts] {\n if {[$inst getName] in $feedback_new} {continue}\n foreach pin [$inst getITerms] {\n  set key "[$inst getName]/[[$pin getMTerm] getName]";set expected [dict get $feedback_before $key]\n  if {[dict exists $feedback_changed $key]} {set expected [dict get $feedback_changed $key]}\n  if {[$pin getNet] ne $expected} {error "Unrelated feedback incidence changed"}\n }\n}\nforeach port [$block getBTerms] {if {[$port getNet] ne [dict get $feedback_ports [$port getName]]} {error "Feedback ECO changed port"}}\nputs "NSSOC_FEEDBACK_HOLD_STRUCTURAL_PASS branches=129 cells=129"\n'.replace('ENTRIES','\n'.join(entries)))
+ # Diagnose remaining internal branches and external endpoints without further ECO.
+ remrun=prior.api('actions/runs/43787907036');assert remrun['head_sha']=='7d54caf626ffb05498eced9cb093d31e5f750cc0' and remrun['conclusion']=='success' and remrun['run_attempt']==1
+ rm=prior.api('actions/artifacts/14191054749');rd='4075fa4745526d9d028fcb0f3a576e52034ecb3a318d1278091fb24daf6e55bf'
+ assert rm['workflow_run']['id']==43787907036 and rm['digest']=='sha256:'+rd and not rm['expired']
+ rb=subprocess.check_output(['gh','api',prior.REPO+'actions/artifacts/14191054749/zip']);assert hashlib.sha256(rb).hexdigest()==rd
+ with zipfile.ZipFile(io.BytesIO(rb))as rz:
+  rr=json.loads(rz.read('result.json'));assert rr['sources_unchanged'] and rr['returncode']==0
+  member='run/4-nssoc-sizedfast/min.rpt';remdata=rz.read(member);assert hashlib.sha256(remdata).hexdigest()==rr['outputs'][member]
+ branches={};external={};internal_paths=0
+ for path in remdata.decode().split('Startpoint:')[1:]:
+  start=path.splitlines()[0].strip();ep=re.search(r'^Endpoint: (.*)',path,re.M);sl=re.search(r'(-?[0-9.]+)\s+slack \(VIOLATED\)',path)
+  if not ep or not sl:continue
+  cells=[re.search(r'\s(\S+/\S+) \(([^)]+)\)\s*$',line)for line in path.split('data arrival time',1)[0].splitlines()];cells=[m for m in cells if m]
+  if 'output port'in ep[1]:external[(ep[1].split(' (output port')[0],'port')]=float(sl[1]);continue
+  if 'input port'in path.split('Endpoint:')[0]:
+   assert cells;external[(cells[-1][1],'pin')]=float(sl[1]);continue
+  internal_paths+=1;indices=[i for i,m in enumerate(cells)if m[1]==start+'/Q'];assert len(indices)==1,(start,ep[1])
+  i=indices[0];assert i+1<len(cells);pin=cells[i+1][1]
+  if pin in branches:assert branches[pin]==start+'/Q'
+  branches[pin]=start+'/Q'
+ assert internal_paths==109,internal_paths
+ remaining=[dict(label='remaining_branch_'+str(i),pin=pin,expected_driver=driver,kind='through')for i,(pin,driver)in enumerate(sorted(branches.items()))]
+ remaining += [dict(label='remaining_io_'+str(i),pin=pin,kind=kind,source_hold=slack)for i,((pin,kind),slack)in enumerate(sorted(external.items()))]
+ for item in remaining:
+  label=item['label'];pin=item['pin'];kind=item['kind'];assert all(c not in pin for c in '{}\n\r\\')
+  getter='get_ports'if kind=='port'else'get_pins';option='-through'if kind=='through'else'-to'
+  commands+=['set target ['+getter+' {'+pin+'}]','if {[llength $target]!=1} {error "Remaining target not unique"}','foreach mode {max min} {',' puts "%OL_CREATE_REPORT targeted_'+label+'_${mode}.rpt"',' report_checks '+option+' $target -path_delay $mode -format full_clock_expanded -digits 6 -group_path_count 10 -endpoint_path_count 2',' puts "%OL_END_REPORT"','}']
+ (OUT/'remaining-targets.json').write_text(json.dumps(remaining,indent=2));r['remaining_headroom_source']=dict(run=43787907036,artifact=14191054749,sha256=rd,internal_paths=internal_paths,branches=len(branches),external_endpoints=len(external))
  (OUT/'internal-targets.tcl').write_text('\n'.join(commands)+'\n')
  (OUT/'internal-targets.json').write_text(json.dumps(catalog,indent=2))
  r['internal_endpoint_count']=len(catalog);r['internal_endpoint_source']=dict(run=43782739036,artifact=14189336194,sha256=dh)
@@ -129,7 +157,7 @@ try:
    if min(slacks)>1:selected.append(item['pin'])
  assert sorted(selected)==['u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_ADDR[3]', 'u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_ADDR[5]', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[2].u_mem/A_MEN', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[3].u_mem/A_MEN', 'u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[4].u_mem/A_MEN']
  r['safe_internal_delay_pins']=selected;r['paired_headroom_artifact']=14189917738
- flow=ROOT/'hw/soc/pnr/credit_crc_driver_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,OUT/'internal-targets.tcl',OUT/'internal-targets.json',OUT/'feedback-targets.json',OUT/'feedback-eco.tcl',Path(__file__),prior.SOURCE/'prepared/physical.sdc']}
+ flow=ROOT/'hw/soc/pnr/credit_crc_driver_flow.py';protected={str(p):prior.sha(p)for p in [odb,initial,cfg,flow,OUT/'internal-targets.tcl',OUT/'internal-targets.json',OUT/'feedback-targets.json',OUT/'feedback-eco.tcl',OUT/'remaining-targets.json',Path(__file__),prior.SOURCE/'prepared/physical.sdc']}
  command=[str(app),'python',str(flow),'--flow','AckChipResetSized','--pdk-root',str(ROOT/'hw/soc/tools/ciel-corrpre'),'--pdk','ihp-sg13g2','--scl','sg13g2_stdcell','--force-run-dir',str(OUT/'run'),'--with-initial-state',str(initial),str(cfg)]
  (OUT/'run').mkdir()
  with (OUT/'native.log').open('w')as log:code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
@@ -144,7 +172,7 @@ try:
   for label in ['training', 'rx_error', 'rx_data7', 'rx_valid', 'rx_sop', 'rx_eop', 'rx_dllp', 'rx_data0', 'rx_data1', 'rx_data2', 'rx_data3', 'rx_data4', 'rx_data5', 'rx_data6', 'function_id3', 'function_id7', 'function_id8', 'function_id13', 'eth0', 'eth1', 'eth2', 'eth3', 'eth4', 'eth5', 'eth6', 'eth7', 'eth_enable']:
    for mode in ['max','min']:
     targeted=(dirs[0]/('targeted_'+label+'_'+mode+'.rpt')).read_text();assert 'Startpoint:' in targeted and 'Endpoint:' in targeted, (corner,label,mode,'Targeted report missing path')
-  for item in catalog+fc:
+  for item in catalog+fc+remaining:
    for mode in ['max','min']:
     content=(dirs[0]/('targeted_'+item['label']+'_'+mode+'.rpt')).read_text();assert 'Startpoint:' in content and 'Endpoint:' in content
   state=json.loads((dirs[0]/'state_out.json').read_text());measurements[corner]={k:v for k,v in state['metrics'].items()if k.endswith('__corner:'+corner)}
