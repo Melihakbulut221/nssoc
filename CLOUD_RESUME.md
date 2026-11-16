@@ -8,6 +8,16 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: eighth improves setup; five-driver trial insufficient; ninth running
+
+Eighth43806377768 /d298e2efa84594bafb540c2070e68cf2d451ccdb completed SUCCESS. Compact artifact14198829664 SHAde03e546d1096e19ceacaf052ae41ee16571f8473dc665a8abf113aa0d7a6c7e authenticated whole in RAM. Native14198968778 SHA460614466bbd6b262625907c8379b76c3feeef94eb9fea3d2e657a98148e2f9a; derived14198589638 SHA623d6246d9e0b62703045f9e323c1f115d98d578f19185d6a3e6cfbbe60d71d6 (metadata checked; full archives not downloaded this turn). Candidate ODB4ab01b2738541227b40b2016281a2d64964ac39ee25ef16cb4838bfe728e8bc7. Native0,sources_unchanged,true baseline reproduction. Setup2006/0/0,WS-.593801/+.610952/+1.29445ns; slowTNS-652.964. Hold0/0/0,WS+.247908/+.184387/+.10001. Slew17/7/0,cap0. PLACEMENT estimates only; final_timing/full_phy/accepted remainfalse.
+
+Five-driver43806576150 /5788881468455cf9e84b60c47ded00de571dc6cc completed SUCCESS but insignificant gain versus seventh. Compact14199102479 SHAf3a900741c4b3293e3793ce9ffd2e563327fee283c65dce8b6e2fade79e4856e authenticated. Native14199132819 SHA6c4e516bdf042925020637084afb9b8b1cbf7ea85b01f2c95cf528cb0257cfad; derived14199063239 SHA44aa9ad19362a2b07cb932b30a2348c05d139b967efa46278bbe26630d808357. ODBf5c19450bda0708e898c66af5417e607584f6b0fbcf1df35353a3d7d6c84c34f. Setup2089/0/0,slowWS-.675908,TNS-784.397; othercornerWS unchanged+.573328/+1.27885. Hold0all, unchanged margins; slew17/7/0,cap0. Native0/sourceunchanged/baselinetrue. Do not promote over eighth or assume five-cell resizing solves the remaining distributed critical paths.
+
+NEW ninth43808046126 /f87c521d905a71f43dbd42520aa21c5f0102d77b running on codex/eop-ninth-direct-repair, exactbased298. Restores fourth/fifth/sixth/seventh inherited views, then authenticated eighth native/state without rerunning old repair passes. EopNinthDirect/NinthBoundedPostCTS, OUTeop-ninth-direct; legacy filenamesrun_eop_fifth_direct.py/eop_fifth_direct_flow.py. Guard authenticates eighth SMALL summary14198829664 and reproduces every corner metric before100setup/1000hold. Same clocks20/4/8/8,derate5%,I/O,propagatedclock guards. Small eop-ninth-direct-summary-RUN plus full native/derived artifacts. Three sourcefiles committed atomically, PythonASTchecked. No experimental workflow merged into integration.
+
+NBA supplementalboot43804865150, routing43798359649,analog nativeMIM43806909384 all confirmedlive atturnstart. Oldboot evidence previous section remains. Download sessions90459/71132 and dispatch79313 COMPLETED; do notpoll. FullgoalACTIVE; thisturn verified improvedtiming and launched next bounded repair.
+
 ## 2026-11-16: old-model boot boundary localized; cloud work remains active
 
 Repository write permission reverified (admin/push true). Integration branch before this checkpoint: 8b82a8e8258c75ab66cb6bb03b23c518892a394d. No local checkout or CAD output created.
