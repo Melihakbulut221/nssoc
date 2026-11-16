@@ -1,4 +1,4 @@
-name: Fourth bounded EOP repair with authenticated intermediate baselines
+name: Fifth direct bounded EOP repair with authenticated intermediate baselines
 on:
   workflow_dispatch:
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/restore_predecode_chip_boot.py
-          python3 -m py_compile scripts/credit_crc_driver_trial.py
+          python3 -m py_compile scripts/run_eop_fifth_direct.py
       - name: Prepare pinned native physical runtime
         run: |
           set -euo pipefail
@@ -31,13 +31,13 @@ jobs:
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Native before and after STA with electrical and setup hold repair
-        run: python3 scripts/credit_crc_driver_trial.py
+        run: python3 scripts/run_eop_fifth_direct.py
       - name: Collect derived diagnostics
         if: always()
         run: |
           python3 - <<'PYCODE'
           import pathlib,shutil
-          root=pathlib.Path('credit-crc-driver-trial');out=pathlib.Path('placement-derived');out.mkdir()
+          root=pathlib.Path('eop-fifth-direct');out=pathlib.Path('placement-derived');out.mkdir()
           if root.exists():
             for name in ['result.json','native.log']:
               p=root/name
@@ -50,19 +50,19 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-fourth-incremental-repair-derived-${{ github.run_id }}
+          name: eop-fifth-direct-incremental-repair-derived-${{ github.run_id }}
           path: placement-derived/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: eop-fourth-incremental-repair-native-${{ github.run_id }}
+          name: eop-fifth-direct-incremental-repair-native-${{ github.run_id }}
           path: |
-            credit-crc-driver-trial/run/
-            credit-crc-driver-trial/result.json
-            credit-crc-driver-trial/native.log
-            credit-crc-driver-trial/config.json
-            credit-crc-driver-trial/initial.json
+            eop-fifth-direct/run/
+            eop-fifth-direct/result.json
+            eop-fifth-direct/native.log
+            eop-fifth-direct/config.json
+            eop-fifth-direct/initial.json
           if-no-files-found: error
           retention-days: 90
