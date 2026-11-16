@@ -41,7 +41,7 @@ assert json.loads(P('out/rx-qualification-gate.json').read_text())['current_sour
 rxrtl=P('hw/soc/rtl/pcie/soc_pcie_rx_credit.v')
 rxflags=sorted(k for k in set(re.findall(r'`(?:ifdef|ifndef)\s+(\w+)',rxrtl.read_text())) if os.environ.get(k)=='1')
 rxlower=out/'rx-eop-origin.json';rxscript=out/'rx-eop-origin.ys'
-rxscript.write_text('read_verilog -sv '+ ' '.join('-D '+k for k in rxflags)+' '+str(rxrtl)+'; hierarchy -check -top soc_pcie_rx_credit; proc; write_json '+str(rxlower)+'\n')
+rxscript.write_text('read_verilog -sv -DSYNTHESIS '+ ' '.join('-D '+k for k in rxflags)+' '+str(rxrtl)+'; hierarchy -check -top soc_pcie_rx_credit; proc; write_json '+str(rxlower)+'\n')
 with (out/'rx-eop-origin.log').open('w') as stream:subprocess.run(['yosys','-Q','-T','-s',str(rxscript)],stdout=stream,stderr=subprocess.STDOUT,check=True)
 rxmodule=json.loads(rxlower.read_text())['modules']['soc_pcie_rx_credit'];rxorigins=set()
 for flag in ['eop_tlp_q','eop_dllp_q']:
