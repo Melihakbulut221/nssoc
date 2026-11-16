@@ -2,10 +2,21 @@
 module clock_composition;
 reg clk=0;always #5 clk=~clk;
 reg rst=0,enable=0;reg [7:0] din=0;reg [31:0] lfsr=32'h81234567;
+wire [16:0] clock_tree;assign clock_tree[0]=clk;
+wire [135:0] deep_results;wire [135:0] deep_expected;
+reg [7:0] inverted_ref;
 wire gclk,bclk,bclk2;wire [7:0] buffer2_q1,direct_q2;wire [7:0] source_q,direct_q,gated_q,buffer_q,buffer2_q;
 reg [7:0] source_ref,direct_ref,gated_ref;integer i,cycles=0,ideal_mismatches=0;
 sg13g2_lgcp_1 icg(.GCLK(gclk),.GATE(enable),.CLK(clk));
 sg13g2_buf_1 cb1(.X(bclk),.A(clk));sg13g2_buf_1 cb2(.X(bclk2),.A(bclk));
+genvar depth,bitidx;generate for(depth=0;depth<17;depth=depth+1)begin: depth_probe
+ if(depth>0)begin: cb sg13g2_buf_1 b(.A(clock_tree[depth-1]),.X(clock_tree[depth]));end
+ assign deep_expected[depth*8+:8]=inverted_ref;
+ for(bitidx=0;bitidx<8;bitidx=bitidx+1)begin: data_bit
+ wire inverted;sg13g2_inv_1 inv(.A(source_q[bitidx]),.Y(inverted));
+ sg13g2_dfrbpq_1 ff(.Q(deep_results[depth*8+bitidx]),.D(inverted),.RESET_B(rst),.CLK(clock_tree[depth]));
+ end
+end endgenerate
 genvar k;generate for(k=0;k<8;k=k+1)begin: lane
  sg13g2_dfrbpq_1 source_ff(.Q(source_q[k]),.D(din[k]),.RESET_B(rst),.CLK(clk));
  sg13g2_dfrbpq_1 direct_ff(.Q(direct_q[k]),.D(source_q[k]),.RESET_B(rst),.CLK(clk));
@@ -16,13 +27,13 @@ genvar k;generate for(k=0;k<8;k=k+1)begin: lane
  sg13g2_dfrbpq_2 direct_ff2(.Q(direct_q2[k]),.D(source_q[k]),.RESET_B(rst),.CLK(clk));
 end endgenerate
 always @(posedge clk or negedge rst) begin
- if(!rst)begin source_ref<=0;direct_ref<=0;gated_ref<=0;end
- else begin source_ref<=din;direct_ref<=source_ref;if(enable)gated_ref<=source_ref;end
+ if(!rst)begin source_ref<=0;direct_ref<=0;gated_ref<=0;inverted_ref<=0;end
+ else begin source_ref<=din;direct_ref<=source_ref;inverted_ref<=~source_ref;if(enable)gated_ref<=source_ref;end
 end
 always @(posedge clk)begin
  #1;
- if(source_q!==source_ref || direct_q!==direct_ref || gated_q!==gated_ref || buffer_q!==direct_ref || buffer2_q!==direct_ref || buffer2_q1!==direct_ref || direct_q2!==direct_ref)ideal_mismatches=ideal_mismatches+1;
- $display("COMPOSITION_TRACE %0d %h %h %h %h %h %h %h %h %h %h",cycles,source_q,direct_q,gated_q,buffer_q,buffer2_q,source_ref,direct_ref,gated_ref,buffer2_q1,direct_q2);
+ if(deep_results!==deep_expected || source_q!==source_ref || direct_q!==direct_ref || gated_q!==gated_ref || buffer_q!==direct_ref || buffer2_q!==direct_ref || buffer2_q1!==direct_ref || direct_q2!==direct_ref)ideal_mismatches=ideal_mismatches+1;
+ $display("COMPOSITION_TRACE %0d %h %h %h %h %h %h %h %h %h %h %h",cycles,source_q,direct_q,gated_q,buffer_q,buffer2_q,source_ref,direct_ref,gated_ref,buffer2_q1,direct_q2,deep_results);
  cycles=cycles+1;
 end
 initial begin
