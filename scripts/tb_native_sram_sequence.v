@@ -28,7 +28,7 @@ always @(posedge clk) if(started) begin
  end
  #1;
  if(dout!==expected || captured!==previous || cell_captures!=={9{previous}}) begin
-  $display("SRAM_SEQUENCE_FAIL cycle=%0d addr=%h got=%h expected=%h capture=%h previous=%h",cycles,addr,dout,expected,captured,previous);$fatal(1,"SRAM sequence or capture latency mismatch");
+  $display("SRAM_SEQUENCE_FAIL cycle=%0d addr=%h got=%h expected=%h capture=%h previous=%h cell_captures=%h",cycles,addr,dout,expected,captured,previous,cell_captures);$fatal(1,"SRAM sequence or capture latency mismatch");
  end
  $display("SRAM_TRACE %0d %h %h %h",cycles,dout,captured,cell_captures);cycles=cycles+1;
 end
