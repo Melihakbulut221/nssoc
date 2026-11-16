@@ -3,37 +3,36 @@ from librelane.flows import Flow
 from interface_flow import Interfaces,BoundedPostCTS
 from corrpre_postcts_flow import CORNERS,ElectricalPostCTS,GuardedPropagated
 from corrpre_postcts_flow import SingleCornerSTA as BranchSTA
-ECO = '\nset block [ord::get_db_block]\nset before {}\nforeach inst [$block getInsts] {\n set pins {}\n foreach pin [$inst getITerms] {dict set pins [[$pin getMTerm] getName] [$pin getNet]}\n dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]\n}\nset choices {\nTARGET_CHOICES\n}\nset targets [dict keys $choices]\nif {[llength $targets]!=6} {error "Wrong measured resize census"}\nif {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}\nforeach name $targets {\n set inst [$block findInst $name]\n if {$inst eq "NULL" || [[$inst getMaster] getName] ne [lindex [dict get $choices $name] 0]} {error "Replay target preflight mismatch $name"}\n}\nset ports_before {}\nforeach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}\nforeach name $targets {\n lassign [dict get $choices $name] old_master new_master\n set inst [$block findInst $name]\n if {$inst eq "NULL" || [[$inst getMaster] getName] ne $old_master} {error "Unexpected measured driver $name"}\n replace_cell $name $new_master\n if {[[$inst getMaster] getName] ne $new_master} {error "Replacement failed"}\n}\nif {[llength [$block getInsts]] != [dict size $before]} {error "Instance census changed"}\nforeach inst [$block getInsts] {\n set name [$inst getName]\n lassign [dict get $before $name] master pins\n if {$name in $targets} {set master [lindex [dict get $choices $name] 1]}\n if {[[$inst getMaster] getName] ne $master} {error "Unexpected master change"}\n foreach pin [$inst getITerms] {\n  if {[$pin getNet] ne [dict get $pins [[$pin getMTerm] getName]]} {error "Incidence changed"}\n }\n}\nforeach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}\ndetailed_placement\ncheck_placement -verbose\nputs "NSSOC_PEER_RESET_6_MEASURED_DRIVERS_SAME_INCIDENCE"\n'
+ECO = '\nset block [ord::get_db_block]\nset before {}\nforeach inst [$block getInsts] {\n set pins {}\n foreach pin [$inst getITerms] {dict set pins [[$pin getMTerm] getName] [$pin getNet]}\n dict set before [$inst getName] [list [[$inst getMaster] getName] $pins]\n}\nset choices {\nTARGET_CHOICES\n}\nset targets [dict keys $choices]\nif {[llength $targets]!=1} {error "Wrong measured resize census"}\nif {[llength [info commands replace_cell]] != 1} {error "Missing native replace_cell"}\nforeach name $targets {\n set inst [$block findInst $name]\n if {$inst eq "NULL" || [[$inst getMaster] getName] ne [lindex [dict get $choices $name] 0]} {error "Replay target preflight mismatch $name"}\n}\nset ports_before {}\nforeach port [$block getBTerms] {dict set ports_before [$port getName] [$port getNet]}\nforeach name $targets {\n lassign [dict get $choices $name] old_master new_master\n set inst [$block findInst $name]\n if {$inst eq "NULL" || [[$inst getMaster] getName] ne $old_master} {error "Unexpected measured driver $name"}\n replace_cell $name $new_master\n if {[[$inst getMaster] getName] ne $new_master} {error "Replacement failed"}\n}\nif {[llength [$block getInsts]] != [dict size $before]} {error "Instance census changed"}\nforeach inst [$block getInsts] {\n set name [$inst getName]\n lassign [dict get $before $name] master pins\n if {$name in $targets} {set master [lindex [dict get $choices $name] 1]}\n if {[[$inst getMaster] getName] ne $master} {error "Unexpected master change"}\n foreach pin [$inst getITerms] {\n  if {[$pin getNet] ne [dict get $pins [[$pin getMTerm] getName]]} {error "Incidence changed"}\n }\n}\nforeach port [$block getBTerms] {if {[$port getNet] ne [dict get $ports_before [$port getName]]} {error "Port incidence changed"}}\ndetailed_placement\ncheck_placement -verbose\nputs "NSSOC_PEER_QUARANTINE_1_MEASURED_DRIVERS_SAME_INCIDENCE"\n'
 
 def measured_targets(step_dir):
     import hashlib,io,json,re,subprocess,zipfile
     repo="repos/Melihakbulut221/nssoc/"
     def api(path):return json.loads(subprocess.check_output(["gh","api",repo+path]))
-    run=api("actions/runs/43852564964")
-    assert run["head_sha"]=="b051a4b3d71fc9bb32c95f77047bc940da0aaa5b" and run["run_attempt"]==1 and run["conclusion"]=="success"
-    digest="630f8342e0d687cb81e35502513fcc26f341eb565b120eac50fc86848d197cfa"
-    meta=api("actions/artifacts/14217594423")
+    run=api("actions/runs/43855710164")
+    assert run["head_sha"]=="5252d12d641e8cccd7f52f858d5a2e8f18bff66d" and run["run_attempt"]==1 and run["conclusion"]=="success"
+    digest="64d2e783e583f8dd0a7fca63707ddea041bd8be3fe2181f6fbb82cf3648b93c1"
+    meta=api("actions/artifacts/14221411893")
     assert not meta["expired"] and meta["digest"]=="sha256:"+digest and meta["workflow_run"]["id"]==run["id"] and meta["workflow_run"]["head_sha"]==run["head_sha"]
-    blob=subprocess.check_output(["gh","api",repo+"actions/artifacts/14217594423/zip"])
+    blob=subprocess.check_output(["gh","api",repo+"actions/artifacts/14221411893/zip"])
     assert hashlib.sha256(blob).hexdigest()==digest
     z=zipfile.ZipFile(io.BytesIO(blob));report=json.loads(z.read("result.json"))
-    assert report["producer"]==43850419246 and report["odb_sha256"]=="275fa0f556eb369be542b0819f84bed32176fd2a1d542db37785269cc91f3b6c"
+    assert report["producer"]==43853079697 and report["odb_sha256"]=="412312b8fc4534233b38e451cc8d09b2b95d0e4a57f90a4eb79ec4efb8bbb525"
     data=z.read("slow-max.txt");assert hashlib.sha256(data).hexdigest()==report["reports"]["slow-max"]["excerpt_sha256"]
-    block=data.decode().split("Startpoint:")[1]
-    assert block.splitlines()[0].strip()=="$auto$ff.cc:337:slice$343664"
-    assert "u_pcie.receive_ownership.r2_handshake (net)"in block and "-1.219892"in block
-    targets={name:("sg13g2_buf_4","sg13g2_buf_8","X")for name in ["fanout9733","fanout9731","fanout3468","fanout3467","fanout3466"]}
-    targets["fanout2977"]=("sg13g2_buf_2","sg13g2_buf_8","X")
+    block=data.decode().split("Startpoint:")[2]
+    assert block.splitlines()[0].strip()=="$auto$ff.cc:337:slice$161331"
+    assert "hold39152/X (sg13g2_dlygate4sd3_1)"in block and "-0.974370"in block
+    targets={"$abc$735378$auto$blifparse.cc:397:parse_blif$736510":("sg13g2_nor2_1","sg13g2_nor2_2","Y")}
     for name,(old,new,pin)in targets.items():
         lines=[line for line in block.split("data arrival time")[0].splitlines()if name+"/"+pin+" ("+old+")"in line]
         assert len(lines)==1
-        assert float(lines[0].split()[3])>=.20
+        assert float(lines[0].split()[3])>=1.0
     (Path(step_dir)/"measured-buffer-targets.json").write_text(json.dumps(dict(source_run=run["id"],artifact=meta["id"],archive_sha256=digest,targets=targets,accepted=False),indent=2))
     return "\n".join(" {"+name+"} {"+old+" "+new+"}"for name,(old,new,pin)in sorted(targets.items()))
 
 class PeerLinkBoundedPostCTS(ElectricalPostCTS):
     id = "NSSOC.PeerLinkBoundedPostCTS"
-    name = "Size six measured reset and handshake buffers after exact baseline reproduction"
+    name = "Size one measured quarantine NOR driver after exact baseline reproduction"
     def get_script_path(self):
         p=Path(super().get_script_path());s=p.read_text()
         a=s.index('# Buffer I/O');b=s.index('report_floating_nets -verbose',a)
@@ -48,15 +47,15 @@ class PeerLinkBoundedPostCTS(ElectricalPostCTS):
         repo = "repos/Melihakbulut221/nssoc/"
         def api(path):
             return json.loads(subprocess.check_output(["gh", "api", repo + path]))
-        run = api("actions/runs/43850419246")
-        assert run["head_sha"] == "16d3d9546d35d012b209cae6d9bebe4a254e57e0"
+        run = api("actions/runs/43853079697")
+        assert run["head_sha"] == "23b6dbb5d0924086de7127f2c1c1e681c9763764"
         assert run["conclusion"] == "success" and run["run_attempt"] == 1
-        digest = "661e0437e5892e2a13cbe9b3d3cc40216111eeebe06b59507a0663eafbace0fb"
-        meta = api("actions/artifacts/14219415072")
+        digest = "70d7cc768407aa692111290fadf939b9962755ba9b6322a1025df7c282e704cc"
+        meta = api("actions/artifacts/14220442275")
         assert not meta["expired"] and meta["digest"] == "sha256:" + digest
         assert meta["workflow_run"]["id"] == run["id"]
         assert meta["workflow_run"]["head_sha"] == run["head_sha"]
-        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14219415072/zip"])
+        data = subprocess.check_output(["gh", "api", repo + "actions/artifacts/14220442275/zip"])
         assert hashlib.sha256(data).hexdigest() == digest
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
             expected = json.loads(archive.read("result.json"))

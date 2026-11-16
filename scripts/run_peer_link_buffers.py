@@ -1,15 +1,15 @@
 import os,json,subprocess,hashlib,zipfile,io,stat
 from pathlib import Path
 import cloud_peer_ready_postcts as prior
-ROOT=Path.cwd();OUT=ROOT/'peer-reset-handshake';OUT.mkdir()
+ROOT=Path.cwd();OUT=ROOT/'peer-quarantine-nor';OUT.mkdir()
 r=dict(source_head=os.environ['GITHUB_SHA'],accepted=False,final_timing_complete=False,full_phy_accepted=False,status='RUNNING')
 def save():(OUT/'result.json').write_text(json.dumps(r,indent=2))
 try:
  assert os.environ.get('GITHUB_ACTIONS')=='true'
  prior.OUT=OUT/'restore';prior.OUT.mkdir();prior.restore(None,{})
- run=prior.api('actions/runs/43850419246')
- assert run['head_sha']=='16d3d9546d35d012b209cae6d9bebe4a254e57e0' and run['conclusion']=='success' and run['run_attempt']==1
- aid=14218655659;digest='f77e01564e220725b5482e5f9c4302d3d8993b8673331dd7d0df64d04d243d11'
+ run=prior.api('actions/runs/43853079697')
+ assert run['head_sha']=='23b6dbb5d0924086de7127f2c1c1e681c9763764' and run['conclusion']=='success' and run['run_attempt']==1
+ aid=14220367288;digest='b2c75de7f175967c86d875170fd5db6f7100141f808c94886142fc744ed7281b'
  meta=prior.api('actions/artifacts/'+str(aid))
  assert meta['digest']=='sha256:'+digest and not meta['expired'] and meta['workflow_run']['id']==run['id'] and meta['workflow_run']['head_sha']==run['head_sha']
  blob=subprocess.check_output(['gh','api',prior.REPO+'actions/artifacts/'+str(aid)+'/zip'])
@@ -17,9 +17,9 @@ try:
  z=zipfile.ZipFile(io.BytesIO(blob));assert len(z.namelist())==len(set(z.namelist()))
  report=json.loads(z.read('result.json'))
  assert report['source_head']==run['head_sha'] and report['returncode']==0 and report['sources_unchanged'] and report['accepted'] is False
- expected='275fa0f556eb369be542b0819f84bed32176fd2a1d542db37785269cc91f3b6c'
+ expected='412312b8fc4534233b38e451cc8d09b2b95d0e4a57f90a4eb79ec4efb8bbb525'
  assert report['candidate_odb_sha256']==expected
- source=ROOT/'peer-packet-buffers';source.mkdir();restored={}
+ source=ROOT/'peer-reset-handshake';source.mkdir();restored={}
  def member(name):
   rel=prior.relative(name);info=z.getinfo(name)
   assert not info.is_dir() and not stat.S_ISLNK(info.external_attr>>16)
@@ -61,7 +61,7 @@ try:
   measurements[corner]={k:v for k,v in final['metrics'].items()if k.endswith('__corner:'+corner)}
  gates=list((OUT/'run').glob('*-nssoc-peerlinkboundedpostcts/baseline-reproduction.json'));assert len(gates)==1
  baseline=json.loads(gates[0].read_text());assert baseline['measured_baseline_matches']
- r.update(status='MEASURED_PEER_LINK_BUFFERS_AND_REPAIR_REQUIRES_REVIEW',sources_unchanged=True,baseline_reproduction=baseline,measurements=measurements,candidate_odb_sha256=prior.sha(final['odb']),scope='Exact new peer-ready state, baseline reproduction, six measured reset and handshake buffer changes, then original guarded setup/hold repair. No removed hold cells in targeted ECO. No routed timing, native boot or fullPHY acceptance.')
+ r.update(status='MEASURED_PEER_LINK_BUFFERS_AND_REPAIR_REQUIRES_REVIEW',sources_unchanged=True,baseline_reproduction=baseline,measurements=measurements,candidate_odb_sha256=prior.sha(final['odb']),scope='Exact new peer-ready state, baseline reproduction, one measured quarantine NOR driver change, then original guarded setup/hold repair. No removed hold cells in targeted ECO. No routed timing, native boot or fullPHY acceptance.')
 except BaseException as e:r.update(status='FAIL_OR_ERROR',error=repr(e));raise
 finally:
  r['outputs']={str(p.relative_to(OUT)):prior.sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json' and 'restore'not in p.relative_to(OUT).parts};save()
