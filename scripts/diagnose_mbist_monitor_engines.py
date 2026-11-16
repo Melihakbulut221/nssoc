@@ -6,6 +6,8 @@ original=Path('hw/soc/tb/mapped_mbist_boot_monitor_original.v')
 fixed=Path('hw/soc/tb/mapped_mbist_boot_monitor.v')
 assert hashlib.sha256(original.read_bytes()).hexdigest()=='c117d03640b2cc18be2390e050f8c7f85fdf14c694738355c6fbcc42f9650a0d'
 expected=original.read_text().replace('output integer busy_cycles_o','output reg signed [31:0] busy_cycles_o').replace('output integer done_cycle_o','output reg signed [31:0] done_cycle_o')
+unknown_expr="((busy_i !== 1'b0) && (busy_i !== 1'b1)) || ((done_i !== 1'b0) && (done_i !== 1'b1)) || ((failed_i !== 1'b0) && (failed_i !== 1'b1)) || ((eth_done_i[0] !== 1'b0) && (eth_done_i[0] !== 1'b1)) || ((eth_done_i[1] !== 1'b0) && (eth_done_i[1] !== 1'b1)) || ((eth_failed_i[0] !== 1'b0) && (eth_failed_i[0] !== 1'b1)) || ((eth_failed_i[1] !== 1'b0) && (eth_failed_i[1] !== 1'b1))"
+expected=expected.replace("(^{busy_i,done_i,failed_i,eth_done_i,eth_failed_i}) === 1'bx",unknown_expr)
 assert fixed.read_text()==expected
 bench="`timescale 1ns/1ps\nmodule tb;\nreg clk=0; always #5 clk=~clk;\nreg rst=0,busy=0,done=0,failed=0;\nreg [1:0] edone=0,efailed=0;\nwire passed; wire [31:0] busy_count,done_cycle;\nmapped_mbist_boot_monitor dut(clk,rst,busy,done,failed,edone,efailed,passed,busy_count,done_cycle);\ninteger n;\ninitial begin\n for(n=0;n<210;n=n+1) begin\n  @(posedge clk);\n  rst<=n>=4;\n  busy<=n>=4 && n<164;\n  done<=n>=164;\n  edone<=n>=164 ? 2'b11 : 2'b00;\n  @(negedge clk); #1;\n  $display(\"TRACE n=%0d busy_count=%0d done_cycle=%0d passed=%b cycles=%0d seen=%b\",n,busy_count,done_cycle,passed,dut.cycles,dut.done_seen);\n end\n $finish;\nend\nendmodule\n"
 engines=[('iverilog',[]),('cvc',[]),('cvc-interp',['+interp']),('cvc-ogate',['-Ogate']),('cvc-o',['-O'])]
@@ -50,10 +52,38 @@ try:
   for engine,flags in engines[:2]:
    row,lines,text=run('control-'+name+'-'+engine,fixed,body,engine,flags)
    row['detected']=message in text;result['controls'].append(row)
+ # Exhaust every four-state input of the seven-bit unknown predicate.
+ predicate_bench=r"""
+`timescale 1ns/1ps
+module tb;
+reg busy_i,done_i,failed_i;reg [1:0] eth_done_i,eth_failed_i;reg [6:0] bits;
+wire unknown_status=EXPRESSION;
+integer n,k,u;
+initial begin
+ for(n=0;n<16384;n=n+1) begin
+  u=n;
+  for(k=0;k<7;k=k+1) begin
+   case(u%4) 0:bits[k]=1'b0;1:bits[k]=1'b1;2:bits[k]=1'bx;3:bits[k]=1'bz;endcase
+   u=u/4;
+  end
+  {busy_i,done_i,failed_i,eth_done_i,eth_failed_i}=bits;
+  #1;$display("TRACE n=%0d unknown=%b",n,unknown_status);
+ end
+ $finish;
+end
+endmodule
+""".replace('EXPRESSION',unknown_expr)
+ oracle=['TRACE n='+str(n)+' unknown='+str(int(any(((n>>(2*k))&3)>=2 for k in range(7))))for n in range(16384)]
+ result['unknown_truth_table']=[]
+ for engine,flags in engines:
+  row,lines,text=run('unknown-truth-'+engine,fixed,predicate_bench,engine,flags)
+  row['mismatch_count']=sum(a!=b for a,b in zip(oracle,lines))+abs(len(oracle)-len(lines))
+  result['unknown_truth_table'].append(row)
+ assert all(r['mismatch_count']==0 and r['rows']==16384 for r in result['unknown_truth_table'])
  assert all(c['identical_to_original_iverilog'] and c['returncode']==0 for c in result['cases']if c['label'].startswith('fixed-'))
  assert any(not c['identical_to_original_iverilog']for c in result['cases']if c['label'].startswith('original-cvc'))
  assert len(result['controls'])==8 and all(c['detected']for c in result['controls'])
- result['status']='PASS_EXPLICIT_SIGNED32_MONITOR_EQUIVALENCE_AND_REJECTION_CONTROLS'
+ result['status']='PASS_SIGNED32_AND_BITWISE_UNKNOWN_MONITOR_CONTROLS'
 finally:
  result['outputs']={str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest()for p in out.rglob('*')if p.is_file()and p.suffix in ('.log','.v')}
  (out/'result.json').write_text(json.dumps(result,indent=2))

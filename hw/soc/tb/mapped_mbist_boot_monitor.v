@@ -20,7 +20,7 @@ module mapped_mbist_boot_monitor (
         end else begin
             cycles = cycles + 1;
             if (cycles > 32) begin
-                if ((^{busy_i,done_i,failed_i,eth_done_i,eth_failed_i}) === 1'bx)
+                if (((busy_i !== 1'b0) && (busy_i !== 1'b1)) || ((done_i !== 1'b0) && (done_i !== 1'b1)) || ((failed_i !== 1'b0) && (failed_i !== 1'b1)) || ((eth_done_i[0] !== 1'b0) && (eth_done_i[0] !== 1'b1)) || ((eth_done_i[1] !== 1'b0) && (eth_done_i[1] !== 1'b1)) || ((eth_failed_i[0] !== 1'b0) && (eth_failed_i[0] !== 1'b1)) || ((eth_failed_i[1] !== 1'b0) && (eth_failed_i[1] !== 1'b1)))
                     $fatal(1,"MBIST_MONITOR unknown mapped status");
                 if (failed_i !== 1'b0 || eth_failed_i !== 2'b00)
                     $fatal(1,"MBIST_MONITOR native SRAM test failure");
