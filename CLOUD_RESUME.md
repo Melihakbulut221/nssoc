@@ -8,6 +8,18 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16:143-buffer batch improves setup1803->1527 without hold violations; continuation queued
+
+Batch43814362727 /9ce9950e91842dc245679a39e87c77dc068cab48 completed SUCCESS as measurement. Compact14201404863 SHA000c831a0e59021ddf1e1243e6f49558a0c6826d2161d760a4c1c766e5ac1b4d and derived14201748791 SHA40166289a7b2819b463ca0baa3302e7582a09cabd83c4208f56c28ed54314a94 whole ZIP verified RAM. Native14201983241 SHA616c5f685743c865f5c4f0d796908377bc0a26204c7e52f5fa7791f1d86168bf metadata only. ODB83c52383510227cbe4b0e515945b168b9553d11342b9dbec8d3a6f6187c041fd,returncode0/sourcesunchanged. Target manifest confirms143targets/reportSHA c111fdfc21a1220f07ee6918e0e5bd4075a93de7b14fb5784480a20e9d69e830.
+
+Setup slow/typ/fast1527/0/0,WS-.488452/+.688297/+1.3485ns; slowTNS-377.107 versus eleventh-459.89. Hold0allcorners BUT fast worstmargin+.050605ns versus previous+.10001ns; slow+.247908/typ+.184387. This loss of min-delay margin must not be hidden. Slew17/7/0,cap0,fanout1348 unchanged. Placement estimates only; no final routing/RC acceptance. Best measured setup candidate now batch, not eleventh; no product promotion.
+
+Derived max report: worstpath FF343837/u_pcie.flow.credits.seen[1] ->pcie_initialized_o -.488452ns; next FF181685/transmit_packet.state[2] ->FF163566 -.487331ns; next retryreset->creditpick path-.485892ns; RXdllp_pending->rx_eop->ownershiplane-.484605ns. Dense multiple path families remain.
+
+NEW43816245771 /de530bb5ad714c210ebfd1fd1b966d0be39dc933 on codex/after-buffer-batch-repair, APIqueued. Restores exact batch ODB and all fourth-through-eleventh inherited views. Verifies batch compact report/allthreecornermetrics before original bounded100setup/1000holdrepair, preserving constraints and normal hold repair target. EopAfterBatchDirect/AfterBatchBoundedPostCTS, output after-buffer-batch. Same legacy driver/flow paths. ASTcheckedbeforeatomiccommit. No143resizingreplay or constraints relaxation. This continuation must be compared for both setup gain and min-margin recovery; don't infer success before reports.
+
+Verified active jobs in this turn: newACKpostCTS43815423153, newACKboot43814779296, older-mapboot43811938338,DRT43798359649,analog43806909384. Exec92324 completed. Cloud-only/no local artifacts; fullgoalactive.
+
 ## 2026-11-16: new ACK placement/CTS PASS; exact post-CTS measurement and repair running
 
 ACK placement43813931923 /772c3bf5203dfa1ec734154f82bbb372ba3aecd9 completed SUCCESS. Derived14201418593 SHAdb58b9a14e06aff73985b83a657649d09384d4cd83ac1011fb8b9bfa0fce2f6b whole ZIP verified RAM. Native14201647743 SHAb06d8c0968e61b3516f7072419addd7dd8a240a0e4e7ec51086ed9a3f5a81e81/302934810bytes metadata only this turn. Status COMPLETE_PREDECODE_CANDIDATE_CTS_REQUIRES_BOOT_ROUTING_AND_ALL_SIGNOFF_GATES; returncode0/elapsed473.282s/sources unchanged/20macros/356outputfiles. Exact CTS state run/27-openroad-cts/state_out.json, ODB2e61fc4a7dc230cc0fcedb68b6434a16f9c26d5a96b9deb0c0930217fd462572. source_binding recovery43812773466/990f375,66authenticatedfiles, map e6b2b440...,netlist5b4f45a0.... No functional boot/fullPHY/finaltiming acceptance.
