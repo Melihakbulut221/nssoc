@@ -8,6 +8,12 @@ This file reached984,221bytes. To avoid GitHub Contents API's1MiB inline-content
 https://github.com/Melihakbulut221/nssoc/blob/b55baffb3a6217ef43e63fe0df9d7be7de1ff6f3/CLOUD_RESUME.md
 Git blobbcf35f4d541ace29bef3623ca662e40d9ff0168c,984221bytes. No earlier record discarded from Git. For API updates always check encoding and decoded length; if encoding=none, fetch the git blob or raw response, never treat missing content as an empty document.
 
+## 2026-11-16: portable SRAM binary diagnostic rerun
+
+43802959565 /bb50adc6e761e602da16a80e2b70ad3b89d51c10 FAILED CVC compilation before simulation: pinned CVC does not implement $bits (ERROR1102). Artifact14196847570 SHA80104db383b61e23318e9ed50e7b2596bfb242812644ba32dabaccffb828f056 verified. Native+derivedIcarus positives passed12289rows withsamef5f1cbd249a9389051a0cae1cfb37cc2c20384da72870490a30a51c5ec6141b9 trace. Not a new circuitfailure.
+Removed ONLYunsupported $bits display expressions, preserving original assertion, fullbinaryvectors, individualpredicateflags andper64bitbankcomparisons. Commit4959f9f84a274997bcffe51d08f16ad336b5bccc, run43803308452 on codex/native-sram-cell-composition currentlyin_progress/buildingpinnedcompiler. Await result.
+Sixthtimingrun ID43803149533 /4174c7da21b90fa70f1580df0f41feb1ce7e904d confirmedlive, nativeSTA/repair stepafterruntimepreparation. Detailedroute43798359649 anddiagnosticboot43797484050 also confirmedlive. No restart orwaiver. Lastverifiedtiming isfifth2301setup,WS-.858018ns,hold0allcorners,placementestimateonly. Fullobjectiveactive.
+
 ## 2026-11-16: fifth timing improvement and analog waveform diagnosis
 
 FIFTH43801167959 /119b202942c561b7797acdb9e9cc10f879c5ac3d completedSUCCESS. Derived14196543944 SHAe210cd85d9e9d7231b9935f124922eb116ca5b0d87f29cf900dbf5869132f269 wholeverified. Native14197546566 SHA586cfb403c012adcf85b38d699e86d391cf6bb39d5400cbdc34924eb36a1dc87. ODBc2149d8ea2551ad09037895eef2284612743fbe9249e61cb730f162f753b98ba. Exact fourth baseline reproduction PASSED; sources unchanged/native0. Setup2301/0/0 (internal2298), slack-.858018/+.46287/+1.20767ns, slowTNS-1142.78. Hold0/0/0, slack+.247908/+.184387/+.10001ns. Slew17/7/0;cap0;fanout1348. Still PLACEMENT estimates, not routed/finaltiming.
