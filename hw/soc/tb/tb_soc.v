@@ -252,11 +252,13 @@ module tb_soc;
       .qspi_io_i    (qspi_io),
       .qspi_irq_o   (qspi_irq),
       .wdog_no       (wdog_n),
+`ifndef SOC_NO_ETH
       .eth_rx_clk_i(eth_clk), .eth_tx_clk_i(eth_clk),
       .eth_rxd_i(eth_txd), .eth_rx_dv_i(eth_tx_en), .eth_rx_er_i(eth_tx_er),
       .eth_txd_o(eth_txd), .eth_tx_en_o(eth_tx_en), .eth_tx_er_o(eth_tx_er),
       .eth_gtx_clk_o(), .eth_mdio_i(1'b1), .eth_mdc_o(), .eth_mdio_o(),
       .eth_mdio_oe_o(), .eth_irq_o(),
+`endif
       .wdog_rst_o    (wdog_rst),
       .nmi_o         (nmi),
       .irq_timer_o   (irq_timer),

@@ -178,6 +178,12 @@ write_json $OUT/soc_top.mapped.json"
   *) echo 'SOC_PCIE_PROFILE must be off, packet or packet-async' >&2; exit 2 ;;
 esac
 
+# Keep inspectable mapped names/JSON for the release without packet interfaces.
+if [ "${SOC_RELEASE_PROFILE:-legacy}" = core-only ]; then
+  PCIE_NAMES="-norename"
+  PCIE_EXPORT="write_json $OUT/soc_top.mapped.json"
+fi
+
 IBEX_REGFILE=${IBEX_REGFILE:-secded}
 IBEX_FAULT_PORT=${IBEX_FAULT_PORT:-1}
 export IBEX_REGFILE IBEX_FAULT_PORT

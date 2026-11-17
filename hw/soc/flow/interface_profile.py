@@ -63,6 +63,21 @@ def resolve(profile='base', soc=SOC):
     return bundle.resolve(), ('-DSOC_LGPL_INTERFACES' if profile == 'full' else '')
 
 
+def release_define(profile, env):
+    """A release profile changes actual hardware, not timing exceptions."""
+    if profile == 'legacy':
+        return ''
+    if profile != 'core-only':
+        raise ValueError('SOC_RELEASE_PROFILE must be legacy or core-only')
+    if env.get('SOC_PCIE_PROFILE', 'off') != 'off':
+        raise ValueError('core-only forbids PCIe')
+    if env.get('SOC_ETH_SRAM', '0') != '0':
+        raise ValueError('core-only forbids Ethernet SRAM/MBIST')
+    if 'ETHERNET_DEMO' in env.get('SW_DEFINES', ''):
+        raise ValueError('core-only cannot run Ethernet firmware')
+    return '-DSOC_NO_ETH'
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile', choices=('base','full'),
@@ -72,7 +87,9 @@ def main():
                         help='also reject a mapped hierarchy from the other profile')
     args = parser.parse_args()
     try:
+        release = release_define(os.environ.get('SOC_RELEASE_PROFILE', 'legacy'), os.environ)
         bundle, define = resolve(args.profile)
+        define = ' '.join(x for x in (define, release) if x)
         if args.netlist:
             check_netlist(args.netlist, args.profile)
     except (OSError, ValueError) as error:

@@ -324,6 +324,7 @@ module soc_top #(
     input  wire [3:0]  qspi_io_i,
     output wire        qspi_irq_o,     // QSPI IEN AND (DONE OR DR), a level
 
+`ifndef SOC_NO_ETH
     // Gigabit GMII, external PHY/reference clocks; no on-chip PLL or pads.
     input wire eth_rx_clk_i, eth_tx_clk_i,
     input wire [7:0] eth_rxd_i,
@@ -333,6 +334,7 @@ module soc_top #(
     input wire eth_mdio_i,
     output wire eth_mdc_o, eth_mdio_o, eth_mdio_oe_o, eth_irq_o,
 
+`endif
     // Spacecraft interfaces, docs/88. External PHY/pad cells are board-specific.
     input wire spw_di_i, spw_si_i,
     output wire spw_do_o, spw_so_o, spw_irq_o,
@@ -559,7 +561,11 @@ module soc_top #(
     // the same discipline BUSSTAT and NPUCFG follow, and the reason the
     // whole-SoC run of docs/56 is cycle-identical with this block
     // present and the program unchanged.
+`ifdef SOC_NO_ETH
+    irq_fast[SOC_IRQLINE_ETH] = 1'b0;
+`else
     irq_fast[SOC_IRQLINE_ETH] = eth_irq_o;
+`endif
     irq_fast[SOC_IRQLINE_SPW] = spw_irq;
     irq_fast[SOC_IRQLINE_I2C] = i2c_irq;
     irq_fast[SOC_IRQLINE_CAN] = can_irq;
@@ -1102,6 +1108,12 @@ module soc_top #(
   wire [31:0] prdata_can;
   wire [31:0] prdata_eth;
   wire pready_eth, pslverr_eth;
+`ifdef SOC_NO_ETH
+  // Reserved absent peripheral: complete accesses with an APB error.
+  assign prdata_eth = 32'd0;
+  assign pready_eth = 1'b1;
+  assign pslverr_eth = 1'b1;
+`else
   assign eth_gtx_clk_o = eth_tx_clk_i;
   soc_eth u_eth (
 `ifdef SOC_ETH_MBIST
@@ -1118,6 +1130,7 @@ module soc_top #(
       .mdio_i(eth_mdio_i)
   );
 
+`endif
   wire pready_can, pslverr_can;
 `ifdef SOC_LGPL_INTERFACES
   soc_can u_can (
