@@ -1,3 +1,12 @@
+## 2026-11-18: actual control/reset buffer ECO launched
+
+- Run 44297672804 at source 66be5227ed38807f1747107f3363e19dbd434914, branch codex/core-only-chip-control-buffers, confirmed live. General checks 44297675490 live.
+- Native buffer-only repair targets the eight measured fanout violators in the preceding actual-SPEF report: slice531/Q, slice529/Q, parse_blif1835/Y,1684/Y,1836/X,1685/Y,1687/X,1841/Y.
+- Uses spatially grouped non-inverting buf4 leaf / buf8 upper trees with at most eight sinks per stage. Original logic is unchanged. New buffer VDD/VSS explicitly connected. Audit collapses added buffer nets to original source nets and verifies every original terminal connection.
+- Original instance geometry is held fixed during incremental legalization, including clock/core/pad cells. Top pins and PG special geometry must remain exact. All 1615 stale ordinary wires are removed because topology changed; output is deliberately UNROUTED and cannot inherit old SPEF or DRC/timing evidence.
+- Inspect buffer.log, buffer-eco.json, legalize.log, legalized-audit.json and result.json. If successful, run fresh parent global+detailed routing, physical signal/contact checks, power checks, nominal extraction, coverage and three-corner timing. Do not claim closure from placement or buffer-only equivalence.
+- Main core route 44263061910 remains live and unmodified. No core frequency or shell clock period changed.
+
 ## 2026-11-18: parent extracted timing reveals concrete high-fanout repair targets
 
 - Run 44296516767 succeeded as a diagnostic, NOT timing closure. Source ed581f164b7337a907c6db87a3f9cfcabc515a9f. Verified native 14422714653 SHA256 a0b94bf4cf885a862571975a130ab14ed8e7f8fe850830e2f3a2430db28d163e; summary 14423667310 SHA256 51749eb986a23edec89b623d811bb2d0c95bcd08ff889006c5a8e194b5e1fa5d; identical result bytes and all 24 output hashes.
