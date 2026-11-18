@@ -18,3 +18,6 @@ Run 44302346053 failed its strict audit: 145 inserted buffers on 20 selected pad
 The corrected preparation protects non-target signal nets but leaves native POWER/GROUND nets available to global_connect. The audit still rejects missing or wrong buffer supplies, original geometry changes, logical splits/shorts and any unexpected buffer source. Original net flags are restored after the audit. Fresh physical/timing proof remains mandatory.
 
 Core extracted timing run 44303529050 uses head 20bedd917c6f98bf6afeea1ee991d2ca4c4f03ea. Routed boot run 44303624006 uses head 2c2bc900d3ad9034d78c87d71434eb98533f383d. Both use the pinned routed core artifacts; preserve live jobs.
+
+## Prepared pad repaired routing
+This branch contains a route runner requiring docs/evidence/core-only-pad-repair-admission.json with independently verified artifact identities and buffer count. Admission is deliberately false until run 44303799761 completes and its outputs are audited. Do not dispatch unadmitted data. The runner restores the exact unrouted ODB under a byte-checked compatibility filename, derives required routed net count as 1794 plus admitted new buffers, and retains native four-rail PG, exact identity, exact coincident pad omission, native DRC and visible geometry audits. No timing is claimed.
