@@ -17,7 +17,7 @@ def main():
   state=json.loads(z.read(source['output_state']));prefix='/home/runner/work/nssoc/nssoc/hw/soc/out/core-only-targeted-globalroute/'
   assert state['odb'].startswith(prefix);name=state['odb'][len(prefix):];assert name in source['outputs']
   (OUT/'source.odb').write_bytes(z.read(name));(OUT/'checks.rpt').write_bytes(z.read('routing/2-nssoc-coreonlyroutedslow/checks.rpt'))
-  script=ROOT/'scripts/audit_core_only_electrical_loads.py';protected={str(p):sha(p)for p in [Path(__file__),script,OUT/'source.odb',OUT/'checks.rpt']}
+  script=ROOT/'scripts/audit_core_only_electrical_loads.py';protected={str(p):sha(p)for p in [Path(__file__),script,ROOT/'scripts/parse_core_only_fanout_report.py',OUT/'source.odb',OUT/'checks.rpt']}
   app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
   with (OUT/'native.log').open('w')as log:subprocess.run([str(app),'openroad','-exit','-python',str(script)],env=dict(os.environ,NSSOC_CORE_LOAD_AUDIT_OUT=str(OUT)),stdout=log,stderr=subprocess.STDOUT,check=True)
   audit=json.loads((OUT/'load-inventory.json').read_text());assert audit['source_unchanged']and not audit['waivers_applied']
