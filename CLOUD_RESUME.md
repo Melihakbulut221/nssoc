@@ -1,3 +1,9 @@
+# Current: shell placement command compatibility repair
+
+First placement44279994333/source19f9374be13889533e455a5456090743cf241e3e failed before GPL because native parser rejects -disable_timing_driven/-disable_routability_driven despite help text listing them. Pinned replace.tcl confirms parser excludes them; timing/routability flags are opt-in. Remove unsupported options, preserve density0.3/all guards. Native14416242319 SHA5687517004ca08837e49552c056e07694f227acf0f670ad5b8f4b98824fda511 verified;740initialrows cut to1407aroundcore. No placed result. Main DRT44263061910 live, untouched. Superseded broadchecks44273251211/44275593626 cancelled after ancestry proof to44279979371.
+
+---
+
 # Current: provisional shell placement prepared
 
 Cloud placement consumes pinned assembly44275589227/native14414790892. Native OpenROAD initializes interior rows, cuts20um macro halos, places shell without timing optimization, runs detailed placement and fatal native placement check. Independent audit preserves all1550masters/8774connections/80top pin shapes/297fixed placements, requires1253placed cells, rectangle nonoverlap and ODB readback. No CTS/PDN/routing/timing or production acceptance. Main DRT44263061910 remains live and untouched.

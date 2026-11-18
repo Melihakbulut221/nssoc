@@ -26,7 +26,7 @@ def main():
         tcl.write_text('read_db {'+str(OUT/'chip-initial.odb')+'}\n'+
           'initialize_floorplan -die_area {0 0 4000 3200} -core_area {200 200 3800 3000} -site CoreSite\n'+
           'cut_rows -halo_width_x 20 -halo_width_y 20\n'+
-          'global_placement -disable_timing_driven -disable_routability_driven -density 0.3\n'+
+          'global_placement -density 0.3\n'+
           'detailed_placement\ncheck_placement -verbose -report_file_name {'+str(OUT/'placement-check.json')+'}\n'+
           'write_db {'+str(OUT/'chip-placed.odb')+'}\nwrite_def {'+str(OUT/'chip-placed.def')+'}\nputs NSSOC_LEGAL_PLACEMENT_COMPLETE\n')
         r['status']='PLACING';save()
