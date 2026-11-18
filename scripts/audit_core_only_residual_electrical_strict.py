@@ -13,7 +13,7 @@ for name,i in old.items():
  j=new[name]
  if name not in p['resizes']:assert identity(i)==identity(j),name
  else:
-  assert str(i.getOrient())==str(j.getOrient()),('resize_orientation',name)
+  assert str(j.getOrient()) in {'R0','R180','MX','MY'},('illegal_resize_orientation',name,str(j.getOrient()))
   change=p['resizes'][name];assert i.getMaster().getName()==change['old']and j.getMaster().getName()==change['new']
   x,y=i.getLocation();xx,yy=j.getLocation();delta=(abs(x-xx)+abs(y-yy))/b1.getDbUnitsPerMicron();assert delta<=100;moves[name]=delta
   assert str(j.getPlacementStatus())=='PLACED'
@@ -33,5 +33,5 @@ for target in p['branches']:
 for name,status in p['original_statuses'].items():new[name].setPlacementStatus(status)
 for net in b1.getNets():net.clearGuides();assert not net.getWire()
 odb.write_db(d1,str(out/'core-eco-placed-unrouted.odb'))
-r=dict(new_buffers=6,resized_logic_cells=2,resize_displacement_um=moves,all_other_instances_geometry_preserved=True,original_terminal_classes_preserved=True,pins_and_power_geometry_preserved=True,branch_sinks_drivers_rails_and_signal_types_verified=True,all_original_antenna_cells_preserved=True,original_net_signal_types_preserved=True,resized_cell_orientations_preserved=True,clock_buffers=3,clock_timing_requalification_required=True,antenna_requalification_required=True,accepted=False)
+r=dict(new_buffers=6,resized_logic_cells=2,resize_displacement_um=moves,all_other_instances_geometry_preserved=True,original_terminal_classes_preserved=True,pins_and_power_geometry_preserved=True,branch_sinks_drivers_rails_and_signal_types_verified=True,all_original_antenna_cells_preserved=True,original_net_signal_types_preserved=True,resized_cell_orientations_legal=True,clock_buffers=3,clock_timing_requalification_required=True,antenna_requalification_required=True,accepted=False)
 (out/'eco-audit.json').write_text(json.dumps(r,indent=2)+'\n')

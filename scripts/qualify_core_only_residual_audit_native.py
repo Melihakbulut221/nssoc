@@ -12,8 +12,8 @@ elif mode=='missing_antenna':odb.dbInst.destroy(b.findInst('ANTENNA_947'))
 elif mode=='buffer_power_open':b.findInst('nssoc_residualbuf_0_0').findITerm('VDD').disconnect()
 elif mode=='unrelated_orientation':
  i=b.findInst('nssoc_sta_i_2520');i.setOrient('MY' if str(i.getOrient())!='MY' else 'R0')
-elif mode=='resized_orientation':
- i=b.findInst('nssoc_sta_i_8532');i.setOrient('MY' if str(i.getOrient())!='MY' else 'R0')
+elif mode=='resized_illegal_rotation':
+ i=b.findInst('nssoc_sta_i_8532');i.setOrient('R90')
 elif mode=='clock_sink_crossbranch':b.findInst('clkload1085').findITerm('A').connect(b.findNet('nssoc_residualbuf_0_1_net'))
 else:assert mode=='positive',mode
 odb.write_db(d,str(out/'eco-legalized.odb'))

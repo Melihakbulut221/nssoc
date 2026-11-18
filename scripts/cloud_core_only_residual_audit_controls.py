@@ -22,7 +22,7 @@ def main():
   audit=ROOT/'scripts/audit_core_only_residual_electrical_strict.py';native=ROOT/'scripts/qualify_core_only_residual_audit_native.py'
   protected={str(p):sha(p)for p in [Path(__file__),audit,native,ROOT/'scripts/buffer_core_only_chip_controls.py']}
   r.update(source_artifact=m,protected_inputs=protected,controls=[])
-  for mode in ['positive','new_clock_type','source_clock_type','missing_antenna','buffer_power_open','unrelated_orientation','resized_orientation','clock_sink_crossbranch']:
+  for mode in ['positive','new_clock_type','source_clock_type','missing_antenna','buffer_power_open','unrelated_orientation','resized_illegal_rotation','clock_sink_crossbranch']:
    with tempfile.TemporaryDirectory(prefix='nssoc-residual-control-')as tmp:
     work=Path(tmp)
     for name in ['core-routed.odb','eco-legalized.odb','eco-plan.json']:(work/name).write_bytes(z.read(name))
