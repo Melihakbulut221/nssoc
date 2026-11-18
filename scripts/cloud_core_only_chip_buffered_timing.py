@@ -7,9 +7,9 @@ from bootstrap_flow import verify
 OUT=ROOT/'hw/soc/out/core-only-chip-buffered-timing'
 ROUTE_RUN=44299714366
 ROUTE_HEAD='4e5f4aac78beb0e08282f62af347080b13ae5f7f'
-# Admission intentionally disabled until the terminal route artifact is independently audited.
-ROUTE_ARTIFACT_ID=None
-ROUTE_ARTIFACT_SHA=None
+# Admission pinned after independent native/summary/output/source verification.
+ROUTE_ARTIFACT_ID=14425388007
+ROUTE_ARTIFACT_SHA='c05a6ef1e93f269db0fb0f04aa9758e0f674c3bf9712f2774aecf9ab3f280d5d'
 PDK='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c'
 MODELS={
  'slow': [('sg13g2_stdcell','sg13g2_stdcell_slow_1p08V_125C.lib','ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d'),('sg13g2_io','sg13g2_io_slow_1p08V_3p0V_125C.lib','a23776c264fc0d177b4a5612eb3e1595c0eddc98d5b28b5ef7925e40b743b6ae')],

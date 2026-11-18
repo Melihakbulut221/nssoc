@@ -1,3 +1,12 @@
+## 2026-11-18: buffered route physically verified; fresh timing admitted
+
+- Route 44299714366 completed successfully at 4e5f4aac78beb0e08282f62af347080b13ae5f7f. Native 14425388007 SHA256 c05a6ef1e93f269db0fb0f04aa9758e0f674c3bf9712f2774aecf9ab3f280d5d and summary 14425716389 SHA256 328248dd0c6aa38548f648822448e8207b19d0b633ffe0d71c18be4a4e3b37f9 independently verified; all 25 output hashes, protected source bytes and matching result/audit records checked.
+- 1820 instances, 1794 guided routed signal nets plus 76 exactly coincident pad contacts. Global overflow 0; native detailed-route DRC 624->120->59->0. All VDD/VSS/IOVDD/IOVSS native connectivity checks passed.
+- Qualified visible geometry audit: zero disconnected nets, missing terminal shapes or inter-net contacts, all 11 decoder fixtures pass. Original legalized state preserved. Hidden macro GDS/transistor LVS and foundry DRC are NOT implied.
+- Final buffered parent ODB SHA256 85626205c623e4f87d30006c4d61df1a7b4060ac6d6cf7d2887487dd00b391c3. New geometry, so previous SPEF/timing is invalid.
+- Pinned this exact route artifact in cloud_core_only_chip_buffered_timing.py. Next dispatch combined fresh RCX -> exact coverage -> slow/typ/fast actual-SPEF timing. No clock changes, estimated-parasitic fallback, or old SPEF reuse.
+- Main core detailed route 44263061910 still requires terminal inspection and its own extracted timing/routed boot. Full-chip closure and production approval remain open.
+
 ## 2026-11-18: combined fresh buffered timing runner prepared, not dispatched
 
 - Prepared source 2b4b0defc05d09218d1d382ae1ff21b027ecbc17 on codex/core-only-chip-buffered-timing. scripts/cloud_core_only_chip_buffered_timing.py performs authenticated route restore -> fresh native nominal RCX -> capacitance integrity -> exact ODB/SPEF terminal and resistance-graph coverage -> three genuine library-corner timing analyses in one cloud job.
