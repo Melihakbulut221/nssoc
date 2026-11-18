@@ -67,6 +67,15 @@ def restore_route():
     for key in ['route__drc_errors','antenna__violating__nets','antenna__violating__pins']:assert metrics[key]==0
     identity=json.loads((root/'identity/route-identity.json').read_text());assert identity==report['route_identity']
     assert identity['instances']==106051 and identity['sources_unchanged']
+    prun=completed(44383998997,'0afa898e2a05fdc00e2a4f38bb620faebd2d0046')
+    pz,pm=archive(prun,'core-only-antenna-power-contact-44383998997')
+    assert pm['id']==14465730398 and pm['digest']=='sha256:6610d7e0094ba9359005f4c14ad0593b7611898ffa88fff27055e9c702fbde18'
+    power_summary=json.loads(pz.read('result.json'));assert power_summary['sources_unchanged']and power_summary['status']=='ADDED_DIODE_LOCAL_POWER_CONTACT_VERIFIED_NOT_FULL_PDN_SIGNOFF'
+    import hashlib
+    for n,h in power_summary['outputs'].items():assert hashlib.sha256(pz.read(n)).hexdigest()==h
+    power=json.loads(pz.read('power-contact.json'));assert power['checked_power_terminals']==1600 and not power['failures']and power['sources_unchanged']
+    assert power['source_odb_sha256']=='2147b6df67feac28691ca76defdd7d3cafd4df1c00a74c0043fcd55f47767750'and power['source_odb_sha256']in identity['source_hashes'].values()
+    report['added_diode_power_contact']=dict(artifact=pm,checked_terminals=1600,scope=power['scope'])
     for key in ['exact_instance_geometry_status_and_masters','exact_terminal_connections','exact_net_names_and_signal_types','exact_special_wires_ports_and_die']:assert identity[key]
     geometry=json.loads((root/'geometry/physical-route-audit.json').read_text());assert geometry==report['visible_geometry']
     assert geometry['source_unchanged']and geometry['actual_route_removal_control']
@@ -87,7 +96,7 @@ def restore_route():
     state['metrics']={};initial=OUT/'routed-initial-state.json';initial.write_text(json.dumps(state,indent=2)+'\n')
     report['baseline_estimated_corners']=grt['corners']
     report['fresh_view_binding']=dict(odb_sha256=sha(odb),netlist_sha256=sha(OUT/'routed.v'),def_sha256=sha(OUT/'routed.def'),sdc_sha256=sdc_hash,export_script_sha256=sha(export))
-    return report,[em,gm,meta],initial
+    return report,[em,gm,meta,pm],initial
 
 
 def main():
@@ -112,6 +121,7 @@ def main():
             artifacts=mapping_artifacts+cts_artifacts+[cts8meta,splitmeta,previousmeta]+refinedmeta+routedmeta)
         report["pre_route_corners"] = routed["baseline_estimated_corners"]
         report["fresh_view_binding"] = routed["fresh_view_binding"]
+        report["added_diode_power_contact"] = routed["added_diode_power_contact"]
         original_config = config
         data = json.loads(config.read_text())
         assert data["CLOCK_PERIOD"] == 20 and data["TIME_DERATING_CONSTRAINT"] == 5.0
