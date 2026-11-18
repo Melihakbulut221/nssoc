@@ -1,3 +1,11 @@
+# Current: actual native Tcl adapter qualification live; repair continues
+
+Newest source branch codex/core-only-native-adapters, functional commit3d8aa59e86ad74e720fe6ab19b198a718bc1a7c5. Run44259575689/job134649381521 confirmedin_progress. This extends prior44258678679 fixture/import qualification by calling actual CoreDetailedRouting/CoreExtractedSTA get_script_path methods in pinnedLibreLane runtime, archiving generatedTcl and nativecorner.tcl hash. No circuit/database/SPEF analysis is claimed. See scripts/qualify_core_only_native_adapters.py. Objects bypass initialization only for scriptgeneration; they are never used to run a circuit. Inspect completion/artifact before claimingPASS. Native scripts must retain orphan-guide cleanup, one20nspropagatedclock,5%derate,andstandaloneSPEFguards. Newest broadchecks44259576999 queued.
+
+Main repair44259265143/source572c3eb98392b0f56351d5aaf4f256499b4b8d9f/job134648379332 confirmedin_progress in Continue saved repair and compare fresh corners to baseline. Preserve it. Last verified zero-fanout routedbaseline remains91setup/0hold/0fanout, not finaltiming. Do not dispatchduplicate. Actualdetailedroute/RC/STA runner still to be bound to selectedcompletedcandidate; noDRTjob dispatched. Previousgoalturn made progress by verifiedresult/archive andnewrepair; thisturn addsnativeadapterqualification whilewaiting. Goalactive, cloud-only, networkblocks excluded, allotherproductgates unchanged.
+
+---
+
 # Current: zero-fanout repair refined; next continuation live
 
 Run44256809783/source0a055a1269f48e386e01b95eada858ae25671429 is terminalSUCCESS. Native14407012633 SHA2569a3e8c9c4a4def31a992bc9711b8222961ff3aaf468817af206185df8914cbe4 independently verified217outputs/6freshcorners; finalSTA3route markers/zeroEST0026. Finalslow91setup/-1.06292ns/TNS-37.4915,typical/fast0setup,hold0all/fast+0.0506166ns,fanout0all,slew24/0/0,cap2all. Not signoff. Evidence docs/evidence/core-only-clock-postgrt-20261118.json.
