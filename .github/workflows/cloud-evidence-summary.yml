@@ -1,15 +1,16 @@
-name: Core-only I/O contract and serial status qualification
+name: Core-only authenticated global routing
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  qualify:
+  repair:
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 355
     env:
       GH_TOKEN: ${{ github.token }}
+      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -17,17 +18,29 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
-        with:
-          version: '2026-08-04'
-          github-token: ${{ github.token }}
-      - run: python3 -m pip install 'pytest>=8.0'
-      - name: Verify actual mapped pin contract and execute serial RTL tests
-        run: python3 scripts/qualify_core_only_chip_io.py
+      - name: Prepare pinned physical runtime
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl
+          python3 scripts/qualify_core_only_timing_guards.py
+          python3 scripts/qualify_core_only_postcts_handoff.py
+          python3 -m py_compile scripts/cloud_core_only_globalroute.py hw/soc/pnr/core_only_globalroute_flow.py
+          python3 scripts/bootstrap_flow.py
+          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
+      - name: Route authenticated repaired CTS and measure fresh corners
+        run: python3 scripts/cloud_core_only_globalroute.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-io-shell-${{ github.run_id }}
-          path: hw/soc/out/core-only-io-shell/
+          name: core-only-globalroute-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-globalroute/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: core-only-globalroute-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-globalroute/result.json
           if-no-files-found: error
           retention-days: 90
