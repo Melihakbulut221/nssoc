@@ -1,3 +1,19 @@
+# Current continuation: pad controls and routing
+
+Authoritative current source is this immutable cloud checkpoint. Historical notes below are not current job status. Re-poll jobs before acting.
+
+- User confirmed package/PCB/devices/interface rates are not selected. External IO signoff remains open; do not fabricate load/delay budgets.
+- Preserve core detailed route run 44337630426, head 19924a826cfca054f30f19cdde091fbe6c744960, job 134918549155. Last verified running native route/geometry. On completion authenticate its archive and source, native DRC, antenna, identity and geometry before dispatching staged post-ECO extraction b75792d10e647522ecb6c554a35906708d718c57 with admitted artifact ID/digest.
+- Iteration diagnostic run 44369604102, head 6a39f0b767bb30b7bd78eeb6d2030249bf377e06: two jobs 135032490625/135032490892 last verified queued. Same circuit/tolerances, Gear2/5ps, itl4 100/1000 with native readback. Do not duplicate or cancel.
+- Six-case runner staged at de6e749d08efae512192b761a5f97bdaced166f4, tag cloud-pad-current-all-cases-20261118. It now continues independent controls after an individual failure and still rejects the aggregate. Not yet native-dispatched: first read iteration-run results.
+- Failure-injection qualification run 44370319407, head d53da4e5b58edcc335c0c8290605a4b002e319a5, job 135035073321 last verified queued. Requires first-case native error with rc0 to fail aggregate while remaining five captures execute. No pass claim until cloud result.
+- All clamp topology cases run 44367854354 failed near 22.753 ns, including 1 ohm artifact14458556339 SHA256 dd5f83b72de24395bcd5383580357c9b67da2d53e5f027788b2c3cc2c45707a7, error vio#branch. Native Gear2 confirmed. No pad violation closed.
+- Cancelled only fully unstarted duplicate broad checks run44369606298 after proving exact ancestor44367860149 head2e7e7e26e91062ee8aaccd84a72e7c14d4b0c6ac and unchanged RTL. Earlier formal/RTL jobs remain running. GitHub aggregate may say queued while individual jobs run: inspect jobs. No physical job cancelled.
+- Future diagnostic source revisions should use immutable cloud-* tags and explicit dispatch, avoiding duplicate broad regression runs on every branch creation. This does not waive final current-source regression.
+- All work remains on GitHub, no local repository, artifact, test or filesystem output.
+
+---
+
 # Current continuation: core output buffers admitted; routing next
 
 PCIe and Ethernet remain excluded. 50 MHz / 20 ns and 5% derate unchanged.
