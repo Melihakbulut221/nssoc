@@ -24,7 +24,7 @@ def main():
         tcl='set_thread_count 4\nread_liberty '+q('std.lib')+'\nread_liberty '+q('io.lib')+'\nread_db '+q('chip-buffered-placed.odb')+'\nread_sdc '+q('shell-cts.sdc')+'\n'
         tcl+='foreach name {VDD VSS IOVDD IOVSS} {set net [[ord::get_db_block] findNet $name]; if {$net=="NULL"} {error "Missing supply"}; $net setSpecial; check_power_grid -net $name; puts "NSSOC_POWER_CONNECTED_$name"}\n'
         tcl+='set_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2\nset_global_routing_layer_adjustment Metal2-TopMetal2 0.3\n'
-        tcl+='global_route -guide_file '+q('chip.guide')+' -congestion_report_file '+q('congestion.rpt')+' -congestion_iterations 50 -verbose\n'
+        tcl+='global_route -guide_file '+q('chip.guide')+' -congestion_report_file '+q('congestion.rpt')+' -congestion_iterations 300 -verbose\n'
         tcl+='write_db '+q('chip-globalroute.odb')+'\nread_guides '+q('chip.guide')+'\n'
         tcl+='detailed_route -output_drc '+q('route-drc.rpt')+' -output_maze '+q('maze.log')+' -output_guide_coverage '+q('guide-coverage.csv')+' -verbose 1\n'
         tcl+='set f [open '+q('native-drc-count.txt')+' w]\nputs $f [detailed_route_num_drvs]\nclose $f\nwrite_db '+q('chip-detailedroute.odb')+'\nwrite_def '+q('chip-detailedroute.def')+'\nwrite_verilog '+q('chip-detailedroute.v')+'\nputs NSSOC_BUFFERED_DETAILED_ROUTE_COMPLETE\n'

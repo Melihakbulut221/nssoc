@@ -1,3 +1,12 @@
+## 2026-11-18: buffered route power checks pass; global overflow persists
+
+- Run 44298690884 completed FAILURE at GRT-0116, before detailed routing. Native artifact 14423909263 SHA256 ca3b55980297239fb924aac2b9d772532b1e19ca8f43f526f51c6865cd729cc7 was independently hash-checked.
+- All four strict native power checks passed (VDD/VSS/IOVDD/IOVSS) with the 179 new buffers.
+- Global route after 50 extra iterations: 1870 nets, 540439 um, total overflow 135 (Metal2 61, Metal3 74; max overflow 1 each). Higher layers zero overflow. Native global route rejected congestion correctly; no success override.
+- Compared original/buffered native logs: both report 1782 blockages. Do not assume temporary fixed cell statuses introduced a new blockage-count problem.
+- Revised candidate increases only congestion optimization iterations from 50 to 300. Keeps layer adjustment 0.3, routing layers, geometry, clocks, and strict zero-overflow requirement unchanged. Reuses the verified legalized ECO, without rebuilding it.
+- Original core route 44263061910 remains live and separate. No physical run cancelled.
+
 ## 2026-11-18: 179 control buffers legalized and verified; fresh routing live
 
 - Buffer ECO 44298111314 at 9ed3c777c32779357a5075e9f002000a9253a6c9 passed. Independently verified native 14424606971 SHA256 77b704eca3a83a86f41a91115f12015eda83d0dec9f55deddd547fa6169c30b1 and summary 14424527270 SHA256 54d6a799fd291ac0013b2b441cffab9e8635d40f796df1120a94ba104b419e95, all outputs, protected source files and identical result bytes.
