@@ -28,7 +28,10 @@ def main():
   (inp/'sg13g2_io.spi').write_bytes(base64.b64decode(obj['content']))
   assert sha(inp/'sg13g2_io.spi')=='c2cfa122268050f770e91eeb0c70682775f9610cf4d5b066805b2d57c5980ce2'
   ng=Path(os.environ['CLOUD_NGSPICE'])
-  r['runtime_version']=subprocess.check_output([str(ng),'--version'],text=True)
+  init=inp/'startup';init.mkdir();(init/'spinit').write_text('set num_threads=1'+chr(10))
+  native_env=dict(os.environ,SPICE_SCRIPTS=str(init))
+  r['solver_configuration']=dict(method='gear',maxord=2,max_step_ps=5,initial_conditions='native DC operating point',forced_initial_conditions=False,tolerances_relaxed=False)
+  r['runtime_version']=subprocess.check_output([str(ng),'--version'],text=True,env=native_env)
   assert 'ngspice-47'in r['runtime_version']
   protected={str(p):sha(p)for p in [Path(__file__),ng,*[p for p in inp.rglob('*')if p.is_file()]]}
   r['protected_inputs']=protected
@@ -37,7 +40,7 @@ def main():
     name=str(bit)+'-'+mode;folder=OUT/name;folder.mkdir()
     enable='PWL(0 1.08 20n 1.08 20.12n 0 50n 0)'if mode=='turnoff'else('1.08'if mode=='enabled'else'0')
     deck=['* native 4mA bidirectional pad, slow supplies and slow MOS, clamp at half IO rail',
-      '.global sub!', 'Vsub sub! 0 0','.temp 125',
+      '.global sub!', 'Vsub sub! 0 0','.temp 125','.options method=gear maxord=2',
       '.lib "'+str(inp/'models/cornerMOSlv.lib')+'" mos_ss',
       '.lib "'+str(inp/'models/cornerMOShv.lib')+'" mos_ss',
       '.lib "'+str(inp/'models/cornerRES.lib')+'" res_wcs',
@@ -49,10 +52,10 @@ def main():
       '.control']
     deck+=['pre_osdi '+str(inp/p)for p in ['psp103.osdi','psp103_nqs.osdi','r3_cmc.osdi']]
     deck+=['set wr_singlescale','set wr_vecnames','save v(en) i(vsense) v(xdut.ngate) v(xdut.pgate)',
-      'tran 10p 50n 0 10p','wrdata wave.dat v(en) i(vsense) v(xdut.ngate) v(xdut.pgate)',
+      'option','tran 5p 50n 0 5p','wrdata wave.dat v(en) i(vsense) v(xdut.ngate) v(xdut.pgate)',
       'echo NSSOC_PAD_CURRENT_CAPTURE_COMPLETE','quit','.endc','.end']
     p=folder/'bench.cir';p.write_text('\n'.join(deck)+'\n');protected[str(p)]=sha(p)
-    with (folder/'native.log').open('w')as log:proc=subprocess.run([str(ng),'-n','-b',str(p)],cwd=folder,stdout=log,stderr=subprocess.STDOUT)
+    with (folder/'native.log').open('w')as log:proc=subprocess.run([str(ng),'-n','-b',str(p)],cwd=folder,stdout=log,stderr=subprocess.STDOUT,env=native_env)
     log=(folder/'native.log').read_text();row=dict(returncode=proc.returncode,diagnostics=[l for l in log.splitlines()if re.search(r'(?i)warning|error|singular|timestep too small|convergence|failed',l)])
     r['cases'][name]=row
     assert proc.returncode==0 and 'NSSOC_PAD_CURRENT_CAPTURE_COMPLETE'in log
