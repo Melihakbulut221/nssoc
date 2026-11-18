@@ -1,3 +1,13 @@
+## 2026-11-18: buffered parent actual-SPEF timing improves; pad electrical gaps remain
+
+- Run 44300595347 at 023e53230b82fd456c7e7c0c1fe8a205ceb79700 passed the diagnostic flow. Verified native 14426390328 SHA256 054cd6856b61fb3e01df98834006ccabff475ec7502dd077da32998c0d854705 and summary 14425492854 SHA256 c67788e68cac55e5fda5a47acb743c06165c271ff0a62a349002bb7a75b28b85, matching result bytes, all 30 outputs and protected sources.
+- NEW nominal SPEF SHA256 d23b646f475e7e7d448ef83d546ec26d2055432b8ce237e6492855ad49946173. All 1794 expected routed nets represented, exact terminals and connected resistor graphs, zero capacitance inconsistencies.
+- Scoped parent worst setup/hold ns: slow +15.472871780/+0.292998135; typical +17.179304123/+0.185055926; fast +18.162660599/+0.121017836. Unchanged 20 ns internal clocks and 5% derate. Baseline slow setup was -0.983664751 ns. Do NOT claim full-chip timing closure: core internal model, qualified IO/CDC and min/max RC remain absent.
+- Electrical counts slew/fanout/cap: slow 76/0/18, typical 54/0/6, fast 29/0/1. Baseline slow 1322/8/24. All remaining cap violators are pad p2c drivers. Slow slew list is 71 pad pins plus parse_blif1682/A and RESET_B on slice531,529,533,534. These five internal violations remain at typical; fast slew violations are all pad pins.
+- Next repair target: actual long pad-to-core routes and pad-reset input loading, preserving the now-clean scoped control setup/hold. Core-output-to-pad slew diagnostics lack a real core driver model and require full-core binding before signoff. Every further buffer ECO needs logical equivalence, placement, PG checks, routing, exact coverage and fresh corner timing.
+- Investigated pinned OpenSTA 857316ff parasitics/Parasitics.tcl: read_spef -path u_core is supported. After main core route/extraction finishes, use actual core gate netlist and hierarchical SPEF with parent netlist/SPEF, not a fabricated core Liberty. Full inter-block coupling and external constraints still need qualification.
+- Main core route 44263061910 remains the blocking dependency for complete core-to-pad timing, but useful pad electrical work remains available. Preserve the live run.
+
 ## 2026-11-18: combined buffered extraction/timing now running
 
 - Run 44300595347 at 023e53230b82fd456c7e7c0c1fe8a205ceb79700 confirmed in progress on codex/core-only-chip-buffered-timing. This consumes verified route 44299714366, creates new SPEF, checks 1794-net coverage and analyzes three native library corners. Inspect each stage and all artifacts before declaring improvement.
