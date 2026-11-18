@@ -158,10 +158,16 @@ def qualify_native_decoder(odb,block):
         j=e.addPoint(10000,10000);e.addPoint(20000,10000)
         e.newPathVirtualWire(j,layer,'ROUTED');e.addPoint(30000,10000);e.addPoint(40000,10000)
     fixture('virtual_wire_not_metal',virtual,[r(10000-h,10000-hx,20000+h,10000+hx),r(30000-h,10000-hx,40000+h,10000+hx)])
-    candidates=[v for v in block.getVias()if v.getBottomLayer()==layer or v.getTopLayer()==layer]
-    assert candidates,'No native via fixture available'
+    candidates=[v for v in block.getTech().getVias()if v.getBottomLayer().getName()==layer.getName() or v.getTopLayer().getName()==layer.getName()]
+    assert candidates,'No native technology via fixture available'
     v=candidates[0]
-    fixture('native_via_location',lambda e:(e.addPoint(10000,10000),e.addVia(v)),[('via',v.getName(),10000,10000)])
+    fixture('native_tech_via_location',lambda e:(e.addPoint(10000,10000),e.addTechVia(v)),[('via',v.getName(),10000,10000)])
+    block_vias=list(block.getVias())
+    assert block_vias,'No native block via fixture available'
+    v=block_vias[0]
+    def block_via(e):
+        e.newPath(v.getBottomLayer(),'ROUTED');e.addPoint(10000,10000);e.addVia(v)
+    fixture('native_block_via_location',block_via,[('via',v.getName(),10000,10000)])
     assert not any(n.getName().startswith('__nssoc_decoder_fixture_')for n in block.getNets())
     return results
 
