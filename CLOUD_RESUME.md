@@ -1,3 +1,9 @@
+## 2026-11-18: combined buffered extraction/timing now running
+
+- Run 44300595347 at 023e53230b82fd456c7e7c0c1fe8a205ceb79700 confirmed in progress on codex/core-only-chip-buffered-timing. This consumes verified route 44299714366, creates new SPEF, checks 1794-net coverage and analyzes three native library corners. Inspect each stage and all artifacts before declaring improvement.
+- General checks 44300598930 pending. Main core detailed route 44263061910 separately confirmed in progress. Preserve both physical jobs.
+- Baseline to compare: parent slow WNS -0.983664751 ns and slew/fanout/cap violations 1322/8/24. Positive hold baseline is scoped and must be rechecked after reset buffering. Full chip timing, SRAM models/LVS/RC minmax, external IO/CDC qualification and production approval remain open.
+
 ## 2026-11-18: buffered route physically verified; fresh timing admitted
 
 - Route 44299714366 completed successfully at 4e5f4aac78beb0e08282f62af347080b13ae5f7f. Native 14425388007 SHA256 c05a6ef1e93f269db0fb0f04aa9758e0f674c3bf9712f2774aecf9ab3f280d5d and summary 14425716389 SHA256 328248dd0c6aa38548f648822448e8207b19d0b633ffe0d71c18be4a4e3b37f9 independently verified; all 25 output hashes, protected source bytes and matching result/audit records checked.
