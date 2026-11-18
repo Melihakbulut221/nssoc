@@ -8,6 +8,7 @@ import stat
 import re
 import subprocess
 from bootstrap_flow import verify
+from check_antenna_netlist_export import check_added_antennas
 from cloud_core_only_postgrt import (ROOT, sha, completed, archive, safe_path, put,
     current_path, restore_mapping, restore_cts, qualify_sources)
 from cloud_core_only_clock_probe import restore_cts8
@@ -89,6 +90,9 @@ def restore_route():
     app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
     with (OUT/'routed-export.log').open('w')as log:subprocess.run([str(app),'openroad','-exit',str(export)],stdout=log,stderr=subprocess.STDOUT,check=True)
     assert 'NSSOC_ROUTED_VIEWS_WRITTEN'in (OUT/'routed-export.log').read_text()
+    export_check=check_added_antennas((OUT/'routed.v').read_text(),binding['insertion_audit']['new_cells'])
+    assert export_check['new_diodes_exported']==800 and not export_check['missing_diodes']and not export_check['duplicate_diodes']and not export_check['signal_connection_mismatches']
+    report['antenna_netlist_export']=export_check
     assert sha(original_sdc)==sdc_hash and sha(odb)==report['routed_odb_sha256']
     state=dict(original_state);state.update(odb=str(odb),nl=str(OUT/'routed.v'),sdc=str(original_sdc));state['def']=str(OUT/'routed.def')
     for key in ['spef','sdf','lib','pnl']:
@@ -121,6 +125,7 @@ def main():
             artifacts=mapping_artifacts+cts_artifacts+[cts8meta,splitmeta,previousmeta]+refinedmeta+routedmeta)
         report["pre_route_corners"] = routed["baseline_estimated_corners"]
         report["fresh_view_binding"] = routed["fresh_view_binding"]
+        report["antenna_netlist_export"] = routed["antenna_netlist_export"]
         report["added_diode_power_contact"] = routed["added_diode_power_contact"]
         original_config = config
         data = json.loads(config.read_text())
@@ -151,7 +156,7 @@ def main():
             "hw/soc/flow/audit_estimated_spef.py", "hw/soc/flow/check_timing_derate.tcl",
             "scripts/audit_core_only_route_annotation.py"]:
             paths.append(ROOT/name)
-        paths.extend([name_guard,name_report,OUT/"routed.v",OUT/"routed.def",OUT/"routed-export.tcl",current_path(json.loads(initial.read_text())["sdc"])])
+        paths.extend([ROOT/"scripts/check_antenna_netlist_export.py",name_guard,name_report,OUT/"routed.v",OUT/"routed.def",OUT/"routed-export.tcl",current_path(json.loads(initial.read_text())["sdc"])])
         protected = {str(p):sha(p) for p in paths}
         report["protected_inputs"] = protected
         directory = OUT/"extraction";directory.mkdir(parents=True,exist_ok=False)

@@ -25,6 +25,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 -m py_compile scripts/cloud_core_only_antenna_extraction.py scripts/cloud_antenna_export_check.py
           python3 scripts/test_antenna_insertion_admission.py
+          python3 scripts/test_antenna_netlist_export.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Verify added diodes survive native netlist export
