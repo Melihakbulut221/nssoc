@@ -2,8 +2,10 @@ import importlib.util, os, json
 from pathlib import Path
 from unittest.mock import patch
 import numpy as np
+import pytest
 
-def test_all_six_cases_execute_and_any_failure_remains_fatal(tmp_path):
+@pytest.mark.parametrize("wrong_solver", [False, True])
+def test_all_six_cases_execute_and_any_failure_remains_fatal(tmp_path, wrong_solver):
     os.environ['NSSOC_PAD_CLAMP_OHMS']='0'
     os.environ['NSSOC_PAD_ITL4']='100'
     spec=importlib.util.spec_from_file_location('pad_current', 'scripts/cloud_core_only_pad_turnoff_current.py')
@@ -29,6 +31,7 @@ def test_all_six_cases_execute_and_any_failure_remains_fatal(tmp_path):
     def simulate(command, cwd, stdout, **kwargs):
         calls.append(cwd.name)
         stdout.write('NSSOC_POST_TRAN_SOLVER_READBACK\nIntegration Method = GEAR\nMaxOrder = 2\nitl4 (transient iterations) = 100\nNSSOC_PAD_CURRENT_CAPTURE_COMPLETE\n')
+        stdout.write('Matrix solver:\n'+('Sparse 1.3' if wrong_solver else 'KLU')+'\nUsing '+('SPARSE 1.3' if wrong_solver else 'KLU')+' as Direct Linear Solver\n')
         if cwd.name=='0-turnoff':stdout.write('TRAN: Timestep too small\n')
         class Result:returncode=0
         return Result()
@@ -41,5 +44,5 @@ def test_all_six_cases_execute_and_any_failure_remains_fatal(tmp_path):
     assert calls==['0-turnoff','0-enabled','0-disabled','1-turnoff','1-enabled','1-disabled']
     assert r['status']=='FAIL_OR_INCOMPLETE' and not r['accepted']
     assert r['cases']['0-turnoff']['status']=='FAIL_OR_INCOMPLETE'
-    assert all(r['cases'][n]['status']=='CAPTURE_COMPLETE' for n in calls[1:])
+    assert all(r['cases'][n]['status']==('FAIL_OR_INCOMPLETE' if wrong_solver else 'CAPTURE_COMPLETE') for n in calls[1:])
     assert r['sources_unchanged']

@@ -30,9 +30,9 @@ def main():
   (inp/'sg13g2_io.spi').write_bytes(base64.b64decode(obj['content']))
   assert sha(inp/'sg13g2_io.spi')=='c2cfa122268050f770e91eeb0c70682775f9610cf4d5b066805b2d57c5980ce2'
   ng=Path(os.environ['CLOUD_NGSPICE'])
-  init=inp/'startup';init.mkdir();(init/'spinit').write_text('set num_threads=1'+chr(10))
+  init=inp/'startup';init.mkdir();(init/'spinit').write_text('set num_threads=1'+chr(10)+'option klu'+chr(10))
   native_env=dict(os.environ,SPICE_SCRIPTS=str(init))
-  r['solver_configuration']=dict(method='gear',maxord=2,max_step_ps=5,transient_iteration_limit=int(ITL4),initial_conditions='native DC operating point',forced_initial_conditions=False,tolerances_relaxed=False)
+  r['solver_configuration']=dict(matrix_solver='KLU',method='gear',maxord=2,max_step_ps=5,transient_iteration_limit=int(ITL4),initial_conditions='native DC operating point',forced_initial_conditions=False,tolerances_relaxed=False)
   r['runtime_version']=subprocess.check_output([str(ng),'--version'],text=True,env=native_env)
   assert 'ngspice-47'in r['runtime_version']
   protected={str(p):sha(p)for p in [Path(__file__),ng,*[p for p in inp.rglob('*')if p.is_file()]]}
@@ -67,6 +67,8 @@ def main():
      assert row['gear2_native_readback'],'Native post-transient Gear2 readback missing'
      row['iteration_limit_native_readback']=bool(re.search(r'itl4 \(transient iterations\) = '+ITL4+r'\b',solver_log))
      assert row['iteration_limit_native_readback'],'Native iteration limit readback missing'
+     row['klu_native_readback']=bool(re.search(r'Matrix solver:\s*KLU\b',solver_log)and re.search(r'Using KLU.*Direct Linear Solver',log))
+     assert row['klu_native_readback'],'Native KLU solver readback missing'
      assert proc.returncode==0 and 'NSSOC_PAD_CURRENT_CAPTURE_COMPLETE'in log
      assert not row['diagnostics'],row['diagnostics']
      a=np.loadtxt(folder/'wave.dat',skiprows=1);assert a.ndim==2 and a.shape[1]==6 and np.isfinite(a).all()
