@@ -1,3 +1,11 @@
+# Current: original-clock setup/hold zero; zero-fanout repair remains live
+
+Original-clock run44254614637 is terminalSUCCESS, not signoff. Independently verified all archived output hashes and six fresh corner reports. Slow setup41->0, worst+0.0195897ns; hold0all, fast+0.0395028ns. Slew12/0/0, cap2/2/2, fanout748all remain. Evidence docs/evidence/core-only-route-refine200-20261118.json; details docs/core-only-route-refine200.md. This is NOT the zero-fanout topology. Never combine metrics from different netlists.
+
+Zero-fanout main candidate run44256809783/source0a055a1269f48e386e01b95eada858ae25671429/job134640380625 last observed in_progress in saved repair. Preserve the live handle; inspect native outputs and fresh corner metrics on completion. Goal active, PCIe/Ethernet excluded, 20ns/5%derate unchanged. Cloud-only; no persistent local source or artifacts. Detailed route/qualified RC/post-ECO equivalence and all remaining product signoff gates stay open.
+
+---
+
 # Current: routed clock fanout closed; post-route repair dispatched
 
 **44256809783**, source **0a055a1269f48e386e01b95eada858ae25671429**, branch **codex/core-only-clock-postgrt**: last observed in_progress. Do not duplicate. New runner scripts/cloud_core_only_clock_postgrt.py restores original mapping/CTS, CTS8 (including exact config reconstruction) and clock-split archive, verifies all protected hashes/fresh metrics,16move lines andtwo complete-terminal invariance markers, then starts actual saved routed state. Runs electrical repair then200setup/1000hold search with rerouting and fresh3cornerSTA. Artifacts core-only-clock-postgrt-native/summary-RUN. Zero fanout must be preserved; execution success is not acceptance.
