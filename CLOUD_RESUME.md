@@ -1,3 +1,16 @@
+# Current continuation: core-only global route dispatched
+
+Latest source: e37b67f0e8c82425a8951c2f978ed2ced10a830c on codex/core-only-globalroute. PCIe/Ethernet remain excluded by user decision. CPU 20 ns and 5 percent derate remain unchanged.
+
+- Global route run **44245993247**: https://github.com/Melihakbulut221/nssoc/actions/runs/44245993247 . Last observed queued. Poll this handle; do not duplicate dispatch. It restores authenticated mapped, CTS and postCTS artifacts, routes the repaired state and measures fresh independent corners. Native artifact name core-only-globalroute-native-44245993247; summary core-only-globalroute-summary-44245993247. Output root hw/soc/out/core-only-globalroute. Execution success is not signoff.
+- PostCTS run **44242709956** is SUCCESS. Native artifact 14401785833 SHA256 32ccd56e3e7091231c0ddb7a60ef033d7cb15ff54bacd44101add577b137d3d2 independently verified, all 365 output hashes and all six per-corner metric sources checked. Final slow/typical/fast setup and hold counts all ZERO. Slow setup worst slack +1.38514 ns; fast hold +0.055888 ns. Remaining slew counts 2/1/0, cap 0/0/0, fanout 748/748/748. These are placement estimates, not extracted timing. See docs/core-only-globalroute.md.
+- Native boot **44239816779**, job134584671795 remains in progress in Authenticate new map and run native whole-chip boot (step started 04:49:47 UTC). Preserve this job and inspect its eventual native evidence, not just conclusion.
+- IO shell qualification **44245032516** passed 19 cases, no skips, structural only. Qualified IO source d3db62865a2fcb8dcb35b4a7bdf5956d5c73eb57 and documentation 065c49ec53ea2a2943ffd7cfefeba18bc776bf95 are ancestors of this branch. It is not a physically integrated padframe.
+
+Next: inspect native global route and fresh corner results, repair remaining electrical/timing violations, detailed route and qualified RC. Then core/padframe integration with mailbox test-clock/CDC constraints and independent DRC/LVS/DFT/production gates. Native boot branch changes must be integrated without invalidating producer source bindings. Do not repin frozen PCIe proof to mask its failure on changed RTL; add retained-scope release CI. Keep all work in cloud. No persistent local checkout or artifacts created.
+
+---
+
 # Latest core-only continuation: 2026-11-18
 
 The goal remains active: production-ready nssoc without PCIe/Ethernet, as explicitly approved by the user. Keep remaining interfaces, protection/MBIST, 50 MHz core and five percent derate. Work cloud-only; no local checkout/artifacts. No production acceptance is claimed.
