@@ -1,3 +1,11 @@
+## 2026-11-18: control-buffer native identity guard repaired
+
+- First buffer candidate run 44297672804 failed before writing an ECO because Python wrapper-object equality was used for the driver comparison. Native artifact 14424716950 SHA256 2abc2e38d20c31ea1d6d6b45b0c871ada7f7ab97b17755f5e7600cacc5d844c1 was hash-checked. The failing line compared a native terminal list with [driver]; no electrical diagnosis was established by this failure.
+- Source 9ed3c777c32779357a5075e9f002000a9253a6c9 uses stable instance/master-terminal name pairs both for identifying the sole driver and excluding it from sink lists. The sole-driver assertion remains strict and now reports actual identities on failure.
+- Added independent actual buffer-driver tracing after legalization. Every original terminal must trace back to its original net; actual new-net drivers must be non-inverting buffer outputs; cycles and unknown sources are rejected with fault controls.
+- Revised physical candidate run 44298111314 is live. Retained new checks 44298117342 pending. Inspect buffer.log first if it fails; do not restart a live job.
+- No new geometry/timing acceptance yet. Main route 44263061910 remains live; fresh routing, extraction and corner timing are required after any successful buffer repair.
+
 ## 2026-11-18: actual control/reset buffer ECO launched
 
 - Run 44297672804 at source 66be5227ed38807f1747107f3363e19dbd434914, branch codex/core-only-chip-control-buffers, confirmed live. General checks 44297675490 live.
