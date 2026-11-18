@@ -1,3 +1,13 @@
+# Current: SRAM pin geometry probe added while repairs continue
+
+Native SRAM driver/geometry probe **44254152426**, source **bacd61da031c46cf7bb0433d1effb1e1ddca1e33**, branch **codex/core-only-sram-driver-probe**. Last observed queued. Do not duplicate dispatch. It reuses authenticated CTS8 restore, reports actual A_MEN pin rectangles, macro origin/orientation/DBU, native NOR2 masters and Liberty cell names plus slow STA. No SRAM ECO yet. IMPORTANT correction: macro origin is not pin position; do NOT infer long wiring from the previously reported macro and driver origins. First native probe archive contains neither LEF nor Liberty, so actual tool database inspection is required. See docs/core-only-sram-driver-probe.md.
+
+Clock split **44253264552**/45932c71e85db517f87e01f2a7f6b80cd1bc045c and routed repair **44252197610**/2d60f17df6eb1dfe10351040b0718c6d4697fc5a were both re-polled in_progress; native clock split job134628821359 in Split clock fanout, legalize, repair and route with fresh corners, route job134625319732 in Continue saved repair and compare fresh corners to baseline. Native boot44239816779/job134584671795 also confirmed original simulation still live. Preserve all handles. No new timing closure result yet.
+
+Goal active, cloud-only, no persistent local source/artifacts. User-removed PCIe/Ethernet stay excluded; remaining product and physical gates are unchanged.
+
+---
+
 # Current: native bus-clock split dispatched after verified probe
 
 Clock split run **44253264552**, source **45932c71e85db517f87e01f2a7f6b80cd1bc045c**, branch **codex/core-only-clock-split**. Last observed in_progress. Do not duplicate. The two-buffer candidate snapshots ALL original ITerm/BTerm connections and masters, permits only the16 expected sink reconnections, copies supplies, and checks exactly2added cells/nets before and after native detailed placement. It then measures split/electrical/timing (placement RC) and final global routing in three independent corners. No closure claim before native outputs. See docs/core-only-clock-split.md.
