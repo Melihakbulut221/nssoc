@@ -23,7 +23,9 @@ for pin in sorted(pins):
 assert len(targets)>=18
 flags={n.getName():n.isDoNotTouch()for n in b.getNets()}
 statuses={i.getName():str(i.getPlacementStatus())for i in b.getInsts()}
-for n in b.getNets():n.setDoNotTouch(n.getName()not in targets)
+# Protect signal topology, while allowing native global-connect to power new cells.
+for n in b.getNets():
+ n.setDoNotTouch(n.getName()not in targets and str(n.getSigType())not in ('POWER','GROUND'))
 for i in b.getInsts():
  if str(i.getPlacementStatus())=='PLACED':i.setPlacementStatus('FIRM')
 odb.write_db(d,str(out/'repair-input.odb'))

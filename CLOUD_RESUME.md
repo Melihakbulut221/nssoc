@@ -11,3 +11,10 @@ Pad repair is independently running in 44302346053, source 0842574f18a3bc53b15d9
 General checks 44302348083 are retained. Superseded checks 44300151585, 44299676431 and 44298692859 were cancelled only after API comparison proved their heads are ancestors of 0842574f. No physical run was cancelled.
 
 Next: inspect extracted core timing; qualify routed functional boot using scripts/cloud_core_only_routed_boot.py with the same artifact pins; finish pad electrical repair and fresh parent routing; integrate actual core netlist/SPEF into parent timing with real IO/CDC constraints. Full SRAM transistor LVS, foundry DRC, Liberty/RC qualification, DFT/package/ESD and manufacturing approval remain unclosed.
+
+## Pad repair power correction
+Run 44302346053 failed its strict audit: 145 inserted buffers on 20 selected pad nets were unpowered because repair preparation marked VDD/VSS do-not-touch. Native global_connect explicitly warned ODB-0382/0379 and skipped these rails. Native artifact 14426956887 SHA256 6e9cae12e1b0b6975dd3cf4f2cbf555e66971fd8ed7a188ac1c874ce83bf9f43 and all output hashes were verified. Existing geometry passed before the power check. No candidate accepted.
+
+The corrected preparation protects non-target signal nets but leaves native POWER/GROUND nets available to global_connect. The audit still rejects missing or wrong buffer supplies, original geometry changes, logical splits/shorts and any unexpected buffer source. Original net flags are restored after the audit. Fresh physical/timing proof remains mandatory.
+
+Core extracted timing run 44303529050 uses head 20bedd917c6f98bf6afeea1ee991d2ca4c4f03ea. Routed boot run 44303624006 uses head 2c2bc900d3ad9034d78c87d71434eb98533f383d. Both use the pinned routed core artifacts; preserve live jobs.

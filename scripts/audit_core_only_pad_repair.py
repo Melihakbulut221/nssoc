@@ -19,7 +19,9 @@ def union(a,b):parent[root(a)]=root(b)
 for name,i in new.items():
  assert re.fullmatch(r'sg13g2_buf_(1|2|4|8|16)',i.getMaster().getName()),('Non-buffer ECO',name,i.getMaster().getName())
  assert str(i.getPlacementStatus())=='PLACED'
- for p,n in [('VDD','VDD'),('VSS','VSS')]:assert i.findITerm(p).getNet().getName()==n
+ for p,n in [('VDD','VDD'),('VSS','VSS')]:
+  term=i.findITerm(p);assert term and term.getNet(),('Missing new buffer power connection',name,p)
+  assert term.getNet().getName()==n,('Wrong new buffer power rail',name,p)
  a=i.findITerm('A').getNet();x=i.findITerm('X').getNet();assert a and x;union(a.getName(),x.getName())
 actual=connections(b1);expected=connections(b0);old_to_new={};new_to_old={}
 for key,net in expected.items():
