@@ -39,44 +39,54 @@ def main():
   r['protected_inputs']=protected
   for bit in [0,1]:
    for mode in ['turnoff','enabled','disabled']:
-    name=str(bit)+'-'+mode;folder=OUT/name;folder.mkdir()
-    enable='PWL(0 1.08 20n 1.08 20.12n 0 50n 0)'if mode=='turnoff'else('1.08'if mode=='enabled'else'0')
-    deck=['* native 4mA bidirectional pad, slow supplies and slow MOS, clamp at half IO rail',
-      '.global sub!', 'Vsub sub! 0 0','.temp 125','.options method=gear maxord=2 itl4='+ITL4,
-      '.lib "'+str(inp/'models/cornerMOSlv.lib')+'" mos_ss',
-      '.lib "'+str(inp/'models/cornerMOShv.lib')+'" mos_ss',
-      '.lib "'+str(inp/'models/cornerRES.lib')+'" res_wcs',
-      '.lib "'+str(inp/'models/cornerDIO.lib')+'" dio_ss',
-      '.include "'+str(inp/'sg13g2_io.spi')+'"',
-      'Vcore vdd 0 1.08','Vio iovdd 0 3.0','Vdata data 0 '+str(bit*1.08),
-      'Ven en 0 '+enable,*(['Vhold pad 0 1.5']if CLAMP=='0'else['Vhold held 0 1.5','Rfixture pad held '+CLAMP]),
-      'Xdut 0 vdd 0 iovdd p2c data en pad sg13g2_IOPadInOut4mA',
-      '.control']
-    deck+=['pre_osdi '+str(inp/p)for p in ['psp103.osdi','psp103_nqs.osdi','r3_cmc.osdi']]
-    deck+=['set wr_singlescale','set wr_vecnames','save v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
-      'option method=gear maxord=2 itl4='+ITL4,'option','tran 5p 50n 0 5p','echo NSSOC_POST_TRAN_SOLVER_READBACK','option','wrdata wave.dat v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
-      'echo NSSOC_PAD_CURRENT_CAPTURE_COMPLETE','quit','.endc','.end']
-    p=folder/'bench.cir';p.write_text('\n'.join(deck)+'\n');protected[str(p)]=sha(p)
-    with (folder/'native.log').open('w')as log:proc=subprocess.run([str(ng),'-n','-b',str(p)],cwd=folder,stdout=log,stderr=subprocess.STDOUT,env=native_env)
-    log=(folder/'native.log').read_text();row=dict(returncode=proc.returncode,diagnostics=[l for l in log.splitlines()if re.search(r'(?i)warning|error|singular|timestep too small|convergence|failed',l) and l.strip()!='Truncation error correction, charge based, is selected:'])
-    r['cases'][name]=row
-    solver_log=log.split('NSSOC_POST_TRAN_SOLVER_READBACK')[-1]
-    row['gear2_native_readback']=bool(re.search(r'(?i)Integration Method = GEAR',solver_log)and re.search(r'MaxOrder = 2',solver_log))
-    assert row['gear2_native_readback'],'Native post-transient Gear2 readback missing'
-    row['iteration_limit_native_readback']=bool(re.search(r'itl4 \(transient iterations\) = '+ITL4+r'\b',solver_log))
-    assert row['iteration_limit_native_readback'],'Native iteration limit readback missing'
-    assert proc.returncode==0 and 'NSSOC_PAD_CURRENT_CAPTURE_COMPLETE'in log
-    assert not row['diagnostics'],row['diagnostics']
-    a=np.loadtxt(folder/'wave.dat',skiprows=1);assert a.ndim==2 and a.shape[1]==6 and np.isfinite(a).all()
-    t=a[:,0];assert np.all(np.diff(t)>0)and t[-1]>=49.99e-9
-    pre=(t>=10e-9)&(t<=19e-9);post=(t>=40e-9)&(t<=49e-9)
-    assert pre.sum()>20 and post.sum()>20
-    current=a[:,2];row['maximum_pad_deviation_from_clamp_v']=float(np.max(np.abs(a[:,5]-1.5)));row.update(rows=len(a),pre_current_a=float(np.median(current[pre])),post_current_a=float(np.median(current[post])),post_abs_max_a=float(np.max(np.abs(current[post]))))
-    if mode!='disabled':assert abs(row['pre_current_a'])>1e-6,'No active pad drive'
-    if mode=='turnoff':
-     cutoff=.01*abs(row['pre_current_a']);indices=np.where((t>=20.06e-9)&(np.abs(current)<cutoff))[0]
-     row['first_below_one_percent_after_enable_midpoint_s']=None if not len(indices)else float(t[indices[0]]-20.06e-9)
+    name=str(bit)+'-'+mode;folder=OUT/name
+    try:
+     folder.mkdir()
+     enable='PWL(0 1.08 20n 1.08 20.12n 0 50n 0)'if mode=='turnoff'else('1.08'if mode=='enabled'else'0')
+     deck=['* native 4mA bidirectional pad, slow supplies and slow MOS, clamp at half IO rail',
+       '.global sub!', 'Vsub sub! 0 0','.temp 125','.options method=gear maxord=2 itl4='+ITL4,
+       '.lib "'+str(inp/'models/cornerMOSlv.lib')+'" mos_ss',
+       '.lib "'+str(inp/'models/cornerMOShv.lib')+'" mos_ss',
+       '.lib "'+str(inp/'models/cornerRES.lib')+'" res_wcs',
+       '.lib "'+str(inp/'models/cornerDIO.lib')+'" dio_ss',
+       '.include "'+str(inp/'sg13g2_io.spi')+'"',
+       'Vcore vdd 0 1.08','Vio iovdd 0 3.0','Vdata data 0 '+str(bit*1.08),
+       'Ven en 0 '+enable,*(['Vhold pad 0 1.5']if CLAMP=='0'else['Vhold held 0 1.5','Rfixture pad held '+CLAMP]),
+       'Xdut 0 vdd 0 iovdd p2c data en pad sg13g2_IOPadInOut4mA',
+       '.control']
+     deck+=['pre_osdi '+str(inp/p)for p in ['psp103.osdi','psp103_nqs.osdi','r3_cmc.osdi']]
+     deck+=['set wr_singlescale','set wr_vecnames','save v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
+       'option method=gear maxord=2 itl4='+ITL4,'option','tran 5p 50n 0 5p','echo NSSOC_POST_TRAN_SOLVER_READBACK','option','wrdata wave.dat v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
+       'echo NSSOC_PAD_CURRENT_CAPTURE_COMPLETE','quit','.endc','.end']
+     p=folder/'bench.cir';p.write_text('\n'.join(deck)+'\n');protected[str(p)]=sha(p)
+     with (folder/'native.log').open('w')as log:proc=subprocess.run([str(ng),'-n','-b',str(p)],cwd=folder,stdout=log,stderr=subprocess.STDOUT,env=native_env)
+     log=(folder/'native.log').read_text();row=dict(returncode=proc.returncode,diagnostics=[l for l in log.splitlines()if re.search(r'(?i)warning|error|singular|timestep too small|convergence|failed',l) and l.strip()!='Truncation error correction, charge based, is selected:'])
+     r['cases'][name]=row
+     solver_log=log.split('NSSOC_POST_TRAN_SOLVER_READBACK')[-1]
+     row['gear2_native_readback']=bool(re.search(r'(?i)Integration Method = GEAR',solver_log)and re.search(r'MaxOrder = 2',solver_log))
+     assert row['gear2_native_readback'],'Native post-transient Gear2 readback missing'
+     row['iteration_limit_native_readback']=bool(re.search(r'itl4 \(transient iterations\) = '+ITL4+r'\b',solver_log))
+     assert row['iteration_limit_native_readback'],'Native iteration limit readback missing'
+     assert proc.returncode==0 and 'NSSOC_PAD_CURRENT_CAPTURE_COMPLETE'in log
+     assert not row['diagnostics'],row['diagnostics']
+     a=np.loadtxt(folder/'wave.dat',skiprows=1);assert a.ndim==2 and a.shape[1]==6 and np.isfinite(a).all()
+     t=a[:,0];assert np.all(np.diff(t)>0)and t[-1]>=49.99e-9
+     pre=(t>=10e-9)&(t<=19e-9);post=(t>=40e-9)&(t<=49e-9)
+     assert pre.sum()>20 and post.sum()>20
+     current=a[:,2];row['maximum_pad_deviation_from_clamp_v']=float(np.max(np.abs(a[:,5]-1.5)));row.update(rows=len(a),pre_current_a=float(np.median(current[pre])),post_current_a=float(np.median(current[post])),post_abs_max_a=float(np.max(np.abs(current[post]))))
+     if mode!='disabled':assert abs(row['pre_current_a'])>1e-6,'No active pad drive'
+     if mode=='turnoff':
+      cutoff=.01*abs(row['pre_current_a']);indices=np.where((t>=20.06e-9)&(np.abs(current)<cutoff))[0]
+      row['first_below_one_percent_after_enable_midpoint_s']=None if not len(indices)else float(t[indices[0]]-20.06e-9)
+    except Exception as error:
+     row=r['cases'].setdefault(name,{})
+     row.update(status='FAIL_OR_INCOMPLETE',error=repr(error))
+    else:
+     row['status']='CAPTURE_COMPLETE'
   assert all(sha(p)==h for p,h in protected.items())
+  r['sources_unchanged']=True
+  failures={name:row.get('error','missing case')for name,row in r['cases'].items()if row.get('status')!='CAPTURE_COMPLETE'}
+  assert len(r['cases'])==6 and not failures,failures
   r.update(status='SCHEMATIC_PAD_CURRENT_CAPTURES_COMPLETE_REQUIRES_PHYSICAL_AND_MODEL_REVIEW',sources_unchanged=True)
  except BaseException as error:r.update(status='FAIL_OR_INCOMPLETE',error=repr(error));raise
  finally:

@@ -32,6 +32,8 @@ jobs:
           echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Verify all cases execute while failures remain fatal
+        run: python3 -m pytest -q tests/test_pad_current_case_continuation.py
       - name: Measure real pad turnoff current and controls
         run: python3 scripts/cloud_core_only_pad_turnoff_current.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
