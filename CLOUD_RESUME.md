@@ -1,3 +1,68 @@
+# Current checkpoint: core output isolation candidate (2026-11-18)
+
+Scope remains PCIe/Ethernet excluded; 50 MHz / 20 ns and 5 percent derating unchanged.
+All physical execution is cloud-only.
+
+## Preserve these core jobs
+
+- Detailed core route 44337630426, execution head 19924a826cfca054f30f19cdde091fbe6c744960.
+- Selected ECO native boot/system MBIST 44342916945, head 96acee7ce6afcf8c8692f58ceffa47afb905e6ab.
+Both last confirmed running. Poll exact handles; do not restart because observation expires.
+After independent route artifact admission, dispatch the staged core RCX workflow on
+codex/core-only-posteco-extraction at b75792d10e647522ecb6c554a35906708d718c57
+with verified route_artifact_id and route_artifact_digest. No core RCX result yet.
+
+## Latest verified parent
+
+56 perimeter buffers plus 14 residual-crossing buffers cleared all five targeted
+native buffer paths. Parent route 44353658604 / b9f958703287713d4cff8adf98fd820bd63be945
+has 2045 instances, 2019 routed nets, zero native route DRC and zero visible geometry
+errors, with strict pre/post route identity. Artifact 14449707674 SHA256
+c393deff70e3d24a33c4efea0362f9a3335e380f8d77f185de9ee2ea85708055; 27 outputs verified.
+Actual nominal three-corner timing 44355961230 / 07fb3635e7e2fc98691d5a8056707a2cf153a81d:
+artifact 14452736425 SHA256 85672c97a9d40da712b4fa0bc750f3e80d2d41f470d8099c239c1df2f58058d0,
+30 outputs and protected sources verified. All remaining slew pins are pads:
+51 slow / 39 typical / 27 fast. All 70 inserted buffers and ten original repair
+endpoint buffers are clear. Parent timing is scoped, nominal RC and core blackbox.
+
+## Actual hierarchical integration diagnostic
+
+44355637027 / 5469259854713f227beab053940e28fe2f8f6b09 successfully linked the original
+pre-ECO routed core and the 56-buffer parent using standalone STA, parent SPEF first
+and child SPEF second. Artifact 14453721269 SHA256
+e6eedd2bb5763bafbe6b6a6e1f3bf102b48bf5bffec51be2c4c1de5d903682ac; 13 outputs/protected
+inputs verified. Typical worst max/min slack +6.709909439/+0.183034375 ns is NOT
+current ECO closure. 1540 unannotated drivers split into 1403 core, 76 boundary
+ports, 61 pad-cell /pad outputs; zero partial annotations. This split is not yet
+a complete native cross-boundary coverage qualification. Missing input/output
+delays: 73 each; unconstrained endpoints: 103. Four missing timing cell definitions
+are Corner/Filler10000/Filler4000/Filler200; latest native master inventory confirms
+only POWER/GROUND terminals, not signal pins. Preserve these as physical-only cells,
+do not pretend they have transistor/ESD signoff.
+
+## Next candidate on this branch
+
+Inventory 44357611874 / 4b2996acaeee744fc8b31544a10448ad42a05c4c:
+artifact 14453627328 SHA256 9ffea7f1cb2fae40bc9f85d141a19ab1f78c81ee6c00bb01d2f6829f8344635f,
+12 outputs/protected sources verified. 79 core outputs directly feed pads; longest
+actual routes approximately 5.8 mm. Real hierarchical analysis confirms the
+resulting load also violates core output driver slew.
+
+cloud_core_only_parent_corepad_repair.py now creates an isolation buffer near each
+core output and at most 300 um planned segments along a rectangle outside the core.
+All 2045 original instances must remain unchanged; buffer contraction must preserve
+original connectivity and power. New cells must stay outside the core, within
+100 um of planned placement; first buffer actual A pin must be within 80 um of
+the core driver pin. Native execution and subsequent route/RCX remain required.
+Find the dispatched run on codex/core-only-parent-corepad-repair; do not duplicate it.
+
+GitHub HTTP 503 caused prior read-only source-download failures, not design failures.
+New source readers have bounded retries; hashes, identities and constraints remain
+strict. See docs/evidence/core-only-parent-and-hierarchical-measurements-20261118.json.
+Qualified min/max RC, SRAM Liberty/internal LVS, external I/O/CDC, final actual
+core-parent timing/physical integration and manufacturing approval remain open.
+
+---
 # Routed parent CDC path measurement
 
 Read-only measurement against authenticated parent timing44314493056 and original shell mapping44268658068. It binds156 snapshot flops/162 flop-backed positions to actual routed parent terminals, preserving the30 zero-constant positions and the mapped-bit distinctions from the mapping; actual zero constants remain excluded from source-flop queries. Reports162 bundled-data max paths and max/min on four synchronizer chains at each of three native library corners using the exact nominal parent SPEF.
