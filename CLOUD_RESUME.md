@@ -21,3 +21,6 @@ Core extracted timing run 44303529050 uses head 20bedd917c6f98bf6afeea1ee991d2ca
 
 ## Prepared pad repaired routing
 This branch contains a route runner requiring docs/evidence/core-only-pad-repair-admission.json with independently verified artifact identities and buffer count. Admission is deliberately false until run 44303799761 completes and its outputs are audited. Do not dispatch unadmitted data. The runner restores the exact unrouted ODB under a byte-checked compatibility filename, derives required routed net count as 1794 plus admitted new buffers, and retains native four-rail PG, exact identity, exact coincident pad omission, native DRC and visible geometry audits. No timing is claimed.
+
+## Pad repair admitted for route only
+Run 44303799761 passed: 145 powered buf2/buf4 cells added to 20 selected pad input nets. Both archive digests, native/summary equality, all 17 output hashes and protected repository sources were independently verified. Original instances/pins/PG geometry and contracted connectivity were preserved. The route admission is now pinned in docs/evidence/core-only-pad-repair-admission.json. Expected routed net count is 1939 plus 76 exact coincident pad connections. This is not acceptance of extracted timing or production readiness.
