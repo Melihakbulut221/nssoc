@@ -1,3 +1,9 @@
+## Full-sized native geometry baseline
+
+Indexed geometry qualification44330297789 passed1,624 exhaustive-reference comparisons and reproduced the authenticated parent result with zero geometry disconnections/missing terminals/inter-net contacts. Artifact14438982327 SHA256 bfa8bd0bb9fa92a3896b91bbd073a14e685b7bd6862a1dfeac9fc181dd619082; all hashes and source files independently verified.
+The new baseline runner selects only routing/1-nssoc-coreonlydetailedrouting/soc_top.odb from ORIGINAL core run44263061910 (SHA256 eb3ed6dc3921b8b8584e455856615c5e64372650b638f9edfa2cf4e674b391c4), never a drt-run-N intermediate. This tests core-scale visible geometry and does not cover the latest ECO or hidden macro GDS/transistor LVS. It emits30-second liveness messages, records runtime/RSS, and imposes no subprocess timeout; GitHub job limit355minutes remains.
+Main latest timing run44328874040 has completed; its artifact14438862280 is being independently verified. Do not substitute this original-core geometry check for the latest physical candidate.
+
 ## Pin-aware candidate admitted for fresh global-route screening
 
 Run 44327965276 at 0fbac4d6617c72f3d00a0b759cfc4677bae1b732 PASSED native legalization/audit. Artifact 14438605718 SHA256 36fcd030bd23666169d392b84668f5bf0cd727d1b4b5f351d75c8a20fd876bb1; all 12 output hashes and protected repository source hashes independently verified.
