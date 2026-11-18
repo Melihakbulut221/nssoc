@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+"""Compare stock ngspice47 source build and published binary, no model patches."""
+import os,subprocess,json,hashlib,math,urllib.request,shutil
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/native-diode-source-baseline'
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def run(cmd,log,cwd=None,env=None):
+ with log.open('w')as f:p=subprocess.run(cmd,cwd=cwd,env=env,stdout=f,stderr=subprocess.STDOUT)
+ return p.returncode
+
+def main():
+ assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False);r=dict(source_head=os.environ['GITHUB_SHA'],accepted=False,status='PREPARING',simulator_patched=False,models_modified=False)
+ try:
+  tmp=Path(os.environ['RUNNER_TEMP'])/'ngspice47-baseline';tmp.mkdir();source=tmp/'source';install=tmp/'install'
+  assert run(['apt-get','source','--download-only','ngspice=47+ds-1~bpo13+1'],OUT/'apt-source.log',cwd=tmp)==0,'Signed Debian source retrieval failed'
+  dsc=list(tmp.glob('ngspice_47+ds-1~bpo13+1.dsc'));assert len(dsc)==1
+  r['source_archives']={p.name:sha(p)for p in tmp.iterdir()if p.is_file()}
+  (OUT/'source.dsc').write_bytes(dsc[0].read_bytes())
+  assert run(['dpkg-source','-x',str(dsc[0]),str(source)],OUT/'source-unpack.log')==0
+  for p in ['src/spicelib/devices/dio/dioload.c','src/include/ngspice/const.h']:
+   target=OUT/Path(p).name;target.write_bytes((source/p).read_bytes())
+  configure=source/'configure'
+  if not configure.exists():assert run(['./autogen.sh'],OUT/'autogen.log',cwd=source)==0
+  assert run(['./configure','--with-x=no','--enable-klu','--disable-debug','--prefix='+str(install)],OUT/'configure.log',cwd=source,env=dict(os.environ,CFLAGS='-O2 -g'))==0
+  assert run(['make','-j2'],OUT/'make.log',cwd=source)==0
+  assert run(['make','install'],OUT/'install.log',cwd=source)==0
+  built=install/'bin/ngspice';assert built.is_file()
+  deb=tmp/'published.deb';url='https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb'
+  with urllib.request.urlopen(url,timeout=120)as f:deb.write_bytes(f.read())
+  assert sha(deb)=='400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b'
+  published=tmp/'published';assert run(['dpkg-deb','-x',str(deb),str(published)],OUT/'binary-unpack.log')==0
+  original=ROOT/'hw/soc/analog/diagnostics/darea-release';protected={str(original/n):sha(original/n)for n in ['bench.cir','spinit']};protected[str(Path(__file__))]=sha(Path(__file__));r['protected_inputs']=protected;r['cases']={}
+  for label,binary in [('published',published/'usr/bin/ngspice'),('source_build',built)]:
+   case=OUT/label;case.mkdir();shutil.copyfile(original/'bench.cir',case/'bench.cir');shutil.copyfile(original/'spinit',case/'spinit')
+   assert run([str(binary),'--version'],case/'version.log')==0
+   env=dict(os.environ,SPICE_SCRIPTS=str(case))
+   code=run([str(binary),'-b','bench.cir'],case/'native.log',cwd=case,env=env)
+   text=(case/'native.log').read_text(errors='replace');wave=case/'wave.dat';rows=[]
+   if wave.exists():
+    for line in wave.read_text().splitlines()[1:]:
+     if line.strip():
+      row=[float(x)for x in line.split()];assert len(row)==3 and all(math.isfinite(x)for x in row);rows.append(row)
+   assert rows and all(rows[i][0]>rows[i-1][0]for i in range(1,len(rows)))
+   expected='timestep too small'in text.lower()and 20e-9<rows[-1][0]<24e-9
+   r['cases'][label]=dict(returncode=code,binary_sha256=sha(binary),samples=len(rows),last_time=rows[-1][0],timestep_failure_reproduced=expected,klu_selected='klu'in text.lower(),version=(case/'version.log').read_text())
+   assert 'NSSOC_DIODE_SOLVER_READBACK'in text and 'NSSOC_DIODE_CAPTURE_END'in text
+  assert all(x['timestep_failure_reproduced']and x['klu_selected']for x in r['cases'].values()),'Unchanged baseline behavior not reproduced; inspect before any patch'
+  assert all(sha(p)==h for p,h in protected.items());r.update(status='UNMODIFIED_SOURCE_AND_PUBLISHED_BINARY_REPRODUCE_DIODE_FAILURE',sources_unchanged=True)
+ except BaseException as e:r.update(status='FAIL_OR_INCOMPLETE',error=repr(e));raise
+ finally:
+  subprocess.run(['dpkg-query','-W'],stdout=(OUT/'installed-packages.txt').open('w'),check=False)
+  r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
+if __name__=='__main__':main()
