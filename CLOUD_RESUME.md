@@ -1,3 +1,11 @@
+# Current: continued routed repair candidate
+
+Branch codex/core-only-route-refine contains a new cloud-only continuation from verified postGRT44247595292, not a fresh placement restart. Dispatch cloud-evidence-summary.yml on this branch once; record its run ID next. It restores mapping/CTS/postCTS/globalroute/postGRT, validates protected inputs and all outputs/metrics, then electrical/timing repair and per-corner deltas. No constraint changes. Current baseline slow369setup/-1.06756ns, hold0allcorners, slew18/0/0, cap7, fanout748. CTS8 reduced-fanout topology remains separate, not integrated. See docs/core-only-route-refine.md.
+
+Native first postGRT independently verified217 outputs and6metrics. Final lint44250667802 succeeded, authenticated artifact14404171233 digest0e95f7c42947998eef9eb7d112b24ad898158d86325eaa0fa5faf9dcfc3cde65: array andphysical PASS_WITH_RECORDED_WARNINGS; unchangedsources, owned_unaccepted[] andimmutable_drift[]. Not warning-free/physical qualification. Native whole-core boot44239816779 remains to poll. Goal active, PCIe/Ethernet excluded, all other product gates retained, cloud-only.
+
+---
+
 # New terminal postGRT result: partial improvement, not closure
 
 PostGRT run **44247595292** is now completed SUCCESS as an execution. Authenticated summary artifact14403083866 SHA2566829a3334853dc58737bafc9b8f56d0254143815cdfc80a49b43857facc6dd2e read. Final slow setup369 violations, worst -1.06756ns (baseline1103/-3.81095); hold0 all corners, fast worst+0.0508253ns. Final slew slow18/typical0/fast0, cap7 everycorner, fanout748 everycorner. Output timing/4-nssoc-coreonlyroutetimingafterfast/state_out.json. Native artifact **14402989198**,167618159bytes,SHA256 **938d630865cab913e1321ea3ea3802b7318c9da24a81527b66a7c11fcfd6898d**. NEXT: independently verify native inner output hashes and fresh corner metrics, inspect timing repair log for100-iteration limit/stall and slow critical paths/electrical pins before deciding further repair. Do not claim native independent inspection already done; only summary checked so far.
