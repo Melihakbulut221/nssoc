@@ -1,0 +1,11 @@
+# Voltage derivative candidate does not close native transient failure
+
+Experiment [44391317766](https://github.com/Melihakbulut221/nssoc/actions/runs/44391317766), source d70786a5925f585719fa3f7fedcf6fbd36ef97cc, completed/failure. Artifact 14468157113 SHA-256 f72629053a14778180cbce47d2d680f041abde71b9309d04bc71563720685e66 and all declared output hashes verified.
+
+The source patch applied and the modified simulator was rebuilt. Candidate binary SHA-256 b1ab6e14a9b4c99641acf558b5efceeafeeda7e8a77de50beb7fd73791ef8adf. It returned process code 0 but reported aborted transient/timestep-too-small. Like both unchanged controls it produced 21366 samples and stopped at printed time 2.13261685e-08 s, short of the requested 50 ns. Fourteen equal printed timestamps occurred as the timestep collapsed. This patch is insufficient to resolve the observed convergence failure. It is not promoted to the production runtime, and no pad timing gate is closed.
+
+The voltage product-rule issue remains a separately identified mathematical discrepancy; this result does not establish that fixing it resolves the branch-boundary behavior. Do not stack untested current-law, tolerance or PDK-parameter changes onto this candidate and call it qualified.
+
+Next diagnostic [44392633722](https://github.com/Melihakbulut221/nssoc/actions/runs/44392633722), head b1494e06329ddba92fb054ba1327793f6cb4ac42, reuses the authenticated stock and candidate runtime archives. It changes only the diagnostic excitation to a DC sweep, samples actual junction voltage/current/conductance/capacitance/charge, locates the boundary crossing and refines that region. PDK models and solver tolerances remain unchanged. This diagnostic is not the original release waveform and is not a production-equivalent simulation. Its numerical results require analysis and further transient validation.
+
+Third antenna repair/reroute [44392013502](https://github.com/Melihakbulut221/nssoc/actions/runs/44392013502), source bea6ce2b77b37f1d7260008aa35007cef91c7f73, is independently active. Latest admitted physical result is native DRC0, two antenna nets/two pins, and 106080 instances. No extracted final timing or full-chip production signoff has been admitted for that candidate.
