@@ -1,28 +1,42 @@
-name: Qualify upstream IHP diode correction
+name: Full pad current qualification with official IHP diode model
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   qualify:
     runs-on: ubuntu-22.04
     container: debian:trixie
-    timeout-minutes: 20
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CLOUD_NGSPICE: /usr/bin/ngspice
+      NSSOC_PAD_CLAMP_OHMS: '0'
+      NSSOC_PAD_ITL4: '100'
+      NSSOC_PAD_STEP_PS: '1'
     steps:
       - name: Install runtime prerequisites
         run: |
           set -eu
           apt-get update -qq
-          apt-get install -y --no-install-recommends ca-certificates git python3
+          apt-get install -y --no-install-recommends ca-certificates git python3 python3-numpy gh
+          python3 - <<'PYTHON'
+          import urllib.request,hashlib,subprocess
+          raw=urllib.request.urlopen('https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb',timeout=120).read()
+          assert hashlib.sha256(raw).hexdigest()=='400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b'
+          open('/tmp/nssoc-ngspice47.deb','wb').write(raw)
+          subprocess.run(['apt-get','install','-y','--no-install-recommends','/tmp/nssoc-ngspice47.deb'],check=True)
+          PYTHON
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Compare original failure and upstream model at three temperatures
-        run: python3 scripts/cloud_native_diode_upstream_qualification.py
+      - name: Qualify all six slow-corner pad current cases
+        run: python3 scripts/cloud_core_only_pad_upstream_diode.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: native-diode-upstream-qualification-${{ github.run_id }}
-          path: hw/soc/out/native-diode-upstream-qualification/
+          name: core-only-pad-upstream-diode-${{ github.run_id }}
+          path: hw/soc/out/core-only-pad-upstream-diode/
           if-no-files-found: error
           retention-days: 90
