@@ -1,0 +1,9 @@
+# Pad time-step comparison and next diagnosis
+
+Native KLU/Gear2/itl4=100 at5ps,2.5ps,1ps all fail0-turnoff near22.7529ns/vhold#branch. Other five cases complete50ns with finite, strictly increasing sampled times and requested step bounds. Artifacts and all declared output hashes verified independently. See accompanying evidence JSON for last samples, exact source identities and archive digests.
+
+Completed1-turnoff first1percent current thresholds are1.8725ns,1.87125ns,1.8705ns respectively (measured after enable midpoint). This sampling convergence does not qualify failed0-turnoff or replace a voltage slew measurement. At1ps failure the output NMOS gate is approximately0.490433mV, pad1.5V, PMOS gate approximately3V, current-7.536nA. This suggests investigating low-gate/off-state model or circuit behavior; it does not identify a faulty device yet.
+
+Do not keep sweeping Newton limits, matrix solvers or time steps without new evidence. Next create explicitly diagnostic reduced circuits: native Clamp_N2N2D with a controlled gate ramp and the native gate decoder/level shifter separately. Keep original pad untouched and label reduced fixtures as changed test circuits, never a passing replacement for the complete pad. Compare device orientation/body connections, diode and low-current behavior; preserve pinned model bytes. The NMOS clamp contains two reverse-oriented sg13_hv_nmos devices(l0.6um,w4.4um), guard-ring subcircuits and an antenna diode. Reproducer success alone cannot close the original pad or22slow transition violations.
+
+Main core detailed route44337630426 remains independently running; poll it and admit native outputs before staged extraction b75792d10e647522ecb6c554a35906708d718c57. Production goals including externalIO/package selection, final full-chipSTA/LVS/DRC remain unclosed.
