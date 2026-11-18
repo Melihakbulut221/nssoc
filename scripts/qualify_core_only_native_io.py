@@ -26,6 +26,8 @@ def main():
                   actual_core_boot=False, transistor_pad_qualification=False,
                   physical_timing_complete=False, cases={})
     try:
+        version = subprocess.run(['iverilog','-V'],capture_output=True,text=True,check=True)
+        (OUT/'iverilog-version.log').write_text(version.stdout+version.stderr)
         generator = load('native_chip_generator', 'scripts/generate_chip_io.py')
         host = load('native_chip_host', 'sw/golden/chip_status.py')
         paths = [Path(__file__), generator.CORE_CONTRACT,
@@ -62,7 +64,9 @@ module tb;
 reg clk=0,rst=0,tclk=0,req=0;
 reg [3:0] strap=0;
 reg ext_enable=1;
-wire vdd=1'b1,vss=1'b0,ready,data;
+wire vdd,vss,ready,data;
+assign vdd=1'b1;
+assign vss=1'b0;
 wire pad_clk=clk,pad_rst=rst,pad_tclk=tclk,pad_req=req;
 wire [3:0] pad_strap=strap;
 tri [15:0] gpio;
