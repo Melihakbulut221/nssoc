@@ -1,3 +1,15 @@
+## Current pin-aware repair candidate
+
+Candidate [44327965276](https://github.com/Melihakbulut221/nssoc/actions/runs/44327965276) at 0fbac4d6617c72f3d00a0b759cfc4677bae1b732 is running. It consumes the authenticated zero-setup/hold/fanout global-route estimate 44323428899; it is not yet a routed or timing-qualified result.
+
+Read-only native inventory 44326794780 verified actual transformed pin geometry (artifact 14436573246, SHA256 55dce0851fbd1341b5cd7224a0fac8d037bebfbc1d17115651cdcd4c8f72bf6f). SRAM bank1 output pin center is near (955.39,687.05) um; the existing isolation buffer input is near (933.645,62.16) um, about 646.635 um Manhattan distance. The candidate moves this buffer above the macro output and requires final distance <=75 um and <one quarter of baseline. No original macro moves.
+
+The candidate strengthens nssoc_sta_i_8470 a21oi_1 to a21oi_2 for residual slew; three measured setup-path buf_1 cells (fanout4263, nssoc_sta_i_27642, fanout478) become buf_4. Two spatial sink groups on each of nssoc_sta_i_10894/X and nssoc_sta_i_78691/Q get four buf_4 total. Two buf_1 delay only the measured fast minimum-slack endpoint nssoc_sta_i_77169/D from nssoc_sta_i_45238/Y. All other original cells, clock connections, PG and antenna cells must remain unchanged. Cell function and pin types are checked; final extracted timing remains required.
+
+Native residual audit qualification 44327223071 PASSED: one positive and seven deliberately corrupted fixtures, all hashes and protected repository sources independently verified (artifact 14438655216 SHA256 f6ded972c607f19ee3aba5a4e91c4aceb19a6d8d91cbf9f6002f0b3afbf2bfcb). Prior failed attempts are harness-development evidence, not successful controls. The final test temporarily unlocks only a copied FIRM fixture to inject orientation corruption, then restores its status. See the two new evidence JSON files.
+
+Next: validate the pin-aware candidate's native audit, then fresh global-route three-corner timing. Keep 20 ns / 5% derate. Do not skip detailed route, antenna/native DRC, actual RCX, full-chip timing/LVS and manufacturer qualification.
+
 ## Latest measured result: setup, hold and fanout zero in global-route estimates
 
 Run [44323428899](https://github.com/Melihakbulut221/nssoc/actions/runs/44323428899), source 3d8c75c1f63dfa753f58617e391e28850aa603ef, completed. Artifact 14437435877 SHA256 a335010597079f4fcc72495c622f759630788f2a1f1f453f24a4ba1f8dbe2291; all 106 output hashes and protected repository sources independently verified. See `docs/evidence/core-only-residual-electrical-globalroute-20261118.json`.

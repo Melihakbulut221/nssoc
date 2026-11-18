@@ -1,0 +1,88 @@
+{
+  "status": "PASS_NATIVE_RESIDUAL_AUDIT_POSITIVE_AND_SEVEN_FAULT_CONTROLS",
+  "source_head": "37b9dd7445fc9982995063299cff4b9a1ed62bc6",
+  "accepted": false,
+  "protected_inputs": {
+    "/home/runner/work/nssoc/nssoc/scripts/cloud_core_only_residual_audit_controls.py": "49de7a9fa23fa4a768621b15545191e832002abbab84dbfc525e47865c1e2515",
+    "/home/runner/work/nssoc/nssoc/scripts/audit_core_only_residual_electrical_strict.py": "bd1407bba553d12a369cb7abb6ab9717c858ede2bc4a62e5594bfad90293665b",
+    "/home/runner/work/nssoc/nssoc/scripts/qualify_core_only_residual_audit_native.py": "4f6cbd3a0214610318a27cc7a3c39fd7ab31709261af76f54e946a44eb1831b5",
+    "/home/runner/work/nssoc/nssoc/scripts/buffer_core_only_chip_controls.py": "b3f386082e1a4520d1fd88746d25510fcaf8d330ea29d92de02e5c5821bea700"
+  },
+  "controls": [
+    {
+      "mode": "positive",
+      "passed": true,
+      "audit": {
+        "new_buffers": 6,
+        "resized_logic_cells": 2,
+        "resize_displacement_um": {
+          "nssoc_sta_i_8532": 1.44,
+          "nssoc_sta_i_66156": 2.88
+        },
+        "all_other_instances_geometry_preserved": true,
+        "original_terminal_classes_preserved": true,
+        "pins_and_power_geometry_preserved": true,
+        "branch_sinks_drivers_rails_and_signal_types_verified": true,
+        "all_original_antenna_cells_preserved": true,
+        "original_net_signal_types_preserved": true,
+        "resized_cell_orientations_legal": true,
+        "clock_buffers": 3,
+        "clock_timing_requalification_required": true,
+        "antenna_requalification_required": true,
+        "accepted": false
+      }
+    },
+    {
+      "mode": "new_clock_type",
+      "rejected": true,
+      "assertion": ""
+    },
+    {
+      "mode": "source_clock_type",
+      "rejected": true,
+      "assertion": "('original_net_type', 'clknet_6_31_0_clk_npu')"
+    },
+    {
+      "mode": "missing_antenna",
+      "rejected": true,
+      "assertion": ""
+    },
+    {
+      "mode": "buffer_power_open",
+      "rejected": true,
+      "assertion": "('missing_or_wrong_buffer_supply', 'nssoc_residualbuf_0_0', 'VDD', 'VPWR')"
+    },
+    {
+      "mode": "unrelated_orientation",
+      "rejected": true,
+      "assertion": "nssoc_sta_i_2520"
+    },
+    {
+      "mode": "resized_illegal_rotation",
+      "rejected": true,
+      "assertion": "('illegal_resize_orientation', 'nssoc_sta_i_8532', 'R90')"
+    },
+    {
+      "mode": "clock_sink_crossbranch",
+      "rejected": true,
+      "assertion": ""
+    }
+  ],
+  "sources_unchanged": true,
+  "timing_qualified": false,
+  "manufacturing_approved": false,
+  "outputs": {
+    "resized_illegal_rotation.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "clock_sink_crossbranch.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "unrelated_orientation.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "source_clock_type.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "buffer_power_open.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "missing_antenna.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "positive.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "new_clock_type.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c"
+  },
+  "verified_run": 44327223071,
+  "verified_artifact": 14438655216,
+  "verified_archive_sha256": "f6ded972c607f19ee3aba5a4e91c4aceb19a6d8d91cbf9f6002f0b3afbf2bfcb",
+  "output_and_protected_source_hashes_independently_verified": true
+}
