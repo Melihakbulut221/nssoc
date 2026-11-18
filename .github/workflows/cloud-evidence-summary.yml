@@ -1,4 +1,4 @@
-name: Native diode DC boundary diagnostics
+name: Bounded native diode DC segment diagnostics
 on:
   workflow_dispatch:
 permissions:
@@ -8,7 +8,7 @@ jobs:
   probe:
     runs-on: ubuntu-22.04
     container: debian:trixie
-    timeout-minutes: 45
+    timeout-minutes: 15
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Sample stock and derivative candidate around native branch boundary
+      - name: Probe independent stock and derivative DC segments with 90-second per-case limits
         run: python3 scripts/cloud_native_diode_dc_boundary.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

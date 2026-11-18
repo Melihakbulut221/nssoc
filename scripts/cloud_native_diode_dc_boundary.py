@@ -7,7 +7,7 @@ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def api(p):return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+p]))
 def run(binary,folder,bench,spinit):
  folder.mkdir();(folder/'bench.cir').write_text(bench);(folder/'spinit').write_bytes(spinit)
- with (folder/'native.log').open('w')as log:p=subprocess.run([str(binary),'-b','bench.cir'],cwd=folder,env=dict(os.environ,SPICE_SCRIPTS=str(folder)),stdout=log,stderr=subprocess.STDOUT)
+ with (folder/'native.log').open('w')as log:p=subprocess.run([str(binary),'-b','bench.cir'],cwd=folder,env=dict(os.environ,SPICE_SCRIPTS=str(folder)),stdout=log,stderr=subprocess.STDOUT,timeout=90)
  text=(folder/'native.log').read_text();assert p.returncode==0 and 'NSSOC_DC_CAPTURE_END'in text and 'KLU'in text
  assert not any(x in text.lower()for x in ['simulation(s) aborted','timestep too small','error:','singular matrix'])
  rows=[]
@@ -39,20 +39,23 @@ def main():
     with tarfile.open(fileobj=io.BytesIO(z.read(archive)),mode='r:gz')as tf:tf.extractall(runtime,filter='data')
     binary=runtime/'bin/ngspice';expected=prior['cases'][key]['binary_sha256']if key=='source_build'else prior['candidate']['binary_sha256'];assert sha(binary)==expected
     protected[str(binary)]=sha(binary)
-    coarse=run(binary,OUT/(label+'-coarse'),deck(original,0.08,0.13,1e-6),spinit)
-    crossings=[i for i in range(len(coarse)-1)if (coarse[i][3]-boundary)*(coarse[i+1][3]-boundary)<=0];assert len(crossings)==1
-    mid=(coarse[crossings[0]][0]+coarse[crossings[0]+1][0])/2;lo=mid-3e-6;hi=mid+3e-6
-    fine=run(binary,OUT/(label+'-fine'),deck(original,lo,hi,1e-9),spinit)
-    assert abs(fine[0][0]-lo)<1e-12 and abs(fine[-1][0]-hi)<2e-9
-    crossings=[i for i in range(len(fine)-1)if (fine[i][3]-boundary)*(fine[i+1][3]-boundary)<=0];assert len(crossings)==1;k=crossings[0]
-    slopes=[]
-    for i in [k-3,k-2,k-1,k+2,k+3,k+4]:
-     a,b=fine[i-1],fine[i+1];dv=b[3]-a[3];assert dv!=0
-     slopes.append(dict(junction_v=fine[i][3],region='forward'if fine[i][3]>=boundary else 'reverse',current_slope=(b[4]-a[4])/dv,native_gd=fine[i][5],charge_slope=(b[7]-a[7])/dv,native_cap=fine[i][6]))
-    r['cases'][label]=dict(binary_sha256=expected,coarse_samples=len(coarse),fine_samples=len(fine),crossing_index=k,bracket_rows=fine[k-1:k+3],slopes=slopes,columns=['sweep','gate_v','drive_current','junction_v','diode_current','conductance','capacitance','charge'])
+    segments={}
+    for region,lo,hi in [('below_gate',0.10380,0.10382),('above_gate',0.10390,0.10392)]:
+     try:
+      rows=run(binary,OUT/(label+'-'+region),deck(original,lo,hi,1e-7),spinit)
+      assert abs(rows[0][0]-lo)<1e-12 and abs(rows[-1][0]-hi)<2e-7
+      slopes=[]
+      for i in [len(rows)//4,len(rows)//2,3*len(rows)//4]:
+       a,b=rows[i-1],rows[i+1];dv=b[3]-a[3];assert dv!=0
+       slopes.append(dict(junction_v=rows[i][3],region='forward'if rows[i][3]>=boundary else 'reverse',current_slope=(b[4]-a[4])/dv,native_gd=rows[i][5],charge_slope=(b[7]-a[7])/dv,native_cap=rows[i][6]))
+      segments[region]=dict(samples=len(rows),first=rows[0],last=rows[-1],slopes=slopes)
+     except Exception as e:segments[region]=dict(error=repr(e),completed=False)
+     r['cases'][label]=dict(binary_sha256=expected,segments=segments)
+     (OUT/'progress.json').write_text(json.dumps(r,indent=2)+'\n')
    except BaseException as e:r['cases'][label]=dict(error=repr(e))
-  assert len(r['cases'])==2 and all('error'not in x for x in r['cases'].values())
-  assert all(sha(p)==h for p,h in protected.items());r.update(status='NATIVE_DC_BOUNDARY_SAMPLED_REQUIRES_ANALYSIS_NOT_MODEL_QUALIFICATION',sources_unchanged=True)
+  assert len(r['cases'])==2
+  r['all_segments_completed']=all('error'not in case and all('error'not in seg for seg in case['segments'].values()) for case in r['cases'].values())
+  assert all(sha(p)==h for p,h in protected.items());r.update(status='BOUNDED_DC_SEGMENT_DIAGNOSIS_REQUIRES_ANALYSIS_NOT_MODEL_QUALIFICATION',sources_unchanged=True)
  except BaseException as e:r.update(status='FAIL_OR_INCOMPLETE',error=repr(e));raise
  finally:r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
 if __name__=='__main__':main()
