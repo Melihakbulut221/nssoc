@@ -1,3 +1,12 @@
+## 2026-11-18: global overflow isolated to already coincident external pad contacts
+
+- 300-iteration attempt 44299285081 failed at iteration 67 with GRT0230/GRT0116. Native artifact 14425685622 SHA256 8dbe84d9d6615ae7cc1851598e65a734b4ce2314530933125a2d4e535c1723cc verified. Final overflow 192 (Metal2 98, Metal3 94). All 192 congestion entries refer to only 17 pad_* nets; zero internal nets. The prior 135 entries also referred exclusively to those 17 pad nets.
+- New candidate 4e5f4aac78beb0e08282f62af347080b13ae5f7f, branch codex/core-only-chip-pad-local-route, run 44299714366 live. Adds native exact BPin vs pad ITerm routing-layer rectangle equality before excluding already physically contacted external nets from global routing.
+- Selector must prove exactly 76 nets, each one BTerm and one genuine IHP pad terminal named pad, with identical nonempty metal rectangle inventories. Every other 1794 signal net remains selected. All stale guides are cleared in a separate input ODB; original verified legalized ODB is unchanged.
+- Uses pinned native set_nets_to_route, not allow_congestion, capacity inflation or a DRC waiver. Full signal geometry audit still inspects every net after detailed routing; identity/power audits remain strict. Actual hidden pad GDS/ESD is not proved by LEF rectangle equality.
+- Inspect selection.log, route-selection.json, native.log and postroute audits. If this run passes, fresh extraction, exact coverage and three-corner timing remain necessary; old SPEF is invalid for the new buffer topology.
+- Main core route 44263061910 remains live. General checks 44299676431 active. Older general checks 44296518837,44297675490,44298117342 were cancelled only after ancestry verification against 44298692859; no physical run cancelled.
+
 ## 2026-11-18: buffered route power checks pass; global overflow persists
 
 - Run 44298690884 completed FAILURE at GRT-0116, before detailed routing. Native artifact 14423909263 SHA256 ca3b55980297239fb924aac2b9d772532b1e19ca8f43f526f51c6865cd729cc7 was independently hash-checked.
