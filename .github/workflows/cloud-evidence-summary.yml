@@ -1,4 +1,4 @@
-name: Core-only authenticated global routing
+name: Core-only eight-sink CTS and timing repair
 on:
   workflow_dispatch:
 permissions:
@@ -25,22 +25,22 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
           python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_globalroute.py hw/soc/pnr/core_only_globalroute_flow.py
+          python3 -m py_compile scripts/cloud_core_only_cts8.py hw/soc/pnr/core_only_cts8_flow.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Route authenticated repaired CTS and measure fresh corners
-        run: python3 scripts/cloud_core_only_globalroute.py
+      - name: Restore preCTS placement, rebuild eight-sink clock tree and repair
+        run: python3 scripts/cloud_core_only_cts8.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-globalroute-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-globalroute/
+          name: core-only-cts8-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-cts8/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-globalroute-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-globalroute/result.json
+          name: core-only-cts8-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-cts8/result.json
           if-no-files-found: error
           retention-days: 90
