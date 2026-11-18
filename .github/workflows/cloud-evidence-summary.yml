@@ -1,4 +1,4 @@
-name: Critical driver ECO global routing and corner estimates
+name: Critical driver ECO detailed routing and physical checks
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 180
+    timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -23,15 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_critical_globalroute.py
+          python3 -m py_compile scripts/cloud_core_only_critical_detailedroute.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Global route admitted six-driver ECO and measure all corners
-        run: python3 scripts/cloud_core_only_critical_globalroute.py
+      - name: Detailed route and verify exact identity, visible geometry, DRC and antennas
+        run: python3 scripts/cloud_core_only_critical_detailedroute.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-critical-globalroute-${{ github.run_id }}
-          path: hw/soc/out/core-only-critical-globalroute/
+          name: core-only-critical-detailedroute-${{ github.run_id }}
+          path: hw/soc/out/core-only-critical-detailedroute/
           if-no-files-found: error
           retention-days: 90
