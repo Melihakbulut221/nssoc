@@ -39,3 +39,18 @@ The native electrical reports include both buffer additions (56 perimeter and
 regressions at the four previously repaired targets as well as wire127/A.
 Clock periods, 5 percent derating, nominal-only RC and all signoff caveats are
 unchanged.
+
+## Read-only source download retry
+
+The first crossing timing attempt 44355173769 at
+867bea34fcaba157776d48fb78ebc145e53880ff stopped while downloading the pinned
+route archive, before extraction or STA. Failure artifact 14452160703 has SHA256
+79092b94552141d5629f0674684994c118d8f206ba9ac6e62e044fb6764d0e68;
+the authenticated failure manifest contains zero outputs.
+
+Read-only artifact downloads now permit at most three command attempts with
+5/10 second backoffs. Fixed model/rule URL reads retry only network errors or
+HTTP 429/500/502/503/504, also at most three times. Artifact IDs, expected source
+head, digests and all output/source checks are unchanged. Failed hashes and
+native design assertions still fail immediately. Extraction and STA processes
+are not retried by these helpers.

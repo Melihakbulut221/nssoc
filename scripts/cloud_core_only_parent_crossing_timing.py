@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Three genuine library corners, nominal SPEF, provisional shell timing only."""
-import os,json,hashlib,subprocess,urllib.request,re,math,sys
+import os,json,hashlib,subprocess,urllib.request,urllib.error,re,math,sys,time
 from pathlib import Path
-from cloud_core_only_postgrt import ROOT,completed,archive,api,sha
+from cloud_core_only_postgrt import ROOT,completed,archive as download_archive,api,sha
 from bootstrap_flow import verify
 OUT=ROOT/'hw/soc/out/core-only-parent-crossing-timing'
 ROUTE_RUN=44353658604
@@ -15,6 +15,22 @@ PDK='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c'
 MODELS={
  'slow': [('sg13g2_stdcell','sg13g2_stdcell_slow_1p08V_125C.lib','ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d'),('sg13g2_io','sg13g2_io_slow_1p08V_3p0V_125C.lib','a23776c264fc0d177b4a5612eb3e1595c0eddc98d5b28b5ef7925e40b743b6ae')],
  'fast': [('sg13g2_stdcell','sg13g2_stdcell_fast_1p32V_m40C.lib','547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e'),('sg13g2_io','sg13g2_io_fast_1p32V_3p6V_m40C.lib','0dbc28e762ac820f9db193a2736f408cf1cbf521547fef850083a585c70f212f')]}
+def archive(run,name):
+ for attempt in range(3):
+  try:return download_archive(run,name)
+  except subprocess.CalledProcessError:
+   if attempt==2:raise
+   print('Retrying pinned artifact read',run['id'],attempt+1,flush=True)
+   time.sleep(5*(attempt+1))
+def fetch_url(url):
+ for attempt in range(3):
+  try:
+   with urllib.request.urlopen(url,timeout=60)as response:return response.read()
+  except urllib.error.HTTPError as error:
+   if error.code not in [429,500,502,503,504]or attempt==2:raise
+  except urllib.error.URLError:
+   if attempt==2:raise
+  time.sleep(5*(attempt+1))
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
     r=dict(source_head=os.environ['GITHUB_SHA'],status='PREPARING',accepted=False,qualified_rc_minmax=False,full_chip_timing=False,core_model_present=False,external_io_constraints_qualified=False,cdc_constraints_qualified=False,corners={})
@@ -38,7 +54,7 @@ def main():
         assert sha(OUT/'shell-cts.sdc')=='d28e30613e4e2cc9da6f4303c2e49c361fcbc46b60a6389bbf36f6d100200736'
         r['route_artifact']=meta
         url=f'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/{PDK}/ihp-sg13g2/libs.tech/librelane/IHP_rcx_patterns.rules'
-        with urllib.request.urlopen(url,timeout=60)as response:data=response.read()
+        data=fetch_url(url)
         assert hashlib.sha256(data).hexdigest()=='ffda02d57a6ecb39b02268be9511d89ef072911f17bd2dcd095f3f3cbeb5a905'
         rule=OUT/'IHP_rcx_patterns.rules';rule.write_bytes(data)
         auditor=ROOT/'hw/soc/flow/audit_estimated_spef.py';coverage=ROOT/'scripts/audit_core_only_chip_spef_coverage.py'
@@ -64,7 +80,7 @@ def main():
             libs[corner]=[]
             for library,name,digest in models:
                 url=f'https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/{PDK}/ihp-sg13g2/libs.ref/{library}/lib/{name}'
-                with urllib.request.urlopen(url,timeout=60)as response:data=response.read()
+                data=fetch_url(url)
                 assert hashlib.sha256(data).hexdigest()==digest
                 path=OUT/name;path.write_bytes(data);libs[corner].append(path);r['library_sources'][name]=dict(url=url,sha256=digest)
         protected={str(p):sha(p)for p in [Path(__file__),OUT/'chip-detailedroute.odb',OUT/'chip-shell.nom.spef',OUT/'shell-cts.sdc',*[p for pair in libs.values()for p in pair]]};protected.update(stage_protected);r['protected_inputs']=protected
