@@ -52,12 +52,15 @@ def main():
       '.control']
     deck+=['pre_osdi '+str(inp/p)for p in ['psp103.osdi','psp103_nqs.osdi','r3_cmc.osdi']]
     deck+=['set wr_singlescale','set wr_vecnames','save v(en) i(vsense) v(xdut.ngate) v(xdut.pgate)',
-      'option','tran 5p 50n 0 5p','wrdata wave.dat v(en) i(vsense) v(xdut.ngate) v(xdut.pgate)',
+      'option method=gear maxord=2','option','tran 5p 50n 0 5p','echo NSSOC_POST_TRAN_SOLVER_READBACK','option','wrdata wave.dat v(en) i(vsense) v(xdut.ngate) v(xdut.pgate)',
       'echo NSSOC_PAD_CURRENT_CAPTURE_COMPLETE','quit','.endc','.end']
     p=folder/'bench.cir';p.write_text('\n'.join(deck)+'\n');protected[str(p)]=sha(p)
     with (folder/'native.log').open('w')as log:proc=subprocess.run([str(ng),'-n','-b',str(p)],cwd=folder,stdout=log,stderr=subprocess.STDOUT,env=native_env)
-    log=(folder/'native.log').read_text();row=dict(returncode=proc.returncode,diagnostics=[l for l in log.splitlines()if re.search(r'(?i)warning|error|singular|timestep too small|convergence|failed',l)])
+    log=(folder/'native.log').read_text();row=dict(returncode=proc.returncode,diagnostics=[l for l in log.splitlines()if re.search(r'(?i)warning|error|singular|timestep too small|convergence|failed',l) and l.strip()!='Truncation error correction, charge based, is selected:'])
     r['cases'][name]=row
+    solver_log=log.split('NSSOC_POST_TRAN_SOLVER_READBACK')[-1]
+    row['gear2_native_readback']=bool(re.search(r'(?i)Integration Method = GEAR',solver_log)and re.search(r'MaxOrder = 2',solver_log))
+    assert row['gear2_native_readback'],'Native post-transient Gear2 readback missing'
     assert proc.returncode==0 and 'NSSOC_PAD_CURRENT_CAPTURE_COMPLETE'in log
     assert not row['diagnostics'],row['diagnostics']
     a=np.loadtxt(folder/'wave.dat',skiprows=1);assert a.ndim==2 and a.shape[1]==5 and np.isfinite(a).all()
