@@ -26,7 +26,7 @@ def main():
    with tempfile.TemporaryDirectory(prefix='nssoc-residual-control-')as tmp:
     work=Path(tmp)
     for name in ['core-routed.odb','eco-legalized.odb','eco-plan.json']:(work/name).write_bytes(z.read(name))
-    env=dict(os.environ,NSSOC_CORE_TARGETED_ECO_OUT=tmp,NSSOC_FAULT_MODE=mode,NSSOC_AUDIT_SCRIPT=str(audit))
+    env=dict(os.environ,NSSOC_CORE_TARGETED_ECO_OUT=tmp,NSSOC_CONTROL_BUFFER_OUT=tmp,NSSOC_FAULT_MODE=mode,NSSOC_AUDIT_SCRIPT=str(audit))
     with (OUT/(mode+'.log')).open('w')as log:subprocess.run([str(app),'openroad','-exit','-python',str(native)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
     result=json.loads((work/'control-result.json').read_text());assert result['mode']==mode
     assert result.get('passed')if mode=='positive'else result.get('rejected')
