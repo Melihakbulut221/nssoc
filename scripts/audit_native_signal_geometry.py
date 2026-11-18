@@ -115,10 +115,63 @@ def decoded_wire_shapes(odb, wire):
         else:assert op in (dec.ITERM,dec.BTERM),('Unsupported wire opcode',op)
 
 
+def qualify_native_decoder(odb,block):
+    """Encode independent physical fixtures through the real OpenDB API.
+
+    Fixtures exist only in memory and are removed before auditing the design.
+    Expected rectangles are specified independently of the decoder algorithm.
+    """
+    layer=block.getTech().findLayer('Metal2');assert layer
+    h=layer.getWidth()//2;wrong=layer.getWrongWayWidth()//2
+    direction=str(layer.getDirection());assert direction in ('HORIZONTAL','VERTICAL')
+    hx=wrong if direction=='VERTICAL' else h
+    vy=wrong if direction=='HORIZONTAL' else h
+    results={}
+    def fixture(name,encode,expected):
+        netname='__nssoc_decoder_fixture_'+name
+        assert not block.findNet(netname)
+        net=odb.dbNet.create(block,netname)
+        try:
+            wire=odb.dbWire.create(net);enc=odb.dbWireEncoder();enc.begin(wire)
+            enc.newPath(layer,'ROUTED');encode(enc);enc.end()
+            actual=[]
+            for kind,obj,g in decoded_wire_shapes(odb,wire):
+                if kind=='rect':actual.append((kind,obj.getName(),g.xMin(),g.yMin(),g.xMax(),g.yMax()))
+                else:actual.append((kind,obj.getName(),*g))
+            assert actual==expected,dict(fixture=name,expected=expected,actual=actual)
+            results[name]=dict(passed=True,shapes=len(actual))
+        finally:odb.dbNet.destroy(net)
+    def r(a,b,c,d):return ('rect',layer.getName(),a,b,c,d)
+    fixture('horizontal_forward',lambda e:(e.addPoint(10000,10000),e.addPoint(20000,10000)),[r(10000-h,10000-hx,20000+h,10000+hx)])
+    fixture('horizontal_reverse',lambda e:(e.addPoint(20000,10000),e.addPoint(10000,10000)),[r(10000-h,10000-hx,20000+h,10000+hx)])
+    fixture('vertical_forward',lambda e:(e.addPoint(10000,10000),e.addPoint(10000,20000)),[r(10000-vy,10000-h,10000+vy,20000+h)])
+    fixture('vertical_reverse',lambda e:(e.addPoint(10000,20000),e.addPoint(10000,10000)),[r(10000-vy,10000-h,10000+vy,20000+h)])
+    fixture('explicit_extensions',lambda e:(e.addPoint(10000,10000,30,0),e.addPoint(20000,10000,70,0)),[r(9970,10000-hx,20070,10000+hx)])
+    fixture('patch_rectangle',lambda e:(e.addPoint(10000,10000),e.addRect(-30,-70,80,90)),[r(9970,9930,10080,10090)])
+    def junction(e):
+        j=e.addPoint(10000,10000);e.addPoint(20000,10000);e.newPath(j,'ROUTED');e.addPoint(10000,20000)
+    fixture('junction_branch',junction,[r(10000-h,10000-hx,20000+h,10000+hx),r(10000-vy,10000-h,10000+vy,20000+h)])
+    def collinear(e):
+        e.addPoint(10000,10000);e.addPoint(20000,10000,70,0);e.addPoint(20000,10000);e.addPoint(20000,20000)
+    fixture('collinear_extension_cancel',collinear,[r(10000-h,10000-hx,20070,10000+hx),r(20000-vy,10000-h,20000+vy,20000+h)])
+    def virtual(e):
+        j=e.addPoint(10000,10000);e.addPoint(20000,10000)
+        e.newPathVirtualWire(j,layer,'ROUTED');e.addPoint(30000,10000);e.addPoint(40000,10000)
+    fixture('virtual_wire_not_metal',virtual,[r(10000-h,10000-hx,20000+h,10000+hx),r(30000-h,10000-hx,40000+h,10000+hx)])
+    candidates=[v for v in block.getVias()if v.getBottomLayer()==layer or v.getTopLayer()==layer]
+    assert candidates,'No native via fixture available'
+    v=candidates[0]
+    fixture('native_via_location',lambda e:(e.addPoint(10000,10000),e.addVia(v)),[('via',v.getName(),10000,10000)])
+    assert not any(n.getName().startswith('__nssoc_decoder_fixture_')for n in block.getNets())
+    return results
+
+
 def main():
     import odb
     out=Path(os.environ['NSSOC_PHYSICAL_ROUTE_OUT']);path=Path(os.environ['NSSOC_PHYSICAL_ROUTE_ODB']);before=hashlib.sha256(path.read_bytes()).hexdigest()
     db=odb.dbDatabase.create();odb.read_db(db,str(path));block=db.getChip().getBlock();all_shapes=defaultdict(list);reports=[];missing=[];fault=None;unwired=[]
+    qualification=qualify_native_decoder(odb,block)
+    (out/'native-decoder-qualification.json').write_text(json.dumps(qualification,indent=2)+'\n')
     for net in block.getNets():
         name=net.getName();rows=[];counter=0
         def add(layer,rect,group,kind,label,dx=0,dy=0):
@@ -174,7 +227,7 @@ def main():
                     if len(examples)<100:examples.append(dict(layer=layer,a=prev,b=row))
             active.append(row)
     assert hashlib.sha256(path.read_bytes()).hexdigest()==before
-    report=dict(source_odb_sha256=before,signal_nets_with_disconnected_geometry=reports,unwired_multi_terminal_nets=unwired,terminals_without_geometry=missing,inter_net_contact_pairs=sum(counts.values()),contact_counts=dict(counts),contact_examples=examples,synthetic_controls=self_test(),actual_route_removal_control=fault,source_unchanged=True,accepted=False,full_gds_lvs=False,scope='Native wire/via and LEF terminal geometry; each library terminal is treated as internally electrically equivalent. Does not prove hidden cell/macro GDS, transistor connectivity, or foundry DRC.')
+    report=dict(native_decoder_qualification=qualification,source_odb_sha256=before,signal_nets_with_disconnected_geometry=reports,unwired_multi_terminal_nets=unwired,terminals_without_geometry=missing,inter_net_contact_pairs=sum(counts.values()),contact_counts=dict(counts),contact_examples=examples,synthetic_controls=self_test(),actual_route_removal_control=fault,source_unchanged=True,accepted=False,full_gds_lvs=False,scope='Native wire/via and LEF terminal geometry; each library terminal is treated as internally electrically equivalent. Does not prove hidden cell/macro GDS, transistor connectivity, or foundry DRC.')
     (out/'physical-route-audit.json').write_text(json.dumps(report,indent=2)+'\n')
     assert not reports and not missing and not counts,'Physical route continuity/contact checks failed'
 if __name__=='__main__':
