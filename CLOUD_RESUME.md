@@ -1,3 +1,10 @@
+## Active continuation: residual electrical global-route screening
+
+PCIe and Ethernet remain excluded. Preserve the 20 ns period and 5% derate.
+Candidate run 44322374175 at b386cdf9512ce5fe57ed670e4a0ddbae3ed01a19 succeeded. Artifact 14434813194 SHA256 12cc118f39137f015b74391973efdd0b912f6876959bfb43640544fc13c28669 and all 11 output hashes were verified independently. Protected repository source hashes match the producer commit.
+Two logic cells were strengthened; six buffers were added, including three clock branches. Native audit preserves all other instance geometry, terminal connectivity classes, power/pin geometry and existing antenna cells. Candidate ODB SHA256 06ff0bf05d7f1587a9e3d362f5ff5213567c42aca80bcf1778e50278eda5967b.
+Next: cloud_core_only_residual_electrical_globalroute.py measures fresh global-route estimates in slow/typical/fast corners. This is not extracted final timing. Check setup, hold, slew, fanout, capacitance and clock skew before detailed routing. Retain original SRAM hold chain. Then detailed routing, antenna checks, extracted RC timing and full-chip verification remain necessary. Production approval remains open.
+
 # Cloud continuation: canonical core timing verified
 
 User scope remains core-only: no PCIe/Ethernet; retain CPU, four system SRAMs/MBIST, SpaceWire/CAN/I2C/SPI/UART/GPIO/QSPI/NPU/protection. Core50MHz20ns and5%derate unchanged. All work cloud-only.
