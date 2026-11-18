@@ -1,3 +1,13 @@
+# Current: Decimal capture verified; corrected extraction v2 prepared
+
+Latest integration branch codex/core-only-routed-extraction-v2 inherits 2def681ab4d45598ef4743127449a1932316de9f. Native metric qualification 44265620568 terminal SUCCESS, artifact14409049689 digest sha256:dfc18934c1e9c3836ca1d2322eb0528f1d0189b55cb2c88f700d2411341b10aa. Independently checked archive, adapter source hash, generated native Tcl hashes, eight rejection controls/no false output. Real pinned runtime Decimal parsing succeeds and preserves the synthetic residual violations; NOT actual chip timing evidence. See docs/evidence/core-only-native-metrics-20261118.json.
+
+This branch restores actual extraction workflow from cf845c2632a3b74abfc0e050ac934b365d0101da, with corrected inherited CoreExtractedSTA Decimal capture. NOT DISPATCHED. Before dispatch wait for and independently review detailed routing 44263061910/source921f49a0c7becd72e58177e19404b45e91575e63, then pin its native/summary IDs and digests in restore_route. Do not dispatch obsolete extraction branch with the Decimal bug. Routed boot runner also inherited; its separate workflow is at c3820318bc649809ca938057b97ccdf9335154a2 and must be restored on a derived branch when ready. No test claimed for routed boot. DRT last confirmed live; preserve handle.
+
+Goal active/cloud-only, PCIe/Ethernet excluded, 20ns/5% unchanged. Final route connectivity/annotation/STA/DRC/LVS, SRAM qualification, full padframe/DFT and external production approval remain open.
+
+---
+
 # Current: native Decimal capture bug fixed; cloud qualification pending
 
 Prepared extraction was incompatible with actual LibreLane3.0.5 DefaultOutputProcessor: floating metrics are Decimal. CoreExtractedSTA now accepts finite Decimal and serializes with native GenericDictEncoder, keeping integer counts/corner guards. New scripts/qualify_core_only_native_metrics.py exercises real native parser and adapter with parent subprocess mocked, positive residual violations plus eight malformed cases. Branch codex/core-only-native-metrics workflow is qualification only, not extraction/boot. Review its artifact before actual extraction. DRT44263061910 still live at last poll; no duplicate. Routed boot prepared in predecessor c3820318bc649809ca938057b97ccdf9335154a2. Goal active, cloud-only, network interfaces excluded, 20ns/5% unchanged.
