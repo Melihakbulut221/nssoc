@@ -115,7 +115,7 @@ MBIST_OUTPUT_WIDTHS = dict(mbist_busy_o=1, mbist_done_o=1, mbist_failed_o=1,
 
 def validate_mbist_profile(text, profile):
     """Require the complete mapped system/Ethernet MBIST public boundary."""
-    if profile not in ('off', 'system-ethernet'):
+    if profile not in ('off', 'system-ethernet', 'system-only'):
         raise ValueError('Unknown mapped MBIST profile')
     top = re.findall(r'\bmodule\s+soc_top\s*\((.*?)\);(.*?)\bendmodule\b', text, re.S)
     if len(top) != 1:
@@ -124,7 +124,7 @@ def validate_mbist_profile(text, profile):
     names = re.findall(r'\b(?:eth_)?mbist_\w+\b', header)
     declarations = re.findall(r'\b(input|output)\s*(?:\[(\d+)\s*:\s*(\d+)\])?\s+((?:eth_)?mbist_\w+)\s*;', body)
     ports = {n: (d, abs(int(hi)-int(lo))+1 if hi else 1) for d, hi, lo, n in declarations}
-    expected = {} if profile == 'off' else {n: ('output', w) for n, w in MBIST_OUTPUT_WIDTHS.items()}
+    expected = {} if profile == 'off' else {n: ('output', w) for n, w in MBIST_OUTPUT_WIDTHS.items() if profile != 'system-only' or not n.startswith('eth_')}
     if ports != expected or len(declarations) != len(ports) or sorted(names) != sorted(expected):
         raise ValueError('Mapped MBIST port inventory does not match requested boot profile')
     return dict(profile=profile, ports=ports, fault_coverage_qualified=False,
@@ -133,6 +133,10 @@ def validate_mbist_profile(text, profile):
 def mbist_boot_passed(text, profile):
     if profile == 'off':
         return None
+    if profile == 'system-only':
+        banners = re.findall(r'(?m)^SYSTEM_MBIST_BOOT PASS busy_cycles=([1-9][0-9]*) done_cycle=([1-9][0-9]*)$', text)
+        return (len(banners) == 1 and int(banners[0][1]) > int(banners[0][0])
+                and re.search(r'(?im)(?:FATAL:|ERROR:|%Fatal|%Error)', text) is None)
     if profile != 'system-ethernet':
         raise ValueError('Unknown mapped MBIST profile')
     banners = re.findall(r'(?m)^MBIST_BOOT PASS busy_cycles=([1-9][0-9]*) done_cycle=([1-9][0-9]*) eth_done=3$', text)
@@ -244,7 +248,7 @@ def main(argv=None):
     parser.add_argument('--cycles', type=int, default=1000000)
     parser.add_argument('--prepare-only', action='store_true')
     parser.add_argument('--pcie-profile', choices=('off', 'packet', 'packet-async'), default='off')
-    parser.add_argument('--mbist-profile', choices=('off', 'system-ethernet'), default='off')
+    parser.add_argument('--mbist-profile', choices=('off', 'system-ethernet', 'system-only'), default='off')
     args = parser.parse_args(argv)
     if args.timeout <= 0 or args.cycles <= 0:
         parser.error('Timeout and cycle bound must be positive')
@@ -269,7 +273,7 @@ def main(argv=None):
                pdk / 'libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v']
     sources += [pdk / 'libs.ref/sg13g2_sram/verilog' / name for name in SRAM_MODELS]
     if args.mbist_profile != 'off':
-        sources.append(SOC / 'tb/mapped_mbist_boot_monitor.v')
+        sources.append(SOC / ('tb/mapped_system_mbist_boot_monitor.v' if args.mbist_profile == 'system-only' else 'tb/mapped_mbist_boot_monitor.v'))
     tracked = sources + [fw / name for name in ('app.elf', 'flash0.hex', 'test_soc.bin')]
     tracked += [directory / 'boot-rom' / name for directory in (syn, fw)
                 for name in ('manifest.json', 'soc_logic_boot_rom.v')]
@@ -278,6 +282,13 @@ def main(argv=None):
     defines += [f"-D{macro}=32'h{symbols[symbol]:08x}" for macro, symbol in SYMBOLS.items()]
     if args.mbist_profile != 'off':
         defines.append('-DNSSOC_GL_MBIST')
+    if args.mbist_profile == 'system-only':
+        if args.pcie_profile != 'off':
+            raise ValueError('Core-only boot forbids PCIe')
+        top = re.findall(r'\bmodule\s+soc_top\s*\((.*?)\);', (syn / 'soc_top.netlist.v').read_text(), re.S)
+        if len(top) != 1 or re.search(r'\beth_\w+', top[0]):
+            raise ValueError('Core-only boot forbids Ethernet ports')
+        defines.append('-DNSSOC_GL_SYSTEM_ONLY')
     if args.pcie_profile != 'off':
         defines.append('-DNSSOC_GL_PCIE')
     if args.pcie_profile == 'packet-async':

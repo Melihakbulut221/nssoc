@@ -186,10 +186,16 @@ module tb_logicrom_gl;
   wire mbist_busy, mbist_done, mbist_failed, mbist_observation_passed;
   wire [1:0] eth_mbist_done, eth_mbist_failed;
   wire [31:0] mbist_busy_cycles, mbist_done_cycle;
+`ifdef NSSOC_GL_SYSTEM_ONLY
+  mapped_system_mbist_boot_monitor u_mbist_observer (
+`else
   mapped_mbist_boot_monitor u_mbist_observer (
+`endif
       .clk_i(clk), .rst_ni(rst_n), .busy_i(mbist_busy),
       .done_i(mbist_done), .failed_i(mbist_failed),
+`ifndef NSSOC_GL_SYSTEM_ONLY
       .eth_done_i(eth_mbist_done), .eth_failed_i(eth_mbist_failed),
+`endif
       .passed_o(mbist_observation_passed),
       .busy_cycles_o(mbist_busy_cycles), .done_cycle_o(mbist_done_cycle)
   );
@@ -198,8 +204,10 @@ module tb_logicrom_gl;
   soc_top dut (
 `ifdef NSSOC_GL_MBIST
       .mbist_busy_o(mbist_busy), .mbist_done_o(mbist_done),
-      .mbist_failed_o(mbist_failed), .eth_mbist_done_o(eth_mbist_done),
-      .eth_mbist_failed_o(eth_mbist_failed),
+      .mbist_failed_o(mbist_failed),
+`ifndef NSSOC_GL_SYSTEM_ONLY
+      .eth_mbist_done_o(eth_mbist_done), .eth_mbist_failed_o(eth_mbist_failed),
+`endif
       .mbist_fail_addr_o(), .mbist_fail_expected_o(), .mbist_fail_actual_o(),
       .mbist_fail_phase_o(), .mbist_fail_background_o(),
 `endif
@@ -242,11 +250,13 @@ module tb_logicrom_gl;
       .qspi_io_i    (qspi_io),
       .qspi_irq_o   (qspi_irq),
       .wdog_no       (wdog_n),
+`ifndef NSSOC_GL_SYSTEM_ONLY
       .eth_rx_clk_i(eth_clk), .eth_tx_clk_i(eth_clk),
       .eth_rxd_i(eth_txd), .eth_rx_dv_i(eth_tx_en), .eth_rx_er_i(eth_tx_er),
       .eth_txd_o(eth_txd), .eth_tx_en_o(eth_tx_en), .eth_tx_er_o(eth_tx_er),
       .eth_gtx_clk_o(), .eth_mdio_i(1'b1), .eth_mdc_o(), .eth_mdio_o(),
       .eth_mdio_oe_o(), .eth_irq_o(),
+`endif
       .wdog_rst_o    (wdog_rst),
       .nmi_o         (nmi),
       .irq_timer_o   (irq_timer),
@@ -371,12 +381,20 @@ module tb_logicrom_gl;
     $display("PCIE_IDLE_BOOT PASS samples=%0d",pcie_idle_samples);
 `endif
 `ifdef NSSOC_GL_MBIST
+`ifdef NSSOC_GL_SYSTEM_ONLY
+    if (mbist_observation_passed !== 1'b1 || mbist_done !== 1'b1 ||
+        mbist_busy !== 1'b0 || mbist_failed !== 1'b0)
+      $fatal(1,"Mapped system MBIST did not complete before boot");
+    $display("SYSTEM_MBIST_BOOT PASS busy_cycles=%0d done_cycle=%0d",
+             mbist_busy_cycles,mbist_done_cycle);
+`else
     if (mbist_observation_passed !== 1'b1 || mbist_done !== 1'b1 ||
         mbist_busy !== 1'b0 || mbist_failed !== 1'b0 ||
         eth_mbist_done !== 2'b11 || eth_mbist_failed !== 2'b00)
       $fatal(1,"Mapped system/Ethernet MBIST did not complete before boot");
     $display("MBIST_BOOT PASS busy_cycles=%0d done_cycle=%0d eth_done=%0d",
              mbist_busy_cycles,mbist_done_cycle,eth_mbist_done);
+`endif
 `endif
     $display("LOGICROM_GL PASS checks=28");
     $finish;
