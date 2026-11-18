@@ -1,3 +1,9 @@
+# Current: provisional chip power grid prepared
+
+Consumes verified CTS44283129318/native14418726039. Native PDN ring/Metal1rails/Metal4-Metal5-TopMetal1-TopMetal2 mesh, explicit native macroPG connect. IOVDD/IOVSS remain distinct nativepad-ring nets; no merging withcore VDD/VSS. Preserve all1641placements/connections; inventorymetal then strict check_power_grid independently onallfourrails, no floorplanning/dont_require_terminals bypass. Failures retained and failjob. No short/DRC/IR/EM/ESD/package/finalcore/timing acceptance evenifconnectivity passes. Geometry needs actualreview. MainDRT44263061910 stilllive lastpoll.
+
+---
+
 # Current: experimental shell CTS topology verified
 
 Run44283129318/source8526e0b702f7d0ede3d272700272122125d535fb SUCCESS. Native14418726039 SHA18d07bd2c3e6cceabb308361cadac9e20665ddce448d7af9e0a1f41aa3506621;summary14416858815 SHAdc83f3fee84af187fe8b70c251807912cc4e857535a7521f2b030fad38d4b3c4. Independently verified13outputs/native-summary/protectedsourcehashes/nativeaudit.91actualnewbuffers; all197test+161mainflop clocks trace through buffers to originalpadroots. Core clk path traces through12buffers to mainroot.297fixedblocks/nonclockconnections/80top pin shapes unchanged; native placement check passes.

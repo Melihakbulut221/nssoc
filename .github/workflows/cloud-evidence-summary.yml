@@ -1,4 +1,4 @@
-name: Core-only experimental shell clock tree
+name: Core-only provisional chip power grid
 on:
   workflow_dispatch:
 permissions:
@@ -25,22 +25,22 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
           python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_chip_cts.py scripts/audit_core_only_chip_cts.py
+          python3 -m py_compile scripts/cloud_core_only_chip_pdn.py scripts/audit_core_only_chip_pdn.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Build experimental shell clock trees and verify topology
-        run: python3 scripts/cloud_core_only_chip_cts.py
+      - name: Generate native power grid and check all four supply nets
+        run: python3 scripts/cloud_core_only_chip_pdn.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-chip-cts-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-cts/
+          name: core-only-chip-pdn-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-pdn/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-chip-cts-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-cts/result.json
+          name: core-only-chip-pdn-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-pdn/result.json
           if-no-files-found: error
           retention-days: 90
