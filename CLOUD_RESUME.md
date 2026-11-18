@@ -1,3 +1,11 @@
+# Current: mapped pad/status shell verified; main DRT still live
+
+Shell mapping run44268658068/source8e3e1d4192178ebce2eb83ec4a7430a0bb80bac5 terminal SUCCESS. Independently checked archive digest, every recorded shell output hash, protected tracked source bytes, netlist hash and exact pre/post metadata-removal cell/port/netname equality. See docs/evidence/core-only-shell-map-20261118.json. 358 native flip-flops plus mapped combinational mailbox logic;80 pad instances and one explicit soc_top boundary preserved. Native gate-sim passes GPIO/QSPI readback/direction, I2C open-drain and exact192-bit MBIST frame; deliberately inverted pad-enable fails. Core remains a synthesis blackbox and explicit simulation stub. NOT actual core boot, routed shell/full chip, CDC/SDF/timing, LVS/ESD or manufacturing acceptance.
+
+First run44268182828 failed only a $scopeinfo metadata assertion after mapping, before simulation. Second deletes just that connectionless metadata, verifies all real cells/connections unchanged. Newest lineage branch codex/core-only-shell-map inherits extraction-v2 code but its workflow runs shell mapping. To extract actual routed core, restore extraction workflow from eac5e21b320790a5cc8189b737162a379dbd7fc2 on derived branch after DRT review/pinning. DRT44263061910 remains live at last poll; no restart. Actual routed-core boot runner also inherited but not dispatched. Final core timing, shell physical integration/CDC, SRAM full qualification and manufacturing gates open.
+
+---
+
 # Current: shell-map metadata cleanup v2
 
 First shell mapping44268182828/source37aa2c6b39cbc674294660877be82e65f3fac4ee failed only strict cell-type assertion after successful native mapping/check. Artifact14411720776 independently inspected: 358 mapped flip-flops,80 native pads,onecoreboundary,one $scopeinfo with empty connections. No gate simulation executed. Fix explicitly deletes only $scopeinfo and compares all remaining cells/connections/ports/netnames against pre-cleanup JSON. Rerun needed; no mapped functional pass claimed. DRT44263061910 still live, untouched.
