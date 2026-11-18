@@ -22,6 +22,10 @@ def restore_route():
     run = completed(RUN, HEAD)
     native, metadata = archive(run, f"core-only-detailed-route-native-{RUN}")
     summary, smeta = archive(run, f"core-only-detailed-route-summary-{RUN}")
+    assert metadata["id"] == 14427036835
+    assert metadata["digest"] == "sha256:2d59e124653acb0529d73435857e701463d8db29e9bd9520ed38b9054d693b7b"
+    assert smeta["id"] == 14426887166
+    assert smeta["digest"] == "sha256:6c7f4c49e439ac50958033f84fb23c14fda86a41d05bc3142ebb10670b8be6d8"
     raw = native.read("result.json")
     assert raw == summary.read("result.json")
     report = json.loads(raw)
