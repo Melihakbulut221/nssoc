@@ -1,3 +1,13 @@
+# Verified native SRAM pin geometry; repairs still active
+
+SRAM probe44254152426/bacd61da031c46cf7bb0433d1effb1e1ddca1e33 terminalSUCCESS. Native14405367588 SHA256b619e66bc58cad808b8157b4b356a2cae4934b8d6c6293fde8b19702ae073250 independently verified43output hashes and freshslowmetric equality. See docs/evidence/core-only-sram-driver-probe-20261118.json. Bank2 origin120000,1787940 DBU, R0,1000DBU/um; A_MEN localMetal2 rectangle386910,0,387170,260; actual pincenter507.04,1788.07um. DriverNOR2_1 origin740640,1772820DBU. NOR2_2 exists, width2880vs1920,height3780same. Do NOT equate driver origin with pin or infer route length. No SRAM driver ECO implemented or validated. Inspect clock-split terminal result first; if A_MEN remains failing, consider a guarded NOR2_1->NOR2_2 trial with same input/output/power nets, unchanged logic, legalized geometry and all-corner routed acceptance. Never assume presence alone proves equivalence or timing. OpenSTA Property.tcl/Property.cc primary source checked: get_property lib_pin function is NOT supported, so do not implement a guessed function query; use actual Liberty files (lib_cell filename property exists) and a proper logic proof if needed.
+
+Latest polls: clock split44253264552 and200-iteration routed repair44254614637 both in_progress; preserve these runs. Native boot44239816779 was also confirmed original simulation live earlier this turn. No new timing closure result. Latest verified routed timing remains41setup/0hold from44252197610; clock fanout reduction candidate remains separate.
+
+Goal active, cloud-only, all retained production gates unchanged.
+
+---
+
 # Current:41-setup routed candidate verified,200-iteration continuation live
 
 New continuation **44254614637**, source **609a6568e1d793eff18885d0d20f5b43b90e7be4**, branch **codex/core-only-route-refine200**; last observed in_progress. Do not duplicate dispatch. Restores authenticated mapping/CTS/postCTS/globalroute/postGRT/route-refine, then electrical repair and200-iteration setup search with unchanged hold bounds,20ns/5%derate and fresh rerouted corners. Original100-iteration flows unchanged. Output core-only-route-refine200; artifacts matching native/summary run ID. See docs/core-only-route-refine200.md.
