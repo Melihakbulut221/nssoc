@@ -1,4 +1,4 @@
-name: Core-only pad transient iteration diagnostic
+name: Core-only pad six-case control diagnostic
 on:
   workflow_dispatch:
 permissions:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        itl4: [100, 1000]
+        itl4: [100]
     env:
       NSSOC_PAD_CLAMP_OHMS: "0"
       NSSOC_PAD_ITL4: ${{ matrix.itl4 }}
