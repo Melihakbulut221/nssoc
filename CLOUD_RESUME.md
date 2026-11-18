@@ -1,3 +1,13 @@
+# Current: core-only extracted-flow qualification queued; main repair live
+
+New branch codex/core-only-extracted-flow, functional source20ed500a733f7a1928a6e84054c38806b439bf25. Guard/native-import qualification run44258678679/job134646446144 last confirmed queued; broad checks44258681089 also queued. Preserve these handles. No actual detailed route dispatched yet. New files: core_only_detailed_route_flow.py, core_only_routed_extraction_flow.py, core_only_routed_guards.py under hw/soc/pnr; scripts/qualify_core_only_extracted_guards.py. See docs/core-only-extracted-flow.md.
+
+Reason: legacy extracted STA requires PCIe/Ethernet clocks. New adapter preserves exactly one propagated clk_i at20ns and5%derate, rejects OpenROAD estimated STA, requires SPEF and standalone OpenSTA. Inherits pinned nominal OpenRCX and SPEF integrity checks; RC min/max remains unqualified. Qualification covers malformed native-script anchors and Tcl negative cases plus native imports; it does NOT prove actual database/SPEF execution or physical closure. Inspect job/artifact before claiming qualification passed. Do not change existing producer-bound legacy sources during restore.
+
+Main zero-fanout postGRT repair44256809783/source0a055a1269f48e386e01b95eada858ae25671429 remains in_progress; do not duplicate or restart. Original-clock refine20044254614637 already independently verified217outputs/6corners, zero setup/hold but electrical violations remain, as recorded below. Keep candidates distinct. Goal active; cloud-only, PCIe/Ethernet excluded; all retained product gates remain.
+
+---
+
 # Current: original-clock setup/hold zero; zero-fanout repair remains live
 
 Original-clock run44254614637 is terminalSUCCESS, not signoff. Independently verified all archived output hashes and six fresh corner reports. Slow setup41->0, worst+0.0195897ns; hold0all, fast+0.0395028ns. Slew12/0/0, cap2/2/2, fanout748all remain. Evidence docs/evidence/core-only-route-refine200-20261118.json; details docs/core-only-route-refine200.md. This is NOT the zero-fanout topology. Never combine metrics from different netlists.
