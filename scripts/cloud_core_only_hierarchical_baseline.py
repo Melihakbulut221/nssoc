@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Actual two-level baseline STA to qualify integration; never current ECO signoff."""
-import os,json,hashlib,subprocess,base64,re
+import os,json,hashlib,subprocess,base64,re,time
 from pathlib import Path
 from bootstrap_flow import verify
 from cloud_core_only_postgrt import ROOT,sha,completed,archive,api
 OUT=ROOT/'hw/soc/out/core-only-hierarchical-baseline'
-def authenticate(run,head,name,aid,digest):
+def authenticate_once(run,head,name,aid,digest):
  run=completed(run,head);z,m=archive(run,name)
  assert m['id']==aid and m['digest']=='sha256:'+digest
  report=json.loads(z.read('result.json'));assert report['source_head']==head and report['sources_unchanged'] and not report['accepted']
@@ -20,6 +20,15 @@ def authenticate(run,head,name,aid,digest):
   assert hashlib.sha256(base64.b64decode(item['content'])).hexdigest()==h,rel
   sources[rel]=h
  return z,report,dict(artifact=m,verified_outputs=len(report['outputs']),protected_repository_sources=sources)
+def authenticate(run,head,name,aid,digest):
+ # All operations inside authenticate_once are read-only. Never retry a failed
+ # content hash or design assertion, and never change the pinned source.
+ for attempt in range(3):
+  try:return authenticate_once(run,head,name,aid,digest)
+  except subprocess.CalledProcessError:
+   if attempt==2:raise
+   print('Retrying pinned source authentication after failed GitHub read',run,attempt+1,flush=True)
+   time.sleep(5*(attempt+1))
 def main():
  assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
  r=dict(source_head=os.environ['GITHUB_SHA'],status='PREPARING',accepted=False,current_eco_validated=False,full_chip_timing_closed=False,qualified_rc_minmax=False,external_io_constraints_qualified=False,cdc_constraints_qualified=False,core_blackbox=False,core_baseline='original pre-ECO 104885-instance routed core; integration diagnostic only')

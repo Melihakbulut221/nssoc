@@ -40,3 +40,14 @@ sequential CLK pins replace antenna-pin representatives, and the max-path report
 must contain real u_core paths clocked by shell_main. Native errors fail the
 runner; warnings are retained for explicit review. Constraints, source netlists,
 libraries and SPEF ordering are unchanged.
+
+The standalone-STA attempt 44354458971 failed before executing STA because
+GitHub returned HTTP 503 while reading route artifact 14448476079.
+Its failure artifact 14451095047, SHA256
+8ebf7ee0b0ef5da37fd8189f3a8bb20780f2fa71e983b42fe86901d034923ed1,
+and all six outputs were verified. No new design timing result was produced.
+Source authentication now permits at most three attempts for failed read-only
+GitHub commands, with 5 and 10 second backoffs. The exact run/head/artifact and
+all hash checks remain mandatory on every attempt. Content/design assertions
+are not retried or suppressed; routing, simulation and STA are not restarted
+by this read retry.
