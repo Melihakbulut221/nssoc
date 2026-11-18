@@ -1,3 +1,9 @@
+## Pin-aware candidate admitted for fresh global-route screening
+
+Run 44327965276 at 0fbac4d6617c72f3d00a0b759cfc4677bae1b732 PASSED native legalization/audit. Artifact 14438605718 SHA256 36fcd030bd23666169d392b84668f5bf0cd727d1b4b5f351d75c8a20fd876bb1; all 12 output hashes and protected repository source hashes independently verified.
+SRAM output-to-buffer pin Manhattan distance improved from 646.635 um to 22.725 um. Four cell resizes and six new non-inverting buffers passed exact contracted terminal connectivity, original net types, PG/pin geometry, all original antenna cells and unchanged clock geometry/connectivity audits. Output candidate ODB SHA256 5d800a165a0fa1a0600c6f5e076b1af0ff8b37edff802f2f62c72f0fb0f4483d.
+Fresh screening runner: scripts/cloud_core_only_pin_aware_electrical_globalroute.py. Keep 20 ns and 5% derate. A shorter pin distance is NOT capacitance closure; evaluate fresh corner metrics, then detailed routing/antenna/RCX and actual final timing. Production approval remains open.
+
 ## Current pin-aware repair candidate
 
 Candidate [44327965276](https://github.com/Melihakbulut221/nssoc/actions/runs/44327965276) at 0fbac4d6617c72f3d00a0b759cfc4677bae1b732 is running. It consumes the authenticated zero-setup/hold/fanout global-route estimate 44323428899; it is not yet a routed or timing-qualified result.
