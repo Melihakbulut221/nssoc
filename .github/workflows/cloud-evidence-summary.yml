@@ -1,4 +1,4 @@
-name: Core-only pad turnoff current explicit Gear2 readback diagnostic
+name: Core-only pad clamp topology diagnostic
 on:
   workflow_dispatch:
 permissions:
@@ -8,7 +8,12 @@ jobs:
   qualify:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        clamp_ohms: [0, 1, 10]
     env:
+      NSSOC_PAD_CLAMP_OHMS: ${{ matrix.clamp_ohms }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -31,7 +36,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-pad-turnoff-current-${{ github.run_id }}
-          path: hw/soc/out/core-only-pad-turnoff-current/
+          name: core-only-pad-turnoff-current-${{ matrix.clamp_ohms }}ohm-${{ github.run_id }}
+          path: hw/soc/out/core-only-pad-turnoff-current-${{ matrix.clamp_ohms }}ohm/
           if-no-files-found: error
           retention-days: 90

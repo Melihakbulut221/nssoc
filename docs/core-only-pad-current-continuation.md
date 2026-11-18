@@ -9,3 +9,9 @@ New candidate provides an explicit minimal startup file containing only num_thre
 ## Gear2 readback correction
 
 Run 44365737463 / 8948d901727f99ee73c64666cd17bc24efca34ea failed. Artifact 14454989944 SHA256 ac1ca2f13fd4dbfae191a192f84ce9667424b89287350db4d1411484a773d24c. Initialization warning was removed, but transient stopped at the same 22.7529 ns. Pre-analysis option output still said TRAPEZOIDAL; .options in the deck alone does not prove the method active at the requested reporting point. Next run explicitly issues control option method=gear maxord=2 and requires post-transient native readback. It rejects incomplete capture and timestep failures unchanged. The exact normal option-summary line Truncation error correction, charge based, is selected: is no longer misclassified as an error; no other diagnostic suppression is added.
+
+## Native Gear2 confirmed; clamp topology diagnostic
+
+Run44366729062/head491e2ebd33c40de87a52278fdc81cc48e0901795:artifact14458440507 SHA2562e2f4454ddd486cd204e1e275bf733279871985100afba64e2e8709c357842a4. Gear2 post-analysis readback confirmed; same22.7529ns vsense-branch transient failure remains. No accepted capture.
+
+Next matrix uses a single ideal1.5V source directly on the pad (electrically equivalent to the original series1.5V+0V sources), plus explicit1ohm and10ohm source-impedance diagnostic variants. The finite-resistance variants change only the test fixture and are not equivalent to the ideal-clamp case. All use the same pad model, PVT, stimulus, nativeDC and Gear2/5ps settings. Capture pad voltage in addition to gate voltages and source current; report maximum clamp-voltage deviation. Compare successful full50ns controls before drawing conclusions. No device replacement, tolerance relaxation, Liberty correction or production acceptance.
