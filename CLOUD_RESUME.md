@@ -1,3 +1,12 @@
+## 2026-11-18: physical signal continuity result, qualification pending
+
+- Run 44293764407 completed successfully at source 20d67104b25e7817e979fa1204cff2a4dd8864fd. Native artifact 14421039405 SHA256 762647da701441807aff4d7bd612176928e67749661e0e77b4c5a9a8af5c1a03 was independently verified, along with all 3 output hashes and native/summary audit equality.
+- Native routing plus LEF terminal geometry: 0 disconnected signal nets, 0 missing terminal geometries, 0 inter-net metal contacts. All 76 unwired external pad nets each form one connected component through coincident pins.
+- Removing 18 route shapes from actual net n_82 produced 3 disconnected components, as required by the negative control.
+- Ten independently specified native encoder fixtures were added in 52292aa15a5f34517a5880d61024f458cf4265c1. Their run 44294044188 is still live; verify results before accepting decoder qualification.
+- Full transistor LVS and hidden macro GDS are NOT covered. No final timing or foundry approval claim.
+- Main core route 44263061910 remains live; preserve it. Superseded general checks 44291141769 were cancelled only after ancestry verification; retained checks 44294025637. No physical job cancelled.
+
 ## 2026-11-18: native signal decoder repair candidate
 
 - PCIe/Ethernet remain outside the approved production scope.
