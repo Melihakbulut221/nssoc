@@ -1,4 +1,4 @@
-name: Core-only routed parent CDC path measurement
+name: Core-only parent electrical geometry inventory
 on:
   workflow_dispatch:
 permissions:
@@ -23,15 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_parent_cdc_paths.py
+          python3 -m py_compile scripts/cloud_core_only_parent_electrical_inventory.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Bind and measure routed parent mailbox paths
-        run: python3 scripts/cloud_core_only_parent_cdc_paths.py
+      - name: Inspect routed parent electrical violation geometry
+        run: python3 scripts/cloud_core_only_parent_electrical_inventory.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-parent-cdc-paths-${{ github.run_id }}
-          path: hw/soc/out/core-only-parent-cdc-paths/
+          name: core-only-parent-electrical-inventory-${{ github.run_id }}
+          path: hw/soc/out/core-only-parent-electrical-inventory/
           if-no-files-found: error
           retention-days: 90
