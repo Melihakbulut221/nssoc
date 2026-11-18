@@ -7,11 +7,12 @@ import base64
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
 from cloud_core_only_postgrt import (ROOT, api, sha, completed, restore_mapping,
-    restore_cts, qualify_sources, current_path)
+    restore_cts, qualify_sources, current_path, archive)
 from cloud_core_only_clock_probe import restore_cts8
 from cloud_core_only_clock_refine import restore_clock_split, restore_previous
 from cloud_core_only_detailed_route import restore_refinement
@@ -86,6 +87,31 @@ def main():
             dest = sandbox/relative
             dest.parent.mkdir(parents=True, exist_ok=True)
             dest.write_bytes(data)
+        # Translate only two diagnostic observers using the authenticated original map.
+        canonical_run=completed(44308129454,'78432b99eb354dcb2a7a2d3266ecbb445a31c9cc')
+        cz,cm=archive(canonical_run,'core-only-canonical-extracted-timing-native-44308129454')
+        assert cm['id']==14429028836 and cm['digest']=='sha256:de85c0ced40577188dcb7af6786736f4f6159025fc41ae9bcdbbd6ec8e57168a'
+        sz,sm=archive(canonical_run,'core-only-canonical-extracted-timing-summary-44308129454')
+        assert sm['id']==14428669560 and sm['digest']=='sha256:036458784784f5f8e044fef2499f4556c346ff75316df930fc1737e07fff25cf'
+        assert cz.read('result.json')==sz.read('result.json')
+        cr=json.loads(cz.read('result.json'));assert cr['sources_unchanged']and cr['canonicalization']['binary_readback_verified']
+        for name,digest in cr['outputs'].items():assert hashlib.sha256(cz.read(name)).hexdigest()==digest,name
+        mapping_raw=cz.read('canonical-name-map.json');name_map=json.loads(mapping_raw)['nets']
+        tb=sandbox/'tb/tb_soc_logic_boot_gl.v';original_tb=tb.read_text();adapted=original_tb;translations={}
+        assert sha(tb)==HARNESS['tb/tb_soc_logic_boot_gl.v']
+        nl_text=netlist.read_text()
+        for old in ['u_scrub.cnt[0]','u_scrub.cnt[2]']:
+            new=name_map[old];assert re.fullmatch(r'nssoc_sta_n_[0-9]+',new)
+            assert re.search(r'(?m)^s*wires+'+re.escape(new)+r's*;',nl_text),new
+            token='dut.\'+old+' ';assert adapted.count(token)==1,(old,adapted.count(token))
+            adapted=adapted.replace(token,'dut.'+new+' ');translations[old]=new
+        restored=adapted
+        for old,new in translations.items():restored=restored.replace('dut.'+new+' ','dut.\'+old+' ')
+        assert restored==original_tb,'Unexpected harness edits'
+        tb.write_text(adapted)
+        result['observer_name_adapter']=dict(original_harness_sha256=HARNESS['tb/tb_soc_logic_boot_gl.v'],adapted_harness_sha256=sha(tb),map_sha256=hashlib.sha256(mapping_raw).hexdigest(),translations=translations,only_two_diagnostic_references_changed=True,source_artifacts=[cm,sm])
+        (OUT/'observer-name-adapter.json').write_text(json.dumps(result['observer_name_adapter'],indent=2)+'
+')
         flash = ROOT/"hw/soc/tb/flash_w25q128jv.v"
         assert flash.read_bytes() == source("hw/soc/tb/flash_w25q128jv.v", BOOT_HEAD)
         shutil.copy2(flash, sandbox/"tb/flash_w25q128jv.v")

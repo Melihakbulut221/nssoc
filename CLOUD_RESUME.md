@@ -1,3 +1,10 @@
+# ECO boot observer adaptation
+
+Boot44339388679 failed at compile/elaboration (exit2), with no simulation executed. Source netlist b7323e4872a3c76b57c4bd88d64574e09619b22540a74006eb6ff2f767dfb834 is intact. Only errors: two old u_scrub.cnt[0]/[2] names in progress display no longer bind after canonical naming. Evidence is docs/evidence/core-only-selected-eco-boot-observer-failure-20261118.json.
+
+Runner now authenticates the original canonical-name-map from44308129454 and translates exactly these two read-only debug references in the copied harness. It proves inverse replacement recovers the exact qualified harness bytes and verifies both mapped nets are declared in the selected netlist. No pass/fail conditions or DUT netlist modifications. New compile and complete native boot/MBIST simulation are required. Detailed route44337630426 remains untouched; extraction staging remains b75792d10e647522ecb6c554a35906708d718c57 on its separate branch.
+
+---
 # Selected ECO native boot running alongside detailed route
 
 This branch boots the authenticated pin-aware ECO/global-route netlist from44328874040/head733cb000518b8bd6d95470fde5e6e3c3e32bafa6, using the previously qualified native core boot/system MBIST harness. It does not claim the later detailed-route netlist was simulated, does not applySDF, and does not prove formal equivalence. Detailed route44337630426 at19924a826cfca054f30f19cdde091fbe6c744960 continues unchanged. Exact pre/post route identity must pass to relate the selected ECO's functional result to the routed candidate.
