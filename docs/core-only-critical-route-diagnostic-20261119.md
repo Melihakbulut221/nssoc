@@ -1,0 +1,5 @@
+# Diagnostic timing while antenna repair is active
+
+Use the previously completed extraction flow source 35697a797feab75754dd73e52505671fd1ddcddb and its exact historical dependencies. Restore and authenticate original timing constraints and diode inventory, then export fresh DEF/netlist from candidate run 44402072903 artifact 14481780456, ODB 8f32184f94bd944c39e6a90417462535091164272a145110b7a716523d6a6ee1. Its six resized cells and identity checks are bound through the route report. Original period and derate remain 20 ns and 5 percent.
+
+This candidate has 234 antenna-violating nets and is explicitly rejected for production. The additional job measures actual nominal RC and all three STA corners to guide timing repair while antenna repair 44420129432 runs. It never replaces final extraction of the repaired layout. Historical diode power checks do not claim whole-chip power signoff or replace the separate resized-cell power proof. All results remain diagnostic with final timing and manufacturing approval false.
