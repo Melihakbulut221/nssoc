@@ -1,3 +1,15 @@
+# Current continuation: clock fanout CTS candidate
+
+Candidate source 67e18d0c5ffec9db966d8733b5e5971d2422047c on codex/core-only-cts8. Run **44246559242**: https://github.com/Melihakbulut221/nssoc/actions/runs/44246559242 (last observed queued). Do not duplicate dispatch. Restores original authenticated mapping and placement artifacts, restarts run/26-openroad-detailedplacement/state_out.json, sets only native CTS leaf/macro cluster sizes to 8 and enables clustering, then performs fresh CTS, electrical repair, timing repair and nine single-corner STA processes. No SDC or acceptance-limit relaxation. Output root hw/soc/out/core-only-cts8, artifacts core-only-cts8-native-44246559242 and core-only-cts8-summary-44246559242. Execution success alone is not timing/electrical acceptance.
+
+Reason: independently parsed authenticated postCTS checks.rpt files show 748 fanout violations in all corners, all on clock-buffer-name prefixes (lexical classification), up to 17 loads versus limit 8. Slew: slow SRAM banks b2/b0 A_MEN 0.769460/0.663152 ns versus limit 0.595200 ns; typical b2 0.477503 versus 0.476000 ns. Full exact report rows and hashes in docs/evidence/core-only-postcts-electrical-diagnosis.json. Cluster-size change may not fix every internal branch; inspect actual fresh counts and paths before selecting it.
+
+Baseline global route **44245993247** / e37b67f0e8c82425a8951c2f978ed2ced10a830c is actively running Route authenticated repaired CTS and measure fresh corners. Preserve it for comparison. Native boot **44239816779** /31cb1846a8cf0eb683344e24c27a25438c22a75c remains active. Original postCTS **44242709956** remains verified: 0 setup/hold at all corners, placement RC only. Baseline IO19 tests passed, structural only.
+
+Superseded automatic checks 44244272944,44242259517,44238861436,44239510526 were cancelled only after confirming each source is an ancestor of a retained newer source. No manual producer/boot/routing job cancelled. No persistent local files created. Continue cloud-only; PCIe and Ethernet excluded by user, other retained scope intact. Integrate qualified native boot source later. Production, full chip padframe, extracted timing, DRC/LVS, SRAM, DFT and manufacturer gates remain open.
+
+---
+
 # Current continuation: core-only global route dispatched
 
 Latest source: e37b67f0e8c82425a8951c2f978ed2ced10a830c on codex/core-only-globalroute. PCIe/Ethernet remain excluded by user decision. CPU 20 ns and 5 percent derate remain unchanged.
