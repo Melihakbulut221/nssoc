@@ -46,3 +46,22 @@ This is structural preparation. Whole-chip pad placement, supply/ESD design,
 pad-cell LVS, package choice, and routed chip timing remain open. The serializer
 adds a separate test clock and bundled-data CDC constraints; the core-only
 single-clock CTS result must not be reused as whole-chip timing acceptance.
+
+## Observed cloud result, 2026-11-18
+
+[Qualification run 44245032516](https://github.com/Melihakbulut221/nssoc/actions/runs/44245032516)
+passed at d3db62865a2fcb8dcb35b4a7bdf5956d5c73eb57: 19 tests, no skips or
+failures. This includes the generated core-only shell serial-frame simulation,
+legacy mailbox fault controls, versioned host decoding, malformed contract
+rejections and an altered mapped-source rejection. The legacy generated RTL
+and pad inventory remain byte-identical.
+
+The selected shell contains 76 signal pads and four supply pads. This is an
+inventory, not power-integrity, ESD, package or physical acceptance. The new
+test uses explicit core/I/O-cell stubs and the real status-mailbox RTL.
+
+Artifact 14400854380 SHA256:
+85ce7d5ab1218a14df2458e8e76abca0837410dee9a9bd63ece3f286d50386f8.
+All inner file hashes and the 19 JUnit case results were independently checked.
+The evidence manifest is in
+[core-only-io-qualification-20261118.json](evidence/core-only-io-qualification-20261118.json).

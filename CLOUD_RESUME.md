@@ -1,3 +1,37 @@
+# Latest core-only continuation: 2026-11-18
+
+The goal remains active: production-ready nssoc without PCIe/Ethernet, as explicitly approved by the user. Keep remaining interfaces, protection/MBIST, 50 MHz core and five percent derate. Work cloud-only; no local checkout/artifacts. No production acceptance is claimed.
+
+## Active work to re-poll
+- PostCTS electrical + setup/hold trials: run 44242709956, head d6e690676c9f1fecaccea89b0ef4fcc6146d2e1b, branch codex/core-only-postcts. Last observed running in the native repair step.
+- Native mapped whole-chip boot: run 44239816779, head 31cb1846a8cf0eb683344e24c27a25438c22a75c, branch codex/core-only-native-boot. Last observed running. Do not restart either run on polling timeout.
+- CTS producer 44239812957 succeeded; whole artifact and all 356 files verified. Original mapping producer remains 44238569057.
+
+## Newly verified I/O work
+- Branch codex/core-only-io: implementation 68d57f9a3cf1eb970e6bdfec8323e1ba51276400, corrected test d3db62865a2fcb8dcb35b4a7bdf5956d5c73eb57.
+- Qualification 44245032516 succeeded, 19 tests with no skips/failures. Artifact 14400854380 SHA256 85ce7d5ab1218a14df2458e8e76abca0837410dee9a9bd63ece3f286d50386f8 verified along with all inner hashes/JUnit cases.
+- New hw/soc/core-only-chip-io-contract.json exactly matches the authenticated mapped JSON (269 signal bits); no Ethernet/PCIe ports. Generator --profile core-only rejects changed source hashes/signatures.
+- System-only MBIST serial frame v2: 155 payload bits + five zero reserved bits + 32-bit magic 0x4d420002. sw/golden/chip_status.py supports both versions, omitting Ethernet fields in v2.
+- Generated shell inventory: 76 signal pads + four supply pads. The real mailbox RTL is tested through generated wiring with explicit core/pad stubs. This does NOT qualify transistor pads, actual processor boot, ESD or chip timing.
+- Legacy generator output/pad inventory remained byte-identical. First I/O run 44244283968 had 18 passes and one overbroad test failure (it counted clk_i in both core and mailbox). The fixed test checks only the core instance, without changing hardware.
+- Physical padframe integration remains OPEN. The shell adds a test clock/bundled-data CDC; do not reuse single-clock core STA as full-chip signoff.
+- See docs/core-only-chip-io.md and docs/evidence/core-only-io-qualification-20261118.json.
+
+## CI observations
+- Superseded automatic checks 44240360501, 44238572352, 44238748825 and 44239231158 were cancelled to free hosted worker capacity after proving newer source ancestry. Actual mapping, CTS, boot and manual qualification jobs were preserved.
+- Old RTL job 134582731276 from run 44239231158 recorded 1203 passes, zero test failures, but three unclean suites and 22 skips. Its failure log includes historical PCIe guarded-root hashes rejecting the intentionally changed soc_top and unreachable PCIe-only modules. Do not re-pin frozen PCIe evidence to claim these pass. A release-specific retained-suite CI selection still needs to be addressed; old all-network CI is not core-only acceptance.
+- Lint-only line relocation fix is already in 6c924531408961e7e3913e6590c7d7e9ab0ce0e9; exact warning counts/messages remain unchanged.
+
+## Next
+1. Inspect completed postCTS native per-process corner reports, not stale inherited state metrics. Diagnose remaining paths and select the next global-routing/repair stage.
+2. Inspect native boot outcome independently.
+3. Integrate the qualified I/O contract into a freshly bound padframe/chip flow once the selected core artifact is available.
+4. Keep final routed RC/STA, SRAM characterization/internal LVS, full-chip DRC/LVS/antenna, pad/DFT/CDC and actual manufacturer approval as open gates.
+
+---
+
+Earlier checkpoint history follows; current handles above supersede older pending/failure entries.
+
 ## Current continuation: postCTS CLI preparation
 - Run 44241587407 / b65714f68cb0f92ad45e164792b606267cf24bae completed FAILED.
 - Four Tcl constraint test methods and all eight handoff/fresh-metrics regression tests passed on the actual cloud worker.
