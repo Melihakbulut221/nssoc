@@ -28,7 +28,10 @@ def main():
     name=part+'-'+mode;folder=OUT/name;folder.mkdir();row={};report['cases'][name]=row
     try:
      drive='PWL(0 3 20n 3 20.12n 0 50n 0)'if mode=='release'else('3'if mode=='reverse'else'0')
-     deck=['* unchanged native diode model, no transistors or OSDI','.temp 125','.options method=gear maxord=2 itl4=100','.include "'+str(models)+'"','Vdrive gate 0 '+drive,device,'.control','set wr_singlescale','set wr_vecnames','save v(gate) i(vdrive)','option method=gear maxord=2 itl4=100','tran 1p 50n 0 1p','echo NSSOC_DIODE_SOLVER_READBACK','option','wrdata wave.dat v(gate) i(vdrive)','echo NSSOC_DIODE_CAPTURE_END','quit','.endc','.end']
+     instance={'antenna':'d.xdio.d1','area':'d1','perimeter':'d2','corner':'d3'}[part]
+     fields=['vd','id','gd','cd','charge','capcur'];vectors=' '.join('@'+instance+'['+field+']'for field in fields)
+     row['wave_columns']=['time','gate_voltage','drive_current']+fields
+     deck=['* unchanged native diode model, no transistors or OSDI','.temp 125','.options method=gear maxord=2 itl4=100','.include "'+str(models)+'"','Vdrive gate 0 '+drive,device,'.control','set wr_singlescale','set wr_vecnames','set numdgt=15','save v(gate) i(vdrive) '+vectors,'option method=gear maxord=2 itl4=100','tran 1p 50n 0 1p','echo NSSOC_DIODE_SOLVER_READBACK','option','wrdata wave.dat v(gate) i(vdrive) '+vectors,'echo NSSOC_DIODE_CAPTURE_END','quit','.endc','.end']
      p=folder/'bench.cir';p.write_text('\n'.join(deck)+'\n');protected[str(p)]=sha(p)
      with (folder/'native.log').open('w')as log:result=subprocess.run([str(ng),'-n','-b',str(p)],cwd=folder,env=env,stdout=log,stderr=subprocess.STDOUT)
      log=(folder/'native.log').read_text();tail=log.split('NSSOC_DIODE_SOLVER_READBACK')[-1]
@@ -36,8 +39,9 @@ def main():
      row['diagnostics']=[l for l in log.splitlines()if re.search(r'(?i)warning|error|singular|timestep too small|convergence|failed',l)and l.strip()!='Truncation error correction, charge based, is selected:']
      row['solver_readback']=bool(re.search(r'Matrix solver:\s*KLU\b',tail)and 'Using KLU as Direct Linear Solver'in log and 'Integration Method = GEAR'in tail and 'MaxOrder = 2'in tail and 'itl4 (transient iterations) = 100'in tail)
      assert row['solver_readback']and result.returncode==0 and 'NSSOC_DIODE_CAPTURE_END'in log
+     a=np.loadtxt(folder/'wave.dat',skiprows=1);assert a.ndim==2 and a.shape[1]==9 and np.isfinite(a).all()
+     row['last_sample_before_validation']={k:float(v)for k,v in zip(row['wave_columns'],a[-1])}
      assert not row['diagnostics'],row['diagnostics']
-     a=np.loadtxt(folder/'wave.dat',skiprows=1);assert a.ndim==2 and a.shape[1]==3 and np.isfinite(a).all()
      dt=np.diff(a[:,0]);assert np.all(dt>0)and a[-1,0]>=49.99e-9 and np.max(dt)<=1.001e-12+1e-18
      row.update(status='CAPTURE_COMPLETE',rows=len(a),last_time_s=float(a[-1,0]),maximum_step_s=float(np.max(dt)),final_drive_current_a=float(a[-1,2]))
     except Exception as error:row.update(status='FAIL_OR_INCOMPLETE',error=repr(error))

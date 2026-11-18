@@ -1,4 +1,4 @@
-name: Native diode-only reproducer
+name: Native diode internal-state and derivative diagnosis
 on:
   workflow_dispatch:
 permissions:
@@ -26,12 +26,16 @@ jobs:
           echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Check recombination derivative independently
+        run: python3 scripts/check_native_diode_recombination_derivative.py
       - name: Execute unchanged native diodes without OSDI or transistors
         run: python3 scripts/cloud_core_only_native_diode.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: core-only-native-diode-${{ github.run_id }}
-          path: hw/soc/out/core-only-native-diode/
+          path: |
+            hw/soc/out/core-only-native-diode/
+            hw/soc/out/diode-derivative-math/
           if-no-files-found: error
           retention-days: 90
