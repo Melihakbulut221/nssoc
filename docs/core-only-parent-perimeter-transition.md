@@ -24,3 +24,15 @@ violations are fixed. This is not production acceptance or complete chip
 timing. Core-output model, external I/O, CDC, RC min/max, foundry DRC/LVS and
 manufacturer approval remain separate requirements. Clocks remain 20 ns with
 5 percent derating; no timing exceptions are added.
+
+## Staged extraction
+
+The perimeter timing workflow is staged but must not be dispatched until route
+44349370248 at c7b88e12d18ad6854cfbf7bb4e419adec13842ee is independently admitted.
+Supply its verified artifact ID and SHA256 as workflow inputs. The runner checks
+2031 instances, 56 inserted buffers, 2005 extracted nets, full endpoint coverage,
+and strict source identity. It performs fresh nominal extraction and native STA
+with slow, typical and fast libraries and the unchanged parent SDC.
+Electrical reports distinguish all violations from those at the new perimeter
+buffers and the eight original endpoint buffers. A successful job records
+measurements; it does not assert final chip timing or production acceptance.
