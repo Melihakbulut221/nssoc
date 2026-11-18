@@ -3,11 +3,13 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   lint:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
+      GH_TOKEN: ${{ github.token }}
       SOC_INTERFACE_PROFILE: full
       SOC_RELEASE_PROFILE: core-only
     steps:
@@ -42,6 +44,10 @@ jobs:
           grep -F 'core-only forbids PCIe' hw/soc/out/core-only-lint-controls/pcie.log
       - name: Compile actual core-only array profile against explicit warning policy
         run: .venv/bin/python scripts/check_soc_lint.py --profile full --release-profile core-only --output hw/soc/out/core-only-lint-array
+      - name: Restore authenticated compiled loader
+        run: .venv/bin/python scripts/prepare_core_only_lint_rom.py
+      - name: Compile actual SRAM MBIST SYNPRE and fixed-ROM release profile
+        run: .venv/bin/python scripts/check_soc_lint.py --profile full --release-profile core-only --memory sram-logic --mbist --rom-image hw/soc/out/core-only-lint-rom/test_soc.bin --output hw/soc/out/core-only-lint-physical
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -49,5 +55,7 @@ jobs:
           path: |
             hw/soc/out/core-only-lint-array/
             hw/soc/out/core-only-lint-controls/
+            hw/soc/out/core-only-lint-rom/
+            hw/soc/out/core-only-lint-physical/
           if-no-files-found: error
           retention-days: 90
