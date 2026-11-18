@@ -1,4 +1,4 @@
-name: Core-only remaining slew and capacitance repair candidate
+name: Core-only slew margin global route and three-corner timing
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    timeout-minutes: 355
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -23,15 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_slew_margin_eco.py scripts/prepare_core_only_slew_margin_eco.py scripts/audit_core_only_slew_margin_eco.py
+          python3 -m py_compile scripts/cloud_core_only_slew_margin_globalroute.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Legalize and audit remaining slew and capacitance candidate
-        run: python3 scripts/cloud_core_only_slew_margin_eco.py
+      - name: Route admitted six-buffer candidate and measure three corners
+        run: python3 scripts/cloud_core_only_slew_margin_globalroute.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-slew-margin-eco-${{ github.run_id }}
-          path: hw/soc/out/core-only-slew-margin-eco/
+          name: core-only-slew-margin-globalroute-${{ github.run_id }}
+          path: hw/soc/out/core-only-slew-margin-globalroute/
           if-no-files-found: error
           retention-days: 90

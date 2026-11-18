@@ -1,3 +1,15 @@
+# Slew-margin candidate admitted for fresh global routing
+
+Candidate run: https://github.com/Melihakbulut221/nssoc/actions/runs/44332978563
+Source: 8412abee439a86f3821d6dae9d6220b78837754c
+Artifact: 14440182673; SHA256 f560f6adb551cfb293557aa2fab3e2332c4ce42352d3faacacdcf664cc595849.
+Candidate ODB: c1dfc3654fbd0849c494532fd60e80e23fe91611a97d180c7aba92e4e2fa5ab2.
+
+Six buf4 additions; no original cell resizing. Native audit reports original geometry, contracted terminal classes, net signal types, power/pins, antenna cells and clock connectivity preserved. Archive digest and four protected repository source hashes independently checked. The new runner also validates all 13 output hashes and protected inputs before using the candidate.
+
+Next: fresh global route and slow/typical/fast STA. Previous estimate had zero setup/hold/fanout violations but 11 slow slew and one capacitance violation. This candidate has no timing result yet. Preserve 20 ns and 5 percent derating. PCIe/Ethernet remain excluded. Detailed routing, extracted timing, full-chip integration and production qualification remain open.
+
+---
 ## Slew candidate revised for actual library availability
 
 Attempt44331913767 at3331cf10987fe2a7f1009e24b6cf49a250946cd4 stopped during preparation because sg13g2_o21ai_1 has no larger drive variant in the native library. Artifact14439871602 SHA256b93ee72763f0c67ca4f800e1ad8bd3ce37c54964fb93089ddbb24819889bb7c2 verified; no legalized/routed candidate resulted.
