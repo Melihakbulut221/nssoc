@@ -103,10 +103,10 @@ def main():
         for old in ['u_scrub.cnt[0]','u_scrub.cnt[2]']:
             new=name_map[old];assert re.fullmatch(r'nssoc_sta_n_[0-9]+',new)
             assert re.search(r'(?m)^s*wires+'+re.escape(new)+r's*;',nl_text),new
-            token='dut.\'+old+' ';assert adapted.count(token)==1,(old,adapted.count(token))
+            token='dut.'+chr(92)+old+' ';assert adapted.count(token)==1,(old,adapted.count(token))
             adapted=adapted.replace(token,'dut.'+new+' ');translations[old]=new
         restored=adapted
-        for old,new in translations.items():restored=restored.replace('dut.'+new+' ','dut.\'+old+' ')
+        for old,new in translations.items():restored=restored.replace('dut.'+new+' ','dut.'+chr(92)+old+' ')
         assert restored==original_tb,'Unexpected harness edits'
         tb.write_text(adapted)
         result['observer_name_adapter']=dict(original_harness_sha256=HARNESS['tb/tb_soc_logic_boot_gl.v'],adapted_harness_sha256=sha(tb),map_sha256=hashlib.sha256(mapping_raw).hexdigest(),translations=translations,only_two_diagnostic_references_changed=True,source_artifacts=[cm,sm])
