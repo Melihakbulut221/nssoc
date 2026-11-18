@@ -1,3 +1,15 @@
+# Current cloud-only continuation: clock connectivity probe and routed repair
+
+Latest functional source18970cbf9cbd94df3cc09cfcc96f2cb450dcec60, branch codex/core-only-clock-probe. Native connectivity probe **44252620790** was confirmed in_progress. Do not duplicate dispatch. It restores original mapping/CTS then CTS8 producer44246559242, reconstructs its exact config-cts8.json and verifies473 outputs/nine metric files, reads native bus-clock root and bank2 A_MEN connectivity, and runs slow STA. It makes NO database edits. Exact16loads are required. Its output must establish APIs/actual master/load/driver connectivity before a targeted balanced clock split or SRAM-driver ECO is implemented. Artifact core-only-clock-probe-native-44252620790 and summary counterpart. See docs/core-only-clock-probe.md.
+
+Independent routed continuation **44252197610**, source2d60f17df6eb1dfe10351040b0718c6d4697fc5a, job134625319732 was confirmed running Continue saved repair and compare fresh corners to baseline. Native boot **44239816779**, job134584671795 remains in original native simulation. Preserve both. They are separate from the CTS8 probe; no route result or boot success yet.
+
+Superseded broad checks44252176938,44248826186,44247597821 cancelled only after ancestry proofs to18970cbf and confirming latest broad checks44252614683 queued. Separate native-boot branch checks44239723467 retained. No manual producer cancelled. No local checkout or artifact files created.
+
+Prior turn independently verified postGRT217 outputs/six fresh metrics and final lint14404171233 artifact/native log digests. See evidence/core-only-lint-final-20261118.json. Timing baseline remains369slow setup/-1.06756ns, hold0allcorners, slew18/0/0, cap7, fanout748. CTS8 placement-only candidate remains fanout1, slewbank2MEN, not integrated into routed candidate. Goal active: production readiness excluding user-removed PCIe/Ethernet; all other interfaces/CPU/SRAM/DFT/padframe/DRC/LVS/RC and manufacturer gates retained.
+
+---
+
 # Live repair continuation
 
 Run **44252197610**, source **2d60f17df6eb1dfe10351040b0718c6d4697fc5a**, branch **codex/core-only-route-refine**. Last verified in_progress. Do not duplicate dispatch. Poll this handle for authenticated baseline restore and native electrical/timing repair. See next section for restore contracts. Final lint evidence now in docs/evidence/core-only-lint-final-20261118.json. Native boot44239816779 was confirmed still in progress in actual simulation. Goal active.
