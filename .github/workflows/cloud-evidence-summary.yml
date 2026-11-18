@@ -1,30 +1,30 @@
-name: Bounded native diode DC segment diagnostics
+name: Native diode boundary trace with stock equations
 on:
   workflow_dispatch:
 permissions:
   contents: read
-  actions: read
 jobs:
-  probe:
+  baseline:
     runs-on: ubuntu-22.04
     container: debian:trixie
-    timeout-minutes: 15
-    env:
-      GH_TOKEN: ${{ github.token }}
+    timeout-minutes: 45
     steps:
-      - name: Install native runtime dependencies
+      - name: Install build prerequisites and signed source index
         run: |
+          set -eu
           apt-get update -qq
-          apt-get install -y --no-install-recommends ca-certificates git gh python3 libreadline-dev libsuitesparse-dev libfftw3-dev
+          apt-get install -y --no-install-recommends ca-certificates git python3 build-essential dpkg-dev autoconf automake libtool bison flex libreadline-dev libsuitesparse-dev libfftw3-dev pkg-config texinfo
+          printf 'Types: deb-src\nURIs: https://deb.debian.org/debian\nSuites: trixie-backports\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n' > /etc/apt/sources.list.d/ngspice-baseline.sources
+          apt-get update -qq
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Probe independent stock and derivative DC segments with 90-second per-case limits
-        run: python3 scripts/cloud_native_diode_dc_boundary.py
+      - name: Reproduce unchanged baseline and capture bounded boundary trace
+        run: python3 scripts/cloud_native_diode_boundary_trace.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: native-diode-dc-boundary-${{ github.run_id }}
-          path: hw/soc/out/native-diode-dc-boundary/
+          name: native-diode-boundary-trace-${{ github.run_id }}
+          path: hw/soc/out/native-diode-boundary-trace/
           if-no-files-found: error
           retention-days: 90
