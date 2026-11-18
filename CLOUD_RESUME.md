@@ -1,3 +1,13 @@
+# Current: annotation parser qualification verified; DRT still live
+
+Extraction branch codex/core-only-routed-extraction-v2 remains PREPARED, NOT DISPATCHED. Parser qualification44266420803/source02ffd8964247ec14e64a81cdad2e3796df9841b7 terminalSUCCESS; artifact and all three bound source hashes independently checked against extraction branch. Evidence docs/evidence/core-only-annotation-controls-20261118.json. This proves parser controls and Python syntax only, NOT native database/SPEF coverage. Native Decimal qualification44265620568 already verified. Current annotated driver classifier runs after three-corner actual-SPEF STA, leaves annotation_qualified/accepted false and retains full driver inventories.
+
+DRT44263061910/source921f49a0c7becd72e58177e19404b45e91575e63 last confirmed in_progress. Wait for terminal outcome; independently review native/summary outputs and pin IDs/digests before extraction. Routed boot remains prepared, not dispatched. Retained newest broadchecks44266425222. Superseded broadchecks44266330871,44265626050,44265316622,44264062037,44263063870 cancelled only after verified ancestry to retained head02ffd8964247ec14e64a81cdad2e3796df9841b7. Manual physical producer preserved.
+
+Goal active/cloud-only; PCIe/Ethernet excluded; 20ns/5% retained. Physical/timing/SRAM/padframe/DFT/manufacturing gates remain open.
+
+---
+
 # Current: current-core annotation diagnosis prepared in extraction v2
 
 Added scripts/audit_core_only_route_annotation.py and invocation after actual three-corner SPEF STA. Hash-bound ODB/SPEF/log, exact native name-map/net identity, all unannotated drivers classified by actual terminal sinks; no legacy fixed counts and no waivers. Prepared, not circuit-executed. Diagnostic failure keeps native outputs but fails job. See docs/core-only-route-annotation.md. DRT44263061910 remains live at last poll; extraction NOT dispatched. Before dispatch independently review terminal DRT and pin producer IDs/digests. Native Decimal fix qualified in44265620568 and inherited. Routed boot preparation inherited as well; use its workflow on derived branch when ready.
