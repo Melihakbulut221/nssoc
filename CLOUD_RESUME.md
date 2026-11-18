@@ -1,3 +1,18 @@
+# Current continuation: actual core-only lint and ongoing physical repairs
+
+Latest functional source **aae743b8b1b57d712afaea5d6ffec603b9a1bc5d**, branch codex/core-only-lint. Native lint capture **44248832076**, job134614250275: https://github.com/Melihakbulut221/nssoc/actions/runs/44248832076 . Last observed preparing full interfaces/pinned core, in progress. Do not duplicate dispatch. The old lint runner called resolve() directly and ignored SOC_RELEASE_PROFILE, so this patch applies release_define and separate core-only warning-policy keys. It rejects Ethernet MBIST/contradictory PCIe env. First full-core-only array ledger is intentionally absent: native diagnostics are saved and acceptance FAILS until reviewed. This is not an accepted lint pass or a reason to blindly add every warning. Inspect source hash invariance, owned warnings, immutable drift, real command and exact diagnostics. Artifact core-only-lint-44248832076. Physical SRAM/logic-ROM/SYNPRE/MBIST lint still needs its own profile afterward.
+
+Verified retained tests now recorded:
+- 44246945276:483 passed,0 failed,21 XML skips; runner22skips includes separate native parity. Artifact14403090390 SHA256 be60878bf9f4141d5c5e2166bec6765f11874687717d602c73be40e9c095a5d9 independently verified. 15 skipped cases have passing counterparts in SECDED/TMR variants; six are passed in full interface run44247358676. Explicit evidence links each case, not a relabeled XML result.
+- Native RAM parity job134584352502 in44239723467 passed all6 profiles; corrupted-macro negative control failed one test as required. Artifact14399535279 SHA256 ddf71e20219f0ffb6f1c364097e93fe53a2448a6d1088884dc8274eaa6b2b793 verified, all8 recorded tracked source/test/driver hashes match1b40e1ac1fffbc433ab5651e37078505a8c6f26e/current lineage. No SRAM transistor/Liberty/ROM/whole-chip claim. Evidence and scope in docs/core-only-retained-rtl.md and docs/evidence/core-only-memory-parity-binding-20261118.json. Parent broad run has unrelated failures, not overall PASS.
+- Full/base interface run44247358676 remains verified14-case union. IO shell run44245032516 verified19 structural cases.
+
+Still live: postGRT repair44247595292/ef88f086feac84f64b48cf77018fe0a92346bfb2, CTS8 44246559242/67e18d0c5ffec9db966d8733b5e5971d2422047c, native boot44239816779/31cb1846a8cf0eb683344e24c27a25438c22a75c. Preserve handles. Baseline routed timing44245993247 remains failing1103slow setup/2fast hold until measured repair replaces it. Latest broad checks44247597821 have current memory-parity and python-quality jobs passed, other jobs ongoing; do not overstate.
+
+All changes remain cloud-only, no persistent local checkout/artifacts. Goal active. Approved release excludes PCIe/Ethernet only; CPU, SRAM/MBIST, SpaceWire/CAN/I2C/SPI/UART/GPIO/QSPI/NPU/protection and physical/product gates remain. Original user audit attachments absent from their old Downloads paths; historical registers docs86/89/96 found, not substitutes for asserting all original attachments freshly audited.
+
+---
+
 # Verified interface-profile result
 
 Complementary interface run44247358676 is SUCCESS, source97ffca0ad84ab2bf103f6647e0a11ea4008fb7d4. Independently verified artifact14401534424 SHA256 d258566a1676f065cadfcb87e161690bb76669cff5ab01321a5d9d64b20c9578, all10 outputs and native XML: base8pass6skip/full13pass1skip, union14pass. All six full CAN/SpaceWire tests passed. No changed sources. See docs/core-only-interface-profiles.md and evidence record. This is APB/pin-level RTL only.
