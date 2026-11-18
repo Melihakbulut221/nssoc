@@ -1,3 +1,15 @@
+# Current: DRT launch-directory fixed; v2 and current pad-ring placement active
+
+FirstDRT44262421687/sourcec9510ebeaa6ccb4d4971940efc4faec8ba7c742f terminalFAILURE before routerexecution: LibreLane rejects nonexistent --force-run-dir. Native14409450538 onlyresult.json/routing.log,summary14407884752. Fullcandidate restoration reached nativeinvocation; no completedroutedlayout/DRC/timingresult. Fixed only directory.mkdir(parents=True,exist_ok=False) before CLI, preservingallrestore/admission/constraintchecks.
+
+ReplacementDRT44263061910/source921f49a0c7becd72e58177e19404b45e91575e63 oncodex/core-only-detailed-route-v2 lastconfirmedqueued. Itrestores sameverified2setup/0hold/0fanoutcandidate. Native/summaryartifacts core-only-detailed-route-*-RUN. Preservehandle; no duplicate. ReviewnativeCLI/DRTlog andcurrentprocessmetrics beforeclaimingrouting. Latestbroadchecks44263063870 retained. Supersededchecks44262966320,44262424906,44261963163,44261537776 cancelled onlyafterancestryproof; manualproducerspreserved.
+
+Independent current-releasepadplacement44262963332/source3e3ee37fb0c610ccd3e24ee9be8885c465d63c46, branchcodex/core-only-io-floorplan/job134660542110 confirmedin_progress inplacementstep. New scripts/cloud_core_only_io_floorplan.py authenticatesoriginalmappedcorecontract, generates76signal+4supplypads, fetches pinnedIHPc4b8IOLEF/GDS, invokesunchangedmake_chip_io_floorplan.py. LEFsha8b3dc3960960c08e07a1cde3dd9cd0484f5b12df07c4628726fff551bb775c0c,GDSsha aafb713ba3cd547ca48e919ec68eb6a8ed0f09051fed0fad813d3fdb043a4fa5. Provisional4.0x3.2mmring; abstractrail/footprintchecks andnativeGDSinstancereadback only. NOcore/mailboxplacement,signalrouting,DRC/LVS/ESD/package/timingacceptance. Artifacts core-only-io-floorplan-RUN. See docs/core-only-io-floorplan.md. Thisisnotfullchipintegration.
+
+Goalactive,cloud-only,PCIe/Ethernetexcluded;20ns/5%derate unchanged. Nativepadfunctionaltest44261960879 alreadyverifiedPASSwithcorestub. Refinement44259265143 terminalverified2setup,notlive. Fullproductgates remainopen. Correctmanualworkflowbranchmatters: v2=DRT,io-floorplan=padplacement.
+
+---
+
 # Current: actual detailed-route trial dispatched from verified two-setup candidate
 
 Run44262421687/sourcec9510ebeaa6ccb4d4971940efc4faec8ba7c742f, branchcodex/core-only-detailed-route-v1, confirmedin_progress. Preserveit. Workflowrestores fullmapping/CTS/CTS8/clocksplit/postGRT/refinementancestry andruns nativeCoreOnlyDetailedRoute, antennaanddisconnectedpinreports. Artifacts core-only-detailed-route-native/summary-RUN. Producerdigests nowpinnedinrunner. NoRC/STA isruninthisjob. Executionisnotacceptance. Inspectstates/nativeDRTmetrics/logs/routes/connectivitybefore extraction. Earlierpreparedbranchcodex/core-only-detailed-route wasnotdispatched; thisv1branchistheactivejob.
