@@ -1,3 +1,9 @@
+# Current: real remaining core power disconnect isolated; metal contact audit prepared
+
+PDN44285682859/source0155ccf26dd83c73b4a5d0306e0d247fd6e1a279 terminalFAIL. Native14417519581 SHA4c8d5f1dd0de7bace219023fa7229611db30247f0fdcfab559ff06003cef2fab.1641placements/connections and all80top pin geometries preserved, originalVDD/VSSpinsrestored andODBreadbackexact. IOVDD/IOVSSconnectivitypasses; VDD/VSS eachreport77unconnectedcorePGshapes and ONLY unconnectedinstance u_core/VPWR orVGND. Coremacro needs physicalbridge to shellPDN; do not waivecheck. Diagnostic consumes failedcandidate explicitlywithoutpromotingit; scans nativePGspecialmetal/vias vs alltransformedpinrectangles andexports geometryforbridgeplanning. NotfullGDS/DRC. MainDRT44263061910 live lastpoll.
+
+---
+
 # Current: preserve authentic supply pads after PDN generation
 
 PDN44285093741/sourceb15d586001eb8fb7a593a93298f84c605514856f generated nativeVDD16851/VSS17194specialboxes;1641instances/placements/connections unchanged. Native14418079779 SHAff32684de71503ccbe5fd77acd5a3a88ad8c32c94db8536b6ccc4d2c1b2d5737 verified. IOVDD/IOVSS nativeconnectivitypassed. VDD/VSS failedPSM0025 no terminals: DEF proves -dont_add_pins deleted their BPin geometry while retainingBTerms. Fix restores ONLY exact authenticated originalpadBPinshapes from CTSODB whenabsent, rejects otherpinchanges, comparesall80pingeometries and nativewrite/readback. No proxy mesh ports or checker bypass. Rerun allfourrails; shorts/DRC/IR/EM stillunqualified. MainDRT44263061910 preserved live.
