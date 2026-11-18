@@ -1,3 +1,9 @@
+# Current: core/pad bounding-box fit established; physical assembly pending
+
+Authenticated pre-DRT DEF header shows core3326.4x2475.9um; provisional4000x3200um ring with180um pad depth leaves3640x2840um. Mathematical centered gaps156.8um sides/182.05um top-bottom. NOT site-aligned placement, power clearance, routed integration or DRC/timing proof. Evidence docs/evidence/core-only-ring-fit-20261118.json and docs/core-only-ring-integration.md. Rebind actual DRT ODB/DEF/pins on terminal success. Native hardmacro LEF/powered-netlist/GDS strategy still needs execution and verification. Mapped shell native functional result remains verified as previously recorded. DRT44263061910 still live at last poll; no duplicate.
+
+---
+
 # Current: mapped pad/status shell verified; main DRT still live
 
 Shell mapping run44268658068/source8e3e1d4192178ebce2eb83ec4a7430a0bb80bac5 terminal SUCCESS. Independently checked archive digest, every recorded shell output hash, protected tracked source bytes, netlist hash and exact pre/post metadata-removal cell/port/netname equality. See docs/evidence/core-only-shell-map-20261118.json. 358 native flip-flops plus mapped combinational mailbox logic;80 pad instances and one explicit soc_top boundary preserved. Native gate-sim passes GPIO/QSPI readback/direction, I2C open-drain and exact192-bit MBIST frame; deliberately inverted pad-enable fails. Core remains a synthesis blackbox and explicit simulation stub. NOT actual core boot, routed shell/full chip, CDC/SDF/timing, LVS/ESD or manufacturing acceptance.
