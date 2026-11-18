@@ -1,3 +1,13 @@
+## 2026-11-18: parent extracted timing reveals concrete high-fanout repair targets
+
+- Run 44296516767 succeeded as a diagnostic, NOT timing closure. Source ed581f164b7337a907c6db87a3f9cfcabc515a9f. Verified native 14422714653 SHA256 a0b94bf4cf885a862571975a130ab14ed8e7f8fe850830e2f3a2430db28d163e; summary 14423667310 SHA256 51749eb986a23edec89b623d811bb2d0c95bcd08ff889006c5a8e194b5e1fa5d; identical result bytes and all 24 output hashes.
+- Nominal RC worst setup/hold slack ns: slow -0.983664751/+0.293416530; typical +6.998713970/+0.186344147; fast +11.353665352/+0.123937391. Positive hold is only within this provisional parent scope.
+- Electrical violations (slew/fanout/cap): slow 1322/8/24, typical 1265/8/14, fast 1240/8/7. Real violations, not clean signoff.
+- Worst setup is same shell_test domain, slice524 -> slice279. Critical chain: n_157 -> xnor2 parse_blif1683 -> n_159 -> nand2_1 parse_blif1684 (189 fanout, ~0.944 pF, 6.659 ns delay) -> n_160 -> inv1 parse_blif1685 (157 fanout, ~0.840 pF, 11.079 ns delay) -> n_161 -> capture logic. Thus buffering/resizing controls is the next concrete repair, not a broad CDC waiver or period change.
+- Eight fanout violators include reset release slice531/Q, slice529/Q, controls parse_blif1835/Y,1684/Y,1836/X,1685/Y,1687/X,1841/Y. Fixed core/pad/PG geometry and clock tree must be preserved; inserted buffers require logical-equivalence audit, legalization, fresh routing/extraction and repeated corner analysis.
+- Native logs also report 137 unannotated drivers, 76 missing input-delay ports, 76 missing output-delay ports and 77 unconstrained endpoints. No complete-core model/qualified external I/O or CDC constraint claim. Classify these gaps explicitly.
+- Main core detailed route 44263061910 remains live. Preserve it; prepared final-core extraction and boot await authenticated outputs.
+
 ## 2026-11-18: parent SPEF coverage verified; three-corner timing dispatched
 
 - Coverage run 44295912370 at 32defeaac27ef9bb4abb7ad04d612a9b18a11f18 passed. Verified native 14423477347 SHA256 1c96b8296ca6afc02a7f5611b94a925b42097d7e0e77fedac69f6c42b922a793 and summary 14423850844 SHA256 a26e6913576535010a2a183f606624e678237c936917eda718835f3c2a891ae5, output hashes, protected source bytes and matching result/audit records.
