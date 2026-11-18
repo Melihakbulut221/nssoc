@@ -1,4 +1,4 @@
-name: Native diode constitutive component trace
+name: Native diode branch and adjusted breakdown trace
 on:
   workflow_dispatch:
 permissions:
@@ -20,11 +20,11 @@ jobs:
         with:
           persist-credentials: false
       - name: Reproduce unchanged baseline and capture bounded boundary trace
-        run: python3 scripts/cloud_native_diode_component_trace.py
+        run: python3 scripts/cloud_native_diode_branch_trace.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: native-diode-component-trace-${{ github.run_id }}
-          path: hw/soc/out/native-diode-component-trace/
+          name: native-diode-branch-trace-${{ github.run_id }}
+          path: hw/soc/out/native-diode-branch-trace/
           if-no-files-found: error
           retention-days: 90
