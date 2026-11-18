@@ -1,3 +1,15 @@
+# Current continuation: core output buffers admitted; routing next
+
+PCIe and Ethernet remain excluded. 50 MHz / 20 ns and 5% derate unchanged.
+
+Core output candidate 44358901468 at e00654d57dd7eeee8c4be4eddfc7109692cc097c independently verified: 23 output hashes and 5 protected repository inputs. 79 nets, 1003 new buf4 cells. Original 2045 instances and logical classes preserved. Maximum placement displacement 27.65 um; core pin to first buffer input 36.155 um maximum. No extracted timing claim. Admission: docs/evidence/core-only-parent-corepad-admission.json.
+
+Next workflow on codex/core-only-parent-corepad-route routes 3048 instances / 3022 selected signal nets, verifies native DRC, exact identity, visible signal geometry and the 76 coincident pad contacts. Independently admit resulting artifact before fresh RCX and actual hierarchical timing. Added latency/skew needs interface validation.
+
+Preserve live core detailed route 44337630426 (head 19924a826cfca054f30f19cdde091fbe6c744960) and selected ECO boot 44342916945 (head 96acee7ce6afcf8c8692f58ceffa47afb905e6ab). Query their exact handles; do not duplicate on observation timeout. Staged core extraction branch codex/core-only-posteco-extraction requires independently admitted route artifact ID/digest.
+
+Prior checkpoints below are historical.
+
 # Current checkpoint: core output isolation candidate (2026-11-18)
 
 Scope remains PCIe/Ethernet excluded; 50 MHz / 20 ns and 5 percent derating unchanged.
