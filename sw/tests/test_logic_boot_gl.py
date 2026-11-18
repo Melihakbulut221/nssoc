@@ -195,3 +195,38 @@ def test_disabled_mbist_is_not_a_success_claim():
         gl.boot_checks('', 0, 'invalid', 'off')
     with pytest.raises(ValueError):
         gl.boot_checks('', 0, 'off', 'invalid')
+
+
+def test_core_only_exact_memory_and_manifest(builds):
+    syn, fw, manifest = builds
+    p = syn / 'soc_top.netlist.v'
+    original = p.read_text()
+    p.write_text('\n'.join(l for l in original.splitlines() if '2P_256' not in l)+'\n')
+    assert gl.validate_builds(syn, fw, 'system-only') == manifest
+    with pytest.raises(ValueError):
+        gl.validate_builds(syn, fw)  # Cannot masquerade as the old network chip.
+    p.write_text(original)
+    with pytest.raises(ValueError):
+        gl.validate_builds(syn, fw, 'system-only')  # Ethernet banks really absent.
+
+
+def test_core_only_missing_system_ram_rejected(builds):
+    syn, fw, _ = builds
+    p = syn / 'soc_top.netlist.v'
+    p.write_text(''.join(f'RM_IHPSG13_1P_2048x64_c2_bm_bist ram{i} ();\n' for i in range(3)))
+    with pytest.raises(ValueError):
+        gl.validate_builds(syn, fw, 'system-only')
+
+
+def test_system_mbist_requires_own_positive_handover():
+    good = 'SYSTEM_MBIST_BOOT PASS busy_cycles=40 done_cycle=80\nLOGICROM_GL PASS checks=28\n'
+    assert gl.boot_checks(good, 0, 'off', 'system-only')['passed']
+    for bad in [
+        good.replace('SYSTEM_MBIST_BOOT', 'MBIST_BOOT'),
+        good.replace('busy_cycles=40', 'busy_cycles=0'),
+        good.replace('done_cycle=80', 'done_cycle=30'),
+        good + 'FATAL: failed actual SRAM\n',
+        good + good,
+    ]:
+        assert not gl.boot_checks(bad, 0, 'off', 'system-only')['passed']
+    assert not gl.boot_checks(good, 1, 'off', 'system-only')['passed']

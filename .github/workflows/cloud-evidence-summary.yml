@@ -18,6 +18,8 @@ jobs:
         with:
           version: '2026-08-04'
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: python3 -m pip install pytest==8.4.2
+      - run: python3 -m pytest -q sw/tests/test_logic_boot_gl.py
       - run: python3 scripts/qualify_system_mbist_monitor.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

@@ -56,8 +56,11 @@ def digest(path):
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 
-def validate_builds(synthesis, firmware):
+def validate_builds(synthesis, firmware, mbist_profile='system-ethernet'):
     """Reject mismatched loader manifests or subsequently changed loader files."""
+    if mbist_profile not in ('off','system-ethernet','system-only'):
+        raise ValueError('Unknown mapped MBIST profile')
+    ethernet_banks = 0 if mbist_profile == 'system-only' else 16
     manifests = []
     for directory in (synthesis, firmware):
         manifest = json.loads((directory / 'boot-rom/manifest.json').read_text())
@@ -72,7 +75,7 @@ def validate_builds(synthesis, firmware):
     if re.search(r'\bRM_IHPSG13_1P_(?:1024x32|512x16)_', text):
         raise ValueError('Legacy SRAM ROM is present in the mapped design')
     for master, count in [('RM_IHPSG13_1P_2048x64_c2_bm_bist', 4),
-                          ('RM_IHPSG13_2P_256x16_c2_bm_bist', 16)]:
+                          ('RM_IHPSG13_2P_256x16_c2_bm_bist', ethernet_banks)]:
         if len(re.findall(r'^\s*' + master + r'\s+', text, re.M)) != count:
             raise ValueError('Unsupported mapped RAM/Ethernet macro configuration')
     return manifests[0]
@@ -106,7 +109,7 @@ def validate_pcie_profile(text, profile):
     if ports != expected or len(declarations) != len(ports) or sorted(header_ports) != sorted(expected):
         raise ValueError('Mapped PCIe port inventory does not match requested boot profile')
     return dict(profile=profile, ports=ports, traffic_tested=False,
-                scope='Packet interface held link-down during real CPU/Ethernet firmware boot; no packet traffic, SDF or serial PHY qualification.')
+                scope='Packet interface held link-down during real CPU firmware boot; no packet traffic, SDF or serial PHY qualification.')
 
 MBIST_OUTPUT_WIDTHS = dict(mbist_busy_o=1, mbist_done_o=1, mbist_failed_o=1,
     mbist_fail_addr_o=13, mbist_fail_expected_o=64, mbist_fail_actual_o=64,
@@ -128,7 +131,7 @@ def validate_mbist_profile(text, profile):
     if ports != expected or len(declarations) != len(ports) or sorted(names) != sorted(expected):
         raise ValueError('Mapped MBIST port inventory does not match requested boot profile')
     return dict(profile=profile, ports=ports, fault_coverage_qualified=False,
-                scope='Observe actual mapped system and Ethernet MBIST busy-to-done handover during boot; no complete memory fault or physical qualification.')
+                scope=('Observe actual mapped system MBIST handover; Ethernet is absent. No complete memory fault or physical qualification.' if profile == 'system-only' else 'Observe actual mapped system and Ethernet MBIST busy-to-done handover during boot; no complete memory fault or physical qualification.'))
 
 def mbist_boot_passed(text, profile):
     if profile == 'off':
@@ -254,7 +257,7 @@ def main(argv=None):
         parser.error('Timeout and cycle bound must be positive')
     syn, fw, pdk, out = (getattr(args, key).resolve()
                          for key in ('synthesis', 'firmware', 'pdk', 'output'))
-    manifest = validate_builds(syn, fw)
+    manifest = validate_builds(syn, fw, args.mbist_profile)
     pcie = validate_pcie_profile((syn / 'soc_top.netlist.v').read_text(), args.pcie_profile)
     mbist = validate_mbist_profile((syn / 'soc_top.netlist.v').read_text(), args.mbist_profile)
     symbols = read_symbols(args.nm, fw / 'app.elf')
