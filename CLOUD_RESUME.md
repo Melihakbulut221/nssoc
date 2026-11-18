@@ -1,3 +1,11 @@
+# Current: integrated global route verified; detailed route prepared
+
+GRT44288482143/source3504a9110b5b995fa8f8b7aa610a183f5f50f447 SUCCESS. Native14419523617 SHA1a3c8a283db8bedda2c2d07eb6347e4a228dee1ff36f9ddff42e05687097290c;summary14419364044 SHA9f3edce28f36ee8205a255b4ffc4f882ac3b961f8d9e17fefc49b5e79c2fb012. Independentlyverified outputs/native-summary/protectedsource/nativeaudit.1691guidednets/15913rectangles,zero unguidedmultiterminalnets; nativefinaloverflow0 after21extraiterations,wirelength529243um. Exactplacements/connections/pins/PGmetal-vias unchanged. No detailed-route/timing acceptance.
+
+NewintegratedDRT uses pinnedGRTODB/guides,4threads/nativefull default search, no skip-pinaccess or allowviolations. Capturesnativedrcgetter/report/maze/coverage/ODB/DEF/NL; requiresunmodifiedlogic/PGgeometry andnativewirepresence. Nativewirepresence isNOTelectricalconnectivity,antenna/RC/STA stillrequired.360minuteGitHubjoblimit. MaincoreDRT44263061910 remainslive lastpoll; this is independentprovisionalshellroute, finalcoremodel/rebindstillopen. Newestbroadchecksretained44288460097; ancestors44287571421/44286559482/44284389662/44285667288 cancelledwithproof.
+
+---
+
 # Current: four-rail native power connectivity verified; integrated global route prepared
 
 Bridge44287583796/sourcefe75725b7b6b6336b644b03a6e9752bb5d943ffa SUCCESS. Native14419453462 SHA05965467d9472143166b0f9b68898e7f28070a15eccb6b7cba4a609d5cd179c2;summary14419902617 SHA32e5b8ba899509382365a124d8baede012c6cf4f6eab4f868da82135df51c31f. All17outputs/native-summary/protectedsources independentlyverified.172bridges/nativevia via6_7_2200_2200_1_1_1960_1960; allfour strictnativepowerchecksPASS,0power-metalcontacts inabstractgeometry;logic/placement/ports/readbackunchanged. ODB189de13edcfe2ab10b8771bf81833acae0da4ec5d717d492207a0d63385f020c. Evidence docs/evidence/core-only-pdn-bridge-20261118.json. No fullGDSDRC/IR/EM/ESD/finalcoreacceptance.

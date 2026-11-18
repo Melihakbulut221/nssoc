@@ -1,4 +1,4 @@
-name: Core-only provisional integrated chip global route
+name: Core-only provisional integrated chip detailed route
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   repair:
     runs-on: ubuntu-22.04
-    timeout-minutes: 60
+    timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -25,22 +25,22 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
           python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_chip_globalroute.py scripts/audit_core_only_chip_globalroute.py
+          python3 -m py_compile scripts/cloud_core_only_chip_detailedroute.py scripts/audit_core_only_chip_detailedroute.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Global-route integrated shell with preserved core power bridges
-        run: python3 scripts/cloud_core_only_chip_globalroute.py
+      - name: Detailed-route integrated shell and preserve native DRC evidence
+        run: python3 scripts/cloud_core_only_chip_detailedroute.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-chip-globalroute-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-globalroute/
+          name: core-only-chip-detailedroute-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-detailedroute/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-chip-globalroute-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-globalroute/result.json
+          name: core-only-chip-detailedroute-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-detailedroute/result.json
           if-no-files-found: error
           retention-days: 90
