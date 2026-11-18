@@ -1,4 +1,4 @@
-name: Native diode boundary trace with stock equations
+name: Native diode constitutive component trace
 on:
   workflow_dispatch:
 permissions:
@@ -20,11 +20,11 @@ jobs:
         with:
           persist-credentials: false
       - name: Reproduce unchanged baseline and capture bounded boundary trace
-        run: python3 scripts/cloud_native_diode_boundary_trace.py
+        run: python3 scripts/cloud_native_diode_component_trace.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: native-diode-boundary-trace-${{ github.run_id }}
-          path: hw/soc/out/native-diode-boundary-trace/
+          name: native-diode-component-trace-${{ github.run_id }}
+          path: hw/soc/out/native-diode-component-trace/
           if-no-files-found: error
           retention-days: 90
