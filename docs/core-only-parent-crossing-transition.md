@@ -27,3 +27,15 @@ Neither a passed candidate audit nor parent-only timing is full-chip
 production approval. Actual core/parent hierarchical timing, external I/O,
 CDC, qualified min/max RC, SRAM characterization and internal LVS, physical
 signoff and manufacturer approval remain required.
+
+## Staged fresh extraction
+
+The crossing timing workflow is staged, not yet dispatched. It accepts only
+route run 44353658604 at b9f958703287713d4cff8adf98fd820bd63be945,
+after independent artifact ID/SHA256 admission. It requires 2045 unchanged
+instances, 2019 extracted parent nets and exact terminal/resistance connectivity.
+The native electrical reports include both buffer additions (56 perimeter and
+14 crossing buffers) and all ten original endpoint buffers. This checks for
+regressions at the four previously repaired targets as well as wire127/A.
+Clock periods, 5 percent derating, nominal-only RC and all signoff caveats are
+unchanged.
