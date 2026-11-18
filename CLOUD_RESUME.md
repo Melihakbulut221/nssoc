@@ -1,3 +1,11 @@
+# Current: experimental shell CTS topology verified
+
+Run44283129318/source8526e0b702f7d0ede3d272700272122125d535fb SUCCESS. Native14418726039 SHA18d07bd2c3e6cceabb308361cadac9e20665ddce448d7af9e0a1f41aa3506621;summary14416858815 SHAdc83f3fee84af187fe8b70c251807912cc4e857535a7521f2b030fad38d4b3c4. Independently verified13outputs/native-summary/protectedsourcehashes/nativeaudit.91actualnewbuffers; all197test+161mainflop clocks trace through buffers to originalpadroots. Core clk path traces through12buffers to mainroot.297fixedblocks/nonclockconnections/80top pin shapes unchanged; native placement check passes.
+
+NOT timing signoff: no actual finalcoreclockload/insertionmodel, no extractedskew, CDCtiming/MTBF orpower/signalrouting. TypicalnativeIHP libs and nominalLEFwireRC only, internal clocks20ns/5percentderate. report_cts counts80treebuffers while nativeDBcontains91includingdelay/splitbuffers. See docs/evidence/core-only-chip-cts-20261118.json. Next physicalpowergrid/route and finalcoremodel/rebind. MainDRT44263061910 still live lastpoll, preserve.
+
+---
+
 # Current: experimental shell CTS prepared
 
 Consumes authenticated clockaudit44282199219/native14416528949 and its placedODB. Native pinnedtypicalstdcell+IOlibs,Metal3/4LEFestimates,bothinternalclockroots20ns/5percentderate. No fabricatedcoreLiberty; finalcoreload/insertionmodel missing, so strictlyexperimental shellCTS. Adds realbuffers, legalizes, requires unchanged nonclockconnections/topshape/fixedblocks and every161main+197testflops clocktraced to originalpadsource; coreclock continuity checked but loadqualificationfalse. No extractedtiming orCDCsignoff. MainDRT44263061910 preserved live.
