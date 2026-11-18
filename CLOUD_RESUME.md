@@ -1,3 +1,11 @@
+# Current: current-release native I/O ring verified; DRT v2 live
+
+Padplacement44262963332 is terminalverifiedSUCCESS, notlive. Evidence docs/evidence/core-only-io-floorplan-20261118.json anddocs/core-only-io-floorplan.md bind artifact14408393294, source3e3ee37fb0c610ccd3e24ee9be8885c465d63c46, alloutputhashes andprotectedtrackedsourcebytes.76signal+4supplypads plusnativecorners/fillers; provisional4x3.2mmring; abstractrail/footprintnegativecontrols andproducerGDSinstancereadback. NOcore/statusmailboxplacement,signalrouting,chipDRC/LVS/ESD/package/timingapproval. Do notclaimfullchipintegration.
+
+DRTreplacement44263061910/source921f49a0c7becd72e58177e19404b45e91575e63 confirmedin_progress. First44262421687 terminalfailedonlymissingrundirbeforeCLI, fixedwithmkdir. Preservev2handle. Maincandidate remains2setup/0hold/0fanout inestimatedglobalroutetiming; electricalviolations remain. No extractedtimingyet. Goalactive/cloud-only,20ns/5%derate,networkinterfacesexcluded.
+
+---
+
 # Current: DRT launch-directory fixed; v2 and current pad-ring placement active
 
 FirstDRT44262421687/sourcec9510ebeaa6ccb4d4971940efc4faec8ba7c742f terminalFAILURE before routerexecution: LibreLane rejects nonexistent --force-run-dir. Native14409450538 onlyresult.json/routing.log,summary14407884752. Fullcandidate restoration reached nativeinvocation; no completedroutedlayout/DRC/timingresult. Fixed only directory.mkdir(parents=True,exist_ok=False) before CLI, preservingallrestore/admission/constraintchecks.
