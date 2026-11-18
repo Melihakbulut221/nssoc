@@ -1,3 +1,9 @@
+# Current: shell-map metadata cleanup v2
+
+First shell mapping44268182828/source37aa2c6b39cbc674294660877be82e65f3fac4ee failed only strict cell-type assertion after successful native mapping/check. Artifact14411720776 independently inspected: 358 mapped flip-flops,80 native pads,onecoreboundary,one $scopeinfo with empty connections. No gate simulation executed. Fix explicitly deletes only $scopeinfo and compares all remaining cells/connections/ports/netnames against pre-cleanup JSON. Rerun needed; no mapped functional pass claimed. DRT44263061910 still live, untouched.
+
+---
+
 # Current: pad-shell technology mapping cloud experiment prepared
 
 Branch codex/core-only-shell-map inherits eac5e21b320790a5cc8189b737162a379dbd7fc2. New cloud runner maps actual status mailbox plus native pad boundaries, with explicit authenticated soc_top blackbox; gate-simulates resulting shell using qualified explicit core stub/native pad/stdcell models and negative enable control. No full core physical integration claim. See docs/core-only-shell-map.md. DRT44263061910 still live at last check; extraction-v2 remains eac5... prepared with Decimal/annotation fixes, not dispatched. Preserve physical producer; do not use shell-map workflow for extraction.

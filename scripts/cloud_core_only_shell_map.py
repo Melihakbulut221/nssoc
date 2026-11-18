@@ -65,6 +65,8 @@ synth -top nssoc_chip -flatten
 dfflibmap -liberty {lib}
 abc -liberty {lib}
 clean
+write_json {OUT/'with-scopeinfo.json'}
+delete t:$scopeinfo
 check -assert
 write_verilog -noattr {netlist}
 write_json {mapped}
@@ -79,6 +81,12 @@ stat -liberty {lib}
         with (OUT/'mapping.log').open('w') as log:
             subprocess.run(['yosys','-s',str(recipe)],stdout=log,stderr=subprocess.STDOUT,check=True,timeout=600)
         module=json.loads(mapped.read_text())['modules']['nssoc_chip']
+        before_scope=json.loads((OUT/'with-scopeinfo.json').read_text())['modules']['nssoc_chip']
+        metadata={n:c for n,c in before_scope['cells'].items() if c['type']=='$scopeinfo'}
+        assert len(metadata)==1 and all(not c['connections'] for c in metadata.values())
+        assert module['cells']=={n:c for n,c in before_scope['cells'].items() if n not in metadata}
+        assert module['ports']==before_scope['ports'] and module['netnames']==before_scope['netnames']
+        r['metadata_removal']=dict(type='$scopeinfo',removed=len(metadata),all_cells_and_connections_unchanged=True)
         cells=module['cells'];counts=Counter(c['type'] for c in cells.values())
         assert counts['soc_top']==1 and cells['u_core']['type']=='soc_top'
         assert set(cells['u_core']['connections'])==set(ports)
