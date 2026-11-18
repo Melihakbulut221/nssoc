@@ -1,0 +1,7 @@
+# Verified second repair and continued search
+
+Run44252197610/source2d60f17df6eb1dfe10351040b0718c6d4697fc5a completed successfully as execution, not timing closure. Native artifact14405960042 SHA2565caa57a1724527881534883c9a795f4d4f961fc60d6548109196985cf91ed5d2 was independently verified: all217 output hashes and six fresh corner metric files. Final slow setup41 (40register-to-register), worst -0.366633ns, TNS -4.08919ns; hold0allcorners, fastworst +0.0461522ns. Slew8/0/0, capacitance3/3/4, fanout748all. All three final STA logs contain zero EST-0026 warnings. Constraints remain20ns/5%derate.
+
+The actual setup log reaches iteration100, after22buffer insertions,18resizes and13pin swaps; hold inserts5buffers. Fresh rerouted reports show improvement from369setup/-1.06756ns to41/-0.366633ns. The worst reported slow path is slice68554 to slice69116/D and includes hold23896 (sg13g2_dlygate4sd3_1) with0.633591ns slow delay. Removing that delay without fast-corner checks could recreate hold failure; no targeted removal or hold relaxation is authorized by this evidence.
+
+The next trial restores this exact saved candidate and all its authenticated ancestry, then electrical repair and200-iteration setup search followed by hold repair and fresh routing/corner reports. Only this new flow's search bound changes; original flows and limits remain unchanged. No timing/electrical acceptance is automatic. Existing separate CTS8 clock split44253264552 and SRAM pin geometry probe44254152426 continue independently.
