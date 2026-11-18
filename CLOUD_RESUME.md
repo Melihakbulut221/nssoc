@@ -1,3 +1,19 @@
+# Current continuation: routed-core repair
+
+Latest functional source **ef88f086feac84f64b48cf77018fe0a92346bfb2**, branch codex/core-only-postgrt. Post-GRT electrical/timing repair run **44247595292**: https://github.com/Melihakbulut221/nssoc/actions/runs/44247595292 (queued at last check). Poll this handle, do not duplicate. Output core-only-postgrt; artifacts core-only-postgrt-native-44247595292 and core-only-postgrt-summary-44247595292. It restores authenticated mapping/CTS/postCTS/globalroute archives, repairs electrical then setup/hold with mandatory rerouting, and measures fresh route-based STA in three corners after each phase. No acceptance/clock relaxation.
+
+Global routing44245993247/e37b67f0e8c82425a8951c2f978ed2ced10a830c is SUCCESS as a routing execution, but timing fails. Native14402132298 SHA256 a2895b63e902f7b3e5fc1c220ec091ed1335ad166ccd6bed1d82ce70f412be11 independently verified (all105 outputs; three fresh metrics match; each process has route-presence marker). Slow1103setup violations, worst -3.81095ns; fast2hold violations, worst -0.0586839ns. Slow/typical/fast slew127/2/2, cap79/81/83, fanout748each. Worst slow path in NPU node0 LIF ev_axon_r[1] through fanout buffers/mux/XNORs. This supersedes placement-only zero-count timing as the current routed evidence. See docs/core-only-postgrt.md.
+
+Other live handles:
+- CTS8 **44246559242**, source67e18d0c5ffec9db966d8733b5e5971d2422047c, running native CTS/repair.
+- Retained RTL **44246945276**, sourcece3b42e6e475d264112612b4f685006c6e587920, running actual suites. Inventory/negative-control step passed; no overall result yet.
+- Complementary interface profiles **44247358676**, source97ffca0ad84ab2bf103f6647e0a11ea4008fb7d4, queued. Must cover all14 cases across base/full: base8pass6skip, full13pass1skip, exact named sets and full SpaceWire/CAN cases required. No union coverage claim yet. Artifact core-only-interface-profiles-44247358676.
+- Native mapped boot **44239816779**, source31cb1846a8cf0eb683344e24c27a25438c22a75c, still simulating. Preserve job and later integrate qualified native-boot source branch.
+
+Keep PCIe/Ethernet excluded and all other production scope intact. Remain cloud-only; all new source committed, no persistent local outputs. Goal remains active. Detailed routing/qualified RC, SRAM internal LVS/Liberty, padframe/CDC/ESD, DFT, full-chip signoff and manufacturer approval are not complete.
+
+---
+
 # Current continuation: retained RTL release qualification
 
 Source **ce3b42e6e475d264112612b4f685006c6e587920**, branch codex/core-only-retained-rtl. Manual retained regression **44246945276**: https://github.com/Melihakbulut221/nssoc/actions/runs/44246945276 (last observed queued). Do not duplicate dispatch. This adds an opt-in COCOTB_RELEASE_PROFILE=core-only to the strict existing collector, with a fixed inventory covering 74 retained and 178 excluded Makefile/test files, and negative controls for unauthorized exclusion, missing/duplicate/overlap and new retained or PCIe test files. Default whole-repository behavior is preserved. Excluded items are not passing or skipped simulator tests. Native SRAM parity and frozen campaigns remain separate gates; retained component tests do not establish whole physical-core integration. Qualification has NOT passed yet. Artifact core-only-retained-rtl-44246945276 must be inspected.
