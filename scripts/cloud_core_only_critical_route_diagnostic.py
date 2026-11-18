@@ -9,7 +9,10 @@ OUT=ROOT/'hw/soc/out/core-only-critical-route-diagnostic'
 original_restore=flow.restore_route
 
 def restore_candidate():
- report,artifacts,initial=original_restore()
+ current_run,current_head=flow.RUN,flow.HEAD
+ flow.RUN=44392013502;flow.HEAD='bea6ce2b77b37f1d7260008aa35007cef91c7f73'
+ try:report,artifacts,initial=original_restore()
+ finally:flow.RUN,flow.HEAD=current_run,current_head
  run=api('actions/runs/44402072903')
  assert run['head_sha']=='75131e1401c85e6cdc12d05819f401856162a93c'and run['run_attempt']==1 and run['status']=='completed'and run['conclusion']=='failure'
  aid=14481780456;digest='3abb2224c073efa979a43238b0d3aa8782549a174d4ef6c7606ced1d086460ce'
