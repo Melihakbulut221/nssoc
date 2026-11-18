@@ -1,3 +1,16 @@
+# Current continuation: retained RTL release qualification
+
+Source **ce3b42e6e475d264112612b4f685006c6e587920**, branch codex/core-only-retained-rtl. Manual retained regression **44246945276**: https://github.com/Melihakbulut221/nssoc/actions/runs/44246945276 (last observed queued). Do not duplicate dispatch. This adds an opt-in COCOTB_RELEASE_PROFILE=core-only to the strict existing collector, with a fixed inventory covering 74 retained and 178 excluded Makefile/test files, and negative controls for unauthorized exclusion, missing/duplicate/overlap and new retained or PCIe test files. Default whole-repository behavior is preserved. Excluded items are not passing or skipped simulator tests. Native SRAM parity and frozen campaigns remain separate gates; retained component tests do not establish whole physical-core integration. Qualification has NOT passed yet. Artifact core-only-retained-rtl-44246945276 must be inspected.
+
+Active physical work to preserve:
+- Global routing **44245993247**, source e37b67f0e8c82425a8951c2f978ed2ced10a830c, running native route/fresh-corner step.
+- Eight-sink CTS candidate **44246559242**, source 67e18d0c5ffec9db966d8733b5e5971d2422047c, queued at latest check. Requires native fresh corner acceptance; topology change is not a timing waiver.
+- Native core-only boot **44239816779**, source31cb1846a8cf0eb683344e24c27a25438c22a75c, actively simulating. Keep original job.
+
+Superseded automatic checks 44245952847 and44245448114 were cancelled after verifying their sources are ancestors of ce3b42e. Latest broad checks and all manual producers are preserved. No new local checkout/artifacts. Changes are cloud-only. Production goal remains active and unproven; retain the approved non-network scope and all independent timing, SRAM, padframe, DRC/LVS, DFT and manufacturer gates.
+
+---
+
 # Current continuation: clock fanout CTS candidate
 
 Candidate source 67e18d0c5ffec9db966d8733b5e5971d2422047c on codex/core-only-cts8. Run **44246559242**: https://github.com/Melihakbulut221/nssoc/actions/runs/44246559242 (last observed queued). Do not duplicate dispatch. Restores original authenticated mapping and placement artifacts, restarts run/26-openroad-detailedplacement/state_out.json, sets only native CTS leaf/macro cluster sizes to 8 and enables clustering, then performs fresh CTS, electrical repair, timing repair and nine single-corner STA processes. No SDC or acceptance-limit relaxation. Output root hw/soc/out/core-only-cts8, artifacts core-only-cts8-native-44246559242 and core-only-cts8-summary-44246559242. Execution success alone is not timing/electrical acceptance.
