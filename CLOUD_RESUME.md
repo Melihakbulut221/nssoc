@@ -1,3 +1,10 @@
+## 2026-11-18: combined fresh buffered timing runner prepared, not dispatched
+
+- Prepared source 2b4b0defc05d09218d1d382ae1ff21b027ecbc17 on codex/core-only-chip-buffered-timing. scripts/cloud_core_only_chip_buffered_timing.py performs authenticated route restore -> fresh native nominal RCX -> capacitance integrity -> exact ODB/SPEF terminal and resistance-graph coverage -> three genuine library-corner timing analyses in one cloud job.
+- Admission intentionally disabled: ROUTE_ARTIFACT_ID and ROUTE_ARTIFACT_SHA are None. Do NOT dispatch until route 44299714366 at 4e5f4aac78beb0e08282f62af347080b13ae5f7f finishes and native/summary/protected sources are independently audited. Then pin exact artifact ID/digest (or update route binding if that candidate fails).
+- No earlier SPEF is reused. Expected 1794 routed nets, 76 separately proven coincident pad nets; unchanged 20 ns propagated internal clocks and 5% derate. All core-model, external IO, CDC, RCminmax and production qualification flags remain false.
+- Route 44299714366 was confirmed in progress in the native route/verification step. Main core route 44263061910 also remains live. Neither has been cancelled or restarted.
+
 ## 2026-11-18: global overflow isolated to already coincident external pad contacts
 
 - 300-iteration attempt 44299285081 failed at iteration 67 with GRT0230/GRT0116. Native artifact 14425685622 SHA256 8dbe84d9d6615ae7cc1851598e65a734b4ce2314530933125a2d4e535c1723cc verified. Final overflow 192 (Metal2 98, Metal3 94). All 192 congestion entries refer to only 17 pad_* nets; zero internal nets. The prior 135 entries also referred exclusively to those 17 pad nets.
