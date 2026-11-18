@@ -1,3 +1,12 @@
+## Repair handoff correction
+Run 44241018213 failed BEFORE CAD execution: the source manifest legitimately stores the mapped netlist as a checkout-relative path. current_path wrongly required all protected paths to be absolute. Resolve both forms inside the checkout, retain containment and file/hash checks, and reject escaping symlinks. Added cloud regression tests.
+
+CTS native or_metrics_out.json emits placement/cell counts, not setup/hold results. The setup/hold numbers in CTS state_out.json are inherited from earlier STA stages, including pre-repair reset fanout paths; do NOT report them as measured CTS timing. The next runner now collects only per-process or_metrics_out.json fields for the explicitly measured corner and rejects missing, wrong-corner or non-finite required values. Tests deliberately put conflicting stale values in state_out.json.
+
+Physical CTS producer remains successful and unchanged. Reuse its authenticated archive, no placement rerun needed. Native boot 44239816779 still needs polling.
+
+---
+
 # Latest verified handoff: 2026-11-18 04:59 UTC
 
 - CTS producer 44239812957 / 3b5938b3d2cdea3951c7b9067f296b696e29c9e3 completed successfully.

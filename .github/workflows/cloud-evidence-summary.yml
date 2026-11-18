@@ -24,6 +24,7 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
+          python3 scripts/qualify_core_only_postcts_handoff.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Restore authenticated CTS and run all-corner repair trials

@@ -7,6 +7,7 @@ mapped boot, LVS, DRC, or production acceptance.
 import hashlib
 import io
 import json
+import math
 import os
 from pathlib import Path
 import stat
@@ -68,7 +69,10 @@ def put(path, data, digest):
 
 def current_path(name):
     p = Path(name)
-    assert p.is_absolute() and ROOT in p.resolve().parents, name
+    if not p.is_absolute():
+        p = ROOT / p
+    p = p.resolve()
+    assert ROOT in p.parents, name
     assert p.is_file(), name
     return p
 
@@ -145,6 +149,27 @@ def restore_cts():
     assert len(config["MACROS"][MASTER]["instances"]) == 4
     return report, [metadata, smeta], config_path, state_path
 
+
+def fresh_corner_metrics(state_path, corner):
+    """Only this STA process's metrics, never state-in's carried-over values."""
+    native = state_path.parent / "or_metrics_out.json"
+    raw = json.loads(native.read_text())
+    suffix = "__corner:" + corner
+    selected = {key[:-len(suffix)]: value for key, value in raw.items()
+                if key.endswith(suffix)}
+    required = ("timing__setup__ws", "timing__hold__ws",
+                "timing__setup_vio__count", "timing__hold_vio__count",
+                "design__max_slew_violation__count", "design__max_cap_violation__count")
+    for key in required:
+        value = selected.get(key)
+        assert isinstance(value, (int, float)) and not isinstance(value, bool), (corner, key, value)
+        assert math.isfinite(value), (corner, key, value)
+        if key.endswith("__count"):
+            assert value >= 0 and value == int(value), (corner, key, value)
+    other = [key for key in raw if "__corner:" in key and not key.endswith(suffix)]
+    assert not other, ("Unexpected corner in single-corner process", other)
+    return selected, native
+
 def qualify_sources():
     completed(GUARD_RUN, GUARD_HEAD)
     import base64
@@ -201,13 +226,16 @@ def main():
             save()
             assert code == 0, phase + " native flow failed"
             entry["corners"] = {}
-            for corner in ("slow", "typical", "fast"):
+            for corner, corner_name in (("slow", "nom_slow_1p08V_125C"),
+                                        ("typical", "nom_typ_1p20V_25C"),
+                                        ("fast", "nom_fast_1p32V_m40C")):
                 states = list(directory.glob("*-nssoc-coreonly" + after + corner + "/state_out.json"))
                 assert len(states) == 1, (phase, corner, states)
-                data = json.loads(states[0].read_text())
-                assert isinstance(data.get("metrics"), dict) and data["metrics"]
+                fresh, native_metrics = fresh_corner_metrics(states[0], corner_name)
                 entry["corners"][corner] = dict(state=str(states[0].relative_to(OUT)),
-                                                metrics=data["metrics"])
+                                                corner_name=corner_name,
+                                                metrics_source=str(native_metrics.relative_to(OUT)),
+                                                metrics_sha256=sha(native_metrics), metrics=fresh)
                 if corner == "fast":
                     initial = states[0]
             assert all(sha(p) == digest for p, digest in protected.items())
