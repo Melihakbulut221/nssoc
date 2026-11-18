@@ -1,3 +1,9 @@
+# Current: preserve authentic supply pads after PDN generation
+
+PDN44285093741/sourceb15d586001eb8fb7a593a93298f84c605514856f generated nativeVDD16851/VSS17194specialboxes;1641instances/placements/connections unchanged. Native14418079779 SHAff32684de71503ccbe5fd77acd5a3a88ad8c32c94db8536b6ccc4d2c1b2d5737 verified. IOVDD/IOVSS nativeconnectivitypassed. VDD/VSS failedPSM0025 no terminals: DEF proves -dont_add_pins deleted their BPin geometry while retainingBTerms. Fix restores ONLY exact authenticated originalpadBPinshapes from CTSODB whenabsent, rejects otherpinchanges, comparesall80pingeometries and nativewrite/readback. No proxy mesh ports or checker bypass. Rerun allfourrails; shorts/DRC/IR/EM stillunqualified. MainDRT44263061910 preserved live.
+
+---
+
 # Current: native PDN duplicate connection corrected
 
 FirstPDN44284400442/sourcea40c06b7994b5421b40b73ea93a7655cf6a10c7c failed beforegeneration: PDN-0186 TopMetal1/TopMetal2 connect alreadyexists in shell because ring -add_connect createsit. Remove only duplicate explicit shellconnect; macrogridconnection retained. Native14418881430 SHA94a399f0cc34224518b232eb877699dc19a2ff1e2721474ec5c436930eeac893 verified. No powergrid generated or accepted. Latest retained broadchecks44284389662; superseded44283102188/44281570719/44279979371/44282189701/44280528115 cancelled after ancestryproof. MainDRT44263061910 preserved live.
