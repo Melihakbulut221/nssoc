@@ -1,4 +1,4 @@
-name: Core-only provisional shell legal placement
+name: Core-only placed shell clock and CDC inventory
 on:
   workflow_dispatch:
 permissions:
@@ -25,22 +25,22 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
           python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_chip_placement.py scripts/audit_core_only_chip_placement.py
+          python3 -m py_compile scripts/cloud_core_only_chip_clocks.py scripts/audit_core_only_chip_clocks.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Place shell around fixed native core and pad ring
-        run: python3 scripts/cloud_core_only_chip_placement.py
+      - name: Bind clock and synchronizer structure to placed native cells
+        run: python3 scripts/cloud_core_only_chip_clocks.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-chip-placement-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-placement/
+          name: core-only-chip-clocks-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-clocks/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-chip-placement-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-placement/result.json
+          name: core-only-chip-clocks-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-clocks/result.json
           if-no-files-found: error
           retention-days: 90
