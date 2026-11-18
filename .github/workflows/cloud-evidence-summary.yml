@@ -1,4 +1,4 @@
-name: Core-only power metal contact diagnostic
+name: Core-only native core power bridges
 on:
   workflow_dispatch:
 permissions:
@@ -25,22 +25,22 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
           python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_pdn_shorts.py scripts/audit_core_only_pdn_shorts.py
+          python3 -m py_compile scripts/cloud_core_only_pdn_bridge.py scripts/bridge_core_only_pdn_native.py scripts/audit_core_only_pdn_shorts.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Scan native power metal and expanded via contacts
-        run: python3 scripts/cloud_core_only_pdn_shorts.py
+      - name: Bridge core supplies and recheck metal contacts and all four rails
+        run: python3 scripts/cloud_core_only_pdn_bridge.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-chip-pdn-shorts-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-pdn-shorts/
+          name: core-only-pdn-bridge-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-pdn-bridge/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-chip-pdn-shorts-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-pdn-shorts/result.json
+          name: core-only-pdn-bridge-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-pdn-bridge/result.json
           if-no-files-found: error
           retention-days: 90
