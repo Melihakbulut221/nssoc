@@ -15,6 +15,7 @@ def main():
   assert run(['apt-get','source','--download-only','ngspice=47+ds-1~bpo13+1'],OUT/'apt-source.log',cwd=tmp)==0,'Signed Debian source retrieval failed'
   dsc=list(tmp.glob('ngspice_47+ds-1~bpo13+1.dsc'));assert len(dsc)==1
   r['source_archives']={p.name:sha(p)for p in tmp.iterdir()if p.is_file()}
+  assert r['source_archives']=={'ngspice_47+ds.orig-doc.tar.gz': 'c6b4b63b57c7c3702ed08cdec207796bdfb371458cdad3dc7bf920aaba1797ed', 'ngspice_47+ds.orig.tar.gz': '004b2f7af4c862ed56a89a353e87889b58c21a5a56d13f45a9138d681c3f5dad', 'ngspice_47+ds-1~bpo13+1.dsc': '00ae58e4877677c5560fb1b98dceea05e4e9c67a7cc0023e8bef915d2f7d61dc', 'ngspice_47+ds-1~bpo13+1.debian.tar.xz': '17c4ad73f91b553e475b63ade69b38617134df6887e03c831aeef6efb06e1393'},'Source archives differ from independently verified signed Debian baseline'
   (OUT/'source.dsc').write_bytes(dsc[0].read_bytes())
   assert run(['dpkg-source','-x',str(dsc[0]),str(source)],OUT/'source-unpack.log')==0
   for p in ['src/spicelib/devices/dio/dioload.c','src/include/ngspice/const.h']:
@@ -28,6 +29,7 @@ def main():
   deb=tmp/'published.deb';url='https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb'
   with urllib.request.urlopen(url,timeout=120)as f:deb.write_bytes(f.read())
   assert sha(deb)=='400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b'
+  assert run(['apt-get','install','-y','--no-install-recommends',str(deb)],OUT/'binary-dependencies.log')==0,'Published binary dependencies unavailable'
   published=tmp/'published';assert run(['dpkg-deb','-x',str(deb),str(published)],OUT/'binary-unpack.log')==0
   original=ROOT/'hw/soc/analog/diagnostics/darea-release';protected={str(original/n):sha(original/n)for n in ['bench.cir','spinit']};protected[str(Path(__file__))]=sha(Path(__file__));r['protected_inputs']=protected;r['cases']={}
   for label,binary in [('published',published/'usr/bin/ngspice'),('source_build',built)]:
