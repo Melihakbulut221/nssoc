@@ -1,3 +1,12 @@
+## 2026-11-18: parent SPEF coverage verified; three-corner timing dispatched
+
+- Coverage run 44295912370 at 32defeaac27ef9bb4abb7ad04d612a9b18a11f18 passed. Verified native 14423477347 SHA256 1c96b8296ca6afc02a7f5611b94a925b42097d7e0e77fedac69f6c42b922a793 and summary 14423850844 SHA256 a26e6913576535010a2a183f606624e678237c936917eda718835f3c2a891ae5, output hashes, protected source bytes and matching result/audit records.
+- All 1615 wired multi-terminal nets have exact SPEF net and terminal coverage and connected resistance graphs. No missing/extra nets, terminal mismatches or resistor-graph disconnections. 76 coincident pad-terminal nets are separately listed; zero single-terminal nets. Three actual-data fault controls passed.
+- Parent actual-SPEF timing dispatched: run 44296516767, source ed581f164b7337a907c6db87a3f9cfcabc515a9f, branch codex/core-only-chip-extracted-timing. It loads exact ODB/SPEF, genuine slow/typical/fast std and IO Liberty, unchanged 20 ns propagated internal pad-root clocks and 5% derates. No estimated-parasitic fallback.
+- This is diagnostic: core timing arcs/internal wires, qualified external I/O timing and CDC bounds are absent; nominal RC is not min/max RC qualification. All full-chip acceptance flags remain false. Examine native logs and full setup/hold/electrical reports before any change.
+- Main detailed route 44263061910 remains live. Once terminal, audit its artifacts and run prepared core extraction/routed boot.
+- Retained checks 44296518837. Checks 44295916148, 44295342121 and 44294474219 cancelled only after verified ancestry to the retained source. No physical jobs cancelled.
+
 ## 2026-11-18: nominal parent RC extracted; exact SPEF coverage running
 
 - Extraction 44295338338 at 94bc6b6dec9615e25d39883916454d2dd4b40f7c completed. Independently verified native 14422128950 SHA256 3e115d0de651a784965fe8d8e0899ec1752a07f2096de6d22a4c9efea2c2c226 and summary 14422718779 SHA256 b6aeed17482bde8468e6c328e588f9e32ed44540e5c40998f962436ffaca8931, all six output hashes and identical result bytes.
