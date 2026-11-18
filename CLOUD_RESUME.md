@@ -1,3 +1,9 @@
+# Current: native Decimal capture bug fixed; cloud qualification pending
+
+Prepared extraction was incompatible with actual LibreLane3.0.5 DefaultOutputProcessor: floating metrics are Decimal. CoreExtractedSTA now accepts finite Decimal and serializes with native GenericDictEncoder, keeping integer counts/corner guards. New scripts/qualify_core_only_native_metrics.py exercises real native parser and adapter with parent subprocess mocked, positive residual violations plus eight malformed cases. Branch codex/core-only-native-metrics workflow is qualification only, not extraction/boot. Review its artifact before actual extraction. DRT44263061910 still live at last poll; no duplicate. Routed boot prepared in predecessor c3820318bc649809ca938057b97ccdf9335154a2. Goal active, cloud-only, network interfaces excluded, 20ns/5% unchanged.
+
+---
+
 # Current: routed-netlist functional boot prepared alongside extraction
 
 Branch codex/core-only-routed-boot inherits cf845c2632a3b74abfc0e050ac934b365d0101da. New runner scripts/cloud_core_only_routed_boot.py and branch manual workflow are PREPARED NOT DISPATCHED; no test result claimed. See docs/core-only-routed-boot.md. Qualified original boot harness is isolated in cloud output, leaving all producer source-binding files unchanged. Restores full chain and uses actual detailed-route state netlist; unchanged authenticated firmware/ROM. Before dispatch independently review terminal DRT 44263061910, pin route artifact IDs/digests in shared restore_route, and verify prepared scripts in cloud. Extraction remains prepared on codex/core-only-routed-extraction. DRT last confirmed live in routing step; do not duplicate/restart. Goal active; PCIe/Ethernet excluded; 20ns and 5% derate unchanged.

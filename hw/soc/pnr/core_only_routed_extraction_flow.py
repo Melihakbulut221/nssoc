@@ -2,6 +2,8 @@
 """Core-only nominal extraction and actual-SPEF STA; RC corners not qualified."""
 import json
 import math
+from decimal import Decimal
+from librelane.common import GenericDictEncoder
 from pathlib import Path
 from core_only_routed_guards import guarded_sta
 from replay_onehot_routed_extraction_flow import AuditedRCX, AuditedRoutedSTA, ROOT, sha
@@ -22,11 +24,11 @@ class CoreExtractedSTA(AuditedRoutedSTA):
                     "timing__setup_vio__count", "timing__hold_vio__count",
                     "design__max_cap_violation__count", "design__max_slew_violation__count"):
             value = updates.get(key + suffix)
-            assert isinstance(value, (int, float)) and not isinstance(value, bool)
+            assert isinstance(value, (int, float, Decimal)) and not isinstance(value, bool)
             assert math.isfinite(value), (corner, key, value)
             if key.endswith("__count"):
                 assert value >= 0 and value == int(value)
-        (Path(corner_dir) / "fresh_metrics.json").write_text(json.dumps(updates, indent=2) + "\n")
+        (Path(corner_dir) / "fresh_metrics.json").write_text(json.dumps(updates, indent=2, cls=GenericDictEncoder) + "\n")
         return updates
 
     def get_script_path(self):
