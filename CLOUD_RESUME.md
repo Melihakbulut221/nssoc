@@ -1,3 +1,9 @@
+# Current: provisional core physical boundary export launched independently
+
+Branch codex/core-only-boundary-probe inherits987a5e3e2aef61cb9d7148241d9d0c1433d73483. Newrunner cloud_core_only_boundary_probe.py restores authenticated clock-refine44259265143 chain and invokes native OpenROAD.WriteViews. audit_core_only_boundary.py compares exportedLEF pins/directions/types/rectangles/size with originalODB and269-bitcontract, records supplies. Provisional PRE-DRT only; no finalroute/GDS/timing/physicalintegration claim. Full native result not yet inspected. DRT44263061910 preserved live. Re-export/rebind finalDRT before using asfinalchipboundary. See docs/core-only-boundary-probe.md. Extraction-v2 and routedboot preparations remain inherited but their workflow must be restored on a derived branch when ready.
+
+---
+
 # Current: core/pad bounding-box fit established; physical assembly pending
 
 Authenticated pre-DRT DEF header shows core3326.4x2475.9um; provisional4000x3200um ring with180um pad depth leaves3640x2840um. Mathematical centered gaps156.8um sides/182.05um top-bottom. NOT site-aligned placement, power clearance, routed integration or DRC/timing proof. Evidence docs/evidence/core-only-ring-fit-20261118.json and docs/core-only-ring-integration.md. Rebind actual DRT ODB/DEF/pins on terminal success. Native hardmacro LEF/powered-netlist/GDS strategy still needs execution and verification. Mapped shell native functional result remains verified as previously recorded. DRT44263061910 still live at last poll; no duplicate.
