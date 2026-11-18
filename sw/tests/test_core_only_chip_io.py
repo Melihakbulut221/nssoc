@@ -3,6 +3,7 @@
 """Core-only shell and wire-format tests, not actual-chip or pad-cell qualification."""
 import importlib.util
 import json
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -33,8 +34,14 @@ def test_core_contract_and_complete_pad_consumption():
     assert "32'h4d420002, 5'b0" in text
     assert len({p["instance"] for p in pads}) == len(pads)
     assert sum(bool(p.get("supply")) for p in pads) == 4
-    for name in c["core_ports"]:
-        assert text.count(f".{name}({name})") == 1
+    # clk_i/rst_ni intentionally also feed the independent status mailbox.
+    instances = re.findall(r"\bsoc_top\s+u_core\s*\((.*?)\);", text, re.S)
+    assert len(instances) == 1
+    pattern = r"\.([A-Za-z_]\w*)\s*\(\s*([A-Za-z_]\w*)\s*\)"
+    pairs = re.findall(pattern, instances[0])
+    assert len(pairs) == len(c["core_ports"])
+    assert dict(pairs) == {name: name for name in c["core_ports"]}
+    assert not re.sub(pattern, "", instances[0]).replace(",", "").strip()
     for name in ("spw_di_i", "spw_do_o", "can_rx_i", "can_tx_o",
                  "i2c_scl_i", "i2c_scl_oe_o", "spi_sck_o"):
         assert name in c["core_ports"]
