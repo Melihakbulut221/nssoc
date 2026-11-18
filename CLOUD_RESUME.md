@@ -1,3 +1,9 @@
+# Current: provisional shell placement prepared
+
+Cloud placement consumes pinned assembly44275589227/native14414790892. Native OpenROAD initializes interior rows, cuts20um macro halos, places shell without timing optimization, runs detailed placement and fatal native placement check. Independent audit preserves all1550masters/8774connections/80top pin shapes/297fixed placements, requires1253placed cells, rectangle nonoverlap and ODB readback. No CTS/PDN/routing/timing or production acceptance. Main DRT44263061910 remains live and untouched.
+
+---
+
 # Current: provisional integrated chip ODB verified; shell placement/routing open
 
 Run44275589227/source9d29ca02d34ff6261a7dffec384442ec77cf163b terminal SUCCESS. Native14414790892 SHA f4b055d167c1cab6b18733a0b86b3d5d5edd49d987b2819b92148f8325633178; summary14414436984 SHA3c901b3f9e2960a3e5159d689bf286fdb615a66e76b0a4d8f84967af9fb9d4da. Independently verified native-summary equality/all11outputs/two protected source files/native report/DEF1550components80pins. 1550 instances total:297fixed(core+296ring),1253UNPLACED(shell+ties). 8774terminal connections checked,4distinct supply domains,missing-core-ground/wrong-core-voltage/missing-clock controls rejected,ODB write/readback exact. CoreVPWR->VDD/VGND->VSS; native stdcell andI/O rails connected logically. **NO physical power/signal routes, no shell placement/CTS/CDC/timing, no final core/GDS/LVS/production acceptance.** Core is provisional pre-DRT LEF boundary. See docs/evidence/core-only-chip-assembly-20261118.json.
