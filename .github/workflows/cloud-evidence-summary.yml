@@ -1,4 +1,4 @@
-name: Core-only residual electrical global route and three corner timing
+name: Core-only residual native audit fault controls
 on:
   workflow_dispatch:
 permissions:
@@ -23,15 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_residual_electrical_globalroute.py
+          python3 -m py_compile scripts/cloud_core_only_residual_audit_controls.py scripts/qualify_core_only_residual_audit_native.py scripts/audit_core_only_residual_electrical_strict.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Route residual electrical candidate and measure three corners
-        run: python3 scripts/cloud_core_only_residual_electrical_globalroute.py
+      - name: Reject corrupted clock, power, antenna and placement candidates
+        run: python3 scripts/cloud_core_only_residual_audit_controls.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-residual-electrical-globalroute-${{ github.run_id }}
-          path: hw/soc/out/core-only-residual-electrical-globalroute/
+          name: core-only-residual-audit-controls-${{ github.run_id }}
+          path: hw/soc/out/core-only-residual-audit-controls/
           if-no-files-found: error
           retention-days: 90
