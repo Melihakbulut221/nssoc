@@ -8,7 +8,10 @@ def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 for row in spec['inputs'].values():assert sha(row['path'])==row['sha256']
 inputs={k:Path(v['path'])for k,v in spec['inputs'].items()};out=Path(spec['output'])
 db=odb.dbDatabase.create()
-for name in ['tech','std','io','core_lef']:assert odb.read_lef(db,str(inputs[name]))
+# A technology-only LEF correctly returns no cell library. Validate its tech.
+odb.read_lef(db,str(inputs['tech']))
+assert db.getTech() and len(list(db.getTech().getLayers()))==19
+for name in ['std','io','core_lef']:assert odb.read_lef(db,str(inputs[name]))
 chip=odb.dbChip.create(db);block=odb.dbBlock.create(chip,'nssoc_chip');units=db.getTech().getDbUnitsPerMicron()
 block.setDefUnits(units);block.setDieArea(odb.Rect(0,0,4000*units,3200*units))
 module=json.loads(inputs['mapped'].read_text())['modules']['nssoc_chip']
