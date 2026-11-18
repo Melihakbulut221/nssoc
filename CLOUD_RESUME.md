@@ -1,3 +1,26 @@
+# Active core-only continuation: 2026-11-18
+
+Current release excludes PCIe and Ethernet by explicit user approval. Preserve CPU at 20 ns, five percent derate, all three corners and complete manufacturing acceptance. This is not a signoff claim.
+
+## Current work handles
+- Core-only mapping: run 44238569057, commit bfb1fcc1bcd1d2def770ac26bd978767b0466e32, completed successfully. Four system SRAM macros.
+- Placement and CTS: run 44239812957 on codex/core-only-physical, commit 3b5938b3d2cdea3951c7b9067f296b696e29c9e3. Observed running in actual physical step; re-poll.
+- Native whole-chip boot: run 44239816779 on codex/core-only-native-boot, commit 31cb1846a8cf0eb683344e24c27a25438c22a75c. Observed running in native boot step; re-poll.
+- New core-only postCTS flow and guard tests: commit d145b505c308d875d074471d88a0882575cc6f3f on codex/core-only-postcts.
+- Explicit guard qualification run: 44240371021, cloud-evidence-summary.yml, queued when last checked. Run 44240360501 is the automatically triggered checks.yml suite, NOT the guard qualification.
+
+## Next actions
+1. Read actual guard qualification logs. New tests exercise Tcl constraints with stub clocks, not OpenROAD or chip timing; success only proves guard behavior. Qualify actual native OpenROAD script compatibility when CTS output is available.
+2. Authenticate physical producer run, head, artifact digest and inner hashes before restoring CTS state. Do not launch duplicate placement.
+3. Build a separate cloud postCTS runner from authenticated CTS, use core_only_postcts_flow.py. Old corrpre_postcts_flow.py hardcodes removed network clocks and must not be reused for this release.
+4. CoreOnlyElectricalTrial and CoreOnlyTimingTrial measure slow/typical/fast independently, use propagated clocks, require exactly clk_i at 20 ns and derate 5.0. BoundedPostCTS limits search iterations, NOT acceptance. No postCTS CAD run has been launched yet.
+5. Preserve native boot result independently. Route/extract qualified RC and check all corners; placement timing is not final timing.
+6. Remaining production obligations include full-chip SRAM/internal LVS, DRC/antenna, SRAM characterization, retained-interface I/O/CDC/padframe/DFT and actual manufacturer approval.
+
+Work cloud-only; no persistent local checkout or CAD artifacts. Never mark old full-network evidence as current core-only evidence.
+
+---
+
 # Cloud continuation checkpoint
 
 Full goal remains production-ready nssoc, including full serial PCIe Gen3 x4 PHY/mainchip, Ethernet, routed setup/hold/DRC/LVS/antenna, SRAM internal LVS/Liberty/PVT/RC, padframe/DFT and foundry approval. None of the diagnostic passes below substitutes for that scope. Cloud-only; preserve clocks20/4/8/8ns,5%derate and original I/O constraints. No reset/watchdog waivers. Do not merge experimental cloud-evidence-summary.yml into timing/combined.
