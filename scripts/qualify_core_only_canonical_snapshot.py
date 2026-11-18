@@ -12,7 +12,7 @@ def native():
  exec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),namespace)
  snapshot=namespace['snapshot']
  d=odb.dbDatabase.create();odb.read_lef(d,str(OUT/'sg13g2_tech.lef'));odb.read_lef(d,str(OUT/'sg13g2_stdcell.lef'))
- chip=odb.dbChip.create(d);b=odb.dbBlock.create(chip,'canonical_fixture');master=d.findMaster('sg13g2_buf_1');assert master
+ chip=odb.dbChip.create(d,d.getTech());b=odb.dbBlock.create(chip,'canonical_fixture');master=d.findMaster('sg13g2_buf_1');assert master
  a=odb.dbInst.create(b,master,r'bad\instance$');z=odb.dbInst.create(b,master,'receiver')
  for i,x in [(a,10000),(z,20000)]:i.setLocation(x,10000);i.setPlacementStatus('PLACED')
  n=odb.dbNet.create(b,r'bad\net$');n.setSigType('SIGNAL');a.findITerm('X').connect(n);z.findITerm('A').connect(n)
