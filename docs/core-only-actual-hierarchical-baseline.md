@@ -24,3 +24,19 @@ Successful execution still requires annotation/coverage review and migration to
 the final core and parent artifacts. External I/O budgets, CDC reliability,
 qualified RC min/max, physical integration, foundry DRC/LVS and manufacturing
 approval remain open.
+
+## Native tool correction
+
+The first attempt (44353327958, head e2b49a162ebd0d75ebce0a814df480ec18b24b43)
+failed before timing: OpenROAD link_design required technology data (ORD-2010).
+Artifact 14448983055, SHA256
+19608ebc8baed36a0f824b70168909ca26062956af42b3869de1dfdc23af4f14,
+and its 10 output hashes were verified. This is not a design timing result.
+
+The corrected runner invokes the same standalone sta entry point already used
+by qualify_core_only_hierarchical_spef.py in the pinned AppImage. Verilog escaped
+identifier delimiters are removed when constructing STA pin queries. Actual
+sequential CLK pins replace antenna-pin representatives, and the max-path report
+must contain real u_core paths clocked by shell_main. Native errors fail the
+runner; warnings are retained for explicit review. Constraints, source netlists,
+libraries and SPEF ordering are unchanged.

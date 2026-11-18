@@ -57,10 +57,13 @@ def main():
   assert len(cells)>100000 and len(macros)==4,(len(cells),len(macros))
   def q(p):
    p=str(p);assert '{'not in p and '}'not in p and chr(10)not in p;return '{'+p+'}'
-  lines=['set_thread_count 1']+['read_liberty '+q(OUT/p)for p in ['std.lib','io.lib','sram.lib']]
+  lines=[]+['read_liberty '+q(OUT/p)for p in ['std.lib','io.lib','sram.lib']]
   lines+=['read_verilog '+q(OUT/'core.v'),'read_verilog '+q(OUT/'parent.v'),'link_design nssoc_chip']
-  representatives=['u_core/'+name+'/'+pin for master,name,pin in cells[:8]]
-  representatives+=['u_core/'+name+'/A_CLK'for master,name in macros]
+  def identifier(name):return name[1:]if name.startswith(chr(92))else name
+  timed_flops=[identifier(name)for master,name,pin in cells if master=='sg13g2_dfrbpq_1']
+  assert len(timed_flops)>=8
+  representatives=['u_core/'+name+'/CLK'for name in timed_flops[:8]]
+  representatives+=['u_core/'+identifier(name)+'/A_CLK'for master,name in macros]
   for pin in representatives:lines+=['if {[llength [get_pins '+q(pin)+']] != 1} {error "Actual core leaf missing"}']
   lines+=['read_sdc '+q(OUT/'parent.sdc'),'read_spef '+q(OUT/'parent.spef'),'read_spef -path u_core '+q(OUT/'core.spef')]
   lines+=['if {[llength [all_clocks]] != 2} {error "Unexpected hierarchical clocks"}','foreach name {shell_main shell_test} {set c [get_clocks $name]; if {[llength $c]!=1 || abs([get_property $c period]-20)>1e-9 || ![get_property $c is_propagated]} {error "Clock changed"}}']
@@ -72,8 +75,13 @@ def main():
   protected={str(p):sha(p)for p in [Path(__file__),*[p for p in OUT.iterdir()if p.is_file()]]}
   r.update(source_artifacts=[cm,pm,rm],protected_inputs=protected,representative_core_pins=representatives,status='RUNNING_ACTUAL_HIERARCHICAL_BASELINE')
   app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
-  with (OUT/'native.log').open('w')as log:subprocess.run([str(app),'openroad','-exit',str(OUT/'hierarchical.tcl')],stdout=log,stderr=subprocess.STDOUT,check=True)
+  with (OUT/'native.log').open('w')as log:subprocess.run([str(app),'sta','-exit',str(OUT/'hierarchical.tcl')],stdout=log,stderr=subprocess.STDOUT,check=True)
   text=(OUT/'native.log').read_text();assert 'NSSOC_HIERARCHICAL_BASELINE_STA_COMPLETE'in text
+  assert not re.search(r'(?im)^\s*Error[: ]',text), 'Native STA error'
+  r['native_warnings']=[line for line in text.splitlines()if re.search(r'(?i)warning',line)]
+  r['annotation_review_complete']=False
+  maxpaths=(OUT/'max-paths.rpt').read_text()
+  assert 'u_core/'in maxpaths and 'clock shell_main'in maxpaths,'Actual core clocked paths missing'
   r['worst_slack_ns']={}
   for delay in ['max','min']:
    matches=re.findall(r'(?m)^worst slack '+delay+r' ([+-]?[0-9]+(?:\.[0-9]+)?)\s*$',text);assert len(matches)==1
