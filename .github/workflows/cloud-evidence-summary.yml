@@ -1,4 +1,4 @@
-name: Core-only native electrical load inventory
+name: Core-only third measured setup buffer ECO
 on:
   workflow_dispatch:
 permissions:
@@ -23,16 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 scripts/parse_core_only_fanout_report.py
-          python3 -m py_compile scripts/cloud_core_only_electrical_load_inventory.py scripts/audit_core_only_electrical_loads.py
+          python3 -m py_compile scripts/cloud_core_only_third_setup_eco.py scripts/prepare_core_only_third_setup_eco.py scripts/audit_core_only_third_setup_eco.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Inspect real receiver masters of all reported fanout violations
-        run: python3 scripts/cloud_core_only_electrical_load_inventory.py
+      - name: Legalize four buffers on the remaining worst setup path
+        run: python3 scripts/cloud_core_only_third_setup_eco.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-electrical-load-inventory-${{ github.run_id }}
-          path: hw/soc/out/core-only-electrical-load-inventory/
+          name: core-only-third-setup-eco-${{ github.run_id }}
+          path: hw/soc/out/core-only-third-setup-eco/
           if-no-files-found: error
           retention-days: 90
