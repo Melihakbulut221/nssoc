@@ -1,3 +1,9 @@
+## Latest measured timing and remaining electrical ECO
+
+Run44328874040 at733cb000518b8bd6d95470fde5e6e3c3e32bafa6 completed: artifact14438862280 SHA256 e47da3fe91a279ad2102ee2d84420b226afddd73646b26dceb5ab42c37e05fa8, all106 output hashes and protected repository source files independently verified. Three corners have0setup/hold/fanout violations. Slow setup margin0.0661107ns; fast hold margin0.0426459ns. SRAM output capacitance no longer violates. Remaining cap violation nssoc_sta_i_78908/Q:0.304662/0.306369/0.308337pF versus0.300pF.
+Slow slew count increased5->11 after global rerouting. Four drivers account for those endpoints: nssoc_sta_i_64237/Y,54306/Y,52754/Y,66325/Y. Preserve reports; this is not electrical closure. New candidate strengthens these measured combinational drivers only after matching actual native master pins and exact Liberty function, and adds two spatially grouped buf4 branches to78908/Q. All clocks, SRAM relocation, prior hold chain and other instance geometry must remain unchanged.
+All figures are GLOBAL-ROUTE ESTIMATES, not final extracted timing. Native core geometry baseline runs independently from original routed core; it cannot qualify this ECO. Next: candidate admission, fresh screening, detailed routing with antenna checks, RCX and full-chip verification.
+
 ## Full-sized native geometry baseline
 
 Indexed geometry qualification44330297789 passed1,624 exhaustive-reference comparisons and reproduced the authenticated parent result with zero geometry disconnections/missing terminals/inter-net contacts. Artifact14438982327 SHA256 bfa8bd0bb9fa92a3896b91bbd073a14e685b7bd6862a1dfeac9fc181dd619082; all hashes and source files independently verified.
