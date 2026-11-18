@@ -17,13 +17,17 @@ def main():
         assert source['audit']['new_buffers']==179 and source['audit']['actual_driver_graph_verified']and source['audit']['buffer_only_terminal_equivalence']and source['audit']['cycle_and_unknown_source_controls']
         for p in ['chip-buffered-placed.odb','std.lib','io.lib','shell-cts.sdc','buffer-eco.json','legalized-audit.json']:(OUT/p).write_bytes(z.read(p))
         r['source_artifact']=meta
+        selector=ROOT/'scripts/select_core_only_parent_route_nets.py'
         scripts=[ROOT/'scripts/audit_core_only_buffered_route.py',ROOT/'scripts/audit_native_signal_geometry.py',ROOT/'scripts/buffer_core_only_chip_controls.py']
-        protected={str(p):sha(p)for p in [Path(__file__),*scripts,OUT/'chip-buffered-placed.odb',OUT/'std.lib',OUT/'io.lib',OUT/'shell-cts.sdc']};r['protected_inputs']=protected
+        protected={str(p):sha(p)for p in [Path(__file__),selector,*scripts,OUT/'chip-buffered-placed.odb',OUT/'std.lib',OUT/'io.lib',OUT/'shell-cts.sdc']};r['protected_inputs']=protected
         app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
+        with (OUT/'selection.log').open('w')as log:subprocess.run([str(app),'openroad','-exit','-python',str(selector)],env=dict(os.environ,NSSOC_CONTROL_BUFFER_OUT=str(OUT)),stdout=log,stderr=subprocess.STDOUT,check=True)
+        r['route_selection']=json.loads((OUT/'route-selection.json').read_text())
         def q(n):return '{'+str(OUT/n)+'}'
-        tcl='set_thread_count 4\nread_liberty '+q('std.lib')+'\nread_liberty '+q('io.lib')+'\nread_db '+q('chip-buffered-placed.odb')+'\nread_sdc '+q('shell-cts.sdc')+'\n'
+        tcl='set_thread_count 4\nread_liberty '+q('std.lib')+'\nread_liberty '+q('io.lib')+'\nread_db '+q('chip-route-input.odb')+'\nread_sdc '+q('shell-cts.sdc')+'\n'
         tcl+='foreach name {VDD VSS IOVDD IOVSS} {set net [[ord::get_db_block] findNet $name]; if {$net=="NULL"} {error "Missing supply"}; $net setSpecial; check_power_grid -net $name; puts "NSSOC_POWER_CONNECTED_$name"}\n'
         tcl+='set_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2\nset_global_routing_layer_adjustment Metal2-TopMetal2 0.3\n'
+        tcl+='source '+q('route-selection.tcl')+'\n'
         tcl+='global_route -guide_file '+q('chip.guide')+' -congestion_report_file '+q('congestion.rpt')+' -congestion_iterations 300 -verbose\n'
         tcl+='write_db '+q('chip-globalroute.odb')+'\nread_guides '+q('chip.guide')+'\n'
         tcl+='detailed_route -output_drc '+q('route-drc.rpt')+' -output_maze '+q('maze.log')+' -output_guide_coverage '+q('guide-coverage.csv')+' -verbose 1\n'

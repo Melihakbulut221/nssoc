@@ -9,6 +9,8 @@ def insts(b):return {i.getName():(identity(i),str(i.getPlacementStatus()))for i 
 assert insts(b0)==insts(b1)and connections(b0)==connections(b1)and geom(b0)==geom(b1)
 guided={n.getName()for n in b1.getNets()if list(n.getGuides())}
 expected={n.getName()for n in b1.getNets()if str(n.getSigType())not in ('POWER','GROUND')and len(list(n.getITerms()))+len(list(n.getBTerms()))>1}
-assert expected<=guided
+selection=json.loads((out/'route-selection.json').read_text())
+omitted={x['net']for x in selection['coincident_pad_nets']}
+assert expected==set(selection['selected_nets'])|omitted and guided==set(selection['selected_nets'])
 report=dict(instances=len(list(b1.getInsts())),placements_masters_connections_pins_and_power_geometry_unchanged=True,guided_nets=len(guided),multi_terminal_nets=len(expected),unwired=sorted(n.getName()for n in b1.getNets()if n.getName()in expected and not n.getWire()),accepted=False)
 (out/'route-identity.json').write_text(json.dumps(report,indent=2)+'\n')
