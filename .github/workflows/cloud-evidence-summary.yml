@@ -1,16 +1,12 @@
-name: Core-only eight-sink CTS and timing repair
+name: Core-only retained RTL regression
 on:
   workflow_dispatch:
 permissions:
   contents: read
-  actions: read
 jobs:
-  repair:
-    runs-on: ubuntu-22.04
+  retained-rtl:
+    runs-on: ubuntu-24.04
     timeout-minutes: 355
-    env:
-      GH_TOKEN: ${{ github.token }}
-      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -18,29 +14,35 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Prepare pinned physical runtime
+      - name: Validate release inventory and negative controls
+        run: |
+          set -euo pipefail
+          bash -n scripts/run_cocotb.sh
+          python3 scripts/check_core_only_cocotb_inventory.py
+          python3 scripts/qualify_core_only_cocotb_inventory.py
+      - name: Prepare native RTL simulation dependencies
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 scripts/qualify_core_only_timing_guards.py
-          python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_cts8.py hw/soc/pnr/core_only_cts8_flow.py
-          python3 scripts/bootstrap_flow.py
-          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Restore preCTS placement, rebuild eight-sink clock tree and repair
-        run: python3 scripts/cloud_core_only_cts8.py
+          sudo apt-get install -y --no-install-recommends iverilog
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+          make soc-rtl-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+      - name: Run retained non-frozen RTL suites
+        env:
+          COCOTB_RELEASE_PROFILE: core-only
+        run: |
+          set -euo pipefail
+          mkdir -p hw/soc/out/cocotb
+          scripts/run_cocotb.sh 2>&1 | tee hw/soc/out/cocotb/retained-summary.log
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-cts8-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-cts8/
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: core-only-cts8-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-cts8/result.json
+          name: core-only-retained-rtl-${{ github.run_id }}
+          path: |
+            hw/soc/out/cocotb/
+            hw/tb/results*.xml
+            hw/soc/tb/cocotb/results*.xml
+            tt/test/results.xml
           if-no-files-found: error
           retention-days: 90

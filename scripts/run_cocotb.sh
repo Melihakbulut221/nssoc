@@ -29,6 +29,23 @@ ROOT=$(pwd)
 FILTER="${1:-}"
 PY="${PY:-$ROOT/.venv/bin/python}"
 [ -x "$PY" ] || PY=python3
+# Explicit release scope is opt-in; default remains the whole repository.
+RELEASE_PROFILE="${COCOTB_RELEASE_PROFILE:-all}"
+CORE_EXCLUDED=""
+case "$RELEASE_PROFILE" in
+    all) ;;
+    core-only)
+        [ -z "$FILTER" ] || { echo "core-only release cannot use a partial filter" >&2; exit 2; }
+        CORE_EXCLUDED=$("$PY" "$ROOT/scripts/check_core_only_cocotb_inventory.py" --excluded) || exit 2
+        ;;
+    *) echo "Unknown COCOTB_RELEASE_PROFILE: $RELEASE_PROFILE" >&2; exit 2 ;;
+esac
+core_excluded() {
+    [ "$RELEASE_PROFILE" = core-only ] || return 1
+    case "|$CORE_EXCLUDED|" in *"|$1|"*) return 0 ;; *) return 1 ;; esac
+}
+excluded_suites=0
+excluded_modules=0
 LOG_DIR="$ROOT/hw/soc/out/cocotb"
 mkdir -p "$LOG_DIR"
 
@@ -298,6 +315,11 @@ for spec in "hw/tb:Makefile" "hw/soc/tb/cocotb:Makefile"; do
     # of there because this loop is where it belongs.
     for mk in "$ROOT/$dir"/Makefile "$ROOT/$dir"/Makefile.*; do
         [ -f "$mk" ] || continue
+        if core_excluded "$dir/$(basename "$mk")"; then
+            echo "OUT_OF_RELEASE $dir/$(basename "$mk"): PCIe/Ethernet excluded by product scope"
+            excluded_suites=$((excluded_suites + 1))
+            continue
+        fi
         name=$(basename "$mk")
         # A plain `Makefile` leaves cocotb's own default results file
         # name, `results.xml`, exactly as tt/test's does -- so the
@@ -361,6 +383,11 @@ for dir in hw/tb hw/soc/tb/cocotb; do
     for tf in "$ROOT/$dir"/test_*.py; do
         [ -f "$tf" ] || continue
         mod=$(basename "$tf" .py)
+        if core_excluded "$dir/$(basename "$tf")"; then
+            echo "OUT_OF_RELEASE $dir/$(basename "$tf"): PCIe/Ethernet excluded by product scope"
+            excluded_modules=$((excluded_modules + 1))
+            continue
+        fi
         # Native SRAM parity runs in its mandatory, separately provisioned CI
         # job. Pure RTL uses Icarus 12; the untouched PDK model needs >=13.
         # Keep this binding checked: deleting its driver or workflow command
@@ -530,5 +557,6 @@ if [ "$suite_total" = "0" ]; then
     echo "No runnable suites selected (filter: $FILTER)."
     suite_fail=$((suite_fail + 1))
 fi
+echo "release profile: $RELEASE_PROFILE; $excluded_suites suites / $excluded_modules modules outside release (not passes)"
 echo "cocotb: $pass_total passed, $fail_total failed, $suite_fail suite(s) not clean, $skip_total skipped"
 [ "$fail_total" = "0" ] && [ "$suite_fail" = "0" ]
