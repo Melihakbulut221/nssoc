@@ -1,3 +1,14 @@
+## 2026-11-18: 179 control buffers legalized and verified; fresh routing live
+
+- Buffer ECO 44298111314 at 9ed3c777c32779357a5075e9f002000a9253a6c9 passed. Independently verified native 14424606971 SHA256 77b704eca3a83a86f41a91115f12015eda83d0dec9f55deddd547fa6169c30b1 and summary 14424527270 SHA256 54d6a799fd291ac0013b2b441cffab9e8635d40f796df1120a94ba104b419e95, all outputs, protected source files and identical result bytes.
+- Added 179 buf4/buf8 cells. Original sinks -> root sinks: n_1485 195->4, n_1487 159->3, n_608 192->3, n_160 189->3, n_609 158->3, n_161 157->3, n_165 156->3, n_615 32->4. Every stage <=8 sinks.
+- Native legalization/check_placement passed. All original 1641 instance geometries, original signal semantics, pins and PG special geometry preserved; actual buffer-driver graph traced with cycle/unknown-source controls. New buffers moved at most 7.6 um during legalization.
+- UNROUTED candidate chip-buffered-placed.odb SHA256 e9ba00abd23d7fe3139e57e6e1168d8aaf1a28fb93bc5a436c848e512ab8a2b5. All old signal wires deliberately removed; old SPEF/timing cannot qualify this ECO.
+- Fresh route run 44298690884, source 39b63476d1ad7f95bee8f737a93acb0322929d10, branch codex/core-only-chip-buffered-route is live. Includes four native power connectivity checks, fresh global+detailed routing, router DRC, exact state preservation and qualified native wire/via connectivity/contact audit. Preserve the run; inspect native artifacts on termination.
+- After routing, require fresh nominal extraction, exact SPEF coverage and all three timing corners. Also inspect routed reset hold/removal timing, since buffering adds delay.
+- Baseline 137 unannotated-driver names in each of the three logs are 76 external ports + 61 pad-facing terminal drivers, with no other name classes. This observation is not external I/O model qualification.
+- Main core detailed route 44263061910 remains live. General checks 44298692859 retained.
+
 ## 2026-11-18: control-buffer native identity guard repaired
 
 - First buffer candidate run 44297672804 failed before writing an ECO because Python wrapper-object equality was used for the driver comparison. Native artifact 14424716950 SHA256 2abc2e38d20c31ea1d6d6b45b0c871ada7f7ab97b17755f5e7600cacc5d844c1 was hash-checked. The failing line compared a native terminal list with [driver]; no electrical diagnosis was established by this failure.
