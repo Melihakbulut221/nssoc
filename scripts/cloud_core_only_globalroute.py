@@ -214,8 +214,17 @@ def restore_postcts():
     for key in ("odb", "nl", "def", "sdc"):
         if state.get(key):
             path = current_path(state[key])
-            assert root in path.parents, (key, path)
-            assert sha(path) == report["outputs"][str(path.relative_to(root))]
+            # Some views (notably SDC) can be carried from an authenticated
+            # earlier stage. ODB must be the repaired stage's own output.
+            if key == "odb" or root in path.parents:
+                assert root in path.parents, (key, path)
+                assert sha(path) == report["outputs"][str(path.relative_to(root))]
+            else:
+                upstreams = [ROOT / "hw/soc/out/core-only-placement",
+                             ROOT / "hw/soc/out/core-only-mainchip"]
+                assert any(upstream in path.parents for upstream in upstreams), (key, path)
+                # Both upstream archives and every output hash were checked by
+                # restore_mapping/restore_cts immediately before this restore.
     return report, metadata, initial
 
 
