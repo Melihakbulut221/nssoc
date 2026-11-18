@@ -1,3 +1,11 @@
+# Current: provisional shell legal placement verified
+
+Run44280535239/source d7494b71ca03709edd3c4a99589c843170bcc0cf SUCCESS. Native14415469830 SHA77c6f9d188a013dd4b30560971bbf8b5f7c3599652238e2dc2ac20378b32da32;summary14417405367 SHA1975922a2e68aa5a2820e6b93c954099c60d6f656e7f55d050eeb5643de4f82f. All8outputs/native-summary equality/protected source hashes verified. Native check_placement completes; independent audit:1253shellcells PLACED,297fixed blocks unchanged,8774connections/80top pin shapes preserved,1407rows,zero rectangle overlaps,ODB readback exact. placement-check.json absent because native DPL writes only when marker category exists; not a missing required proof. See docs/evidence/core-only-chip-placement-20261118.json.
+
+Next: real shell clocks/CDC and pad timing models, CTS/PDN/routing, rebind final core. Main DRT44263061910 still live at last poll, untouched. No final timing or manufacturing acceptance; PCIe/Ethernet excluded,20ns/5% unchanged.
+
+---
+
 # Current: shell placement command compatibility repair
 
 First placement44279994333/source19f9374be13889533e455a5456090743cf241e3e failed before GPL because native parser rejects -disable_timing_driven/-disable_routability_driven despite help text listing them. Pinned replace.tcl confirms parser excludes them; timing/routability flags are opt-in. Remove unsupported options, preserve density0.3/all guards. Native14416242319 SHA5687517004ca08837e49552c056e07694f227acf0f670ad5b8f4b98824fda511 verified;740initialrows cut to1407aroundcore. No placed result. Main DRT44263061910 live, untouched. Superseded broadchecks44273251211/44275593626 cancelled after ancestry proof to44279979371.
