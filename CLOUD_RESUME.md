@@ -1,3 +1,9 @@
+# Live repair continuation
+
+Run **44252197610**, source **2d60f17df6eb1dfe10351040b0718c6d4697fc5a**, branch **codex/core-only-route-refine**. Last verified in_progress. Do not duplicate dispatch. Poll this handle for authenticated baseline restore and native electrical/timing repair. See next section for restore contracts. Final lint evidence now in docs/evidence/core-only-lint-final-20261118.json. Native boot44239816779 was confirmed still in progress in actual simulation. Goal active.
+
+---
+
 # Current: continued routed repair candidate
 
 Branch codex/core-only-route-refine contains a new cloud-only continuation from verified postGRT44247595292, not a fresh placement restart. Dispatch cloud-evidence-summary.yml on this branch once; record its run ID next. It restores mapping/CTS/postCTS/globalroute/postGRT, validates protected inputs and all outputs/metrics, then electrical/timing repair and per-corner deltas. No constraint changes. Current baseline slow369setup/-1.06756ns, hold0allcorners, slew18/0/0, cap7, fanout748. CTS8 reduced-fanout topology remains separate, not integrated. See docs/core-only-route-refine.md.
