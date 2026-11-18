@@ -36,7 +36,7 @@ def main():
      via=box.getTechVia()or box.getBlockVia();assert via;dx,dy=box.getViaXY()
      for shape in via.getBoxes():add(net.getName(),shape.getTechLayer(),shape,dx,dy)
     else:add(net.getName(),box.getTechLayer(),box)
- assert len(inventory)==800
+ expected=int(os.environ.get('ANTENNA_POWER_EXPECTED_DIODES','800'));assert expected>0 and len(inventory)==expected
  checked=[];failures=[];fault=None
  for name in sorted(inventory):
   inst=block.findInst(name);assert inst and inst.getMaster().getName()=='sg13g2_antennanp'
@@ -55,5 +55,5 @@ def main():
  assert hashlib.sha256(path.read_bytes()).hexdigest()==before
  report=dict(accepted=False,source_odb_sha256=before,sources_unchanged=True,diodes=len(inventory),checked_power_terminals=len(checked),failures=failures,terminals=checked,synthetic_controls=controls(),native_rail_removal_control=fault,scope='Positive-area contact of added diode LEF power pins to same-net native special-wire metal/via landings. Does not establish global PDN connectivity, internal cell GDS, IR/EM, transistor LVS, or foundry signoff.')
  out.write_text(json.dumps(report,indent=2)+'\n')
- assert len(checked)==1600 and not failures and fault,'Added diode physical supply contact incomplete'
+ assert len(checked)==2*expected and not failures and fault,'Added diode physical supply contact incomplete'
 if __name__=='__main__':main()
