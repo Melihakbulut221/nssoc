@@ -6,7 +6,8 @@ import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 CLAMP=os.environ['NSSOC_PAD_CLAMP_OHMS'];assert CLAMP in ['0','1','10']
 ITL4=os.environ['NSSOC_PAD_ITL4'];assert ITL4 in ['100','1000']
-OUT=ROOT/('hw/soc/out/core-only-pad-turnoff-current-'+CLAMP+'ohm-itl4-'+ITL4)
+STEP=os.environ.get('NSSOC_PAD_STEP_PS','5');assert STEP in ['5','2.5','1']
+OUT=ROOT/('hw/soc/out/core-only-pad-turnoff-current-'+CLAMP+'ohm-itl4-'+ITL4+'-step-'+STEP+'ps')
 PDK='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c'
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def asset(aid,digest):
@@ -32,7 +33,7 @@ def main():
   ng=Path(os.environ['CLOUD_NGSPICE'])
   init=inp/'startup';init.mkdir();(init/'spinit').write_text('set num_threads=1'+chr(10)+'option klu'+chr(10))
   native_env=dict(os.environ,SPICE_SCRIPTS=str(init))
-  r['solver_configuration']=dict(matrix_solver='KLU',method='gear',maxord=2,max_step_ps=5,transient_iteration_limit=int(ITL4),initial_conditions='native DC operating point',forced_initial_conditions=False,tolerances_relaxed=False)
+  r['solver_configuration']=dict(matrix_solver='KLU',method='gear',maxord=2,max_step_ps=float(STEP),transient_iteration_limit=int(ITL4),initial_conditions='native DC operating point',forced_initial_conditions=False,tolerances_relaxed=False)
   r['runtime_version']=subprocess.check_output([str(ng),'--version'],text=True,env=native_env)
   assert 'ngspice-47'in r['runtime_version']
   protected={str(p):sha(p)for p in [Path(__file__),ng,*[p for p in inp.rglob('*')if p.is_file()]]}
@@ -56,7 +57,7 @@ def main():
        '.control']
      deck+=['pre_osdi '+str(inp/p)for p in ['psp103.osdi','psp103_nqs.osdi','r3_cmc.osdi']]
      deck+=['set wr_singlescale','set wr_vecnames','save v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
-       'option method=gear maxord=2 itl4='+ITL4,'option','tran 5p 50n 0 5p','echo NSSOC_POST_TRAN_SOLVER_READBACK','option','wrdata wave.dat v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
+       'option method=gear maxord=2 itl4='+ITL4,'option','tran '+STEP+'p 50n 0 '+STEP+'p','echo NSSOC_POST_TRAN_SOLVER_READBACK','option','wrdata wave.dat v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
        'echo NSSOC_PAD_CURRENT_CAPTURE_COMPLETE','quit','.endc','.end']
      p=folder/'bench.cir';p.write_text('\n'.join(deck)+'\n');protected[str(p)]=sha(p)
      with (folder/'native.log').open('w')as log:proc=subprocess.run([str(ng),'-n','-b',str(p)],cwd=folder,stdout=log,stderr=subprocess.STDOUT,env=native_env)
@@ -73,6 +74,8 @@ def main():
      assert not row['diagnostics'],row['diagnostics']
      a=np.loadtxt(folder/'wave.dat',skiprows=1);assert a.ndim==2 and a.shape[1]==6 and np.isfinite(a).all()
      t=a[:,0];assert np.all(np.diff(t)>0)and t[-1]>=49.99e-9
+     row['maximum_observed_step_s']=float(np.max(np.diff(t)))
+     assert row['maximum_observed_step_s']<=float(STEP)*1e-12*1.001+1e-18,'Capture exceeds requested maximum step'
      pre=(t>=10e-9)&(t<=19e-9);post=(t>=40e-9)&(t<=49e-9)
      assert pre.sum()>20 and post.sum()>20
      current=a[:,2];row['maximum_pad_deviation_from_clamp_v']=float(np.max(np.abs(a[:,5]-1.5)));row.update(rows=len(a),pre_current_a=float(np.median(current[pre])),post_current_a=float(np.median(current[post])),post_abs_max_a=float(np.max(np.abs(current[post]))))

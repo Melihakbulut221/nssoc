@@ -35,7 +35,7 @@ def test_all_six_cases_execute_and_any_failure_remains_fatal(tmp_path, wrong_sol
         if cwd.name=='0-turnoff':stdout.write('TRAN: Timestep too small\n')
         class Result:returncode=0
         return Result()
-    times=np.linspace(0,50e-9,1001)
+    times=np.linspace(0,50e-9,50001)
     data=np.column_stack([times,np.zeros_like(times),np.full_like(times,.001),np.zeros_like(times),np.zeros_like(times),np.full_like(times,1.5)])
     with patch.dict(os.environ,GITHUB_ACTIONS='true',GITHUB_SHA='fixture',CLOUD_NGSPICE='/fixture/ngspice'),patch.object(m,'asset',lambda aid,digest:Capsule(aid)),patch.object(m,'sha',fake_sha),patch.object(m.subprocess,'check_output',output),patch.object(m.subprocess,'run',simulate),patch.object(m.np,'loadtxt',lambda *a,**k:data):
         import pytest
