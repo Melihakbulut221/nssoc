@@ -1,3 +1,12 @@
+## 2026-11-18: native decoder qualified, visible routed connectivity verified
+
+- Run 44294471048 at c48b3ebddd01531a8b39acc170a1905f89db0479 passed all 11 native encoder fixtures and the actual routed signal continuity audit.
+- Independently checked native artifact 14423440493 SHA256 79ef51448c6ffbd4c1df8381de336666f4d44dab897ee1cb343d4227f82e752c and summary 14422299009 SHA256 3ab076b8dae981467421395aea87335badd3b1f356fc244b84298a0d5f4812c1; identical result bytes, all four output hashes, protected source files and exact routed ODB hash verified.
+- Zero disconnected signal geometry, missing terminal geometry or inter-net contacts. All 76 unwired external pad nets connect via coincident terminal geometry. Removing actual n_82 routing creates 3 components.
+- Scope remains visible routing and LEF terminal geometry, NOT hidden cell/core GDS, transistor LVS, final timing or production approval.
+- Upstream SRAM refreshed at e73adb4045731ddec21634146d536380057f6a26: CDL unchanged, GDS differs only by one top-level boundary on 189/4 when comparing complete per-cell element multisets. The bitcell geometry is unchanged. Issue 239 and PR1121 remain open; no SRAM LVS fix adopted.
+- Main core detailed route 44263061910 remains the next dependency. Once terminal, independently verify outputs before dispatching prepared extraction and routed boot; do not restart a live run.
+
 ## 2026-11-18: native via fixture correction, cloud continuation
 
 - Qualification run 44294044188 failed before the full chip audit because no block-owned via touched Metal2. Native artifact 14423445267, SHA256 37ce8341d18d790e18fe2714ded96d2525431932cf952a988c5c4daf0ffe39f1, was independently checked. This is a fixture inventory failure, not a diagnosed chip connectivity failure.
