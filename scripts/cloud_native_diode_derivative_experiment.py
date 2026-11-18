@@ -12,8 +12,7 @@ def main():
  assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False);r=dict(source_head=os.environ['GITHUB_SHA'],accepted=False,status='PREPARING',simulator_patched=False,models_modified=False)
  try:
   def evidence_api(path,raw=False):
-   req=urllib.request.Request('https://api.github.com/repos/Melihakbulut221/nssoc/'+path,headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'})
-   with urllib.request.urlopen(req,timeout=120)as f:data=f.read()
+   data=subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path])
    return data if raw else json.loads(data)
   baseline=evidence_api('actions/runs/44390258723');assert baseline['status']=='completed'and baseline['conclusion']=='success'and baseline['head_sha']=='569086f1abcf060a418786557805018e307a8db9'and baseline['run_attempt']==1
   aid=int(os.environ['BASELINE_ARTIFACT_ID']);digest=os.environ['BASELINE_ARTIFACT_DIGEST'];assert len(digest)==64
