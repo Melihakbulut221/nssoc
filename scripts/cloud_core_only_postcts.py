@@ -4,6 +4,7 @@
 PostCTS estimated parasitics and trial completion are never final timing,
 mapped boot, LVS, DRC, or production acceptance.
 """
+from collections import deque
 import hashlib
 import io
 import json
@@ -212,6 +213,7 @@ def main():
                 ("electrical", "CoreOnlyElectricalTrial", "electricalafter"),
                 ("timing", "CoreOnlyTimingTrial", "timingafter")]:
             directory = OUT / phase
+            directory.mkdir(parents=True, exist_ok=False)
             command = [str(app), "python", str(flow), "--flow", flow_name,
                        "--pdk-root", str(ROOT / "hw/soc/tools/ciel-corrpre"),
                        "--pdk", "ihp-sg13g2", "--scl", "sg13g2_stdcell",
@@ -223,8 +225,12 @@ def main():
             with (OUT / (phase + ".log")).open("w") as log:
                 code = subprocess.call(command, stdout=log, stderr=subprocess.STDOUT)
             entry["returncode"] = code
+            entry["status"] = "NATIVE_FLOW_FAILED" if code else "MEASURING_OUTPUTS"
             save()
-            assert code == 0, phase + " native flow failed"
+            if code:
+                with (OUT / (phase + ".log")).open() as log:
+                    print("".join(deque(log, maxlen=60)), flush=True)
+                raise RuntimeError(phase + " native flow failed")
             entry["corners"] = {}
             for corner, corner_name in (("slow", "nom_slow_1p08V_125C"),
                                         ("typical", "nom_typ_1p20V_25C"),
@@ -245,6 +251,9 @@ def main():
         report.update(status="POSTCTS_REPAIR_COMPLETE_REQUIRES_ROUTING_AND_SIGNOFF",
                       sources_unchanged=True, output_state=str(initial.relative_to(OUT)))
     except BaseException as error:
+        for entry in report["phases"].values():
+            if entry["status"] in ("RUNNING", "MEASURING_OUTPUTS"):
+                entry.update(status="FAIL_OR_ERROR", error=repr(error))
         report.update(status="FAIL_OR_ERROR", error=repr(error))
         raise
     finally:
@@ -254,3 +263,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

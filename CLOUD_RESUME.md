@@ -1,3 +1,15 @@
+## Current continuation: postCTS CLI preparation
+- Run 44241587407 / b65714f68cb0f92ad45e164792b606267cf24bae completed FAILED.
+- Four Tcl constraint test methods and all eight handoff/fresh-metrics regression tests passed on the actual cloud worker.
+- Mapping and CTS archives restored and authenticated successfully, including relative paths. Native LibreLane CLI then rejected --force-run-dir because its target directory did not exist. No CAD repair was performed by that run.
+- Fix: explicitly create each fresh phase directory before the native command, retain no-clobber behavior. Print the failing native log tail and mark the phase failed, so errors are visible without waiting for artifact inspection.
+- Failed native artifact 14400267266, SHA256 54e1ec7635775c6fb213b17cdef20025f06a04c2791a41079c6aeaa8d3148319 verified. The archived electrical.log contains the exact CLI directory error.
+- Commit 6c924531408961e7e3913e6590c7d7e9ab0ce0e9 relocates lint ledger entries on byte-identical soc_top source lines. No warning count/message/multiplicity change; base inventory matches authenticated actual diagnostic output. Proof: docs/evidence/core-only-lint-line-relocation.json.
+- Old superseded automatic checks 44240360501 was cancelled after preserving the failure evidence. Latest checks 44242259517 was queued; re-poll.
+- Native mapped boot 44239816779 still requires polling. Do not restart it on observation timeout.
+
+---
+
 ## Repair handoff correction
 Run 44241018213 failed BEFORE CAD execution: the source manifest legitimately stores the mapped netlist as a checkout-relative path. current_path wrongly required all protected paths to be absolute. Resolve both forms inside the checkout, retain containment and file/hash checks, and reject escaping symlinks. Added cloud regression tests.
 
