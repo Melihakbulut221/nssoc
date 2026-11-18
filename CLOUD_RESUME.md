@@ -1,3 +1,12 @@
+## 2026-11-18: parent routed nominal extraction launched
+
+- New branch codex/core-only-chip-extraction, source 94bc6b6dec9615e25d39883916454d2dd4b40f7c. Run 44295338338 was confirmed in progress; general checks 44295342121 also live.
+- scripts/cloud_core_only_chip_extraction.py restores exact physical-connectivity artifact 14423440493 (run 44294471048), verifies its 11 native fixtures and actual geometry result, and extracts the unchanged shell ODB using pinned IHP nominal rules plus native OpenRCX `-lef_res`.
+- Inspect native.log, chip-shell.nom.spef, spef-integrity.json and result.json. Independently verify hashes and native/summary equality. Next required work is exact ODB-to-SPEF net/terminal coverage, then scope-limited actual-SPEF shell timing diagnostics.
+- This does not include core-internal wires or core timing arcs, does not qualify min/max RC and does not close full-chip timing. Do not fabricate missing models.
+- Main core route 44263061910 was checked again and remains in progress. Preserve it; when terminal, verify its artifacts and launch prepared native extracted timing and routed boot on the authenticated output.
+- All changes remain cloud-only; no local source checkout or test artifacts created.
+
 ## 2026-11-18: native decoder qualified, visible routed connectivity verified
 
 - Run 44294471048 at c48b3ebddd01531a8b39acc170a1905f89db0479 passed all 11 native encoder fixtures and the actual routed signal continuity audit.
