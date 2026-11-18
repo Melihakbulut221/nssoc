@@ -1,16 +1,16 @@
-name: Matched upstream pad native transistor LVS
+name: Critical timing candidate antenna repair and reroute
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 75
+    timeout-minutes: 360
     env:
+      GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
-      QT_QPA_PLATFORM: offscreen
-      OMP_NUM_THREADS: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -22,15 +22,18 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl
+          python3 -m py_compile scripts/cloud_core_only_critical_antenna_repair.py
+          python3 scripts/test_antenna_insertion_admission.py
+          python3 scripts/test_antenna_netlist_export.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Verify matched official pad in deep and flat modes with strict controls
-        run: python3 scripts/cloud_core_only_upstream_pad_lvs.py
+      - name: Repair remaining antenna violations and reroute with identity and power checks
+        run: python3 scripts/cloud_core_only_critical_antenna_repair.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-upstream-pad-lvs-${{ github.run_id }}
-          path: hw/soc/out/core-only-upstream-pad-lvs/
+          name: core-only-critical-antenna-repair-${{ github.run_id }}
+          path: hw/soc/out/core-only-critical-antenna-repair/
           if-no-files-found: error
           retention-days: 90

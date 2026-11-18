@@ -1,0 +1,5 @@
+# Critical timing candidate antenna repair
+
+The candidate is bound to failed route run 44402072903, head 75131e1401c85e6cdc12d05819f401856162a93c, artifact 14481780456 and its SHA256 digest. Its routing DRC is zero but 234 nets / 265 pins violate antenna limits. All archive output hashes, source identity and visible geometry must pass admission before mutation.
+
+Run the previously exercised native diode-only repair with 10 percent ratio margin on this exact routed ODB. Preserve all 106083 existing instances, placement, connections, net types, special power wires and ports. A dedicated copy of the variable-count power-contact checker avoids changing historical protected helpers. Audit added-cell inventory and direct same-supply rail overlap, including negative controls. Reroute and require zero router DRC and antenna violations plus identity and visible-geometry checks. Final extracted timing, transistor LVS and production signoff remain separate open gates. No constraints or foundry limits are changed.
