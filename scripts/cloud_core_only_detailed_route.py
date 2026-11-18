@@ -21,6 +21,10 @@ def restore_refinement():
     run = completed(RUN, HEAD)
     native, metadata = archive(run, f"core-only-clock-refine-native-{RUN}")
     summary, summary_metadata = archive(run, f"core-only-clock-refine-summary-{RUN}")
+    assert metadata["id"] == 14408985519
+    assert metadata["digest"] == "sha256:abc9267b370aa3bc2b5c42ccc4c3a9381e2e5a1058e3a4bded78d5f7744f3cc4"
+    assert summary_metadata["id"] == 14408162501
+    assert summary_metadata["digest"] == "sha256:a6c299889cff6d90e29f351c6c7c5ab9a5b78b2dabf4e72cd5bfe0ffaa3ef120"
     raw = native.read("result.json")
     assert raw == summary.read("result.json")
     report = json.loads(raw)
