@@ -1,4 +1,4 @@
-name: Core-only GPIO12 GPIO13 repair fresh physical route
+name: Core-only second measured setup buffer ECO
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 355
+    timeout-minutes: 120
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -23,22 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_chip_gpio_repaired_route.py scripts/select_core_only_pad_repaired_route_nets.py scripts/audit_core_only_buffered_route.py
+          python3 -m py_compile scripts/cloud_core_only_second_setup_eco.py scripts/prepare_core_only_second_setup_eco.py scripts/audit_core_only_second_setup_eco.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Route GPIO pad repair and audit all visible signal geometry
-        run: python3 scripts/cloud_core_only_chip_gpio_repaired_route.py
+      - name: Legalize six buffers on the remaining worst setup path
+        run: python3 scripts/cloud_core_only_second_setup_eco.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-chip-gpio-repaired-route-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-gpio-repaired-route/
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: core-only-chip-gpio-repaired-route-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-chip-gpio-repaired-route/result.json
+          name: core-only-second-setup-eco-${{ github.run_id }}
+          path: hw/soc/out/core-only-second-setup-eco/
           if-no-files-found: error
           retention-days: 90
