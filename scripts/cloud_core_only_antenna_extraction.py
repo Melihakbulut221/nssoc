@@ -77,7 +77,7 @@ def restore_route():
     assert second['routed_odb_sha256']=='761ee985d5180b9d4e206eb1bb970d7b3939c0875cc6ac00a1c1caf12be4a4df'
     binding=first['source_admission']
     assert binding['run']==44382891924 and binding['head']=='508bb46d0366363d7e79a001ab8a68b230f4fd96' and binding['artifact']==14464567635 and binding['digest']=='d5864cb7b9575155444b2ca063010f889c9203ab7bf1a8867b86dba19254c4b3'
-    cumulative=dict(cumulative);assert len(cumulative)==800
+    cumulative=dict(binding['insertion_audit']['new_cells']);assert len(cumulative)==800
     assert first['route_identity']['instances']==106051
     prior_odb=first['routed_odb_sha256']
     for stage,count,total in [(second,29,106080),(report,3,106083)]:
