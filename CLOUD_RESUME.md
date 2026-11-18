@@ -1,3 +1,8 @@
+## Slew candidate revised for actual library availability
+
+Attempt44331913767 at3331cf10987fe2a7f1009e24b6cf49a250946cd4 stopped during preparation because sg13g2_o21ai_1 has no larger drive variant in the native library. Artifact14439871602 SHA256b93ee72763f0c67ca4f800e1ad8bd3ce37c54964fb93089ddbb24819889bb7c2 verified; no legalized/routed candidate resulted.
+Revised strategy uses only six non-inverting buf4 cells: one isolates each of the four slew drivers; two split78908/Q load. No original logic master, placement, orientation or clock cell changes. Audit requires exact original geometry, terminal connectivity modulo new buffers, original net types, PG/pins and existing antenna cells. Fresh legalization and routing/timing required; do not assume electrical closure.
+
 ## Full-sized original core visible geometry verified
 
 Run44331431907 atd054faaf0b2767062321cdeca8ab6cdf5177bf37 PASSED. Artifact14439487122 SHA25643d02965456088408dfcba23b9e51d416d3622c6f76e8fb7d66d46607acce1a7; all four outputs and protected repository sources independently verified. Native visible geometry reports zero disconnected signal nets, zero missing terminal shapes, zero unwired multi-terminal nets and zero inter-net contacts. An actual SpaceWire-memory net loses connectivity when its17route shapes are removed in the negative control. The indexed checker also passed1,624 reference comparisons and11native decoder fixtures.
