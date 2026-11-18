@@ -1,3 +1,16 @@
+# Latest verified handoff: 2026-11-18 04:59 UTC
+
+- CTS producer 44239812957 / 3b5938b3d2cdea3951c7b9067f296b696e29c9e3 completed successfully.
+- Native artifact 14399600788, SHA256 aa792ae7920014b49f3b9b69cc275b91771f68a4b94e34b30993ea245f3f2b36: whole ZIP and all 356 inner outputs verified in RAM, no local files.
+- Summary artifact 14398269964, SHA256 78c289f4ad64a253e515fff9b144c46bfa2d450596102d1a1532051959951235 verified.
+- CTS state run/27-openroad-cts/state_out.json; ODB SHA256 4d04b1cef3cb0b989c3e1597855ff98e9c8116e4a569cdf51a81e3000bfe68e0.
+- Native aggregate CTS state contains timing violations and inherited corner metrics. Do not treat it as final all-corner timing evidence. Fresh per-corner measurements are the next step.
+- PostCTS repair explicitly dispatched ONCE: run 44241018213, source e9534d6e08f38cd618139ef411599b822a26d5c3, branch codex/core-only-postcts. Observed queued; re-poll this handle rather than redispatch.
+- Native whole-chip boot 44239816779 still in progress.
+- Goal active. PCIe/Ethernet excluded from this release by user. No final timing, routing, full-chip DRC/LVS or production approval claim.
+
+---
+
 ## PostCTS update
 - Guard qualification 44240371021 / d145b505c308d875d074471d88a0882575cc6f3f PASSED. Actual Tcl execution: four test methods, including eleven invalid-constraint cases. This validates guards only, not native CAD compatibility or timing.
 - scripts/cloud_core_only_postcts.py is prepared, NOT dispatched. It pins successful mapping/CTS/guard producers, verifies whole archives and all inner file hashes, rejects changed protected sources, and chains native electrical and setup/hold trials with three-corner reports each.
