@@ -18,7 +18,7 @@ for name,c in m['cells'].items():
  if c['type'].startswith('sg13g2_df'):
   for bit in c['connections'].get('Q',[]):qdrivers.setdefault(bit,[]).append(name)
 retained={}
-for net in ['u_spw.divider','u_can.u_bridge.rdata_q','u_ram.g_ram_2048x64_ecc.u_test_port.u_mbist.state_q']:
+for net in ['u_spw.imask','u_can.u_bridge.rdata_q','u_ram.g_ram_2048x64_ecc.u_test_port.u_mbist.state_q']:
  bits=m['netnames'][net]['bits'];assert bits and all(isinstance(b,int) and len(qdrivers.get(b,[]))==1 for b in bits),net
  retained[net]=[qdrivers[b][0] for b in bits]
 for name in ['spw_do_o','spw_so_o','can_tx_o']:
