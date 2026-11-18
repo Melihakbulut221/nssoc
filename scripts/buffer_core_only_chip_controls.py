@@ -20,6 +20,7 @@ def geom(b):
 def identity(i):
     r=i.getBBox();return (i.getMaster().getName(),str(i.getOrient()),r.xMin(),r.yMin(),r.xMax(),r.yMax())
 def connections(b):return {(i.getName(),t.getMTerm().getName()):t.getNet().getName()if t.getNet()else None for i in b.getInsts()for t in i.getITerms()}
+def terminal_key(t):return (t.getInst().getName(),t.getMTerm().getName())
 def center(t):
     r=t.getInst().getBBox();return ((r.xMin()+r.xMax())//2,(r.yMin()+r.yMax())//2)
 def main():
@@ -31,8 +32,9 @@ def main():
     for index,(name,pin)in enumerate(TARGETS):
         inst=b.findInst(name);assert inst;driver=inst.findITerm(pin);assert driver and str(driver.getIoType())=='OUTPUT'
         net=driver.getNet();assert net and not list(net.getBTerms())and str(net.getSigType())not in ('POWER','GROUND','CLOCK')
-        assert [t for t in net.getITerms()if str(t.getIoType())=='OUTPUT']==[driver]
-        terminals=[t for t in net.getITerms()if t!=driver];assert len(terminals)>8 and all(str(t.getIoType())=='INPUT'for t in terminals)
+        drivers=[terminal_key(t)for t in net.getITerms()if str(t.getIoType())=='OUTPUT']
+        assert drivers==[terminal_key(driver)],dict(net=net.getName(),expected=terminal_key(driver),actual=drivers)
+        terminals=[t for t in net.getITerms()if terminal_key(t)!=terminal_key(driver)];assert len(terminals)>8 and all(str(t.getIoType())=='INPUT'for t in terminals)
         root=net.getName();count=len(terminals);level=0;added=[]
         while len(terminals)>8:
             points=[center(t)for t in terminals];axis=max(range(2),key=lambda a:max(p[a]for p in points)-min(p[a]for p in points))
