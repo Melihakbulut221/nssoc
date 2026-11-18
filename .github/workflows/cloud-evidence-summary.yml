@@ -1,4 +1,4 @@
-name: Core-only post-ECO antenna repair admission
+name: Core-only postroute native antenna diode insertion
 on:
   workflow_dispatch:
 permissions:
@@ -24,12 +24,12 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Inspect exact routed antenna failures without modifying geometry
-        run: python3 scripts/cloud_core_only_posteco_antenna_diagnosis.py
+      - name: Insert diodes and audit exact original identity
+        run: python3 scripts/cloud_core_only_posteco_antenna_insertion.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-posteco-antenna-diagnosis-${{ github.run_id }}
-          path: hw/soc/out/core-only-posteco-antenna-diagnosis/
+          name: core-only-posteco-antenna-insertion-${{ github.run_id }}
+          path: hw/soc/out/core-only-posteco-antenna-insertion/
           if-no-files-found: error
           retention-days: 90
