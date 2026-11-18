@@ -7,7 +7,11 @@ from buffer_core_only_chip_controls import load
 out=Path(os.environ['NSSOC_CORE_TARGETED_ECO_OUT']);d,b=load(out/'core-routed.odb')
 assert len(list(b.getInsts()))==104885
 text=(out/'slow-max.rpt').read_text();hold=(out/'fast-min.rpt').read_text()
-assert 'slice$71785'in text and 'slice$72130'in text
+mapping=json.loads((out/'canonical-name-map.json').read_text())['instances']
+first='Startpoint:'+text.split('Startpoint:',2)[1]
+assert mapping['$auto$ff.cc:337:slice$71785']in first and mapping['$auto$ff.cc:337:slice$72130']in first
+assert 'slack (VIOLATED)'in first and 'data arrival time'in first
+text=first.split('data arrival time',1)[0]
 assert 'u_ram.g_ram_2048x64_ecc.u_b2/A_MEN'in hold and 'slack (VIOLATED)'in hold
 # Inspect data-path buffer outputs only; clock buffers and logic cells are excluded.
 selected={}
