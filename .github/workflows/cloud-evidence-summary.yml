@@ -1,4 +1,4 @@
-name: Core-only NMOS pair and antenna isolation
+name: Native diode-only reproducer
 on:
   workflow_dispatch:
 permissions:
@@ -8,15 +8,7 @@ jobs:
   qualify:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
-    strategy:
-      fail-fast: false
-      matrix:
-        reduction: [n_pair, n_antenna]
     env:
-      NSSOC_PAD_CLAMP_OHMS: "0"
-      NSSOC_PAD_ITL4: "100"
-      NSSOC_PAD_STEP_PS: "1"
-      NSSOC_PAD_REDUCTION: ${{ matrix.reduction }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -34,14 +26,12 @@ jobs:
           echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
-      - name: Verify all cases execute while failures remain fatal
-        run: python3 -m pytest -q tests/test_pad_nmos_case_continuation.py
-      - name: Measure real pad turnoff current and controls
-        run: python3 scripts/cloud_core_only_pad_nmos_current.py
+      - name: Execute unchanged native diodes without OSDI or transistors
+        run: python3 scripts/cloud_core_only_native_diode.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-pad-nmos-${{ matrix.reduction }}-0ohm-itl4-100-step-1ps-${{ github.run_id }}
-          path: hw/soc/out/core-only-pad-nmos-${{ matrix.reduction }}-0ohm-itl4-100-step-1ps/
+          name: core-only-native-diode-${{ github.run_id }}
+          path: hw/soc/out/core-only-native-diode/
           if-no-files-found: error
           retention-days: 90
