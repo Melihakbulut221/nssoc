@@ -1,3 +1,13 @@
+# Current: routed clock fanout closed; post-route repair dispatched
+
+**44256809783**, source **0a055a1269f48e386e01b95eada858ae25671429**, branch **codex/core-only-clock-postgrt**: last observed in_progress. Do not duplicate. New runner scripts/cloud_core_only_clock_postgrt.py restores original mapping/CTS, CTS8 (including exact config reconstruction) and clock-split archive, verifies all protected hashes/fresh metrics,16move lines andtwo complete-terminal invariance markers, then starts actual saved routed state. Runs electrical repair then200setup/1000hold search with rerouting and fresh3cornerSTA. Artifacts core-only-clock-postgrt-native/summary-RUN. Zero fanout must be preserved; execution success is not acceptance.
+
+Clock split44253264552/source45932c71e85db517f87e01f2a7f6b80cd1bc045c completedSUCCESS. Native14406590032 SHA25605aa32fcffadd1bfed7e2641a1968682dc651ad27e83dcc9bb71d9959015056e: independently verified578outputs and12freshcorner reports. Actual16moves,two before/afterDPL invariance markers,2addedcells/2nets,root2loads/branches8each. Final routefanout0allcorners; setup1092slow/-3.84906ns,hold0allcorners/fast+0.0254556ns,slew125/1/1,cap82/83/85. All3finalSTAroute-presence markers andzeroEST0026 warnings. Placement-only timing0 did not survive routing. Evidence docs/evidence/core-only-clock-split-20261118.json. Output routing/4-nssoc-coreonlysplitroutedfast/state_out.json. Do NOT claim timing closed or treat41setup from the separate original-clock refinement as belonging to this topology.
+
+Separate original-clock200repair44254614637 remains in_progress at last check; preserve comparison. Native boot44239816779 is terminalverifiedPASS, not live. SRAM geometry44254152426 and NOR2model equality already verified; targeted SRAM resize not applied because full post-route repair now takes precedence on the zero-fanout topology. Goal active, PCIe/Ethernet excluded, all other gates unchanged, cloud-only.
+
+---
+
 # SRAM driver model equality verified; physical candidates still running
 
 Original IHP standard-cell Verilog source (same SHA25628343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4 used by the successful native boot) contains sg13g2_nor2_1 and sg13g2_nor2_2 definitions that are byte-identical after changing ONLY the module identifier. Native four-state functional models therefore match. Evidence docs/evidence/core-only-sram-nor2-model-equality-20261118.json records full immutable upstreamcommit, source/module hashes and exact normalization. This is not Liberty timing or post-ECO whole-netlist proof. No SRAM resize applied. Inspect clock-split final metrics before deciding whether the NOR2_2 candidate is still needed.
