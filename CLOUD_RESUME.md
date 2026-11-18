@@ -1,3 +1,11 @@
+# SRAM driver model equality verified; physical candidates still running
+
+Original IHP standard-cell Verilog source (same SHA25628343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4 used by the successful native boot) contains sg13g2_nor2_1 and sg13g2_nor2_2 definitions that are byte-identical after changing ONLY the module identifier. Native four-state functional models therefore match. Evidence docs/evidence/core-only-sram-nor2-model-equality-20261118.json records full immutable upstreamcommit, source/module hashes and exact normalization. This is not Liberty timing or post-ECO whole-netlist proof. No SRAM resize applied. Inspect clock-split final metrics before deciding whether the NOR2_2 candidate is still needed.
+
+Latest confirmed live handles: clock split44253264552/job134628821359, routed200repair44254614637/job134633202485. Preserve them; no restart or duplicate. Native boot44239816779 is terminalPASS as described below. Goal remains active; no physical/signoff closure claimed.
+
+---
+
 # Native mapped boot completed and independently checked
 
 **44239816779** source31cb1846a8cf0eb683344e24c27a25438c22a75c is terminalSUCCESS; do not keep reporting it live or restart. Artifact14405836814 SHA256e41b96bccbef947af60c8b924cbf046360fa5bdaf5fb6d8062cc063048f598aa verified. All9archived manifest outputs checked;2sim.vvp binaries NOT archived/independently inspected. Native log:2263211cycles,28checks, fails0,code0,magic600dc0de,watchdog1/0/0,flashviolations0,UARTpass1,framing0. SYSTEM_MBIST_BOOT busy1310690,done1310723. Real native-cell sanity gate passed, Icarus14, unchanged source hashes. Mapping inputs independently match original mapping manifest and three tracked bench/flash/monitor hashes match boot source. See docs/core-only-native-boot-result.md and docs/evidence/core-only-native-boot-20261118.json.
