@@ -1,3 +1,10 @@
+## Full-sized original core visible geometry verified
+
+Run44331431907 atd054faaf0b2767062321cdeca8ab6cdf5177bf37 PASSED. Artifact14439487122 SHA25643d02965456088408dfcba23b9e51d416d3622c6f76e8fb7d66d46607acce1a7; all four outputs and protected repository sources independently verified. Native visible geometry reports zero disconnected signal nets, zero missing terminal shapes, zero unwired multi-terminal nets and zero inter-net contacts. An actual SpaceWire-memory net loses connectivity when its17route shapes are removed in the negative control. The indexed checker also passed1,624 reference comparisons and11native decoder fixtures.
+Elapsed wall90.001s; observed child maximumRSS1,686,652KiB. This qualifies practical core-scale execution on the cloud runner. The checked input is the ORIGINAL pre-ECO routed core ODBeb3ed6dc3921b8b8584e455856615c5e64372650b638f9edfa2cf4e674b391c4. It does NOT cover the latest ECO, internal macro/stdcell transistor connectivity, hidden GDS or foundry/manufacturer approval. Evidence:docs/evidence/core-only-original-core-visible-geometry-20261118.json.
+Use the same qualified scripts and hashes after the next final detailed route: audit_native_signal_geometry_indexed.py3baed05b7cbad6c03991d783fc7ad772e3b68e1534031ad07735750d7e79dabd and native_geometry_contact_index.py0423bd8ec0941d761f7594100f2e3be84f6cc6b2c67a2d55c951d69b86b7a26f.
+Main candidate44331913767 (four slew driver resizes +two cap buffers) remains pending native admission; inspect its current result before further routing.
+
 ## Latest measured timing and remaining electrical ECO
 
 Run44328874040 at733cb000518b8bd6d95470fde5e6e3c3e32bafa6 completed: artifact14438862280 SHA256 e47da3fe91a279ad2102ee2d84420b226afddd73646b26dceb5ab42c37e05fa8, all106 output hashes and protected repository source files independently verified. Three corners have0setup/hold/fanout violations. Slow setup margin0.0661107ns; fast hold margin0.0426459ns. SRAM output capacitance no longer violates. Remaining cap violation nssoc_sta_i_78908/Q:0.304662/0.306369/0.308337pF versus0.300pF.
