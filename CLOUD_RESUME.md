@@ -1,3 +1,9 @@
+## PostCTS update
+- Guard qualification 44240371021 / d145b505c308d875d074471d88a0882575cc6f3f PASSED. Actual Tcl execution: four test methods, including eleven invalid-constraint cases. This validates guards only, not native CAD compatibility or timing.
+- scripts/cloud_core_only_postcts.py is prepared, NOT dispatched. It pins successful mapping/CTS/guard producers, verifies whole archives and all inner file hashes, rejects changed protected sources, and chains native electrical and setup/hold trials with three-corner reports each.
+- The new workflow on codex/core-only-postcts now runs the physical repair, not guard qualification. Dispatch it once only after successful CTS producer 44239812957 is authenticated.
+- Placement 44239812957 and native boot 44239816779 were still in progress when this update was prepared. No timing pass or native boot pass is claimed.
+
 # Active core-only continuation: 2026-11-18
 
 Current release excludes PCIe and Ethernet by explicit user approval. Preserve CPU at 20 ns, five percent derate, all three corners and complete manufacturing acceptance. This is not a signoff claim.
