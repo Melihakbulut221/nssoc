@@ -1,3 +1,11 @@
+# Current: provisional physical core boundary independently verified
+
+Run44271378140/sourceba7a53efac94da34d323d33ad8ce97a4125864d2 terminal SUCCESS. Native artifact14412881780 SHAe482e38c10b0f029ad3432c82f9c63d29c23b0f8c7a661815a3e1d0f22131005; summary14412103798 SHAce9d00f76fc9f39550c91bbad23f38bd36c14a7e8d9757c77d1282619d3f9610. Independently verified native/summary equality, all40outputs, protectedtrackedsourcebytes,271-pin report and powered-netlist supply declarations. Native OpenDB readback passes exact macro dimensions,269signal+2supply pins, directions/types/allpinrectangles. Supply names are VPWR/VGND, while shell external rails are VDD/VSS: integration must explicitly connect these domains and check continuity; do not infer connections from naming. LEFsha85769b151ab2951ca210e348e9ce52cd4d5a1018ac900677334a4eb16dea187c; PNLshac49f5a2744e48d4e80182c868dd66b28808c35e83be727ff9139cb3e00c4cb6d.
+
+This is authenticated PRE-DRT clock-refine44259265143 geometry, NOT final route/production signoff. Re-export/rebind terminal DRT before final integration. See docs/evidence/core-only-boundary-probe-20261118.json. DRT44263061910 still live at last poll. Latest broadchecks44271381670 retained; superseded44268661361 cancelled after ancestryproof. Earlier separate qualification-branch checks44266425222 also preserved. No manual physical job cancelled. Mapped shell/native pad simulation remains verified; full-chip power/clock/signal routing, extracted timing, SRAM qualification and manufacturing approval open.
+
+---
+
 # Current: provisional core physical boundary export launched independently
 
 Branch codex/core-only-boundary-probe inherits987a5e3e2aef61cb9d7148241d9d0c1433d73483. Newrunner cloud_core_only_boundary_probe.py restores authenticated clock-refine44259265143 chain and invokes native OpenROAD.WriteViews. audit_core_only_boundary.py compares exportedLEF pins/directions/types/rectangles/size with originalODB and269-bitcontract, records supplies. Provisional PRE-DRT only; no finalroute/GDS/timing/physicalintegration claim. Full native result not yet inspected. DRT44263061910 preserved live. Re-export/rebind finalDRT before using asfinalchipboundary. See docs/core-only-boundary-probe.md. Extraction-v2 and routedboot preparations remain inherited but their workflow must be restored on a derived branch when ready.
