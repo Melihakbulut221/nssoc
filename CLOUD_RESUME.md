@@ -1,3 +1,12 @@
+## 2026-11-18: nominal parent RC extracted; exact SPEF coverage running
+
+- Extraction 44295338338 at 94bc6b6dec9615e25d39883916454d2dd4b40f7c completed. Independently verified native 14422128950 SHA256 3e115d0de651a784965fe8d8e0899ec1752a07f2096de6d22a4c9efea2c2c226 and summary 14422718779 SHA256 b6aeed17482bde8468e6c328e588f9e32ed44540e5c40998f962436ffaca8931, all six output hashes and identical result bytes.
+- SPEF a88cf831cd2913eaf3773686202a154184604559b81ac1328d8f7415b9a95102: 1615 networks, zero per-net capacitance conservation failures, 29546 coupling entries. Nominal model only; aggregate net capacitance includes repeated coupling contributions and is not unique chip capacitance.
+- Exact ODB/SPEF inventory and resistance graph audit now running: 44295912370, source 32defeaac27ef9bb4abb7ad04d612a9b18a11f18, branch codex/core-only-chip-spef-coverage. Check coverage.json/native.log and preserved evidence; no rerouting or re-extraction needed for this read-only audit.
+- Negative controls remove a routed net, a terminal, and all resistors. Missing wired nets, pin/direction mismatches or disconnected resistor graphs are failures. The 76 physically coincident pad nets are separately inventoried, not silently treated as extracted.
+- After coverage, scope-limited parent STA must load actual SPEF and genuine std/IO models. Full-core internal parasitics/model, final timing, full LVS and manufacturing gates remain open.
+- Main core detailed route 44263061910 remains live. General checks 44295916148 active.
+
 ## 2026-11-18: parent routed nominal extraction launched
 
 - New branch codex/core-only-chip-extraction, source 94bc6b6dec9615e25d39883916454d2dd4b40f7c. Run 44295338338 was confirmed in progress; general checks 44295342121 also live.
