@@ -1,3 +1,9 @@
+# Current: routed-netlist functional boot prepared alongside extraction
+
+Branch codex/core-only-routed-boot inherits cf845c2632a3b74abfc0e050ac934b365d0101da. New runner scripts/cloud_core_only_routed_boot.py and branch manual workflow are PREPARED NOT DISPATCHED; no test result claimed. See docs/core-only-routed-boot.md. Qualified original boot harness is isolated in cloud output, leaving all producer source-binding files unchanged. Restores full chain and uses actual detailed-route state netlist; unchanged authenticated firmware/ROM. Before dispatch independently review terminal DRT 44263061910, pin route artifact IDs/digests in shared restore_route, and verify prepared scripts in cloud. Extraction remains prepared on codex/core-only-routed-extraction. DRT last confirmed live in routing step; do not duplicate/restart. Goal active; PCIe/Ethernet excluded; 20ns and 5% derate unchanged.
+
+---
+
 # Current: actual-SPEF extraction runner prepared; DRT v2 remains live
 
 Newestbranch codex/core-only-routed-extraction, functionalcommit8936da001fc166ad945a2a4f09e039f1a974d339. scripts/cloud_core_only_routed_extraction.py andmanualworkflow PREPARED NOT DISPATCHED. BindsDRTproducer44263061910/source921f49a0c7becd72e58177e19404b45e91575e63 andfulloriginalmapping/CTS/repairancestry. Requires terminalSUCCESS/exactstatus/native-summaryagreement/alloutputs/protectedinputs/currentDRTmetrics/ownODB-NL-DEF-SDCviews. ProducerartifactIDs/digests notyetavailable; pin additionallyafterreview beforedispatch. Do notassumecompletedroute.
