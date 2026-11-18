@@ -1,0 +1,9 @@
+# Experimental ngspice diode voltage-derivative candidate
+
+The staged patch is not applied to the accepted runtime or PDK. It is intended for a separately identified source-build experiment after the unchanged baseline comparison passes. Current baseline comparison: run 44389032608/head ba91444153111d070636d9c8ab21a9fbec213c07. The preceding source build succeeded but its published-binary comparison failed to launch because libsndfile.so.1 was missing; no simulator conclusion follows from that failed comparison.
+
+For the forward recombination term I(v)=Iraw(v)*G(v), G=((1-v/P)^2+0.005)^(M/2), the voltage derivative is Iraw'*G+Iraw*G'. G' contains division by P. The inspected code omitted that division and applied G to Iraw before using it in the second product-rule term. The patch adds the division and computes the derivative before scaling the current. The final current expression is unchanged.
+
+This is a voltage-Jacobian correction candidate, not a complete electrothermal or charge-model validation. Reverse-branch behavior and the observed transition-boundary failure must still be tested. A successful waveform alone will not qualify the simulator or close pad timing. Source and patched-file digests are recorded in derivative-candidate.json, alongside the authenticated source evidence and required controls.
+
+Core antenna repair is independent: first reroute 44383558280 reached native DRC 0 and 17 antenna nets/19 pins (down from 363/399), with preserved instance/connection identity and zero reported visible signal discontinuities/contacts. Second repair/reroute 44388764024/head 9eda08b7e6a8dc2dc79807245ba3a637630e8db8 is active. The old extraction-v4 tag targets the now-failed first reroute; do not dispatch it. After second-route admission, bind a new extraction source to its exact artifact, new instance count and cumulative diode inventory.
