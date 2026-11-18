@@ -21,6 +21,10 @@ class Admission(unittest.TestCase):
   with self.assertRaises(AssertionError):self.check()
  def test_additive_diode(self):
   r=self.check();self.assertEqual(r['new_diodes'],1);self.assertFalse(r['accepted']);self.assertFalse(r['signal_wire_geometry_checked'])
+ def test_clock_antenna(self):
+  self.before['nets']['n1']='CLOCK';self.after['nets']['n1']='CLOCK';self.assertEqual(self.check()['new_diodes'],1)
+ def test_other_net_type(self):
+  self.before['nets']['n1']='RESET';self.after['nets']['n1']='RESET';self.reject()
  def test_original_removed(self):del self.after['instances']['original'];self.reject()
  def test_original_moved(self):self.after['instances']['original']=(('sg13g2_buf_1','R0',1,0,2,1),'PLACED');self.reject()
  def test_original_resized(self):self.after['instances']['original']=(('sg13g2_buf_2','R0',0,0,1,1),'PLACED');self.reject()

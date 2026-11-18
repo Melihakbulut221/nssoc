@@ -19,7 +19,7 @@ def compare(a,b,new_cells):
   assert all(t['net'] in a['nets']for t in cell['terms']),'unconnected_or_unknown_diode_net'
   for t in cell['terms']:
    if t['type']in ['POWER','GROUND']:assert a['nets'][t['net']]==t['type'],'wrong_supply_type'
-   else:assert a['nets'][t['net']]=='SIGNAL','non_signal_diode_connection'
+   else:assert a['nets'][t['net']]in ['SIGNAL','CLOCK'],'non_signal_diode_connection'
  return dict(original_instances=len(a['instances']),new_diodes=len(new_cells),total_instances=len(b['instances']),original_geometry_status_and_connections_preserved=True,power_geometry_ports_and_die_preserved=True,all_new_terminals_connected=True,signal_wire_geometry_checked=False,accepted=False)
 
 def main():
@@ -33,7 +33,7 @@ def main():
    if i.getName()in a['instances']:continue
    terms=[dict(pin=t.getMTerm().getName(),type=str(t.getMTerm().getSigType()),net=t.getNet().getName()if t.getNet()else None)for t in i.getITerms()]
    cells[i.getName()]=dict(master=i.getMaster().getName(),placement=str(i.getPlacementStatus()),terms=terms,signal_terms=[t for t in terms if t['type']not in ['POWER','GROUND']])
-  r['new_cells']=cells;r['changed_original_instances']={n:dict(before=v,after=b['instances'].get(n))for n,v in a['instances'].items()if b['instances'].get(n)!=v}
+  r['diode_net_types']={kind:sum(a['nets'].get(c['signal_terms'][0]['net'])==kind for c in cells.values()if len(c['signal_terms'])==1)for kind in ['SIGNAL','CLOCK','POWER','GROUND']};r['new_cells']=cells;r['changed_original_instances']={n:dict(before=v,after=b['instances'].get(n))for n,v in a['instances'].items()if b['instances'].get(n)!=v}
   r.update(compare(a,b,cells))
   assert all(hashlib.sha256(Path(p).read_bytes()).hexdigest()==h for p,h in hashes.items())
   r.update(sources_unchanged=True,source_hashes=hashes,status='ADDITIVE_DIODE_ECO_VERIFIED_NOT_ROUTED')
