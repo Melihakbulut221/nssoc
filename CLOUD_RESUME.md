@@ -1,3 +1,9 @@
+# Current: current-core annotation diagnosis prepared in extraction v2
+
+Added scripts/audit_core_only_route_annotation.py and invocation after actual three-corner SPEF STA. Hash-bound ODB/SPEF/log, exact native name-map/net identity, all unannotated drivers classified by actual terminal sinks; no legacy fixed counts and no waivers. Prepared, not circuit-executed. Diagnostic failure keeps native outputs but fails job. See docs/core-only-route-annotation.md. DRT44263061910 remains live at last poll; extraction NOT dispatched. Before dispatch independently review terminal DRT and pin producer IDs/digests. Native Decimal fix qualified in44265620568 and inherited. Routed boot preparation inherited as well; use its workflow on derived branch when ready.
+
+---
+
 # Current: Decimal capture verified; corrected extraction v2 prepared
 
 Latest integration branch codex/core-only-routed-extraction-v2 inherits 2def681ab4d45598ef4743127449a1932316de9f. Native metric qualification 44265620568 terminal SUCCESS, artifact14409049689 digest sha256:dfc18934c1e9c3836ca1d2322eb0528f1d0189b55cb2c88f700d2411341b10aa. Independently checked archive, adapter source hash, generated native Tcl hashes, eight rejection controls/no false output. Real pinned runtime Decimal parsing succeeds and preserves the synthetic residual violations; NOT actual chip timing evidence. See docs/evidence/core-only-native-metrics-20261118.json.

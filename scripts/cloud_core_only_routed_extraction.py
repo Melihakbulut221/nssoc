@@ -96,7 +96,8 @@ def main():
             "scripts/cloud_core_only_postcts.py", "scripts/cloud_core_only_clock_probe.py",
             "scripts/cloud_core_only_postgrt.py", "hw/soc/pnr/core_only_routed_guards.py",
             "hw/soc/pnr/replay_onehot_routed_extraction_flow.py", "hw/soc/pnr/interface_flow.py",
-            "hw/soc/flow/audit_estimated_spef.py", "hw/soc/flow/check_timing_derate.tcl"]:
+            "hw/soc/flow/audit_estimated_spef.py", "hw/soc/flow/check_timing_derate.tcl",
+            "scripts/audit_core_only_route_annotation.py"]:
             paths.append(ROOT/name)
         protected = {str(p):sha(p) for p in paths}
         report["protected_inputs"] = protected
@@ -129,6 +130,30 @@ def main():
             report["fresh_corners"][corner]=dict(metrics_source=str(metrics.relative_to(OUT)),
                 metrics_sha256=sha(metrics),metrics=json.loads(metrics.read_text()),
                 sta_log=str(log.relative_to(OUT)),sta_log_sha256=sha(log))
+        # Classify every unannotated driver using this run's native evidence.
+        # Successful classification is not coverage acceptance, even with zero loads.
+        audit_script = ROOT/"scripts/audit_core_only_route_annotation.py"
+        spef_entries = list(proof["spefs"].values())
+        assert len(spef_entries) == 1
+        spef_path = current_path(spef_entries[0]["path"])
+        routed_odb = current_path(json.loads(initial.read_text())["odb"])
+        report["annotation_classification"] = {}
+        for corner in CORNERS:
+            log_path = OUT/report["fresh_corners"][corner]["sta_log"]
+            output = OUT/("annotation-"+corner+".json")
+            inputs = {key:dict(path=str(path),sha256=sha(path)) for key,path in
+                [("odb",routed_odb),("spef",spef_path),("sta_log",log_path)]}
+            inputs["output"] = str(output)
+            manifest = OUT/("annotation-inputs-"+corner+".json")
+            manifest.write_text(json.dumps(inputs,indent=2)+"\n")
+            env = dict(os.environ,NSSOC_CORE_ANNOTATION_INPUTS=str(manifest))
+            with (OUT/("annotation-"+corner+".log")).open("w") as log:
+                subprocess.run([str(app),"openroad","-exit","-python",str(audit_script)],
+                    env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
+            classification=json.loads(output.read_text())
+            assert classification["inputs_unchanged"] and not classification["accepted"]
+            report["annotation_classification"][corner] = {
+                k:v for k,v in classification.items() if k!="drivers"}
         assert all(sha(p)==h for p,h in protected.items())
         report.update(status="NOMINAL_RC_AND_NATIVE_SPEF_STA_EXECUTED_REQUIRES_COVERAGE_AND_SIGNOFF",
             sources_unchanged=True, output_state=str(states[0].relative_to(OUT)))
