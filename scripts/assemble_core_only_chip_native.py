@@ -28,6 +28,7 @@ for c in module['cells'].values():
     for vector in c['connections'].values():
         for bit in vector:assert isinstance(bit,int)or bit in ('0','1');bits.add(bit)
 nets={bit:odb.dbNet.create(block,names.get(bit,'const_'+bit if isinstance(bit,str)else 'n_'+str(bit)))for bit in bits}
+assert len(list(block.getNets()))==len(nets) and len({n.getName()for n in block.getNets()})==len(nets)
 supplies={n:nets[module['ports'][n]['bits'][0]]for n in ['VDD','VSS','IOVDD','IOVSS']}
 assert len({n.getName()for n in supplies.values()})==4
 for n,net in supplies.items():net.setSigType('GROUND'if n.endswith('VSS')else 'POWER')
@@ -43,7 +44,8 @@ def connect(i,pin,net):
     t=i.findITerm(pin);assert t,('Missing native terminal',i.getName(),pin)
     if t.getNet():
         existing=t.getNet()
-        assert existing.getId()==net.getId() and existing.getName()==net.getName(), (i.getName(),pin,existing.getId(),existing.getName(),net.getId(),net.getName())
+        assert existing.getBlock().getName()==net.getBlock().getName()==block.getName()
+        assert existing.getName()==net.getName(), (i.getName(),pin,existing.getName(),net.getName())
     else:t.connect(net)
     expected[(i.getName(),pin)]=net.getName()
 for name,c in module['cells'].items():
