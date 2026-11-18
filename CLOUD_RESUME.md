@@ -1,3 +1,10 @@
+# Post-ECO extraction staged, not dispatched
+
+Active physical job:44337630426 at19924a826cfca054f30f19cdde091fbe6c744960. Do not restart it. This branch stages `cloud_core_only_posteco_extraction.py` and its manual workflow. Wait for the exact routing job, independently verify its artifact SHA256, every output/source, DRC/antenna, identity and indexed geometry before dispatch. Supply route_artifact_id and route_artifact_digest (sha256: prefix) to cloud-evidence-summary.yml on this branch. No artifact pins exist yet because the job is running; no RCX result is claimed.
+
+The runner restores pinned mapping/CTS/clock refinement, pin-aware ECO, global routing and the new detailed route. It validates exact105251-cell identity and physical geometry reports, admits canonical identifiers read-only, preserves20ns/5percent, runs nominalRCX and standalone three-corner nativeSPEF STA, classifies all unannotated drivers. No re-canonicalization and no inherited metrics. The new runner and name guard still require cloud execution. Qualified min/maxRC, full-chip timing and manufacturing approval remain open.
+
+---
 # Best measured ECO entering detailed route
 
 Slew-margin GRT44335251268/head03a3ef19fa1f1b3af17b11b3760864f39da15641 completed. Artifact14442855156 SHA2563e0357758f81bd8a69c4ab3a9d25a11f9daaf257bc87a478a3bcb61173d81383:106 outputs and protected repository sources independently verified. All three corners retain zero setup/hold/fanout violations. Slow setup+0.0661107ns; fast hold+0.0338873ns. Electrical regression: slow slew16 (previous11), cap4 at all corners (previous1). New slow drivers63510/Y,63650/Y,63527/Y; caps79105/Q,78836/Q,SRAMbank1 A_DOUT12,78875/Q. Do not promote this six-buffer trial as closure.

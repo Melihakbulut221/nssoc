@@ -1,0 +1,192 @@
+#!/usr/bin/env python3
+"""Nominal extraction and actual-SPEF STA from authenticated detailed routing."""
+from collections import deque
+import json
+import os
+from pathlib import Path
+import stat
+import re
+import subprocess
+from bootstrap_flow import verify
+from cloud_core_only_postgrt import (ROOT, sha, completed, archive, safe_path, put,
+    current_path, restore_mapping, restore_cts, qualify_sources)
+from cloud_core_only_clock_probe import restore_cts8
+from cloud_core_only_clock_refine import restore_clock_split, restore_previous
+from cloud_core_only_detailed_route import restore_refinement
+OUT = ROOT / "hw/soc/out/core-only-posteco-extraction"
+RUN = 44337630426
+HEAD = "19924a826cfca054f30f19cdde091fbe6c744960"
+CORNERS = ["nom_slow_1p08V_125C", "nom_typ_1p20V_25C", "nom_fast_1p32V_m40C"]
+
+
+def restore_stage(run_id,head,artifact_name,artifact_id,digest,relative):
+    run=completed(run_id,head);z,m=archive(run,artifact_name)
+    assert m['id']==artifact_id and m['digest']==digest
+    raw=z.read('result.json');r=json.loads(raw)
+    assert r['source_head']==head and r['sources_unchanged'] and not r['accepted']
+    root=ROOT/relative;seen=set()
+    for item in z.infolist():
+        if item.is_dir()or item.filename=='result.json':continue
+        assert not stat.S_ISLNK(item.external_attr>>16)
+        n=item.filename;assert n in r['outputs']and n not in seen
+        put(safe_path(root,n),z.read(item),r['outputs'][n]);seen.add(n)
+    assert seen==set(r['outputs']);(root/'result.json').write_bytes(raw)
+    for p,h in r['protected_inputs'].items():assert sha(current_path(p))==h,p
+    return r,m,root
+
+
+def restore_route():
+    # Only accept this specific routed candidate after external artifact admission.
+    artifact_id=int(os.environ['NSSOC_ROUTE_ARTIFACT_ID'])
+    digest=os.environ['NSSOC_ROUTE_ARTIFACT_DIGEST']
+    assert artifact_id>0 and re.fullmatch(r'sha256:[0-9a-f]{64}',digest)
+    eco,em,eroot=restore_stage(44327965276,'0fbac4d6617c72f3d00a0b759cfc4677bae1b732',
+        'core-only-pin-aware-electrical-eco-44327965276',14438605718,
+        'sha256:36fcd030bd23666169d392b84668f5bf0cd727d1b4b5f351d75c8a20fd876bb1',
+        'hw/soc/out/core-only-pin-aware-electrical-eco')
+    assert eco['audit']['new_buffers']==6 and eco['audit']['resized_cells']==4
+    grt,gm,groot=restore_stage(44328874040,'733cb000518b8bd6d95470fde5e6e3c3e32bafa6',
+        'core-only-pin-aware-electrical-globalroute-44328874040',14438862280,
+        'sha256:e47da3fe91a279ad2102ee2d84420b226afddd73646b26dceb5ab42c37e05fa8',
+        'hw/soc/out/core-only-pin-aware-electrical-globalroute')
+    report,meta,root=restore_stage(RUN,HEAD,f'core-only-posteco-detailed-route-{RUN}',
+        artifact_id,digest,'hw/soc/out/core-only-posteco-detailed-route')
+    assert report['status']=='DETAILED_ROUTE_AND_NATIVE_GEOMETRY_CHECKED_REQUIRES_EXTRACTION_TIMING_AND_SIGNOFF'
+    assert report['returncode']==0 and report['source_binding']['globalroute_run']==44328874040
+    assert report['source_binding']['globalroute_head']=='733cb000518b8bd6d95470fde5e6e3c3e32bafa6'
+    for key in ['routing_metrics','antenna_metrics']:
+        entry=report[key];p=safe_path(root,entry['path'])
+        assert sha(p)==entry['sha256']and json.loads(p.read_text())==entry['values']
+    assert report['routing_metrics']['values']['route__drc_errors']==0
+    assert report['antenna_metrics']['values']['antenna__violating__nets']==0
+    assert report['antenna_metrics']['values']['antenna__violating__pins']==0
+    identity=json.loads((root/'identity/route-identity.json').read_text());assert identity==report['route_identity']
+    assert identity['instances']==105251 and identity['sources_unchanged']
+    for key in ['exact_instance_geometry_status_and_masters','exact_terminal_connections','exact_net_names_and_signal_types','exact_special_wires_ports_and_die']:assert identity[key]
+    geometry=json.loads((root/'geometry/physical-route-audit.json').read_text());assert geometry==report['visible_geometry']
+    assert geometry['source_unchanged']and geometry['actual_route_removal_control']
+    assert not geometry['signal_nets_with_disconnected_geometry']and not geometry['terminals_without_geometry']and geometry['inter_net_contact_pairs']==0
+    initial=safe_path(root,report['routed_state']);state=json.loads(initial.read_text())
+    for key in ['odb','nl','def','sdc']:
+        p=current_path(state[key]);assert root in p.parents
+        assert sha(p)==report['outputs'][str(p.relative_to(root))]
+    assert geometry['source_odb_sha256']==sha(current_path(state['odb']))
+    return report,[em,gm,meta],initial
+
+
+def main():
+    assert os.environ.get("GITHUB_ACTIONS") == "true"
+    OUT.mkdir(parents=True, exist_ok=False)
+    report = dict(source_head=os.environ["GITHUB_SHA"], status="PREPARING", accepted=False,
+        final_timing_complete=False, qualified_rc_minmax=False, annotation_qualified=False,
+        manufacturing_approval=False)
+    def save():
+        (OUT/"result.json").write_text(json.dumps(report, indent=2)+"\n")
+    try:
+        qualify_sources()
+        mapping, mapping_artifacts = restore_mapping()
+        cts, cts_artifacts, config, initial = restore_cts()
+        assert cts["source_binding"]["netlist_sha256"] == mapping["outputs"]["synthesis/soc_top.netlist.v"]
+        cts8, cts8meta, config, initial = restore_cts8(config)
+        split, splitmeta, initial = restore_clock_split()
+        previous, previousmeta, initial = restore_previous()
+        refined, refinedmeta, initial = restore_refinement()
+        routed, routedmeta, initial = restore_route()
+        report["source_binding"] = dict(route_run=RUN, route_head=HEAD,
+            artifacts=mapping_artifacts+cts_artifacts+[cts8meta,splitmeta,previousmeta]+refinedmeta+routedmeta)
+        report["pre_route_corners"] = routed["baseline_estimated_corners"]
+        original_config = config
+        data = json.loads(config.read_text())
+        assert data["CLOCK_PERIOD"] == 20 and data["TIME_DERATING_CONSTRAINT"] == 5.0
+        assert data["CLOCK_PORT"] == ["clk_i"]
+        data.update(STA_THREADS=1, STA_CORNERS=CORNERS)
+        config = OUT/"extraction-config.json"
+        config.write_text(json.dumps(data,indent=2)+"\n")
+        expected = json.loads(original_config.read_text())
+        expected.update(STA_THREADS=1, STA_CORNERS=CORNERS)
+        assert data == expected
+        app = Path(os.environ["CLOUD_APPIMAGE"]);verify(app,"x86_64")
+        name_guard=ROOT/'scripts/audit_core_only_extraction_names.py'
+        name_report=OUT/'extraction-name-admission.json'
+        original_odb=current_path(json.loads(initial.read_text())['odb'])
+        env=dict(os.environ,NSSOC_EXTRACTION_NAME_ODB=str(original_odb),NSSOC_EXTRACTION_NAME_REPORT=str(name_report),NSSOC_EXTRACTION_EXPECTED_INSTANCES='105251')
+        with (OUT/'extraction-name-admission.log').open('w')as log:
+            subprocess.run([str(app),'openroad','-exit','-python',str(name_guard)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
+        report['name_admission']=json.loads(name_report.read_text())
+        assert report['name_admission']['source_unchanged']and not report['name_admission']['invalid_instances']and not report['name_admission']['invalid_internal_nets']
+        flow = ROOT/"hw/soc/pnr/core_only_routed_extraction_flow.py"
+        paths = [Path(__file__), flow, original_config, config, initial,
+            current_path(json.loads(initial.read_text())["odb"])]
+        for name in ["scripts/cloud_core_only_detailed_route.py", "scripts/cloud_core_only_clock_refine.py",
+            "scripts/cloud_core_only_postcts.py", "scripts/cloud_core_only_clock_probe.py",
+            "scripts/cloud_core_only_postgrt.py", "hw/soc/pnr/core_only_routed_guards.py",
+            "hw/soc/pnr/replay_onehot_routed_extraction_flow.py", "hw/soc/pnr/interface_flow.py",
+            "hw/soc/flow/audit_estimated_spef.py", "hw/soc/flow/check_timing_derate.tcl",
+            "scripts/audit_core_only_route_annotation.py"]:
+            paths.append(ROOT/name)
+        paths.extend([name_guard,name_report])
+        protected = {str(p):sha(p) for p in paths}
+        report["protected_inputs"] = protected
+        directory = OUT/"extraction";directory.mkdir(parents=True,exist_ok=False)
+        command=[str(app),"python",str(flow),"--flow","CoreOnlyRoutedExtraction",
+            "--pdk-root",str(ROOT/"hw/soc/tools/ciel-corrpre"),"--pdk","ihp-sg13g2",
+            "--scl","sg13g2_stdcell","--force-run-dir",str(directory),
+            "--with-initial-state",str(initial),str(config)]
+        report.update(status="EXTRACTING_AND_ANALYZING",command=command);save()
+        with (OUT/"extraction.log").open("w") as log:
+            code=subprocess.call(command,stdout=log,stderr=subprocess.STDOUT)
+        report["returncode"]=code
+        if code:
+            with (OUT/"extraction.log").open() as log:print("".join(deque(log,maxlen=60)),flush=True)
+            raise RuntimeError("Native extraction/STA failed")
+        proofs=list(directory.glob("*-nssoc-coreonlyroutercx/native-spef-integrity.json"))
+        assert len(proofs)==1
+        proof=json.loads(proofs[0].read_text());assert proof["nominal_only"] and not proof["qualified_rc_minmax"]
+        for entry in proof["spefs"].values():
+            p=current_path(entry["path"]);assert directory in p.parents and sha(p)==entry["sha256"]
+            assert entry["audit"]["status"].startswith("PASS")
+        report["nominal_spef_proof"]=proof
+        states=list(directory.glob("*-nssoc-coreonlyextractedsta/state_out.json"));assert len(states)==1
+        report["fresh_corners"]={}
+        for corner in CORNERS:
+            folder=states[0].parent/corner;metrics=folder/"fresh_metrics.json";log=folder/"sta.log"
+            assert metrics.is_file() and log.is_file()
+            text=log.read_text();assert "CORE_ONLY_EXTRACTED_CLOCK_VERIFIED" in text
+            assert "EST-0026" not in text
+            report["fresh_corners"][corner]=dict(metrics_source=str(metrics.relative_to(OUT)),
+                metrics_sha256=sha(metrics),metrics=json.loads(metrics.read_text()),
+                sta_log=str(log.relative_to(OUT)),sta_log_sha256=sha(log))
+        # Classify every unannotated driver using this run's native evidence.
+        # Successful classification is not coverage acceptance, even with zero loads.
+        audit_script = ROOT/"scripts/audit_core_only_route_annotation.py"
+        spef_entries = list(proof["spefs"].values())
+        assert len(spef_entries) == 1
+        spef_path = current_path(spef_entries[0]["path"])
+        routed_odb = current_path(json.loads(initial.read_text())["odb"])
+        report["annotation_classification"] = {}
+        for corner in CORNERS:
+            log_path = OUT/report["fresh_corners"][corner]["sta_log"]
+            output = OUT/("annotation-"+corner+".json")
+            inputs = {key:dict(path=str(path),sha256=sha(path)) for key,path in
+                [("odb",routed_odb),("spef",spef_path),("sta_log",log_path)]}
+            inputs["output"] = str(output)
+            manifest = OUT/("annotation-inputs-"+corner+".json")
+            manifest.write_text(json.dumps(inputs,indent=2)+"\n")
+            env = dict(os.environ,NSSOC_CORE_ANNOTATION_INPUTS=str(manifest))
+            with (OUT/("annotation-"+corner+".log")).open("w") as log:
+                subprocess.run([str(app),"openroad","-exit","-python",str(audit_script)],
+                    env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
+            classification=json.loads(output.read_text())
+            assert classification["inputs_unchanged"] and not classification["accepted"]
+            report["annotation_classification"][corner] = {
+                k:v for k,v in classification.items() if k!="drivers"}
+        assert all(sha(p)==h for p,h in protected.items())
+        report.update(status="NOMINAL_RC_AND_NATIVE_SPEF_STA_EXECUTED_REQUIRES_COVERAGE_AND_SIGNOFF",
+            sources_unchanged=True, output_state=str(states[0].relative_to(OUT)))
+    except BaseException as error:
+        report.update(status="FAIL_OR_INCOMPLETE",error=repr(error));raise
+    finally:
+        report["outputs"]={str(p.relative_to(OUT)):sha(p) for p in OUT.rglob("*")
+            if p.is_file() and p!=OUT/"result.json"}
+        save()
+if __name__=="__main__":main()
