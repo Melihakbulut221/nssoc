@@ -17,4 +17,10 @@ class Export(unittest.TestCase):
  def test_duplicate(self):self.assertEqual(check_added_antennas('sg13g2_antennanp ANTENNA_1 (.A(n));\n'*2,self.fixture())['duplicate_diodes'],['ANTENNA_1'])
  def test_duplicate_pin(self):
   with self.assertRaises(AssertionError):check_added_antennas('sg13g2_antennanp ANTENNA_1 (.A(n),.A(m));',self.fixture())
+ def test_many_instances_order_and_prefixes(self):
+  cells={f'ANTENNA_{i}':dict(master='sg13g2_antennanp',signal_terms=[dict(pin='A',net=f'n_{i}')])for i in range(1000)}
+  text='\n'.join(f'sg13g2_antennanp ANTENNA_{i} (.A(n_{i}));'for i in reversed(range(1000)))
+  result=check_added_antennas(text,cells)
+  self.assertEqual(result['new_diodes_exported'],1000);self.assertFalse(result['missing_diodes']);self.assertFalse(result['duplicate_diodes']);self.assertFalse(result['signal_connection_mismatches'])
+ def test_other_master_rejected(self):self.assertEqual(check_added_antennas('wrong_master ANTENNA_1 (.A(n));',self.fixture())['missing_diodes'],['ANTENNA_1'])
 if __name__=='__main__':unittest.main(verbosity=2)
