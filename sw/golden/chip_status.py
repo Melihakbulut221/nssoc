@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 """Decode the dedicated read-only 192-bit MBIST status port (LSB first).
 
-This is not JTAG, a core scan chain or an ATPG coverage result. The host must
-request a fresh frame and observe ready low then high before sampling 192 bits.
-Bytes contain successive groups of eight wire bits, least significant bit first.
+Version 1 includes Ethernet MBIST. Version 2 is the core-only release and
+has no Ethernet status fields. This is not JTAG, scan or ATPG coverage.
+The host requests a fresh frame and waits for ready low then high before
+sampling 192 bits, packed least-significant bit first within each byte.
 """
 import argparse
 import json
@@ -15,17 +16,27 @@ FIELDS = {
     'expected': (20, 64), 'actual': (84, 64),
     'phase': (148, 3), 'background': (151, 8),
 }
+CORE_FIELDS = {
+    'busy': (0, 1), 'done': (1, 1), 'failed': (2, 1),
+    'fail_address': (3, 13), 'expected': (16, 64), 'actual': (80, 64),
+    'phase': (144, 3), 'background': (147, 8),
+}
 
 
 def decode(frame: bytes) -> dict[str, int]:
     if len(frame) != 24:
         raise ValueError('Expected exactly 24 bytes / 192 serial bits')
     value = int.from_bytes(frame, 'little')
-    if value >> 160 != 0x4D420001:
+    magic = value >> 160
+    if magic == 0x4D420001:
+        fields, payload_bits = FIELDS, 159
+    elif magic == 0x4D420002:
+        fields, payload_bits = CORE_FIELDS, 155
+    else:
         raise ValueError('Invalid MBIST frame magic or unsupported version')
-    if value & (1 << 159):
-        raise ValueError('Reserved status bit must be zero')
-    return {name: (value >> lsb) & ((1 << width)-1) for name, (lsb, width) in FIELDS.items()}
+    if (value >> payload_bits) & ((1 << (160 - payload_bits)) - 1):
+        raise ValueError('Reserved status bits must be zero')
+    return {name: (value >> lsb) & ((1 << width)-1) for name, (lsb, width) in fields.items()}
 
 
 def main():

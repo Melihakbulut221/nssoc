@@ -14,10 +14,23 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / 'hw/soc/chip-io-contract.json'
+CORE_CONTRACT = ROOT / 'hw/soc/core-only-chip-io-contract.json'
+FORMATS = {
+    'legacy': dict(payload_bits=159, reserved_bits=1, magic='4d420001'),
+    'core-only': dict(payload_bits=155, reserved_bits=5, magic='4d420002'),
+}
 
 
 def generate(contract):
     ports = contract['core_ports']
+    release = contract.get('release_profile', 'legacy')
+    if release not in FORMATS:
+        raise ValueError('Unsupported chip release profile')
+    frame_format = contract.get('status_format', FORMATS['legacy'])
+    if frame_format != FORMATS[release]:
+        raise ValueError('Status format differs from the reviewed release')
+    if release == 'core-only' and any(n.startswith(('eth_', 'pcie_')) for n in ports):
+        raise ValueError('Network ports are forbidden in the core-only chip shell')
     consumed = set()
     pads, instances, manifest = [], [], []
     power = '.iovdd(IOVDD), .iovss(IOVSS), .vdd(VDD), .vss(VSS)'
@@ -64,7 +77,7 @@ def generate(contract):
             raise ValueError('Noncontiguous status frame')
         width += field_width
         consumed.add(n)
-    if width != 159:
+    if width != frame_format['payload_bits']:
         raise ValueError('Unexpected MBIST payload width')
     for n, p in ports.items():
         if n in consumed:
@@ -94,7 +107,8 @@ def generate(contract):
         bus = "" if p["width"] == 1 else "[{}:0] ".format(p["width"] - 1)
         decl.append(f'    wire {bus}{n};')
     decl += ['    wire [191:0] status_frame;',
-             '    assign status_frame = {32\'h4d420001, 1\'b0, ' +
+             "    assign status_frame = {32'h" + frame_format['magic'] + ", " +
+             str(frame_format['reserved_bits']) + "'b0, " +
              ', '.join(f['port'] for f in reversed(fields)) + '};',
              '    soc_status_serial u_status (.clk_i(clk_i), .rst_ni(rst_ni),',
              '        .status_i(status_frame), .test_clk_i(test_clk), .test_req_i(test_req),',
@@ -111,13 +125,19 @@ def generate(contract):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--profile', choices=('legacy', 'core-only'), default='legacy')
     ap.add_argument('--output', type=Path, required=True)
     ap.add_argument('--core-json', type=Path, required=True,
                     help='Yosys JSON of the selected mapped soc_top; required port check')
     args = ap.parse_args()
     if args.output.exists():
         ap.error('Refusing to replace an existing output directory')
-    contract = json.loads(CONTRACT.read_text())
+    contract_path = CORE_CONTRACT if args.profile == 'core-only' else CONTRACT
+    contract = json.loads(contract_path.read_text())
+    if args.profile == 'core-only':
+        expected = contract['source_binding']['mapped_json_sha256']
+        if hashlib.sha256(args.core_json.read_bytes()).hexdigest() != expected:
+            ap.error('Core-only mapped source differs from the reviewed contract')
     actual = json.loads(args.core_json.read_text())['modules']['soc_top']['ports']
     signature = {n: dict(direction=p['direction'], width=len(p['bits']))
                  for n, p in actual.items()}
@@ -127,8 +147,8 @@ def main():
     args.output.mkdir(parents=True)
     (args.output / 'nssoc_chip.v').write_text(text)
     (args.output / 'pads.json').write_text(json.dumps(cells, indent=2) + '\n')
-    inputs = [args.core_json.resolve(), CONTRACT, Path(__file__).resolve()]
-    metadata = dict(scope='Structural mapped-core shell only; physical routing and qualification pending.',
+    inputs = [args.core_json.resolve(), contract_path, Path(__file__).resolve()]
+    metadata = dict(release_profile=args.profile, status_format=FORMATS[args.profile], scope='Structural mapped-core shell only; physical routing and qualification pending.',
                     input_sha256={str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs},
                     signal_pads=sum(not c.get('supply', False) for c in cells), supply_pads=4)
     (args.output / 'manifest.json').write_text(json.dumps(metadata, indent=2) + '\n')
