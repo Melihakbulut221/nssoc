@@ -1,4 +1,4 @@
-name: Core-only detailed route trial
+name: Core-only nominal extracted timing trial
 on:
   workflow_dispatch:
 permissions:
@@ -25,22 +25,22 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
           python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_detailed_route.py hw/soc/pnr/core_only_detailed_route_flow.py
+          python3 -m py_compile scripts/cloud_core_only_routed_extraction.py hw/soc/pnr/core_only_routed_extraction_flow.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Route authenticated refined candidate and preserve native reports
-        run: python3 scripts/cloud_core_only_detailed_route.py
+      - name: Extract authenticated routes and capture actual fresh SPEF timing
+        run: python3 scripts/cloud_core_only_routed_extraction.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-detailed-route-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-detailed-route/
+          name: core-only-routed-extraction-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-routed-extraction/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-detailed-route-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-detailed-route/result.json
+          name: core-only-routed-extraction-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-routed-extraction/result.json
           if-no-files-found: error
           retention-days: 90
