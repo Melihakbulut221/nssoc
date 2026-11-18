@@ -1,3 +1,12 @@
+## 2026-11-18: native via fixture correction, cloud continuation
+
+- Qualification run 44294044188 failed before the full chip audit because no block-owned via touched Metal2. Native artifact 14423445267, SHA256 37ce8341d18d790e18fe2714ded96d2525431932cf952a988c5c4daf0ffe39f1, was independently checked. This is a fixture inventory failure, not a diagnosed chip connectivity failure.
+- Source c48b3ebddd01531a8b39acc170a1905f89db0479 tests Metal2 technology vias separately from an actual block-owned via on its own bottom layer. Eleven native fixtures are now required.
+- New read-only audit run 44294471048 was confirmed live. Inspect its actual native-decoder-qualification.json and physical-route-audit.json, not just job success. No route job was restarted.
+- Main route 44263061910 remains live in detailed routing since 08:00:26Z (checked 11:25Z). Follow it to completion, audit outputs, then pin exact artifacts into prepared extraction and routed-boot runners.
+- Retained general checks 44294474219. Superseded checks 44294025637 cancelled only after verified ancestry.
+- Previous geometry result 44293764407 remains narrow evidence; independent decoder qualification and all manufacturing gates remain open.
+
 ## 2026-11-18: physical signal continuity result, qualification pending
 
 - Run 44293764407 completed successfully at source 20d67104b25e7817e979fa1204cff2a4dd8864fd. Native artifact 14421039405 SHA256 762647da701441807aff4d7bd612176928e67749661e0e77b4c5a9a8af5c1a03 was independently verified, along with all 3 output hashes and native/summary audit equality.
