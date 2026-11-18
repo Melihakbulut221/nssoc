@@ -1,4 +1,4 @@
-name: Full pad current qualification with official IHP diode model
+name: New official pad schematic diagnostic with explicit pin mapping
 on:
   workflow_dispatch:
 permissions:
@@ -32,11 +32,11 @@ jobs:
         with:
           persist-credentials: false
       - name: Qualify all six slow-corner pad current cases
-        run: python3 scripts/cloud_core_only_pad_upstream_diode.py
+        run: python3 scripts/cloud_core_only_pad_upstream_schematic.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-pad-upstream-diode-${{ github.run_id }}
-          path: hw/soc/out/core-only-pad-upstream-diode/
+          name: core-only-pad-upstream-schematic-${{ github.run_id }}
+          path: hw/soc/out/core-only-pad-upstream-schematic/
           if-no-files-found: error
           retention-days: 90
