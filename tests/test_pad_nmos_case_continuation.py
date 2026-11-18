@@ -4,7 +4,7 @@ from unittest.mock import patch
 import numpy as np
 import pytest
 
-@pytest.mark.parametrize("reduction", ["n_clamp", "n_forward", "n_reverse"])
+@pytest.mark.parametrize("reduction", ["n_clamp", "n_forward", "n_reverse", "n_pair", "n_antenna"])
 @pytest.mark.parametrize("wrong_solver", [False, True])
 def test_all_six_cases_execute_and_any_failure_remains_fatal(tmp_path, wrong_solver, reduction):
     os.environ['NSSOC_PAD_REDUCTION']=reduction

@@ -1,4 +1,4 @@
-name: Core-only NMOS device isolation
+name: Core-only NMOS pair and antenna isolation
 on:
   workflow_dispatch:
 permissions:
@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        reduction: [n_clamp, n_forward, n_reverse]
+        reduction: [n_pair, n_antenna]
     env:
       NSSOC_PAD_CLAMP_OHMS: "0"
       NSSOC_PAD_ITL4: "100"

@@ -7,7 +7,7 @@ ROOT=Path(__file__).resolve().parents[1]
 CLAMP=os.environ['NSSOC_PAD_CLAMP_OHMS'];assert CLAMP in ['0','1','10']
 ITL4=os.environ['NSSOC_PAD_ITL4'];assert ITL4 in ['100','1000']
 STEP=os.environ.get('NSSOC_PAD_STEP_PS','5');assert STEP in ['5','2.5','1']
-REDUCTION=os.environ['NSSOC_PAD_REDUCTION'];assert REDUCTION in ['n_clamp','n_forward','n_reverse']
+REDUCTION=os.environ['NSSOC_PAD_REDUCTION'];assert REDUCTION in ['n_clamp','n_forward','n_reverse','n_pair','n_antenna']
 OUT=ROOT/('hw/soc/out/core-only-pad-nmos-'+REDUCTION+'-'+CLAMP+'ohm-itl4-'+ITL4+'-step-'+STEP+'ps')
 PDK='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c'
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -50,8 +50,12 @@ def main():
       diagnostic+=['Xnclamp iovss iovdd pad ngate sg13g2_Clamp_N2N2D']
      elif REDUCTION=='n_forward':
       diagnostic+=['Xn pad ngate iovss iovss sg13_hv_nmos l=0.6um w=4.4um']
-     else:
+     elif REDUCTION=='n_reverse':
       diagnostic+=['Xn iovss ngate pad iovss sg13_hv_nmos l=0.6um w=4.4um']
+     elif REDUCTION=='n_pair':
+      diagnostic+=['Xn0 iovss ngate pad iovss sg13_hv_nmos l=0.6um w=4.4um','Xn1 pad ngate iovss iovss sg13_hv_nmos l=0.6um w=4.4um']
+     else:
+      diagnostic+=['XDGATE iovss ngate dantenna l=0.64um w=0.48um']
      if True:
       active_n=3 if bit==0 else 0;active_p=3 if bit==0 else 0
       def gate_source(active,off):
@@ -94,8 +98,8 @@ def main():
      pre=(t>=10e-9)&(t<=19e-9);post=(t>=40e-9)&(t<=49e-9)
      assert pre.sum()>20 and post.sum()>20
      current=a[:,2];row['maximum_pad_deviation_from_clamp_v']=float(np.max(np.abs(a[:,5]-1.5)));row.update(rows=len(a),pre_current_a=float(np.median(current[pre])),post_current_a=float(np.median(current[post])),post_abs_max_a=float(np.max(np.abs(current[post]))))
-     if mode!='disabled'and bit==0:assert abs(row['pre_current_a'])>1e-6,'No active pad drive'
-     if mode=='turnoff'and bit==0:
+     if mode!='disabled'and bit==0 and REDUCTION!='n_antenna':assert abs(row['pre_current_a'])>1e-6,'No active pad drive'
+     if mode=='turnoff'and bit==0 and REDUCTION!='n_antenna':
       cutoff=.01*abs(row['pre_current_a']);indices=np.where((t>=20.06e-9)&(np.abs(current)<cutoff))[0]
       row['first_below_one_percent_after_enable_midpoint_s']=None if not len(indices)else float(t[indices[0]]-20.06e-9)
     except Exception as error:
