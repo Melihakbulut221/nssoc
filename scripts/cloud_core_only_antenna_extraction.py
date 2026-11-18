@@ -51,6 +51,7 @@ def restore_route():
         'sha256:e47da3fe91a279ad2102ee2d84420b226afddd73646b26dceb5ab42c37e05fa8',
         'hw/soc/out/core-only-pin-aware-electrical-globalroute')
     completed(44385801058,'f35a79dec5bb998eb88de851d6be0c0808075cee')
+    completed(44386791996,'b43b152b120b4e38d698d8dcb184fb39faf91926')
     run=completed(RUN,HEAD);z,meta=archive(run,f'core-only-antenna-reroute-{RUN}')
     assert meta['id']==artifact_id and meta['digest']==digest
     raw=z.read('result.json');report=json.loads(raw)
