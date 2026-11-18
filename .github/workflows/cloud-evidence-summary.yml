@@ -1,4 +1,4 @@
-name: Native hierarchical SPEF accumulation qualification
+name: Core-only DEF roundtrip annotation diagnosis
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 30
+    timeout-minutes: 120
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -23,15 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/qualify_core_only_hierarchical_spef.py
+          python3 -m py_compile scripts/cloud_core_only_routed_annotation_def.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Check accumulation and reversed read order
-        run: python3 scripts/qualify_core_only_hierarchical_spef.py
+      - name: Classify authenticated extracted core driver coverage
+        run: python3 scripts/cloud_core_only_routed_annotation_def.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-hierarchical-spef-qualification-${{ github.run_id }}
-          path: hw/soc/out/core-only-hierarchical-spef-qualification/
+          name: core-only-routed-annotation-def-${{ github.run_id }}
+          path: hw/soc/out/core-only-routed-annotation-def/
           if-no-files-found: error
           retention-days: 90

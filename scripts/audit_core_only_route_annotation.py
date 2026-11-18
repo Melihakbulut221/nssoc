@@ -53,13 +53,19 @@ def classify(odb_path, spef_path, log_path, output):
     d=odb.dbDatabase.create();odb.read_db(d,str(odb_path));b=d.getChip().getBlock()
     assert b and len(b.getInsts()) > 0 and len(b.getNets()) > 0
     nets={n.getName():n for n in b.getNets()};namemap={};caps={};inmap=False;aliases=collections.Counter()
+    encoded={}
+    for original in nets:
+        name=spef_net_name(original)
+        assert name not in encoded,('Ambiguous exact SPEF name',name)
+        encoded[name]=original
     def resolve(token,name):
         assert re.fullmatch(r'\*\d+',token),('Expected native name map token',token)
         ident=int(token[1:]);assert ident>0
-        net=odb.dbNet.getNet(b,ident);assert net,('Unknown native net id',ident)
-        chosen=net.getName();assert chosen in nets;expected=spef_net_name(chosen)
-        assert name==expected,('Native net id/name mismatch',ident,chosen,name,expected)
-        aliases['native_id_and_exact_writer_name']+=1;return chosen
+        # LibreLane RCX reads DEF, rebuilding numeric dbNet IDs. They are local
+        # SPEF name-map keys, not persistent identifiers of the routed ODB.
+        assert name in encoded,('Unknown exact SPEF net name',token,name)
+        chosen=encoded[name];assert spef_net_name(chosen)==name
+        aliases['unique_exact_writer_name_after_DEF_roundtrip']+=1;return chosen
     with spef_path.open() as stream:
         for line in stream:
             row=line.strip()
