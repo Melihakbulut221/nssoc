@@ -48,6 +48,73 @@ def self_test():
     assert not touch((0,0,2,2),(3,0,5,2))and touch((0,0,2,2),(2,0,4,2))
     return dict(connected_metal=True,missing_wire_rejected=True,wrong_layer_rejected=True,floating_fragment_rejected=True,native_via_group_model=True,missing_via_landing_rejected=True,integer_edge_contact=True)
 
+def decoded_wire_shapes(odb, wire):
+    """Port of pinned OpenDB dbWireShapeItr using the exported decoder.
+
+    Geometry rules follow OpenROAD dcf36133 dbWireShapeItr.cpp/dbShape.h.
+    Virtual path relationships never create physical metal. RECT operands
+    are read from the encoded stream because getRect lacks Python outputs.
+    This adapter still requires native qualification; it is not LVS.
+    """
+    dec=odb.dbWireDecoder();dec.begin(wire)
+    layer=None;previous=None;extension=None;count=0;half=0;nondefault=False
+    while True:
+        op=dec.next()
+        if op==dec.END_DECODE:break
+        if op in (dec.PATH,dec.JUNCTION,dec.SHORT,dec.VWIRE):
+            layer=dec.getLayer();half=layer.getWidth()//2;count=0
+            previous=None;extension=None
+        elif op==dec.RULE:
+            half=dec.getRule().getWidth()//2;nondefault=True
+        elif op in (dec.POINT,dec.POINT_EXT):
+            values=dec.getPoint_ext() if op==dec.POINT_EXT else dec.getPoint()
+            x,y=values[:2];ext=values[2] if op==dec.POINT_EXT else None
+            raw=wire.getOpcode(dec.getJunctionId())
+            if isinstance(raw,str):raw=ord(raw)
+            elif isinstance(raw,bytes):raw=raw[0]
+            raw=int(raw)&0x1f
+            assert raw in (4,5,6),('Unexpected point opcode',raw)
+            count+=1
+            if raw==6:
+                previous=(x,y)
+                if ext is not None:extension=ext;continue
+                if extension is not None:extension=None;continue
+                if count<=1:continue
+                rect=(x-half,y-half,x+half,y+half)
+            elif count==1:
+                previous=(x,y);extension=ext;continue
+            else:
+                assert previous is not None
+                px,py=previous;assert px==x or py==y,'Non-orthogonal wire'
+                width=half;direction=str(layer.getDirection())
+                if not nondefault and ((raw==4 and direction=='VERTICAL')or(raw==5 and direction=='HORIZONTAL')):
+                    width=layer.getWrongWayWidth()//2
+                start=half if extension is None else extension
+                end=half if ext is None else ext
+                if px==x:
+                    lo,hi=(py-start,y+end) if y>py else (y-end,py+start)
+                    if y==py:lo,hi=y-width,y+width
+                    rect=(x-width,lo,x+width,hi)
+                else:
+                    lo,hi=(px-start,x+end) if x>px else (x-end,px+start)
+                    rect=(lo,y-width,hi,y+width)
+            previous=(x,y);extension=ext
+            yield ('rect',layer,odb.Rect(*rect))
+        elif op in (dec.VIA,dec.TECH_VIA):
+            assert previous is not None,'Via before first point'
+            via=dec.getVia() if op==dec.VIA else dec.getTechVia()
+            assert via and via.getBBox(),'Via without physical geometry'
+            yield ('via',via,previous)
+            layer=dec.getLayer()
+            if not nondefault:half=layer.getWidth()//2
+            extension=None
+        elif op==dec.RECT:
+            assert previous is not None,'Patch before first point'
+            i=dec.getJunctionId();d=[wire.getData(i+j)for j in range(4)];x,y=previous
+            yield ('rect',layer,odb.Rect(x+d[0],y+d[1],x+d[2],y+d[3]))
+        else:assert op in (dec.ITERM,dec.BTERM),('Unsupported wire opcode',op)
+
+
 def main():
     import odb
     out=Path(os.environ['NSSOC_PHYSICAL_ROUTE_OUT']);path=Path(os.environ['NSSOC_PHYSICAL_ROUTE_ODB']);before=hashlib.sha256(path.read_bytes()).hexdigest()
@@ -79,13 +146,12 @@ def main():
             if len(rows)==start:missing.append(dict(net=name,terminal=g))
         w=net.getWire()
         if w:
-            it=odb.dbWireShapeItr();it.begin(w);shape=odb.dbShape()
-            while it.next(shape):
+            for kind,obj,geometry in decoded_wire_shapes(odb,w):
                 counter+=1;group='wire:'+str(counter)
-                if shape.isVia():via_shape(shape.getTechVia()or shape.getVia(),*shape.getViaXY(),group,'wire')
-                else:add(shape.getTechLayer(),shape.getBox(),group,'wire',group)
-        for w in net.getSWires():
-            for box in w.getWires():
+                if kind=='via':via_shape(obj,*geometry,group,'wire')
+                else:add(obj,geometry,group,'wire',group)
+        for sw in net.getSWires():
+            for box in sw.getWires():
                 counter+=1;group='special:'+str(counter)
                 if box.isVia():via_shape(box.getTechVia()or box.getBlockVia(),*box.getViaXY(),group,'special')
                 else:add(box.getTechLayer(),box,group,'special',group)

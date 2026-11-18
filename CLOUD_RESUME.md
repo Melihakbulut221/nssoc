@@ -1,3 +1,13 @@
+## 2026-11-18: native signal decoder repair candidate
+
+- PCIe/Ethernet remain outside the approved production scope.
+- Main core route run 44263061910 was rechecked live (`in_progress`); do not restart.
+- Signal geometry audit 44291183141 failed on unavailable Python `dbWireShapeItr`, before physical connectivity could be established.
+- Replace that API with exported `dbWireDecoder`, following pinned OpenROAD dcf36133 geometry semantics (extensions, wrong-way width, collinear points, patch rectangles, via landings).
+- Fixed special-wire variable shadowing that could corrupt ordinary-wire presence classification.
+- This is a candidate, not qualified physical evidence. Native execution and decoder qualification remain required. Preserve the routed input from 44289826075; no reroute is needed for this tooling error.
+- Foundry DRC/LVS, actual extracted final timing, SRAM model/RC qualification and production approval remain open.
+
 # Current: integrated detailed routing completed at native DRC0; pad connectivity qualification pending
 
 DRT44289826075/source723fe02e71279036fabb7a5d7204d309351f4e19 terminalFAIL ONLY conservativewirepresenceguard. Native14420727343 SHA10a4fc032d2da17bf3dc2e59418905b3e9c38bd8f30e7c0e2e88163aeb3a2920;summary14421755695 SHA1c92f31bef2a35423a140aedea9b0c02e7bc97732552033ebaf222b3b20b187e. Independentlyverified all15outputs/native-summary/protectedsource/nativeaudit; detailedroutecompleted, nativegetter0/emptyDRCreport/logfinal0. Wirelength487415um,11350vias.76padexternalnets have no dbWire, allotherguidednets wired; allplacements/connections/pins/PGgeometry unchanged. ODBafc4a1518e1c9d5e20e667379db5a979385fc4d2b30382872e003c7205857cf1. Do NOTreroutejustbecauseguardfailed.
