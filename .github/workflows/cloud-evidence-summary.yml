@@ -1,4 +1,4 @@
-name: Core-only canonical extracted-path targeted setup and hold ECO
+name: Core-only targeted ECO fresh global route and corner screening
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    timeout-minutes: 355
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -23,15 +23,24 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_canonical_targeted_eco.py scripts/prepare_core_only_targeted_eco.py scripts/audit_core_only_targeted_eco.py
+          python3 scripts/qualify_core_only_timing_guards.py
+          python3 scripts/qualify_core_only_postcts_handoff.py
+          python3 -m py_compile scripts/cloud_core_only_targeted_globalroute.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Legalize measured setup sizing and SRAM hold chain
-        run: python3 scripts/cloud_core_only_canonical_targeted_eco.py
+      - name: Route verified targeted ECO and measure all three corners
+        run: python3 scripts/cloud_core_only_targeted_globalroute.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-canonical-targeted-eco-${{ github.run_id }}
-          path: hw/soc/out/core-only-canonical-targeted-eco/
+          name: core-only-targeted-globalroute-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-targeted-globalroute/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: core-only-targeted-globalroute-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-targeted-globalroute/result.json
           if-no-files-found: error
           retention-days: 90
