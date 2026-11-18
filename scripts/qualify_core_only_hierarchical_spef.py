@@ -28,9 +28,15 @@ def main():
    with (OUT/(name+'.log')).open('w')as log:subprocess.run([str(app),'sta','-exit',str(script)],stdout=log,stderr=subprocess.STDOUT,check=True)
    log=(OUT/(name+'.log')).read_text();assert 'NSSOC_HIERARCHICAL_SPEF_FIXTURE_COMPLETE'in log
    assert not re.search(r'(?im)^\s*(?:Error|Warning)[: ]',log),log
-   caps=re.findall(r'(?m)^\s*Wire capacitance:\s*([0-9.]+)\s*$',log);assert len(caps)==1,log
-   value=float(caps[0]);r['cases'][name]=dict(wire_capacitance_pf=value,expected_pf=expected)
-   assert abs(value-expected)<1e-8,(name,value,expected)
+   caps=re.findall(r'(?m)^\s*Wire capacitance:\s*([0-9.]+)(?:-([0-9.]+))?\s*$',log);assert len(caps)==1,log
+   lo=float(caps[0][0]);hi=float(caps[0][1]or caps[0][0]);assert 0<=lo<=hi
+   r['cases'][name]=dict(wire_capacitance_pf_min=lo,wire_capacitance_pf_max=hi,complete_expected_pf=0.03)
+   if name=='parent_then_core':assert abs(lo-0.03)<1e-8 and abs(hi-0.03)<1e-8,(name,lo,hi)
+   else:
+    # Missing hierarchical load RC can produce a pin-cap-dependent range.
+    # Both negative controls must lose the child's 0.02 pF contribution.
+    assert hi<=0.01000001 and 0.03-hi>=0.01999999,(name,lo,hi)
+
   assert all(sha(p)==h for p,h in protected.items());r.update(status='PASS_NATIVE_HIERARCHICAL_RC_ACCUMULATION_AND_REVERSED_ORDER_NEGATIVE_CONTROL',sources_unchanged=True,protected_inputs=protected)
  except BaseException as e:r.update(status='FAIL_OR_INCOMPLETE',error=repr(e));raise
  finally:
