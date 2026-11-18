@@ -1,4 +1,4 @@
-name: Core-only continued200 routed repair
+name: Core-only zero-fanout routed repair
 on:
   workflow_dispatch:
 permissions:
@@ -25,22 +25,22 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
           python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_route_refine200.py hw/soc/pnr/core_only_route_refine200_flow.py
+          python3 -m py_compile scripts/cloud_core_only_clock_postgrt.py hw/soc/pnr/core_only_route_refine200_flow.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
       - name: Continue saved repair and compare fresh corners to baseline
-        run: python3 scripts/cloud_core_only_route_refine200.py
+        run: python3 scripts/cloud_core_only_clock_postgrt.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-route-refine200-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-route-refine200/
+          name: core-only-clock-postgrt-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-clock-postgrt/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-route-refine200-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-route-refine200/result.json
+          name: core-only-clock-postgrt-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-clock-postgrt/result.json
           if-no-files-found: error
           retention-days: 90

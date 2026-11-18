@@ -1,0 +1,5 @@
+# Repair the routed zero-fanout topology
+
+The CTS8 bus-clock split run44253264552/source45932c71e85db517f87e01f2a7f6b80cd1bc045c completes with zero fanout violations in all reported corners, including global routing. The new topology needs post-route repair: initial routed slow1092setup/-3.84906ns, hold0in all corners, slew125/1/1, cap82/83/85. Placement-only zero setup/hold does not close routed timing. This candidate must not be conflated with the different original-clock topology refined to41setup/0hold in44252197610.
+
+The new job restores authenticated mapping/CTS/CTS8/clock-split archives, all output hashes/protected inputs/fresh metrics, and verifies the two full-terminal-preservation markers plus16authorized endpoint moves. It starts at the actual saved final routed state. It then runs electrical repair and200-iteration setup/1000-iteration hold repair with mandatory rerouting and independent three-corner STA.20ns clock and5%derate remain unchanged; timing or electrical acceptance is never automatic. Preserve the separate original-topology200search44254614637 for comparison.
