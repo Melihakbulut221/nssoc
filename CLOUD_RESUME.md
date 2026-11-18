@@ -1,3 +1,13 @@
+# Verified interface-profile result
+
+Complementary interface run44247358676 is SUCCESS, source97ffca0ad84ab2bf103f6647e0a11ea4008fb7d4. Independently verified artifact14401534424 SHA256 d258566a1676f065cadfcb87e161690bb76669cff5ab01321a5d9d64b20c9578, all10 outputs and native XML: base8pass6skip/full13pass1skip, union14pass. All six full CAN/SpaceWire tests passed. No changed sources. See docs/core-only-interface-profiles.md and evidence record. This is APB/pin-level RTL only.
+
+At last live check, postGRT44247595292, CTS8 44246559242, retained RTL44246945276 and native boot44239816779 remain in progress in their native execution steps. Preserve those handles. Superseded broad checks44242699077,44247327438,44246931767,44246552940,44246323093 were cancelled after ancestry verification to ef88f086; latest broad check44247597821 and native-boot broad check44239723467 retained. No manual producer cancelled.
+
+Original user audit attachments at the two previously stated Downloads paths are now absent. Repo docs86/89/96 retain historical findings and closure registers; do not claim the original attachments were freshly reread. Their non-network product gates remain mandatory. Follow the records below for routed timing failures and current repair sources.
+
+---
+
 # Current continuation: routed-core repair
 
 Latest functional source **ef88f086feac84f64b48cf77018fe0a92346bfb2**, branch codex/core-only-postgrt. Post-GRT electrical/timing repair run **44247595292**: https://github.com/Melihakbulut221/nssoc/actions/runs/44247595292 (queued at last check). Poll this handle, do not duplicate. Output core-only-postgrt; artifacts core-only-postgrt-native-44247595292 and core-only-postgrt-summary-44247595292. It restores authenticated mapping/CTS/postCTS/globalroute archives, repairs electrical then setup/hold with mandatory rerouting, and measures fresh route-based STA in three corners after each phase. No acceptance/clock relaxation.
