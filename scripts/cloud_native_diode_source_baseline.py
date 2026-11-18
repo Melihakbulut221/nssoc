@@ -26,6 +26,7 @@ def main():
   assert run(['make','-j2'],OUT/'make.log',cwd=source)==0
   assert run(['make','install'],OUT/'install.log',cwd=source)==0
   built=install/'bin/ngspice';assert built.is_file()
+  shutil.make_archive(str(OUT/'source-runtime'),'gztar',root_dir=install)
   deb=tmp/'published.deb';url='https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb'
   with urllib.request.urlopen(url,timeout=120)as f:deb.write_bytes(f.read())
   assert sha(deb)=='400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b'
@@ -33,20 +34,24 @@ def main():
   published=tmp/'published';assert run(['dpkg-deb','-x',str(deb),str(published)],OUT/'binary-unpack.log')==0
   original=ROOT/'hw/soc/analog/diagnostics/darea-release';protected={str(original/n):sha(original/n)for n in ['bench.cir','spinit']};protected[str(Path(__file__))]=sha(Path(__file__));r['protected_inputs']=protected;r['cases']={}
   for label,binary in [('published',published/'usr/bin/ngspice'),('source_build',built)]:
-   case=OUT/label;case.mkdir();shutil.copyfile(original/'bench.cir',case/'bench.cir');shutil.copyfile(original/'spinit',case/'spinit')
-   assert run([str(binary),'--version'],case/'version.log')==0
-   env=dict(os.environ,SPICE_SCRIPTS=str(case))
-   code=run([str(binary),'-b','bench.cir'],case/'native.log',cwd=case,env=env)
-   text=(case/'native.log').read_text(errors='replace');wave=case/'wave.dat';rows=[]
-   if wave.exists():
-    for line in wave.read_text().splitlines()[1:]:
-     if line.strip():
-      row=[float(x)for x in line.split()];assert len(row)==3 and all(math.isfinite(x)for x in row);rows.append(row)
-   assert rows and all(rows[i][0]>rows[i-1][0]for i in range(1,len(rows)))
-   expected='timestep too small'in text.lower()and 20e-9<rows[-1][0]<24e-9
-   r['cases'][label]=dict(returncode=code,binary_sha256=sha(binary),samples=len(rows),last_time=rows[-1][0],timestep_failure_reproduced=expected,klu_selected='klu'in text.lower(),version=(case/'version.log').read_text())
-   assert 'NSSOC_DIODE_SOLVER_READBACK'in text and 'NSSOC_DIODE_CAPTURE_END'in text
+   try:
+    case=OUT/label;case.mkdir();shutil.copyfile(original/'bench.cir',case/'bench.cir');shutil.copyfile(original/'spinit',case/'spinit')
+    assert run([str(binary),'--version'],case/'version.log')==0
+    env=dict(os.environ,SPICE_SCRIPTS=str(case))
+    code=run([str(binary),'-b','bench.cir'],case/'native.log',cwd=case,env=env)
+    text=(case/'native.log').read_text(errors='replace');wave=case/'wave.dat';rows=[]
+    if wave.exists():
+     for line in wave.read_text().splitlines()[1:]:
+      if line.strip():
+       row=[float(x)for x in line.split()];assert len(row)==3 and all(math.isfinite(x)for x in row);rows.append(row)
+    assert rows and all(rows[i][0]>=rows[i-1][0]for i in range(1,len(rows)))
+    equal_times=sum(rows[i][0]==rows[i-1][0]for i in range(1,len(rows)))
+    expected='timestep too small'in text.lower()and 20e-9<rows[-1][0]<24e-9
+    r['cases'][label]=dict(returncode=code,binary_sha256=sha(binary),samples=len(rows),equal_printed_timestamps=equal_times,partial_failed_waveform=True,last_time=rows[-1][0],timestep_failure_reproduced=expected,klu_selected='klu'in text.lower(),version=(case/'version.log').read_text())
+    assert 'NSSOC_DIODE_SOLVER_READBACK'in text and 'NSSOC_DIODE_CAPTURE_END'in text
+   except BaseException as e:r['cases'][label]=dict(error=repr(e),timestep_failure_reproduced=False,klu_selected=False)
   assert all(x['timestep_failure_reproduced']and x['klu_selected']for x in r['cases'].values()),'Unchanged baseline behavior not reproduced; inspect before any patch'
+  assert abs(r['cases']['published']['last_time']-r['cases']['source_build']['last_time'])<1e-12,'Baseline failure times differ by more than one maximum time step'
   assert all(sha(p)==h for p,h in protected.items());r.update(status='UNMODIFIED_SOURCE_AND_PUBLISHED_BINARY_REPRODUCE_DIODE_FAILURE',sources_unchanged=True)
  except BaseException as e:r.update(status='FAIL_OR_INCOMPLETE',error=repr(e));raise
  finally:
