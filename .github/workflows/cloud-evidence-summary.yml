@@ -1,13 +1,13 @@
-name: Core-only lossless canonical names and extracted timing
+name: Native canonical name preservation fault controls
 on:
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 jobs:
-  repair:
+  qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 355
+    timeout-minutes: 30
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -18,29 +18,20 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Prepare pinned physical runtime
+      - name: Prepare pinned native runtime
         run: |
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 scripts/qualify_core_only_timing_guards.py
-          python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/canonicalize_core_only_timing_names.py scripts/cloud_core_only_canonical_extracted_timing.py hw/soc/pnr/core_only_routed_extraction_flow.py
+          python3 -m py_compile scripts/qualify_core_only_canonical_snapshot.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Extract authenticated routes and capture actual fresh SPEF timing
-        run: python3 scripts/cloud_core_only_canonical_extracted_timing.py
+      - name: Inject native geometry connectivity and alias faults
+        run: python3 scripts/qualify_core_only_canonical_snapshot.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-canonical-extracted-timing-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-canonical-extracted-timing/
-          if-no-files-found: error
-          retention-days: 90
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: core-only-canonical-extracted-timing-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-canonical-extracted-timing/result.json
+          name: core-only-canonical-native-controls-${{ github.run_id }}
+          path: hw/soc/out/core-only-canonical-native-controls/
           if-no-files-found: error
           retention-days: 90
