@@ -1,3 +1,15 @@
+# Current: zero-fanout repair refined; next continuation live
+
+Run44256809783/source0a055a1269f48e386e01b95eada858ae25671429 is terminalSUCCESS. Native14407012633 SHA2569a3e8c9c4a4def31a992bc9711b8222961ff3aaf468817af206185df8914cbe4 independently verified217outputs/6freshcorners; finalSTA3route markers/zeroEST0026. Finalslow91setup/-1.06292ns/TNS-37.4915,typical/fast0setup,hold0all/fast+0.0506166ns,fanout0all,slew24/0/0,cap2all. Not signoff. Evidence docs/evidence/core-only-clock-postgrt-20261118.json.
+
+Continuation44259265143/source572c3eb98392b0f56351d5aaf4f256499b4b8d9f, branchcodex/core-only-clock-refine, last confirmedin_progress. Preserve it. Runner scripts/cloud_core_only_clock_refine.py restores originalmapping/CTS/CTS8/clocksplit/lastrepair with pinned hashes, starts exact saved routedstate, repeats electrical and200setup/1000hold repair, thenfreshcorners. Artifacts core-only-clock-refine-native/summary-RUN. Newest broadchecks44259267843 alsoin_progress. No constraints relaxed. Compare finalfanout/hold/electrical aswellassetup before selectingforDRT.
+
+Extracted-flow guard qualification44258678679/source20ed500a733f7a1928a6e84054c38806b439bf25 is terminalSUCCESS. Artifact14407346517 SHA2561d0b9bca700cc6dd752527d9ae514fd6c04fa6ffb00e7a730ab049bfa6f2083c independently inspected.8malformedanchor rejections,11Tclcases(1positive/10negative) passed, bothnativeflowimports completed. NOT actualdatabase/SPEF execution orRCqualification. Evidence docs/evidence/core-only-extracted-guards-20261118.json. Newroute/extractionflows andpureguards inherited here. Next physicalroute runner must restore chosen candidate and assess actual detailedroute/RC/STA; not dispatchedyet.
+
+Superseded broadchecks44256761585,44254590883,44254144606 cancelled after provingancestryto20ed500a andretainingnewchecks44258681089. Manualproducerstouchedonlybytheirnormalcompletion. Goalactive; cloud-only; PCIe/Ethernetexcluded; allretainedsignoffgates remain. Original-clock zero-setupcandidate still has748fanout; keepmetrics separate.
+
+---
+
 # Current: core-only extracted-flow qualification queued; main repair live
 
 New branch codex/core-only-extracted-flow, functional source20ed500a733f7a1928a6e84054c38806b439bf25. Guard/native-import qualification run44258678679/job134646446144 last confirmed queued; broad checks44258681089 also queued. Preserve these handles. No actual detailed route dispatched yet. New files: core_only_detailed_route_flow.py, core_only_routed_extraction_flow.py, core_only_routed_guards.py under hw/soc/pnr; scripts/qualify_core_only_extracted_guards.py. See docs/core-only-extracted-flow.md.
