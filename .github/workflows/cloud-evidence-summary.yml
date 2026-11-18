@@ -1,16 +1,27 @@
-name: Core-only core output buffered parent routing
+name: Core-only parent core output nominal extraction and timing
 on:
   workflow_dispatch:
+    inputs:
+      artifact_id:
+        description: Independently verified parent route artifact ID
+        required: true
+        type: string
+      artifact_digest:
+        description: Independently verified parent route SHA256
+        required: true
+        type: string
 permissions:
   contents: read
   actions: read
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 355
+    timeout-minutes: 120
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
+      NSSOC_PARENT_ROUTE_ARTIFACT_ID: ${{ inputs.artifact_id }}
+      NSSOC_PARENT_ROUTE_ARTIFACT_DIGEST: ${{ inputs.artifact_digest }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -23,15 +34,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_parent_corepad_route.py
+          python3 -m py_compile scripts/cloud_core_only_parent_corepad_timing.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Route and audit core output buffer candidate
-        run: python3 scripts/cloud_core_only_parent_corepad_route.py
+      - name: Extract and measure admitted parent perimeter routing
+        run: python3 scripts/cloud_core_only_parent_corepad_timing.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-parent-corepad-route-${{ github.run_id }}
-          path: hw/soc/out/core-only-parent-corepad-route/
+          name: core-only-parent-corepad-timing-${{ github.run_id }}
+          path: hw/soc/out/core-only-parent-corepad-timing/
           if-no-files-found: error
           retention-days: 90
