@@ -1,3 +1,13 @@
+# Current:41-setup routed candidate verified,200-iteration continuation live
+
+New continuation **44254614637**, source **609a6568e1d793eff18885d0d20f5b43b90e7be4**, branch **codex/core-only-route-refine200**; last observed in_progress. Do not duplicate dispatch. Restores authenticated mapping/CTS/postCTS/globalroute/postGRT/route-refine, then electrical repair and200-iteration setup search with unchanged hold bounds,20ns/5%derate and fresh rerouted corners. Original100-iteration flows unchanged. Output core-only-route-refine200; artifacts matching native/summary run ID. See docs/core-only-route-refine200.md.
+
+Previous repair44252197610 is terminalSUCCESS but NOT timing closure. Native14405960042 digest5caa57a1724527881534883c9a795f4d4f961fc60d6548109196985cf91ed5d2: all217outputs andsixfreshmetrics independently verified. Final slow41setup/-0.366633ns/TNS-4.08919, hold0allcorners/fast+0.0461522ns; slew8/0/0, cap3/3/4, fanout748. Worst path slice68554 toslice69116/D includes hold23896 dlygate4sd3 delay0.633591ns; do NOT remove without fast-corner checks. Actual setup log reached100iterations, inserted22buffers/resized18/swapped13pins; hold inserted5buffers. Final threeSTAlogs zeroEST-0026. Evidence docs/evidence/core-only-route-refine-20261118.json.
+
+Clock split44253264552 and SRAM geometry probe44254152426 remain separate live work at latest poll. Native boot44239816779 remains original simulation. Preserve these handles. Superseded broad checks44253189118,44252614683,44250623803 cancelled after ancestry proof tobacd61da and confirming retained checks44254144606 queued; manual jobs untouched. Core-only release and all non-network production gates remain unchanged. Goal active, cloud-only, no persistent local artifacts.
+
+---
+
 # Current: SRAM pin geometry probe added while repairs continue
 
 Native SRAM driver/geometry probe **44254152426**, source **bacd61da031c46cf7bb0433d1effb1e1ddca1e33**, branch **codex/core-only-sram-driver-probe**. Last observed queued. Do not duplicate dispatch. It reuses authenticated CTS8 restore, reports actual A_MEN pin rectangles, macro origin/orientation/DBU, native NOR2 masters and Liberty cell names plus slow STA. No SRAM ECO yet. IMPORTANT correction: macro origin is not pin position; do NOT infer long wiring from the previously reported macro and driver origins. First native probe archive contains neither LEF nor Liberty, so actual tool database inspection is required. See docs/core-only-sram-driver-probe.md.
