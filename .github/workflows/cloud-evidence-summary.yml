@@ -1,42 +1,30 @@
-name: Isolated native diode derivative candidate experiment
+name: Native diode DC boundary diagnostics
 on:
   workflow_dispatch:
-    inputs:
-      baseline_artifact_id:
-        type: string
-        required: true
-      baseline_artifact_digest:
-        type: string
-        required: true
 permissions:
   contents: read
   actions: read
 jobs:
-  baseline:
+  probe:
     runs-on: ubuntu-22.04
     container: debian:trixie
-    timeout-minutes: 90
+    timeout-minutes: 45
     env:
       GH_TOKEN: ${{ github.token }}
-      BASELINE_ARTIFACT_ID: ${{ inputs.baseline_artifact_id }}
-      BASELINE_ARTIFACT_DIGEST: ${{ inputs.baseline_artifact_digest }}
     steps:
-      - name: Install build prerequisites and signed source index
+      - name: Install native runtime dependencies
         run: |
-          set -eu
           apt-get update -qq
-          apt-get install -y --no-install-recommends ca-certificates git gh python3 build-essential dpkg-dev autoconf automake libtool bison flex libreadline-dev libsuitesparse-dev libfftw3-dev pkg-config texinfo patch
-          printf 'Types: deb-src\nURIs: https://deb.debian.org/debian\nSuites: trixie-backports\nComponents: main\nSigned-By: /usr/share/keyrings/debian-archive-keyring.gpg\n' > /etc/apt/sources.list.d/ngspice-baseline.sources
-          apt-get update -qq
+          apt-get install -y --no-install-recommends ca-certificates git gh python3 libreadline-dev libsuitesparse-dev libfftw3-dev
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Compare stock and isolated derivative candidate on unchanged fixture
-        run: python3 scripts/cloud_native_diode_derivative_experiment.py
+      - name: Sample stock and derivative candidate around native branch boundary
+        run: python3 scripts/cloud_native_diode_dc_boundary.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: native-diode-derivative-experiment-${{ github.run_id }}
-          path: hw/soc/out/native-diode-derivative-experiment/
+          name: native-diode-dc-boundary-${{ github.run_id }}
+          path: hw/soc/out/native-diode-dc-boundary/
           if-no-files-found: error
           retention-days: 90
