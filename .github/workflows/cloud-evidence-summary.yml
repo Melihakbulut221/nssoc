@@ -1,4 +1,4 @@
-name: Core-only pad clamp topology diagnostic
+name: Core-only pad transient iteration diagnostic
 on:
   workflow_dispatch:
 permissions:
@@ -11,9 +11,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        clamp_ohms: [0, 1, 10]
+        itl4: [100, 1000]
     env:
-      NSSOC_PAD_CLAMP_OHMS: ${{ matrix.clamp_ohms }}
+      NSSOC_PAD_CLAMP_OHMS: "0"
+      NSSOC_PAD_ITL4: ${{ matrix.itl4 }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -36,7 +37,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-pad-turnoff-current-${{ matrix.clamp_ohms }}ohm-${{ github.run_id }}
-          path: hw/soc/out/core-only-pad-turnoff-current-${{ matrix.clamp_ohms }}ohm/
+          name: core-only-pad-turnoff-current-0ohm-itl4-${{ matrix.itl4 }}-${{ github.run_id }}
+          path: hw/soc/out/core-only-pad-turnoff-current-0ohm-itl4-${{ matrix.itl4 }}/
           if-no-files-found: error
           retention-days: 90

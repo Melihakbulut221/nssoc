@@ -5,7 +5,8 @@ from pathlib import Path
 import numpy as np
 ROOT=Path(__file__).resolve().parents[1]
 CLAMP=os.environ['NSSOC_PAD_CLAMP_OHMS'];assert CLAMP in ['0','1','10']
-OUT=ROOT/('hw/soc/out/core-only-pad-turnoff-current-'+CLAMP+'ohm')
+ITL4=os.environ['NSSOC_PAD_ITL4'];assert ITL4 in ['100','1000']
+OUT=ROOT/('hw/soc/out/core-only-pad-turnoff-current-'+CLAMP+'ohm-itl4-'+ITL4)
 PDK='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c'
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def asset(aid,digest):
@@ -31,7 +32,7 @@ def main():
   ng=Path(os.environ['CLOUD_NGSPICE'])
   init=inp/'startup';init.mkdir();(init/'spinit').write_text('set num_threads=1'+chr(10))
   native_env=dict(os.environ,SPICE_SCRIPTS=str(init))
-  r['solver_configuration']=dict(method='gear',maxord=2,max_step_ps=5,initial_conditions='native DC operating point',forced_initial_conditions=False,tolerances_relaxed=False)
+  r['solver_configuration']=dict(method='gear',maxord=2,max_step_ps=5,transient_iteration_limit=int(ITL4),initial_conditions='native DC operating point',forced_initial_conditions=False,tolerances_relaxed=False)
   r['runtime_version']=subprocess.check_output([str(ng),'--version'],text=True,env=native_env)
   assert 'ngspice-47'in r['runtime_version']
   protected={str(p):sha(p)for p in [Path(__file__),ng,*[p for p in inp.rglob('*')if p.is_file()]]}
@@ -41,7 +42,7 @@ def main():
     name=str(bit)+'-'+mode;folder=OUT/name;folder.mkdir()
     enable='PWL(0 1.08 20n 1.08 20.12n 0 50n 0)'if mode=='turnoff'else('1.08'if mode=='enabled'else'0')
     deck=['* native 4mA bidirectional pad, slow supplies and slow MOS, clamp at half IO rail',
-      '.global sub!', 'Vsub sub! 0 0','.temp 125','.options method=gear maxord=2',
+      '.global sub!', 'Vsub sub! 0 0','.temp 125','.options method=gear maxord=2 itl4='+ITL4,
       '.lib "'+str(inp/'models/cornerMOSlv.lib')+'" mos_ss',
       '.lib "'+str(inp/'models/cornerMOShv.lib')+'" mos_ss',
       '.lib "'+str(inp/'models/cornerRES.lib')+'" res_wcs',
@@ -53,7 +54,7 @@ def main():
       '.control']
     deck+=['pre_osdi '+str(inp/p)for p in ['psp103.osdi','psp103_nqs.osdi','r3_cmc.osdi']]
     deck+=['set wr_singlescale','set wr_vecnames','save v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
-      'option method=gear maxord=2','option','tran 5p 50n 0 5p','echo NSSOC_POST_TRAN_SOLVER_READBACK','option','wrdata wave.dat v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
+      'option method=gear maxord=2 itl4='+ITL4,'option','tran 5p 50n 0 5p','echo NSSOC_POST_TRAN_SOLVER_READBACK','option','wrdata wave.dat v(en) i(vhold) v(xdut.ngate) v(xdut.pgate) v(pad)',
       'echo NSSOC_PAD_CURRENT_CAPTURE_COMPLETE','quit','.endc','.end']
     p=folder/'bench.cir';p.write_text('\n'.join(deck)+'\n');protected[str(p)]=sha(p)
     with (folder/'native.log').open('w')as log:proc=subprocess.run([str(ng),'-n','-b',str(p)],cwd=folder,stdout=log,stderr=subprocess.STDOUT,env=native_env)
@@ -62,6 +63,8 @@ def main():
     solver_log=log.split('NSSOC_POST_TRAN_SOLVER_READBACK')[-1]
     row['gear2_native_readback']=bool(re.search(r'(?i)Integration Method = GEAR',solver_log)and re.search(r'MaxOrder = 2',solver_log))
     assert row['gear2_native_readback'],'Native post-transient Gear2 readback missing'
+    row['iteration_limit_native_readback']=bool(re.search(r'itl4 \(transient iterations\) = '+ITL4+r'\b',solver_log))
+    assert row['iteration_limit_native_readback'],'Native iteration limit readback missing'
     assert proc.returncode==0 and 'NSSOC_PAD_CURRENT_CAPTURE_COMPLETE'in log
     assert not row['diagnostics'],row['diagnostics']
     a=np.loadtxt(folder/'wave.dat',skiprows=1);assert a.ndim==2 and a.shape[1]==6 and np.isfinite(a).all()
