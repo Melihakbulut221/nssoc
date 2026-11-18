@@ -1,3 +1,9 @@
+# Current: native PDN duplicate connection corrected
+
+FirstPDN44284400442/sourcea40c06b7994b5421b40b73ea93a7655cf6a10c7c failed beforegeneration: PDN-0186 TopMetal1/TopMetal2 connect alreadyexists in shell because ring -add_connect createsit. Remove only duplicate explicit shellconnect; macrogridconnection retained. Native14418881430 SHA94a399f0cc34224518b232eb877699dc19a2ff1e2721474ec5c436930eeac893 verified. No powergrid generated or accepted. Latest retained broadchecks44284389662; superseded44283102188/44281570719/44279979371/44282189701/44280528115 cancelled after ancestryproof. MainDRT44263061910 preserved live.
+
+---
+
 # Current: provisional chip power grid prepared
 
 Consumes verified CTS44283129318/native14418726039. Native PDN ring/Metal1rails/Metal4-Metal5-TopMetal1-TopMetal2 mesh, explicit native macroPG connect. IOVDD/IOVSS remain distinct nativepad-ring nets; no merging withcore VDD/VSS. Preserve all1641placements/connections; inventorymetal then strict check_power_grid independently onallfourrails, no floorplanning/dont_require_terminals bypass. Failures retained and failjob. No short/DRC/IR/EM/ESD/package/finalcore/timing acceptance evenifconnectivity passes. Geometry needs actualreview. MainDRT44263061910 stilllive lastpoll.

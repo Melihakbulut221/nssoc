@@ -28,7 +28,7 @@ def main():
         tcl+='add_pdn_stripe -grid shell -layer Metal5 -width 2 -pitch 75.6 -offset 10\n'
         tcl+='add_pdn_stripe -grid shell -layer TopMetal1 -width 2.2 -pitch 75.6 -offset 10 -extend_to_core_ring\n'
         tcl+='add_pdn_stripe -grid shell -layer TopMetal2 -width 2.2 -pitch 75.6 -offset 10 -extend_to_core_ring\n'
-        for layers in ['Metal1 Metal4','Metal4 Metal5','Metal5 TopMetal1','TopMetal1 TopMetal2']:tcl+='add_pdn_connect -grid shell -layers {'+layers+'}\n'
+        for layers in ['Metal1 Metal4','Metal4 Metal5','Metal5 TopMetal1']:tcl+='add_pdn_connect -grid shell -layers {'+layers+'}\n'
         tcl+='define_pdn_grid -name core_macro -macro -instances u_core -voltage_domains CORE -grid_over_pg_pins\nadd_pdn_connect -grid core_macro -layers {TopMetal1 TopMetal2}\n'
         tcl+='pdngen -dont_add_pins -failed_via_report '+path('failed-vias.rpt')+'\nwrite_db '+path('chip-pdn.odb')+'\nwrite_def '+path('chip-pdn.def')+'\nputs NSSOC_PDN_GEOMETRY_GENERATED\n'
         (OUT/'pdn.tcl').write_text(tcl);r['status']='GENERATING';save()
