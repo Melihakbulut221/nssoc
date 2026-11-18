@@ -1,3 +1,9 @@
+# Current: physical-connectivity geometry controls qualified; actual route still pending
+
+Qualification44290254088/sourcea3d7ef1dfd36365a4b2b2995d80437ffc57c7098 SUCCESS. Artifact14419429510 SHA40d849311054c519cc31969dee61b23e84844ef4e08f91f377c6e1a554d6683f verified; boundcheckerSHA c7c7c56ff91224d536596c31cfc63e5c3edf69b62802ff23b93d8c02f10c0295. Seven syntheticgeometrycontrols pass:connectedmetal,removedwire,wronglayer,floatingfragment,viagroup,missingvialanding,integeredgecontact; pycompilepassed. DOES NOT qualify nativeOpenDBwiredecoder APIs or actualchipcontinuity; testname native_via_group_model means syntheticgroupsemantics only. ActualDRT44289826075/source723fe02e71279036fabb7a5d7204d309351f4e19 stilllive lastpoll, asismaincoreDRT44263061910. Nextbindterminalroutedartifactandexecute nativechecker, preserve fullerrors/negativeactualnetcontrol. Currentworkflow qualificationonly.
+
+---
+
 # Current: physical signal continuity guard prepared while integrated DRT runs
 
 New audit_native_signal_geometry.py decodes native dbWireShapeItr segments/vias, transformedITerm andBTerm metal, specialwires; signalwithin-net components + allinter-netmetalcontacts. Equivalentaccessshapes of each libraryterminal are grouped; hiddenmacro/cellGDS notproven, notfullLVS. Qualificationworkflow onlysyntheticconnected/brokenwire/wronglayer/floatingfragment/viacomponents controls andpycompile, NOTnativeODBdecodeoractualchipverification. ActualroutedODB input notavailableyet. When actualDRTfinishes bindproducer/artifacts before executing nativeaudit; neverclaim ReportDisconnectedPins asphysicalcontinuity.
