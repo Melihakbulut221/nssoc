@@ -1,12 +1,16 @@
-name: Physical connectivity geometry guard qualification
+name: Core-only routed physical signal continuity
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  qualify:
+  repair:
     runs-on: ubuntu-22.04
-    timeout-minutes: 15
+    timeout-minutes: 60
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -14,17 +18,30 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Exercise disconnected metal and wrong-layer controls
+      - name: Prepare pinned physical runtime
         run: |
           set -euo pipefail
-          mkdir -p hw/soc/out/physical-connectivity-guard
-          python3 -m py_compile scripts/audit_native_signal_geometry.py
-          python3 scripts/audit_native_signal_geometry.py --self-test > hw/soc/out/physical-connectivity-guard/controls.json
-          sha256sum scripts/audit_native_signal_geometry.py > hw/soc/out/physical-connectivity-guard/source.sha256
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl
+          python3 scripts/qualify_core_only_timing_guards.py
+          python3 scripts/qualify_core_only_postcts_handoff.py
+          python3 -m py_compile scripts/cloud_core_only_chip_physical_connectivity.py scripts/audit_native_signal_geometry.py
+          python3 scripts/audit_native_signal_geometry.py --self-test
+          python3 scripts/bootstrap_flow.py
+          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
+      - name: Audit actual routed signal and via geometry with fault controls
+        run: python3 scripts/cloud_core_only_chip_physical_connectivity.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: physical-connectivity-guard-${{ github.run_id }}
-          path: hw/soc/out/physical-connectivity-guard/
+          name: core-only-chip-physical-connectivity-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-physical-connectivity/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: core-only-chip-physical-connectivity-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-physical-connectivity/result.json
           if-no-files-found: error
           retention-days: 90

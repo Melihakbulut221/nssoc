@@ -51,7 +51,7 @@ def self_test():
 def main():
     import odb
     out=Path(os.environ['NSSOC_PHYSICAL_ROUTE_OUT']);path=Path(os.environ['NSSOC_PHYSICAL_ROUTE_ODB']);before=hashlib.sha256(path.read_bytes()).hexdigest()
-    db=odb.dbDatabase.create();odb.read_db(db,str(path));block=db.getChip().getBlock();all_shapes=defaultdict(list);reports=[];missing=[];fault=None
+    db=odb.dbDatabase.create();odb.read_db(db,str(path));block=db.getChip().getBlock();all_shapes=defaultdict(list);reports=[];missing=[];fault=None;unwired=[]
     for net in block.getNets():
         name=net.getName();rows=[];counter=0
         def add(layer,rect,group,kind,label,dx=0,dy=0):
@@ -91,6 +91,7 @@ def main():
                 else:add(box.getTechLayer(),box,group,'special',group)
         if str(net.getSigType())in['POWER','GROUND']:continue
         parts=components(rows);terminals={row[5]for row in rows if row[6]=='pin'}
+        if not w and len(terminals)>1:unwired.append(dict(net=name,components=len(parts),terminals=len(terminals),pin_shapes=len(rows)))
         if len(parts)>1:reports.append(dict(net=name,components=len(parts),terminals=len(terminals),component_summary=[dict(shapes=len(ids),terminals=sorted({rows[i][7]for i in ids if rows[i][6]=='pin'}))for ids in parts]))
         if fault is None and len(parts)==1 and len(terminals)>1:
             removed=[row for row in rows if row[6]=='pin']
@@ -107,7 +108,7 @@ def main():
                     if len(examples)<100:examples.append(dict(layer=layer,a=prev,b=row))
             active.append(row)
     assert hashlib.sha256(path.read_bytes()).hexdigest()==before
-    report=dict(source_odb_sha256=before,signal_nets_with_disconnected_geometry=reports,terminals_without_geometry=missing,inter_net_contact_pairs=sum(counts.values()),contact_counts=dict(counts),contact_examples=examples,synthetic_controls=self_test(),actual_route_removal_control=fault,source_unchanged=True,accepted=False,full_gds_lvs=False,scope='Native wire/via and LEF terminal geometry; each library terminal is treated as internally electrically equivalent. Does not prove hidden cell/macro GDS, transistor connectivity, or foundry DRC.')
+    report=dict(source_odb_sha256=before,signal_nets_with_disconnected_geometry=reports,unwired_multi_terminal_nets=unwired,terminals_without_geometry=missing,inter_net_contact_pairs=sum(counts.values()),contact_counts=dict(counts),contact_examples=examples,synthetic_controls=self_test(),actual_route_removal_control=fault,source_unchanged=True,accepted=False,full_gds_lvs=False,scope='Native wire/via and LEF terminal geometry; each library terminal is treated as internally electrically equivalent. Does not prove hidden cell/macro GDS, transistor connectivity, or foundry DRC.')
     (out/'physical-route-audit.json').write_text(json.dumps(report,indent=2)+'\n')
     assert not reports and not missing and not counts,'Physical route continuity/contact checks failed'
 if __name__=='__main__':
