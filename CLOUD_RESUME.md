@@ -1,3 +1,10 @@
+## Verified routed-core boot result and current work
+
+Run [44303624006](https://github.com/Melihakbulut221/nssoc/actions/runs/44303624006) completed successfully: 28 firmware checks, zero fail mask, 2,263,211 cycles; system MBIST passed (1,310,690 busy cycles). All 15 artifact output hashes, protected repository source hashes, nested simulation result and actual compiled netlist hash were independently checked. See `docs/evidence/core-only-routed-boot-20261118.json`.
+This is the original detailed-route netlist from 44263061910, before subsequent ECOs. It uses FUNCTIONAL native models without SDF; Icarus reports unsupported edge-sensitive ifnone paths. It is not timing, equivalence or production signoff.
+
+Active follow-ups: residual electrical global-route timing run 44323428899; strengthened native audit controls run 44325061422. The first controls run 44324480776 failed before testing because NSSOC_CONTROL_BUFFER_OUT was unset; commit 1efeae09e3e226d55330bdf91bab230cbc9049c4 supplies the required environment. Do not interpret that failed attempt as a circuit failure or successful negative test. No physical run was restarted.
+
 ## Active continuation: residual electrical global-route screening
 
 PCIe and Ethernet remain excluded. Preserve the 20 ns period and 5% derate.
