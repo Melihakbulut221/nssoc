@@ -1,3 +1,10 @@
+# Best measured ECO entering detailed route
+
+Slew-margin GRT44335251268/head03a3ef19fa1f1b3af17b11b3760864f39da15641 completed. Artifact14442855156 SHA2563e0357758f81bd8a69c4ab3a9d25a11f9daaf257bc87a478a3bcb61173d81383:106 outputs and protected repository sources independently verified. All three corners retain zero setup/hold/fanout violations. Slow setup+0.0661107ns; fast hold+0.0338873ns. Electrical regression: slow slew16 (previous11), cap4 at all corners (previous1). New slow drivers63510/Y,63650/Y,63527/Y; caps79105/Q,78836/Q,SRAMbank1 A_DOUT12,78875/Q. Do not promote this six-buffer trial as closure.
+
+Decision: detailed-route the better pin-aware candidate44328874040/head733cb000518b8bd6d95470fde5e6e3c3e32bafa6 (slow slew11,cap1,zero setup/hold/fanout), then fix using actual extracted RC rather than repeatedly perturb full global-route estimates. This is an explicitly incomplete measurement trial, not electrical acceptance. Existing antenna cells remain; enable jumper-only repair with all other config/constraints unchanged. Exact pre/post identity and indexed visible geometry audits follow routing. Nominal extracted RC/STA, full-chip integration and manufacturing qualification remain pending.
+
+---
 # Native route identity guard qualified
 
 Run https://github.com/Melihakbulut221/nssoc/actions/runs/44336120355 passed.

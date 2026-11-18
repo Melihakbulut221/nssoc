@@ -1,4 +1,4 @@
-name: Core-only native route identity guard qualification
+name: Core-only post-ECO detailed route and geometry
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    timeout-minutes: 355
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -23,15 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_route_identity_controls.py
+          python3 -m py_compile scripts/cloud_core_only_posteco_detailed_route.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Qualify exact native identity guard with injected faults
-        run: python3 scripts/cloud_core_only_route_identity_controls.py
+      - name: Route best measured ECO and audit native geometry
+        run: python3 scripts/cloud_core_only_posteco_detailed_route.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-route-identity-controls-${{ github.run_id }}
-          path: hw/soc/out/core-only-route-identity-controls/
+          name: core-only-posteco-detailed-route-${{ github.run_id }}
+          path: hw/soc/out/core-only-posteco-detailed-route/
           if-no-files-found: error
           retention-days: 90
