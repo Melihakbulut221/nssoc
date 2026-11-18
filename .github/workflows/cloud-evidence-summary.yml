@@ -1,4 +1,4 @@
-name: Core-only provisional physical boundary readback
+name: Core-only provisional chip database assembly
 on:
   workflow_dispatch:
 permissions:
@@ -25,22 +25,22 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
           python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_boundary_probe.py hw/soc/pnr/core_only_boundary_flow.py
+          python3 -m py_compile scripts/cloud_core_only_chip_assembly.py scripts/assemble_core_only_chip_native.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Export authenticated provisional core and read back native pins
-        run: python3 scripts/cloud_core_only_boundary_probe.py
+      - name: Assemble current core boundary, mapped shell and native pads
+        run: python3 scripts/cloud_core_only_chip_assembly.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-boundary-probe-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-boundary-probe/
+          name: core-only-chip-assembly-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-assembly/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-boundary-probe-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-boundary-probe/result.json
+          name: core-only-chip-assembly-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-chip-assembly/result.json
           if-no-files-found: error
           retention-days: 90

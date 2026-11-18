@@ -1,3 +1,9 @@
+# Current: provisional integrated physical database assembly launched
+
+Branch codex/core-only-chip-assembly inherits ea7bcb2452fef269464eac2d8760e00d0a3354fb. New cloud runner consumes pinned shell44268658068, boundary44271378140 and ring44262963332. Native builder instantiates exact source connectivity, separate four supplies, ties, fixed core/ring and external pad pin geometry. Shell cells UNPLACED; no routing or signoff. Negative supply/clock controls and ODB readback required. Native result not yet reviewed. Main DRT44263061910 untouched and live at last poll. See docs/core-only-chip-assembly.md.
+
+---
+
 # Current: provisional physical core boundary independently verified
 
 Run44271378140/sourceba7a53efac94da34d323d33ad8ce97a4125864d2 terminal SUCCESS. Native artifact14412881780 SHAe482e38c10b0f029ad3432c82f9c63d29c23b0f8c7a661815a3e1d0f22131005; summary14412103798 SHAce9d00f76fc9f39550c91bbad23f38bd36c14a7e8d9757c77d1282619d3f9610. Independently verified native/summary equality, all40outputs, protectedtrackedsourcebytes,271-pin report and powered-netlist supply declarations. Native OpenDB readback passes exact macro dimensions,269signal+2supply pins, directions/types/allpinrectangles. Supply names are VPWR/VGND, while shell external rails are VDD/VSS: integration must explicitly connect these domains and check continuity; do not infer connections from naming. LEFsha85769b151ab2951ca210e348e9ce52cd4d5a1018ac900677334a4eb16dea187c; PNLshac49f5a2744e48d4e80182c868dd66b28808c35e83be727ff9139cb3e00c4cb6d.
