@@ -1,3 +1,15 @@
+# Current: actual-SPEF extraction runner prepared; DRT v2 remains live
+
+Newestbranch codex/core-only-routed-extraction, functionalcommit8936da001fc166ad945a2a4f09e039f1a974d339. scripts/cloud_core_only_routed_extraction.py andmanualworkflow PREPARED NOT DISPATCHED. BindsDRTproducer44263061910/source921f49a0c7becd72e58177e19404b45e91575e63 andfulloriginalmapping/CTS/repairancestry. Requires terminalSUCCESS/exactstatus/native-summaryagreement/alloutputs/protectedinputs/currentDRTmetrics/ownODB-NL-DEF-SDCviews. ProducerartifactIDs/digests notyetavailable; pin additionallyafterreview beforedispatch. Do notassumecompletedroute.
+
+Derivedconfig changesonlySTA_THREADS=1 andexistingthreeSTA_CORNERS. CoreOnlyRoutedExtraction runsnominalOpenRCX withpinnedrules/capacitanceconservation andstandaloneOpenSTAwithactualSPEF,one20nspropagatedclock/5%derate. CoreExtractedSTA.run_corner nowcaptures directnativeupdates topercornerfresh_metrics.json andrequiresfinitefreshsetup/hold/counts/exactcorner. No state.metricsfallback. Thisnewcapturepath hasnotyetcircuit-executed. Preparedrunner checksall3nativeclockmarkers andnoEST0026, archivesactualSPEFproof, stillacceptancefalse/RCminmaxfalse/annotationfalse. Seedocs/core-only-routed-extraction.md. Existingnativeadaptergenerationtest coversscriptgenerationonly, notthisnewrun_cornerexecution.
+
+DRTv2run44263061910/job134660872067 confirmedin_progress; preservehandle. FirstDRT44262421687 terminalfailedbeforeCLI(missingrundir), fixedmkdir. Nativepadplacement44262963332 terminalverified9outputs,296instances,1184abstractrailcontacts; evidenceSHA4815f361b0e732e9fdc3df7cad38f78a71d940a0f0aeda9a3121f7a83cdff9d9. No fullchipintegrationclaim. NativeIOfunctional44261960879 alreadyverifiedPASSwithcorestub. Lastglobalroutecandidate2setup/0hold/0fanout plus26slow-slew/3capviolations,notfinaltiming.
+
+Goalactive/cloud-only,PCIeEthernetexcluded,retainedproductgates unchanged. NextreviewDRT -> bindsource/digests -> dispatchpreparedextraction -> auditactualconnectivity/annotation/timing. Native1403unannotateddriversinpre-DRTreportrequireclassification; noautomaticwaiver. RCmin/max,SRAMinternalLVS/characterization,padframe/DFT/CDC/package/ESD/manufacturerapproval remainopen.
+
+---
+
 # Current: current-release native I/O ring verified; DRT v2 live
 
 Padplacement44262963332 is terminalverifiedSUCCESS, notlive. Evidence docs/evidence/core-only-io-floorplan-20261118.json anddocs/core-only-io-floorplan.md bind artifact14408393294, source3e3ee37fb0c610ccd3e24ee9be8885c465d63c46, alloutputhashes andprotectedtrackedsourcebytes.76signal+4supplypads plusnativecorners/fillers; provisional4x3.2mmring; abstractrail/footprintnegativecontrols andproducerGDSinstancereadback. NOcore/statusmailboxplacement,signalrouting,chipDRC/LVS/ESD/package/timingapproval. Do notclaimfullchipintegration.
