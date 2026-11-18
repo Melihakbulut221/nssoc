@@ -1,0 +1,7 @@
+# Guarded CTS8 bus-clock split candidate
+
+This candidate retains the root and all sixteen original endpoints, inserting two copies of the existing non-inverting sg13g2_buf_16 master. Root fanout becomes2, each new branch drives8 original loads. It copies VDD/VSS connectivity, rejects unexpected root/master/census/name collisions, and snapshots every original instance master, ITerm net and BTerm net. Assertions check every original terminal and exactly two added cells/nets before and after native detailed placement. The16 authorized sink reconnections are the only original terminal net changes allowed. No clock constraints are relaxed.
+
+Following legalization, fresh three-corner STA, electrical repair, timing repair and global routing are run, each with independent fresh corner metrics. Placement timing is not final timing. No candidate is automatically accepted. Formal equivalence/full-chip DRC/LVS/extracted timing remain separate gates. SRAM A_MEN driver repair is not included in this topology-only change; the existing electrical stage is measured, not assumed to fix it.
+
+Do not dispatch until the native connectivity probe44252620790 is inspected and confirms the native editing API, the exact bus root and16loads. Probe source18970cbf9cbd94df3cc09cfcc96f2cb450dcec60. This source is prepared, not a successful ECO result. Existing routed continuation44252197610 and native boot44239816779 remain independent.

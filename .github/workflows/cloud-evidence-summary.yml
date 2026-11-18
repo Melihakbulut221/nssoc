@@ -1,4 +1,4 @@
-name: Core-only CTS8 native connectivity probe
+name: Core-only guarded bus clock split and routing
 on:
   workflow_dispatch:
 permissions:
@@ -25,22 +25,22 @@ jobs:
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
           python3 scripts/qualify_core_only_timing_guards.py
           python3 scripts/qualify_core_only_postcts_handoff.py
-          python3 -m py_compile scripts/cloud_core_only_clock_probe.py hw/soc/pnr/core_only_clock_probe_flow.py
+          python3 -m py_compile scripts/cloud_core_only_clock_split.py hw/soc/pnr/core_only_clock_split_flow.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Inspect remaining clock and SRAM enable connectivity
-        run: python3 scripts/cloud_core_only_clock_probe.py
+      - name: Split clock fanout, legalize, repair and route with fresh corners
+        run: python3 scripts/cloud_core_only_clock_split.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-clock-probe-native-${{ github.run_id }}
-          path: hw/soc/out/core-only-clock-probe/
+          name: core-only-clock-split-native-${{ github.run_id }}
+          path: hw/soc/out/core-only-clock-split/
           if-no-files-found: error
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-clock-probe-summary-${{ github.run_id }}
-          path: hw/soc/out/core-only-clock-probe/result.json
+          name: core-only-clock-split-summary-${{ github.run_id }}
+          path: hw/soc/out/core-only-clock-split/result.json
           if-no-files-found: error
           retention-days: 90
