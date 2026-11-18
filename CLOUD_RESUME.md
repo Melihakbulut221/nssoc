@@ -1,3 +1,13 @@
+# Current: native bus-clock split dispatched after verified probe
+
+Clock split run **44253264552**, source **45932c71e85db517f87e01f2a7f6b80cd1bc045c**, branch **codex/core-only-clock-split**. Last observed in_progress. Do not duplicate. The two-buffer candidate snapshots ALL original ITerm/BTerm connections and masters, permits only the16 expected sink reconnections, copies supplies, and checks exactly2added cells/nets before and after native detailed placement. It then measures split/electrical/timing (placement RC) and final global routing in three independent corners. No closure claim before native outputs. See docs/core-only-clock-split.md.
+
+Probe44252620790 terminalSUCCESS: native14404368853 SHA2566c89beec0f4b4f4a3beb8e6409de4c7757885fe75d37b2b9b59feb7195f4c573, all43 outputs and fresh slow metrics independently verified. root clkbuf_0_clk_bus is buf16 driving16buf8 inputs; required odb creation/connect/disconnect APIs exist. SRAM bank2 A_MEN driver is $abc$472929$auto$blifparse.cc:397:parse_blif$490614/Y, sg13g2_nor2_1 at740640,1772820 DBU; macrobank2 at120000,1787940. Targeted SRAM-driver ECO is not implemented. Baseline remains one slow slew andone fanout, setup/hold0placement-only. Evidence docs/evidence/core-only-clock-probe-20261118.json.
+
+Independent routed repair44252197610 and native boot44239816779 remain live at last check; preserve. Clock split candidate is based on CTS8, not the original routed baseline. All product gates remain open unless separately proven. Goal active, cloud-only, PCIe/Ethernet excluded by user.
+
+---
+
 # Current cloud-only continuation: clock connectivity probe and routed repair
 
 Latest functional source18970cbf9cbd94df3cc09cfcc96f2cb450dcec60, branch codex/core-only-clock-probe. Native connectivity probe **44252620790** was confirmed in_progress. Do not duplicate dispatch. It restores original mapping/CTS then CTS8 producer44246559242, reconstructs its exact config-cts8.json and verifies473 outputs/nine metric files, reads native bus-clock root and bank2 A_MEN connectivity, and runs slow STA. It makes NO database edits. Exact16loads are required. Its output must establish APIs/actual master/load/driver connectivity before a targeted balanced clock split or SRAM-driver ECO is implemented. Artifact core-only-clock-probe-native-44252620790 and summary counterpart. See docs/core-only-clock-probe.md.
