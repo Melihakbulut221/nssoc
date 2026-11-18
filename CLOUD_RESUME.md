@@ -1,3 +1,13 @@
+# Current: native adapters verified; continued timing repair remains live
+
+Run44259575689/source3d8aa59e86ad74e720fe6ab19b198a718bc1a7c5 completedSUCCESS. Artifact14407721521 SHA2564cf0c2d138978a1eb74339b211bca36643428193cac490cf76ba6f6c6c84b2b2 independently inspected; generatedadapter hashes matched report. Native corner.tcl SHA256e0096884c1929ed80506366ecc3e809c78c8493180e366fc095e2b09f5c36f53 equals upstreamLibreLane3.0.5 source inspected. Actual CoreDetailedRouting/CoreExtractedSTA get_script_path generation succeeded with nativeclasses. This is scriptgeneration plus guardqualification, NOT an executedcircuit/SPEF analysis. Evidence docs/evidence/core-only-native-adapters-20261118.json.
+
+Repair44259265143/source572c3eb98392b0f56351d5aaf4f256499b4b8d9f remains live at lastpoll; do not duplicate. Inspect its native artifact before choosing detailedroutingcandidate. The lastverified91setupcandidate's slow worstpath is slice71785->slice72112 inIbex, slack-1.062922ns, arrival23.872160, required22.809238. Its24slewviolators are variouscell/bufferpins, noSRAMA_MEN appears in thatlist; do not blindly apply olderSRAMdriverhypothesis. Firstreportedcapviolator slice67781/Q limit0.3 actual0.399392; secondpin notyetinspected. Residualelectricalchanges mustuse nextcandidate's actualreports, notstaleplacementdata.
+
+Goalactive, cloud-only, PCIe/Ethernetexcluded,20ns/5%derate unchanged. Actualdetailedroute/nominalRC/STA remainsnextphysicalstage after candidate selection; qualifiedRCmin/max and otherproductsignoff remainopen.
+
+---
+
 # Current: actual native Tcl adapter qualification live; repair continues
 
 Newest source branch codex/core-only-native-adapters, functional commit3d8aa59e86ad74e720fe6ab19b198a718bc1a7c5. Run44259575689/job134649381521 confirmedin_progress. This extends prior44258678679 fixture/import qualification by calling actual CoreDetailedRouting/CoreExtractedSTA get_script_path methods in pinnedLibreLane runtime, archiving generatedTcl and nativecorner.tcl hash. No circuit/database/SPEF analysis is claimed. See scripts/qualify_core_only_native_adapters.py. Objects bypass initialization only for scriptgeneration; they are never used to run a circuit. Inspect completion/artifact before claimingPASS. Native scripts must retain orphan-guide cleanup, one20nspropagatedclock,5%derate,andstandaloneSPEFguards. Newest broadchecks44259576999 queued.

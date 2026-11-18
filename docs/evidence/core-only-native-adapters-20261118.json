@@ -1,0 +1,105 @@
+{
+  "run_id": 44259575689,
+  "source_head": "3d8aa59e86ad74e720fe6ab19b198a718bc1a7c5",
+  "artifact_id": 14407721521,
+  "artifact_sha256": "4cf0c2d138978a1eb74339b211bca36643428193cac490cf76ba6f6c6c84b2b2",
+  "report": {
+    "status": "PASS_NATIVE_SCRIPT_GENERATION_NOT_PHYSICAL_SIGNOFF",
+    "native_sta_source": "/nix/store/ffl2vg3m80k0p74pyffnmai83fnv38mf-python3-3.13.9-env/lib/python3.13/site-packages/librelane/scripts/openroad/sta/corner.tcl",
+    "native_sta_sha256": "e0096884c1929ed80506366ecc3e809c78c8493180e366fc095e2b09f5c36f53",
+    "adapters": {
+      "route": {
+        "script": "route/core_only_propagated_native.tcl",
+        "sha256": "f9416755e6177b3c2b9aa08cf7e5292723ed78038615c7ac27b0265cd3deb395"
+      },
+      "extracted_sta": {
+        "script": "extracted_sta/core_only_extracted_sta.tcl",
+        "sha256": "cddf3f8e4759235f393037cb7c44457995da2fb16e163632ecb2be746c20b3f8"
+      }
+    },
+    "detailed_route_steps": [
+      "NSSOC.CoreOnlyDetailedRouting",
+      "OpenROAD.CheckAntennas",
+      "Odb.ReportDisconnectedPins"
+    ],
+    "extraction_steps": [
+      "NSSOC.CoreOnlyRouteRCX",
+      "NSSOC.CoreOnlyExtractedSTA"
+    ],
+    "actual_database_spef_execution": false,
+    "accepted": false
+  },
+  "archived_files": {
+    "native-adapters/extracted_sta/core_only_extracted_sta.tcl": "cddf3f8e4759235f393037cb7c44457995da2fb16e163632ecb2be746c20b3f8",
+    "native-adapters/result.json": "3ea60fd6dde00e3de42d09e147d19b2f69d8ebd902d4a5863e59ffa0004bbaa2",
+    "native-adapters/extracted_sta/native-sta-script-proof.json": "4162c08bb87f9ddcd7f8d4bda6b0cf385c903294a6a894d27fbd6e02cd0b0640",
+    "native-adapters/route/clean_orphan_guides_drt.tcl": "2381cfac7e049ee8da037a3bd23ed47d4b1ba68b572afb4fd92f6b8d574e9a5e",
+    "native-adapters/route/core_only_propagated_native.tcl": "f9416755e6177b3c2b9aa08cf7e5292723ed78038615c7ac27b0265cd3deb395",
+    "native-extraction-help.txt": "8cdf8f34fd59316d3cfffe16016922c2060e9ef9a66c0ab29ba0e79446468054",
+    "native-route-help.txt": "7a21aa5f9656216d5dbf0cfefce886cdab0261e256460edbe8f0091cc01a5f99",
+    "result.json": "dacf84a344a0f5fe8cd4a208391797c9ac3eb3cf35175f2b9b9e337dd3004568"
+  },
+  "guard_cases": {
+    "status": "PASS_GUARDS_NOT_PHYSICAL_SIGNOFF",
+    "accepted": false,
+    "malformed_script_rejections": 8,
+    "tcl_cases": [
+      {
+        "case": "valid",
+        "expected_pass": true,
+        "returncode": 0
+      },
+      {
+        "case": "ideal",
+        "expected_pass": false,
+        "returncode": 1
+      },
+      {
+        "case": "budget",
+        "expected_pass": false,
+        "returncode": 1
+      },
+      {
+        "case": "extra_clock",
+        "expected_pass": false,
+        "returncode": 1
+      },
+      {
+        "case": "missing_clock",
+        "expected_pass": false,
+        "returncode": 1
+      },
+      {
+        "case": "wrong_clock",
+        "expected_pass": false,
+        "returncode": 1
+      },
+      {
+        "case": "wrong_derate",
+        "expected_pass": false,
+        "returncode": 1
+      },
+      {
+        "case": "integer_derate",
+        "expected_pass": false,
+        "returncode": 1
+      },
+      {
+        "case": "invalid_derate",
+        "expected_pass": false,
+        "returncode": 1
+      },
+      {
+        "case": "missing_derate",
+        "expected_pass": false,
+        "returncode": 1
+      },
+      {
+        "case": "openroad_engine",
+        "expected_pass": false,
+        "returncode": 1
+      }
+    ]
+  },
+  "accepted": false
+}
