@@ -100,13 +100,24 @@ def main():
         tb=sandbox/'tb/tb_soc_logic_boot_gl.v';original_tb=tb.read_text();adapted=original_tb;translations={}
         assert sha(tb)==HARNESS['tb/tb_soc_logic_boot_gl.v']
         nl_text=netlist.read_text()
+        assert hashlib.sha256(mapping_raw).hexdigest()=='a19e410fab8a15fb0337b4d0ccfd50704f08eba76828d5d5b59c5c28826c5187'
+        declared={tuple(line.strip()[:-1].split())for line in nl_text.splitlines()if line.strip().endswith(';')}
         for old in ['u_scrub.cnt[0]','u_scrub.cnt[2]']:
-            new=name_map[old];assert re.fullmatch(r'nssoc_sta_n_[0-9]+',new)
-            assert any(line.strip().endswith(';') and line.strip()[:-1].split()==['wire',new] for line in nl_text.splitlines()),new
+            bits={}
+            for db_name,new in name_map.items():
+                normalized=db_name.replace(chr(92),'')
+                if normalized.startswith(old+'[')and normalized.endswith(']'):
+                    index=normalized[len(old)+1:-1];assert index.isdigit(),db_name
+                    bit=int(index);assert bit not in bits,('ambiguous observer bit',old,bit)
+                    assert re.fullmatch(r'nssoc_sta_n_[0-9]+',new)and ('wire',new)in declared,new
+                    bits[bit]=dict(original_db_net=db_name,canonical_net=new)
+            assert set(bits)==set(range(16)),('incomplete observer bus',old,sorted(bits))
+            expression='{'+', '.join('dut.'+bits[bit]['canonical_net']for bit in range(15,-1,-1))+'}'
             token='dut.'+chr(92)+old+' ';assert adapted.count(token)==1,(old,adapted.count(token))
-            adapted=adapted.replace(token,'dut.'+new+' ');translations[old]=new
+            adapted=adapted.replace(token,expression+' ')
+            translations[old]=dict(width=16,order='15 downto 0',bits=bits,expression=expression)
         restored=adapted
-        for old,new in translations.items():restored=restored.replace('dut.'+new+' ','dut.'+chr(92)+old+' ')
+        for old,item in translations.items():restored=restored.replace(item['expression']+' ','dut.'+chr(92)+old+' ')
         assert restored==original_tb,'Unexpected harness edits'
         tb.write_text(adapted)
         result['observer_name_adapter']=dict(original_harness_sha256=HARNESS['tb/tb_soc_logic_boot_gl.v'],adapted_harness_sha256=sha(tb),map_sha256=hashlib.sha256(mapping_raw).hexdigest(),translations=translations,only_two_diagnostic_references_changed=True,source_artifacts=[cm,sm])

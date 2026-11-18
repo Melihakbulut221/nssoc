@@ -1,3 +1,12 @@
+# Packed diagnostic counter adaptation
+
+Current next boot uses the exact authenticated canonical map SHA256a19e410fab8a15fb0337b4d0ccfd50704f08eba76828d5d5b59c5c28826c5187. The old u_scrub.cnt[0] and[2] observers are16-bit buses. OpenDB map stores separately escaped array-index names with bit suffixes; direct aggregate lookup was incorrect. Run44341250145 failed before simulation with KeyError(u_scrub.cnt[0]); artifact14444955350 SHA25690da2cfd1f5d55b9ca67f1bcfe640c9a9d37126267adbc1ea03c6ff18e71128c and both outputs verified.
+
+New adapter requires exactly one mapping for each bit0..15, checks all32 scalar declarations, concatenates15 down to0 and proves inverse replacement exactly restores the qualified harness. Only the two progress-display expressions change. Earlier runs44340407734 and44341120096 failed Python syntax; final0661ebb syntax passed before this semantic lookup failure. Do not label any of these failed attempts a DUT failure or a passing simulation.
+
+Detailed route44337630426 at19924a826cfca054f30f19cdde091fbe6c744960 continues unchanged. RCX runner is staged on codex/core-only-posteco-extraction atb75792d10e647522ecb6c554a35906708d718c57, not dispatched. Keep50MHz/20ns/5percent; PCIe/Ethernet excluded.
+
+---
 # ECO boot observer adaptation
 
 Boot44339388679 failed at compile/elaboration (exit2), with no simulation executed. Source netlist b7323e4872a3c76b57c4bd88d64574e09619b22540a74006eb6ff2f767dfb834 is intact. Only errors: two old u_scrub.cnt[0]/[2] names in progress display no longer bind after canonical naming. Evidence is docs/evidence/core-only-selected-eco-boot-observer-failure-20261118.json.
