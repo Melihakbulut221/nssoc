@@ -1,3 +1,13 @@
+# Native route identity guard qualified
+
+Run https://github.com/Melihakbulut221/nssoc/actions/runs/44336120355 passed.
+One positive native control and all six injected faults were verified: power disconnect, clock net type, signal rewiring, instance movement, missing antenna cell, and port type. 14 output hashes and four repository sources independently checked. Source had 105257 instances and 103091 nets. Evidence: `docs/evidence/core-only-route-identity-controls-20261118.json`.
+
+Use `scripts/audit_core_only_route_identity.py` after fresh detailed routing. Qualified SHA256: e3de6a24b6a993082970527da2154933c32b4b39ab50342a435028439bf3ef02. Set NSSOC_CONTROL_BUFFER_OUT, NSSOC_ROUTE_IDENTITY_BEFORE, NSSOC_ROUTE_IDENTITY_AFTER and NSSOC_ROUTE_IDENTITY_OUT. This checks exact instances/status/masters, all terminal connections, net names/types, special wires, boundary pins and die. Signal wire geometry still needs the independently qualified indexed native geometry checker. This is not transistor LVS or manufacturing approval.
+
+Global-route/three-corner job44335251268 at03a3ef19fa1f1b3af17b11b3760864f39da15641 remains active; do not redispatch or restart. Retrieve and verify its artifact before choosing next ECO or detailed route. No new detailed routing has been run for the six-buffer candidate yet. Latest retained general checks44336122484; superseded44335258780 cancelled only after ancestry/live-successor verification. PCIe/Ethernet excluded; 20ns/5% unchanged.
+
+---
 # Slew-margin candidate admitted for fresh global routing
 
 Candidate run: https://github.com/Melihakbulut221/nssoc/actions/runs/44332978563
