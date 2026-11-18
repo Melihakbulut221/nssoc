@@ -1,14 +1,42 @@
 #!/usr/bin/env python3
 """Strict diagnostic of current matched official I/O layout, CDL and LVS deck."""
-import os,json,subprocess,hashlib,sys
+import os,json,subprocess,hashlib,sys,re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'hw/soc/flow'))
 import run_io_parent_lvs as native
-from run_coherent_io_lvs import normalize_main_taps
+from io_tap_contract_audit import quantity
 from io_cell_schematic import select_io_cdl
 from bootstrap_flow import verify
 OUT=ROOT/'hw/soc/out/core-only-upstream-pad-lvs';PIN='cc9afba57e0ec1b5ba77e6bbb638ba9dbe5866b8';TOP='sg13g2_IOPadInOut4mA'
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def normalize_main_taps(text):
+    """Only XR->R, preserving native P or Perim spelling and explicit values."""
+    if '\r' in text:
+        raise ValueError('Only exact LF CDL is supported')
+    lines = text.splitlines(keepends=True)
+    changes = []
+    for index, line in enumerate(lines):
+        words = line.split()
+        if not words or not words[0].upper().startswith('XR'):
+            continue
+        if (len(words) != 6 or not re.fullmatch(r'XR[0-9]+', words[0])
+                or words[3] not in ('ptap1', 'ntap1')
+                or not words[4].startswith('A=') or not (words[5].startswith('P=') or words[5].startswith('Perim='))
+                or any(quantity(token.split('=', 1)[1]) <= 0 for token in words[4:])):
+            raise ValueError('Unsupported main-library tap dialect: '+line.rstrip())
+        offset = len(line)-len(line.lstrip())
+        replacement = line[:offset]+line[offset+1:]
+        changes.append(dict(line=index+1, before=line, after=replacement,
+                            reason='R-prefixed native CustomTap; same ordered nodes and explicit A/P'))
+        lines[index] = replacement
+    restored = lines.copy()
+    for change in changes:
+        restored[change['line']-1] = change['before']
+    if ''.join(restored) != text:
+        raise ValueError('Tap conversion is not byte reversible')
+    return ''.join(lines), changes
+
+
 def main():
  assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
  r=dict(source_head=os.environ['GITHUB_SHA'],status='PREPARING',accepted=False,manufacturing_approval=False,top=TOP,upstream_commit=PIN,cases={})

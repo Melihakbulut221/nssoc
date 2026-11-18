@@ -1,0 +1,5 @@
+# Current pad LVS reader dialect correction — 2026-11-19
+
+Initial run 44418356152 at `71f7656bda724dae51c025f410978c838cf7a9b7` stopped before native LVS. Artifact `14481121249`, SHA256 `09ae40ef578173e9ba937134f1af7bccb704731a90ed5ec4cc8f3520525970f7`, reports unsupported `XR1 vss sub! ptap1 A=14.861p Perim=15.42u`. This is preparation failure, not an extracted circuit mismatch.
+
+At matched IHP commit `cc9afba57e0ec1b5ba77e6bbb638ba9dbe5866b8`, `rule_decks/custom_reader.lvs` maps tap perimeter from P or PERIM explicitly (map_resistor_params); ordered terminals remain TIE/WELL with no terminal equivalence. The corrected local adapter therefore accepts exactly the published P= or Perim= spelling while preserving it, converts only XR to native R prefix, requires positive explicit A/perimeter, and retains the existing byte-reversibility check. No value, node, global, rule deck, source CDL or GDS is changed. Re-run strict deep/flat native LVS and controls; no comparison result is claimed yet.
