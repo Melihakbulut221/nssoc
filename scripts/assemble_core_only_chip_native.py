@@ -41,7 +41,9 @@ def instance(name,master):
 
 def connect(i,pin,net):
     t=i.findITerm(pin);assert t,('Missing native terminal',i.getName(),pin)
-    if t.getNet():assert t.getNet()==net
+    if t.getNet():
+        existing=t.getNet()
+        assert existing.getId()==net.getId() and existing.getName()==net.getName(), (i.getName(),pin,existing.getId(),existing.getName(),net.getId(),net.getName())
     else:t.connect(net)
     expected[(i.getName(),pin)]=net.getName()
 for name,c in module['cells'].items():
