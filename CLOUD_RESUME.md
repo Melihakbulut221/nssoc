@@ -1,3 +1,13 @@
+# Current: native IHP functional-pad regression queued; timing repair live
+
+NativeIOrun44261535836/sourcecd98a03f1efdd1f629f966e60574910e3185c859, branchcodex/core-only-native-io, lastconfirmedqueued. New scripts/qualify_core_only_native_io.py generates existingcore-onlywrapper, uses realstatusmailbox and explicitcorestub, downloads exactupstreamc4b8sg13g2_io.v SHA2560195945188ec15560ad2cc9c000e3ff70255d65da717099b87b6b726a6e53429. Tests GPIO/QSPIinput/outputenable/readback/highZ, I2Crelease/lowdrive,and192bitstatusframe; nativepad polaritynegativecopymustfail. Vendorbaselineisnotmodified. Artifacts core-only-native-io-RUN. Noactualcoreboot, powerawareness, transistorLVS,ESD orphysicaltimingclaim. Inspectjob/artifactbeforeclaimingPASS. Existing19stubtestsleftunchanged.
+
+Retained newestbroadchecks44261537776; cancelled44260641525,44259576999,44259267843,44258681089 afterprovingeachisancestorofcd98a03fandnewchecksqueued. Manualphysicalproducer44259265143 untouched andconfirmedlive. Scheduledcloud-progress-monitor44260720099main wasqueued; notcancelledorchanged.
+
+Detailedroutepreparedbranch codex/core-only-detailed-route/latestcheckpoint25ad1d812121abb1626a30bafd1b87744410bab6 still NOT DISPATCHED. Itsmanualworkflowruns DRT; thisnewnativeIObranchmanualworkflowrunsIOtest instead. Usecorrectbranchwhen selectingnextjob. Mainrepair44259265143/source572c3eb98392b0f56351d5aaf4f256499b4b8d9f remainsin_progress; reviewterminalnative+summarybeforeDRTselection. Goalactive, cloud-only, PCIe/Ethernetexcluded; productgates unchanged.
+
+---
+
 # Current: detailed-route runner prepared, NOT dispatched
 
 Newestbranch codex/core-only-detailed-route, functionalcommit e2698720b79ef40b2fdf64e282760c0629eb16ff. New scripts/cloud_core_only_detailed_route.py restores exact complete ancestry through refinement44259265143/source572c3eb98392b0f56351d5aaf4f256499b4b8d9f; requires terminalSUCCESS, native/summaryagreement, alloutput/protectedinput/freshcornerhashes,0fanout/0hold admission, exact ownstateviews. Preserves setup/slew/cap residuals. It runs qualified CoreOnlyDetailedRoute and archives currentDRTprocessmetrics; acceptancefalse, noRC/LVS/manufacturingclaim. Manualworkflow points to this runner but HAS NOT BEEN DISPATCHED. Runner unexecuted; native detailedrouteadapter alone was qualified earlier. See docs/core-only-detailed-route.md.
