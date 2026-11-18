@@ -28,7 +28,8 @@ for target in p['branches']:
   assert i.findITerm('A').getNet().getName()==net.getName();expected_inputs.add(i.getName()+'/A')
   wire=i.findITerm('X').getNet();assert wire.getName()==branch['net']and str(wire.getSigType())==branch['signal_type']and not list(wire.getBTerms())
   terms={t.getInst().getName()+'/'+t.getMTerm().getName()for t in wire.getITerms()};assert terms=={i.getName()+'/X'}|{'/'.join(k)for k in branch['sinks']}
-  for pinname,rail in [('VDD','VPWR'),('VSS','VGND')]:assert i.findITerm(pinname).getNet().getName()==rail
+  for pinname,rail in [('VDD','VPWR'),('VSS','VGND')]:
+   rail_net=i.findITerm(pinname).getNet();assert rail_net and rail_net.getName()==rail,('missing_or_wrong_buffer_supply',i.getName(),pinname,rail)
  assert {t.getInst().getName()+'/'+t.getMTerm().getName()for t in net.getITerms()}=={target['driver']}|expected_inputs
 for name,status in p['original_statuses'].items():new[name].setPlacementStatus(status)
 for net in b1.getNets():net.clearGuides();assert not net.getWire()
