@@ -1,3 +1,13 @@
+# Current: detailed-route runner prepared, NOT dispatched
+
+Newestbranch codex/core-only-detailed-route, functionalcommit e2698720b79ef40b2fdf64e282760c0629eb16ff. New scripts/cloud_core_only_detailed_route.py restores exact complete ancestry through refinement44259265143/source572c3eb98392b0f56351d5aaf4f256499b4b8d9f; requires terminalSUCCESS, native/summaryagreement, alloutput/protectedinput/freshcornerhashes,0fanout/0hold admission, exact ownstateviews. Preserves setup/slew/cap residuals. It runs qualified CoreOnlyDetailedRoute and archives currentDRTprocessmetrics; acceptancefalse, noRC/LVS/manufacturingclaim. Manualworkflow points to this runner but HAS NOT BEEN DISPATCHED. Runner unexecuted; native detailedrouteadapter alone was qualified earlier. See docs/core-only-detailed-route.md.
+
+Repair44259265143/job134648379332 remainsin_progress at latestpoll. Next: inspect its terminalnative+summaryartifacts independently; assess91setupbaseline progress andallcorners; then choose whetherto dispatch preparedDRT or continue targetedrepair. Do notstartDRT without reviewingproducer, do notrestartliveproducer. UpstreamLibreLane3.0.5 OpenROADStep source confirmsDetailedRouting inheritsODB,DEF,SDC,NETLIST,POWERED_NETLIST outputs, supporting ownrootview checks. Noexpectedview guard wasrelaxed.
+
+Additional sourcedata verification: docs/core-only-sram-model-status.md anddocs/evidence/core-only-sram-source-inventory-20261118.json bind actualupstreamc4b8SRAMGDS/CDL to priorisolatedbitcellNoMatchdiagnostic43563445727. This is not freshmacroLVS. SRAMfastLibis-55Cwhilecorestdcellcorneris-40C; oneOpenRCXrulesfile in completepinnedPDKtree, nominalonly. FoundryRCmin/maxandSRAMqualification remainopen. Goalactive, cloud-only, networkinterfacesexcluded; allretainedgates unchanged.
+
+---
+
 # Current: native adapters verified; continued timing repair remains live
 
 Run44259575689/source3d8aa59e86ad74e720fe6ab19b198a718bc1a7c5 completedSUCCESS. Artifact14407721521 SHA2564cf0c2d138978a1eb74339b211bca36643428193cac490cf76ba6f6c6c84b2b2 independently inspected; generatedadapter hashes matched report. Native corner.tcl SHA256e0096884c1929ed80506366ecc3e809c78c8493180e366fc095e2b09f5c36f53 equals upstreamLibreLane3.0.5 source inspected. Actual CoreDetailedRouting/CoreExtractedSTA get_script_path generation succeeded with nativeclasses. This is scriptgeneration plus guardqualification, NOT an executedcircuit/SPEF analysis. Evidence docs/evidence/core-only-native-adapters-20261118.json.
