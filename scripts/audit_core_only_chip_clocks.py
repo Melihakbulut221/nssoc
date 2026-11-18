@@ -35,6 +35,15 @@ for label,clock in [('main',main),('test',test)]:
     name,pin=pins[0];assert b.findInst(name).findITerm(pin).getNet().getName()==net(clock)
     clock_sources[label]=dict(cell=name,pin=pin,net=net(clock),flop_sinks=counts[clock])
 snapshot=m['netnames']['u_status.snapshot']['bits'];active=[x for x in snapshot if isinstance(x,int)]
-assert len(active)==len(set(active)) and all(x in q for x in active)
-report=dict(status='PLACED_SHELL_CLOCK_AND_CDC_STRUCTURE_BOUND',clock_sources=clock_sources,synchronizer_chains=chains,snapshot_flops=len(active),snapshot_constants=len(snapshot)-len(active),protected_synchronizer_cells=[reg(n)for n in ['req_meta','req_sync','ack_meta','ack_sync','source_meta','source_release','serial_meta','serial_release']],source_hashes={n:hashlib.sha256((out/n).read_bytes()).hexdigest()for n in ['shell.json','chip-placed.odb']},accepted=False,cdc_timing_qualified=False,metastability_qualified=False)
+assert all(x in q for x in active)
+source_bits=m['netnames']['u_status.status_i']['bits']
+assert len(source_bits)==len(snapshot)==192
+aliases={str(x):[i for i,y in enumerate(snapshot)if y==x]for x in set(active)if active.count(x)>1}
+# Only constant status bits may share a captured storage bit. All payload bits
+# remain individually backed by a flop; constant-one bits still reset to zero.
+for positions in aliases.values():assert {source_bits[i]for i in positions}=={'1'}
+assert all(x=='0' and source_bits[i]=='0' for i,x in enumerate(snapshot)if isinstance(x,str))
+assert len(set(active))==156 and len(active)==162 and len(aliases)==1
+assert len(snapshot)-len(active)==30
+report=dict(status='PLACED_SHELL_CLOCK_AND_CDC_STRUCTURE_BOUND',clock_sources=clock_sources,synchronizer_chains=chains,snapshot_flops=len(set(active)),snapshot_flop_backed_positions=len(active),snapshot_aliases=aliases,snapshot_constants=len(snapshot)-len(active),protected_synchronizer_cells=[reg(n)for n in ['req_meta','req_sync','ack_meta','ack_sync','source_meta','source_release','serial_meta','serial_release']],source_hashes={n:hashlib.sha256((out/n).read_bytes()).hexdigest()for n in ['shell.json','chip-placed.odb']},accepted=False,cdc_timing_qualified=False,metastability_qualified=False)
 (out/'clock-audit.json').write_text(json.dumps(report,indent=2)+'\n')

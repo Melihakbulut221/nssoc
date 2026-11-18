@@ -1,3 +1,9 @@
+# Current: snapshot alias-aware CDC audit repair
+
+First clock audit44281578283/sourcec0f11214f87f75887e8667814bc96b58dbc7f68c passed native358flopconnections/fourchains/clocksource checks, then rejected assumed unique snapshot storage. Authenticated mappedJSON shows155payloadflops plus1shared captured-one flop,162flop-backed bit positions and30constant-zero positions. Seven shared positions161,177,182,184,186,187,190 all originate from constant-one magic bits. Audit now permits only aliases backed by source constant1, verifies everyzero against source0, and retains exact156/162/30 counts. Native14416972133 SHA06b308e20bce89491a862f0c5e60f6fdc34f0184c48c62b23224002ab33ad2a8 verified. Not a CDC timing pass.
+
+---
+
 # Current: placed shell clock/CDC inventory prepared
 
 Consumes authenticated placement44280535239 and shell mapping44268658068. Verifies every358flop native terminal, distinct161main/197test clock sinks, four exact2stage synchronizer chains, mapped ASYNC_REG attributes, native pad clock sources and snapshot flops. Records stage distances for later physical correction; no distance/timing/MTBF acceptance claimed. Next CTS must preserve these chains and provide real clock/pad/core boundary timing, bundled-data delay bound and recovery/removal analysis. MainDRT44263061910 still live.
