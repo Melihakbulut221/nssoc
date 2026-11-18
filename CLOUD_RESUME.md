@@ -1,3 +1,9 @@
+# Current: native DRT supply-net classification corrected
+
+First integratedDRT44289373096/source3a1fd3f94c864d8fa4bbff4a940c5adccd475ca5 failedbefore routing: DRT0305 IOVDD POWER notspecial. Native14420083849 SHA4166a12fe9f235ed1afb95e47a3637e0fd3a8edadfc996647852ddd5fc2f2b40 verified. IOVDD/IOVSS have nativepadgeometry andstrictconnectivitypass but no special-wire object, so their dbNet special flagwasabsent. Setallfourverifiedsupplynetsspecial, preservegeometry/connections, requireflagsinoutputaudit. No signalwaiver. NativewarnsLEF58_ENCLOSURE withoutCUTCLASS unsupported; nativeDRC alonecannotreplacefoundrydeck. Physical signalcontinuitystillneeds geometrycheck: LibreLane ReportDisconnectedPins onlytests logicalnetassignment. MaincoreDRT44263061910 remainslive.
+
+---
+
 # Current: integrated global route verified; detailed route prepared
 
 GRT44288482143/source3504a9110b5b995fa8f8b7aa610a183f5f50f447 SUCCESS. Native14419523617 SHA1a3c8a283db8bedda2c2d07eb6347e4a228dee1ff36f9ddff42e05687097290c;summary14419364044 SHA9f3edce28f36ee8205a255b4ffc4f882ac3b961f8d9e17fefc49b5e79c2fb012. Independentlyverified outputs/native-summary/protectedsource/nativeaudit.1691guidednets/15913rectangles,zero unguidedmultiterminalnets; nativefinaloverflow0 after21extraiterations,wirelength529243um. Exactplacements/connections/pins/PGmetal-vias unchanged. No detailed-route/timing acceptance.

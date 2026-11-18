@@ -18,6 +18,7 @@ def main():
         app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
         def path(n):return '{'+str(OUT/n)+'}'
         tcl='set_thread_count 4\nread_liberty '+path('std.lib')+'\nread_liberty '+path('io.lib')+'\nread_db '+path('chip-globalroute.odb')+'\nread_sdc '+path('shell-cts.sdc')+'\nset_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2\nread_guides '+path('chip.guide')+'\n'
+        tcl+='foreach name {VDD VSS IOVDD IOVSS} {set net [[ord::get_db_block] findNet $name]; if {$net == \"NULL\"} {error \"Missing supply $name\"}; $net setSpecial}\n'
         tcl+='detailed_route -output_drc '+path('route-drc.rpt')+' -output_maze '+path('maze.log')+' -output_guide_coverage '+path('guide-coverage.csv')+' -verbose 1\n'
         tcl+='set f [open '+path('native-drc-count.txt')+' w]\nputs $f [detailed_route_num_drvs]\nclose $f\n'
         tcl+='write_db '+path('chip-detailedroute.odb')+'\nwrite_def '+path('chip-detailedroute.def')+'\nwrite_verilog '+path('chip-detailedroute.v')+'\nputs NSSOC_CHIP_DETAILED_ROUTE_COMPLETE\n'
