@@ -1,27 +1,15 @@
-name: Core-only post-ECO nominal extraction and three-corner timing
+name: Core-only selected ECO native boot and system MBIST
 on:
   workflow_dispatch:
-    inputs:
-      route_artifact_id:
-        description: Independently verified artifact ID from run 44337630426
-        required: true
-        type: string
-      route_artifact_digest:
-        description: Independently verified sha256 digest including sha256 prefix
-        required: true
-        type: string
 permissions:
   contents: read
   actions: read
 jobs:
-  qualify:
-    runs-on: ubuntu-22.04
+  boot:
+    runs-on: ubuntu-24.04
     timeout-minutes: 355
     env:
       GH_TOKEN: ${{ github.token }}
-      APPIMAGE_EXTRACT_AND_RUN: '1'
-      NSSOC_ROUTE_ARTIFACT_ID: ${{ inputs.route_artifact_id }}
-      NSSOC_ROUTE_ARTIFACT_DIGEST: ${{ inputs.route_artifact_digest }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -29,20 +17,24 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Prepare pinned native runtime
-        run: |
-          set -euo pipefail
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_posteco_extraction.py
-          python3 scripts/bootstrap_flow.py
-          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Extract authenticated routed ECO and measure native SPEF timing
-        run: python3 scripts/cloud_core_only_posteco_extraction.py
+          sudo apt-get install -y --no-install-recommends binutils-riscv64-linux-gnu
+      - name: Authenticate selected ECO netlist and run native core boot
+        run: |
+          python3 -m py_compile scripts/cloud_core_only_selected_eco_boot.py
+          python3 scripts/cloud_core_only_selected_eco_boot.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-posteco-extraction-${{ github.run_id }}
-          path: hw/soc/out/core-only-posteco-extraction/
+          name: core-only-selected-eco-boot-${{ github.run_id }}
+          path: |
+            hw/soc/out/core-only-selected-eco-boot/**/*.json
+            hw/soc/out/core-only-selected-eco-boot/**/*.log
+            hw/soc/out/core-only-selected-eco-boot/**/*.v
           if-no-files-found: error
           retention-days: 90

@@ -1,3 +1,10 @@
+# Selected ECO native boot running alongside detailed route
+
+This branch boots the authenticated pin-aware ECO/global-route netlist from44328874040/head733cb000518b8bd6d95470fde5e6e3c3e32bafa6, using the previously qualified native core boot/system MBIST harness. It does not claim the later detailed-route netlist was simulated, does not applySDF, and does not prove formal equivalence. Detailed route44337630426 at19924a826cfca054f30f19cdde091fbe6c744960 continues unchanged. Exact pre/post route identity must pass to relate the selected ECO's functional result to the routed candidate.
+
+Prepared extraction remains on codex/core-only-posteco-extraction atb75792d10e647522ecb6c554a35906708d718c57, not dispatched. Wait for and independently verify the detailed-route artifact, then supply its ID/digest to that branch's workflow. Do not dispatch the extraction workflow from this boot branch.
+
+---
 # Post-ECO extraction staged, not dispatched
 
 Active physical job:44337630426 at19924a826cfca054f30f19cdde091fbe6c744960. Do not restart it. This branch stages `cloud_core_only_posteco_extraction.py` and its manual workflow. Wait for the exact routing job, independently verify its artifact SHA256, every output/source, DRC/antenna, identity and indexed geometry before dispatch. Supply route_artifact_id and route_artifact_digest (sha256: prefix) to cloud-evidence-summary.yml on this branch. No artifact pins exist yet because the job is running; no RCX result is claimed.
