@@ -1,3 +1,12 @@
+# Routed parent CDC path measurement
+
+Read-only measurement against authenticated parent timing44314493056 and original shell mapping44268658068. It binds156 snapshot flops/162 flop-backed positions to actual routed parent terminals, preserving the30 zero-constant positions and the mapped-bit distinctions from the mapping; actual zero constants remain excluded from source-flop queries. Reports162 bundled-data max paths and max/min on four synchronizer chains at each of three native library corners using the exact nominal parent SPEF.
+
+The original two20ns propagated-clock SDC is unchanged. This is measured evidence under those provisional phases, not asynchronous timing closure, metastability qualification, external IO qualification or complete-chip signoff. No false paths or relaxed budgets are introduced. Native execution still required.
+
+Active core detailed route44337630426 and selected ECO boot44342916945 remain unchanged. Extraction runner stays staged atb75792d10e647522ecb6c554a35906708d718c57 on codex/core-only-posteco-extraction until detailed-route artifact admission.
+
+---
 # Packed diagnostic counter adaptation
 
 Current next boot uses the exact authenticated canonical map SHA256a19e410fab8a15fb0337b4d0ccfd50704f08eba76828d5d5b59c5c28826c5187. The old u_scrub.cnt[0] and[2] observers are16-bit buses. OpenDB map stores separately escaped array-index names with bit suffixes; direct aggregate lookup was incorrect. Run44341250145 failed before simulation with KeyError(u_scrub.cnt[0]); artifact14444955350 SHA25690da2cfd1f5d55b9ca67f1bcfe640c9a9d37126267adbc1ea03c6ff18e71128c and both outputs verified.
