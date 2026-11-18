@@ -1,4 +1,4 @@
-name: Inspect inverter geometry and labels across official revisions
+name: Measure actual inverter implant coverage in GateDecode context
 on:
   workflow_dispatch:
 permissions:
@@ -17,11 +17,11 @@ jobs:
       - name: Install pinned native geometry reader
         run: python3 -m pip install klayout==0.30.9
       - name: Compare recursive polygons and labels of all pad macros
-        run: python3 scripts/cloud_core_only_inverter_geometry.py
+        run: python3 scripts/cloud_core_only_inverter_context.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-inverter-geometry-${{ github.run_id }}
-          path: hw/soc/out/core-only-inverter-geometry/
+          name: core-only-inverter-context-${{ github.run_id }}
+          path: hw/soc/out/core-only-inverter-context/
           if-no-files-found: error
           retention-days: 90
