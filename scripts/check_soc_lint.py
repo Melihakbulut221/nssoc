@@ -20,7 +20,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'hw/soc/flow'))
-from interface_profile import resolve
+from interface_profile import resolve, release_define
 
 POLICY = ROOT/'hw/soc/lint-policy.json'
 WARNING = re.compile(r'^%Warning-([A-Z0-9_]+): (.*?):(\d+):(\d+): (.*)$')
@@ -166,6 +166,8 @@ def sources(profile):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile', choices=['base','full'], default=os.environ.get('SOC_INTERFACE_PROFILE','base'))
+    parser.add_argument('--release-profile', choices=['legacy','core-only'],
+                        default=os.environ.get('SOC_RELEASE_PROFILE', 'legacy'))
     parser.add_argument('--memory', choices=['array','sram-logic'], default='array')
     parser.add_argument('--mbist', action='store_true', help='Power-on system SRAM MBIST; requires sram-logic')
     parser.add_argument('--rom-image', type=Path, help='Compiled loader binary; required for sram-logic lint')
@@ -175,6 +177,12 @@ def main():
     parser.add_argument('--yosys', type=Path, default=suite/'bin/yosys')
     parser.add_argument("--eth-mbist", action="store_true", help="Include explicit Ethernet SRAM MBIST; requires --mbist")
     args = parser.parse_args()
+    if args.release_profile == 'core-only' and args.eth_mbist:
+        parser.error('core-only forbids Ethernet MBIST')
+    try:
+        release = release_define(args.release_profile, os.environ)
+    except ValueError as error:
+        parser.error(str(error))
     out = args.output.resolve()
     if not out.is_relative_to(ROOT/'hw/soc/out'): parser.error('Output must be inside hw/soc/out')
     if out.exists(): parser.error('Refusing to replace evidence: '+str(out))
@@ -231,6 +239,11 @@ def main():
         files.append(macro)
         hashes[str(macro.relative_to(ROOT))] = sha(macro)
         profile_key += '-eth'
+    if release:
+        additional.append(release)
+        profile_key += '-core-only'
+    profile_reviewed = profile_key in policy['profiles']
+    hashes['hw/soc/flow/interface_profile.py'] = sha(ROOT/'hw/soc/flow/interface_profile.py')
     command = [str(args.verilator.resolve()), '--lint-only', '--Wall', '-Wno-fatal', '--top-module', 'soc_top',
                '--timing', '--Mdir', str(out/'obj_dir'), '-DSG13G2_ICG_BEHAVIOURAL', '-GMEM_RDREG=1', '-GREQ_REG=1',
                '-I'+str(ROOT/'hw/soc/rtl'), '-I'+str(ROOT/'hw/rtl')]
@@ -240,14 +253,16 @@ def main():
         proc = subprocess.run(command,cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,timeout=180)
     log = (out/'verilator.log').read_text()
     actual = diagnostics(log, aliases=aliases)
-    delta = compare(actual,policy['profiles'][profile_key])
+    delta = compare(actual,policy['profiles'].get(profile_key, {}))
     own_issues = owned_policy(actual)
     unchanged = all((ROOT/p).is_file() and sha(ROOT/p)==h for p,h in hashes.items())
     immutable_drift = [p for p,h in policy['immutable_sha256'].items()
                        if p in hashes and hashes[p] != h]
-    passed = (proc.returncode == 0 and '- Verilator: Built from ' in log and
+    passed = (profile_reviewed and proc.returncode == 0 and '- Verilator: Built from ' in log and
               bool(actual) and not any(delta.values()) and not own_issues and unchanged and not immutable_drift)
     record = dict(status='PASS_WITH_RECORDED_WARNINGS' if passed else 'FAIL', profile=profile_key,
+                  release_profile=args.release_profile, profile_reviewed=profile_reviewed,
+                  missing_policy=not profile_reviewed,
                   frozen_nettypes=frozen_nettypes,
                   scope='soc_top RTL lint, MEM_RDREG=1, REQ_REG=1; array uses SYNPRE=0/WAKE_GNT=0; sram-logic uses SYNPRE=1/WAKE_GNT=1, SRAM blackboxes, generated fixed ROM; no mapped-netlist or physical/CDC signoff',
                   rom_manifest=rom_manifest, diagnostic_aliases=aliases,
