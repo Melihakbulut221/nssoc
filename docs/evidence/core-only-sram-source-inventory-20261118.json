@@ -1,0 +1,87 @@
+{
+  "upstream_pdk_revision": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+  "source_files": {
+    "ihp-sg13g2/libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_2048x64_c2_bm_bist.gds": {
+      "bytes": 602558,
+      "sha256": "48be5102bf97e56daee4cda1f63eaf6e7bb3450a68d48a2825060b1172011d00"
+    },
+    "ihp-sg13g2/libs.ref/sg13g2_sram/cdl/RM_IHPSG13_1P_2048x64_c2_bm_bist.cdl": {
+      "bytes": 1296737,
+      "sha256": "734647f8383209c7e08fc8e66a2914a3acaa33e1848b9ff33b6a4a2ed3c2ec61"
+    },
+    "ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib": {
+      "bytes": 49363,
+      "sha256": "9aefb0cb245b15ced86b10401e71bf2002da31c4e1356b23bf6f4c789bee254f",
+      "nominal_attributes": {
+        "nom_process": "1",
+        "nom_temperature": "25",
+        "nom_voltage": "1.20"
+      }
+    },
+    "ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib": {
+      "bytes": 49374,
+      "sha256": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571",
+      "nominal_attributes": {
+        "nom_process": "1",
+        "nom_temperature": "125",
+        "nom_voltage": "1.08"
+      }
+    },
+    "ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib": {
+      "bytes": 49323,
+      "sha256": "32ad633416cb9f107b57136ea4305290510400fa065eb136e912f9616400f7f9",
+      "nominal_attributes": {
+        "nom_process": "1",
+        "nom_temperature": "-55",
+        "nom_voltage": "1.32"
+      }
+    }
+  },
+  "same_gds_cdl_as_prior_isolated_bitcell_diagnostic": true,
+  "prior_diagnostic": {
+    "run_id": 43563445727,
+    "source_sha": "60dd2a564467738d1fc55ef628bf751443896e2e",
+    "artifact_id": 14101084109,
+    "artifact_sha256": "93d887a3bbc1e726aefa93171234b14cba69246945285692192a8ee47888ecb6",
+    "status": "ERROR_OR_INCOMPLETE_DIAGNOSTIC",
+    "scope": "Original isolated bitcell diagnostic: explicit top-name translation only, strict unmerged resistor dimensions and ports; no class/layer/width correction, no geometry changes. Not LVS acceptance.",
+    "audit": {
+      "status": "FAIL",
+      "top": "RM_IHPSG13_1P_BITKIT_CELL",
+      "reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "NoMatch": 1
+      },
+      "circuits": [
+        {
+          "layout": "RM_IHPSG13_1P_BITKIT_CELL",
+          "schematic": "RM_IHPSG13_1P_BITKIT_CELL",
+          "status": "NoMatch",
+          "layout_devices_recursive": 9,
+          "schematic_devices_recursive": 9
+        }
+      ],
+      "inputs": {
+        "out/native/lvs.lvsdb": {
+          "bytes": 16364,
+          "sha256": "bddc01483e7388955407ada9e120124217a8476ffc26ccb89bc1931f6794e2f2"
+        },
+        "out/native/deck.log": {
+          "bytes": 34332,
+          "sha256": "0787bb382158fe3cecab6c1ac60c1261654ce4dd77ad07f771ea903610443af5"
+        }
+      }
+    },
+    "full_chip_lvs_passed": false
+  },
+  "upstream_issue": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/239",
+  "upstream_pr": "https://github.com/IHP-GmbH/IHP-Open-PDK/pull/1121",
+  "actual_runtime_library_bytes_attested": false,
+  "sram_characterization_qualified": false,
+  "accepted": false
+}
