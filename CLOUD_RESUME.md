@@ -1,3 +1,38 @@
+# Current checkpoint: 2026-11-18, after pad buffering and ECO boot
+
+Goal remains ACTIVE and unfulfilled: production-ready core-only chip. PCIe/Ethernet excluded by user. 50 MHz/20 ns and 5% derate unchanged. Cloud-only execution. User confirmed package/PCB/attached devices/interface rates are NOT yet selected; do not invent external IO signoff.
+
+## Preserve and poll
+
+- Core post-ECO detailed route: 44337630426 / head19924a826cfca054f30f19cdde091fbe6c744960, still in progress at last API check. Do not restart from observation timeout. Staged extraction branch codex/core-only-posteco-extraction at b75792d10e647522ecb6c554a35906708d718c57 requires independently admitted route artifact ID/digest.
+- Pad transistor explicit Gear2 readback: 44366729062 / head491e2ebd33c40de87a52278fdc81cc48e0901795 on codex/core-only-pad-current-readback, in progress. Latest same-head general checks44366735214 also live.
+
+## Completed and independently verified
+
+- Selected ECO functional boot44342916945/head96acee7ce6afcf8c8692f58ceffa47afb905e6ab: artifact14455253295 SHA2562ec87b31ee95efec8e1b9aa171dde0bbd45d97c1237c7e8f3bd275178ba81303. 16 output hashes, 2 protected repo inputs, original qualified harness restored exactly by undoing two diagnostic observer translations. Selected netlist b7323e4872a3c76b57c4bd88d64574e09619b22540a74006eb6ff2f767dfb834. 28 checks, fail mask0,2263211cycles; system MBIST busy1310690cycles/done1310723. No SDF or formal equivalence, no later-DRT-netlist claim. Admission docs/evidence/core-only-selected-eco-boot-admission-20261118.json.
+- Core-output buffer candidate44358901468:79nets,1003buf4; original2045instances preserved, first input maximum36.155um fromcorepin.
+- New parent route44360083454/head5ef20155a0e359e73e1330b1813f2cafb7f9b1f9:3048instances,3022wirednets,76coincidentboundarycontacts. NativeDRC0,exactidentity andvisiblegeometry passed. Artifact14455650701 SHA25681864e55ef6fd8c641dae1fdb55f5ca4b7324eef210b740523553142d40cc156;27outputs/7reposources verified. ODB719cdc0a6d0effed3d911b9080de93dda1422f9d4910a34f627ae62fd68c3b59.
+- Parent nominalRCX/three-library-cornerSTA44362003609/head3019df728554a279346dfd35fb8d6985935718ee:artifact14455801272 SHA2565e03e4fc2cfbc8632248a5154cb47812e4a3cf7429b2022dc18fb4ba2d570206;30outputs/3reposources.3022exactSPEFnets, no missing/extra/mismatched/disconnected. SPEF74908529bc58bcb5a2899799367b522e96244d30a468d21354ffc1c56c5deaf7. Slow/typ/fast slew22/0/0 (previous51/39/27). No new buffer-chain violation. Parent-onlycoreblackbox/provisionalIOandCDC/nominalRC, not signoff.
+- Original-core/new-parent hierarchy44362575697/headbe82145129c1dfb302fb62d0c60dd778bdfacacb:artifact14455806852 SHA256c31dae704fbf8964ce127d74942d273b6326e25ff15ede420984f254cf2ed879. Actual old104885core+new3048parent,typical25C. max/minslack6.709907532/.184363917ns.217electricalviolations remain inoldcore; no unknownunannotateddrivers. NotcurrentECOclosure.
+- Exact original hierarchy annotation classification:1403core drivers exactly match1288disconnected+115nosink source set;76boundaryports+61padterminals map to76one-componentvisiblecontacts. docs/evidence/core-only-hierarchical-baseline-exact-annotation-20261118.json. No external package/IO qualification.
+
+## Remaining22slowpad violations and native simulation
+
+All are at GPIO16+QSPI4+I2C2 pad terminals. Native arc diagnosis44362946636/heada7014b881603daf1b851cd21bff6141033e39b38:artifact14456576962 SHA2561a51492ff2cf08586a37fa150d8acb979a49f7920b017f1fc1f825580f2e1c25;52outputs including44arc reports verified. Normal data/enable slew~.60-.66ns; disable1Z~1.91ns causes1.2nslimit violation. Published disable delay/transition tables identical.16mA/30mA tables slower, not supported as fix. Do not waive arcs or changeLiberty withoutphysical/modelevidence. See docs/core-only-pad-disable-arc-diagnosis.md.
+
+Six-case actual SPICE pad experiment holds pad at1.5V to measure driver current fordata0/1 with turnoff/enabled/disabledcontrols. SlowMOS/1.08Vcore/3VIO/125C, nativeDC(noUIC). Existingmodelcapsules pinned; actual4mApadSPI c2cfa122268050f770e91eeb0c70682775f9610cf4d5b066805b2d57c5980ce2. This is a schematic current diagnostic, not externalRC/slew signoff.
+
+Initial44364763413/cdd5d2f1d37dac48569cf24a08a51884c44542e8 failed at22.7529ns withvsense branch timestepfailure;ngspice returned0 butrunner rejected. Artifact14454199956 SHA2563ba1ae242a3c0e8ed765604ebf0eb2b9f8ebf6ed10e194b202049b717b76dc3e.
+Second44365737463/8948d901727f99ee73c64666cd17bc24efca34ea removedspinitwarning,but failedsamepoint;artifact14454989944 SHA256ac1ca2f13fd4dbfae191a192f84ce9667424b89287350db4d1411484a773d24c. Pre-analysis optionreadbackshowedTRAPEZOIDAL despite.optionsgear; do notclaimactualGear2 failure. Currentrun explicitlysetscontroloptionmethod=gear maxord=2,5psstep,requirespost-transientnativeGEARreadback. Exactlyonebenignnormaloptionsummaryline excludedfromerrordetection; timestepfailures remainfatal. Read docs/core-only-pad-current-continuation.md.
+
+Runtime-source verification note: padSPICE protected_inputs includes extracted ngspice binary outside repo; verify against pinned Debian archive and native SHA rather than treating it as a repository path. No local project artifacts/tests were written.
+
+## Next
+
+Admit currentpadSPICEresult or debug precise failure. For currentcoreDRT terminaloutput, independentlyverifyhashes+sources+nativeDRC+antenna+identity+geometry beforedispatchingstagedRCX. Thenjoin latest actualcore andparent with parent-first/core-pathSPEF, verifycoverage/corners/IOandCDC. SRAMinternalLVS/modelcorners/RCminmax/DFT/package/ESD/manufacturerapproval remain open. No production approval achieved.
+
+Older checkpoint below is historical.
+
 # Current continuation: core output buffers admitted; routing next
 
 PCIe and Ethernet remain excluded. 50 MHz / 20 ns and 5% derate unchanged.
