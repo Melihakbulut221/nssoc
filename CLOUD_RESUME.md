@@ -1,3 +1,9 @@
+# Current: experimental shell CTS prepared
+
+Consumes authenticated clockaudit44282199219/native14416528949 and its placedODB. Native pinnedtypicalstdcell+IOlibs,Metal3/4LEFestimates,bothinternalclockroots20ns/5percentderate. No fabricatedcoreLiberty; finalcoreload/insertionmodel missing, so strictlyexperimental shellCTS. Adds realbuffers, legalizes, requires unchanged nonclockconnections/topshape/fixedblocks and every161main+197testflops clocktraced to originalpadsource; coreclock continuity checked but loadqualificationfalse. No extractedtiming orCDCsignoff. MainDRT44263061910 preserved live.
+
+---
+
 # Current: placed shell clock and CDC structure verified
 
 Run44282199219/sourcefaacea2a5b0220cd9593fc80e626ce2cbd5b5bed SUCCESS. Native14416528949 SHA3c26d000b834d717231d3bddd642e018ff1b2dd46bb0c84deb7a82e8c049ebdd;summary14416469032 SHAa3ba1de0e04b93b4a39323ad35460775e511e637521998ea9148491451ead2de. Native-summary/alloutputs/protected sources independently verified. Actual pad p2c sources: main u_pad_clk_i/n_1486 (161flops), test u_pad_test_clk/n_1484 (197flops). Four synchronizer chains exact; stage center Manhattan distances req49.2um/ack11.88um/source-reset11.34um/serial-reset18.9um. These are geometry diagnostics, not CDC timing/MTBF acceptance. Snapshot156distinctflops/162positions/30constantzero; seven constant-one aliases verified againstsource. See docs/evidence/core-only-chip-clocks-20261118.json.
