@@ -1,3 +1,11 @@
+# Current: placed shell clock and CDC structure verified
+
+Run44282199219/sourcefaacea2a5b0220cd9593fc80e626ce2cbd5b5bed SUCCESS. Native14416528949 SHA3c26d000b834d717231d3bddd642e018ff1b2dd46bb0c84deb7a82e8c049ebdd;summary14416469032 SHAa3ba1de0e04b93b4a39323ad35460775e511e637521998ea9148491451ead2de. Native-summary/alloutputs/protected sources independently verified. Actual pad p2c sources: main u_pad_clk_i/n_1486 (161flops), test u_pad_test_clk/n_1484 (197flops). Four synchronizer chains exact; stage center Manhattan distances req49.2um/ack11.88um/source-reset11.34um/serial-reset18.9um. These are geometry diagnostics, not CDC timing/MTBF acceptance. Snapshot156distinctflops/162positions/30constantzero; seven constant-one aliases verified againstsource. See docs/evidence/core-only-chip-clocks-20261118.json.
+
+Next: shell timing/CTS using real stdcell+I/O models, explicit clock/CDC constraints and final core boundary timing. No fabricated macro Liberty or broad asynchronous-clock exception to hide snapshot paths. Core remains pre-DRTabstract; full integrated timing needs final route/rebind. Main DRT44263061910 still live last poll.
+
+---
+
 # Current: snapshot alias-aware CDC audit repair
 
 First clock audit44281578283/sourcec0f11214f87f75887e8667814bc96b58dbc7f68c passed native358flopconnections/fourchains/clocksource checks, then rejected assumed unique snapshot storage. Authenticated mappedJSON shows155payloadflops plus1shared captured-one flop,162flop-backed bit positions and30constant-zero positions. Seven shared positions161,177,182,184,186,187,190 all originate from constant-one magic bits. Audit now permits only aliases backed by source constant1, verifies everyzero against source0, and retains exact156/162/30 counts. Native14416972133 SHA06b308e20bce89491a862f0c5e60f6fdc34f0184c48c62b23224002ab33ad2a8 verified. Not a CDC timing pass.
