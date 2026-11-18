@@ -1,4 +1,4 @@
-name: Core-only pad time-step convergence diagnostic
+name: Core-only reduced pad device diagnosis
 on:
   workflow_dispatch:
 permissions:
@@ -11,11 +11,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        step_ps: ["2.5", "1"]
+        reduction: [clamps, decoder, decode_clamps]
     env:
       NSSOC_PAD_CLAMP_OHMS: "0"
       NSSOC_PAD_ITL4: "100"
-      NSSOC_PAD_STEP_PS: ${{ matrix.step_ps }}
+      NSSOC_PAD_STEP_PS: "1"
+      NSSOC_PAD_REDUCTION: ${{ matrix.reduction }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -34,13 +35,13 @@ jobs:
           dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
           echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
       - name: Verify all cases execute while failures remain fatal
-        run: python3 -m pytest -q tests/test_pad_current_case_continuation.py
+        run: python3 -m pytest -q tests/test_pad_reduced_case_continuation.py
       - name: Measure real pad turnoff current and controls
-        run: python3 scripts/cloud_core_only_pad_turnoff_current.py
+        run: python3 scripts/cloud_core_only_pad_reduced_current.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-pad-turnoff-current-0ohm-itl4-100-step-${{ matrix.step_ps }}ps-${{ github.run_id }}
-          path: hw/soc/out/core-only-pad-turnoff-current-0ohm-itl4-100-step-${{ matrix.step_ps }}ps/
+          name: core-only-pad-reduced-${{ matrix.reduction }}-0ohm-itl4-100-step-1ps-${{ github.run_id }}
+          path: hw/soc/out/core-only-pad-reduced-${{ matrix.reduction }}-0ohm-itl4-100-step-1ps/
           if-no-files-found: error
           retention-days: 90
