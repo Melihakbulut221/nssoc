@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+"""Actual two-level baseline STA to qualify integration; never current ECO signoff."""
+import os,json,hashlib,subprocess,base64,re,time
+from pathlib import Path
+from bootstrap_flow import verify
+from cloud_core_only_postgrt import ROOT,sha,completed,archive,api
+OUT=ROOT/'hw/soc/out/core-only-hierarchical-corepad-comparison'
+def authenticate_once(run,head,name,aid,digest):
+ run=completed(run,head);z,m=archive(run,name)
+ assert m['id']==aid and m['digest']=='sha256:'+digest
+ report=json.loads(z.read('result.json'));assert report['source_head']==head and report['sources_unchanged'] and not report['accepted']
+ for p,h in report['outputs'].items():assert hashlib.sha256(z.read(p)).hexdigest()==h,p
+ # Authenticate historical scripts at their historical source head, not at this runner's head.
+ sources={}
+ for p,h in report['protected_inputs'].items():
+  rel=p.removeprefix('/home/runner/work/nssoc/nssoc/');assert not rel.startswith('/')
+  if rel.startswith('hw/soc/out/'):continue
+  item=api('contents/'+rel+'?ref='+head)
+  if item.get('encoding')!='base64':item=api('git/blobs/'+item['sha'])
+  assert hashlib.sha256(base64.b64decode(item['content'])).hexdigest()==h,rel
+  sources[rel]=h
+ return z,report,dict(artifact=m,verified_outputs=len(report['outputs']),protected_repository_sources=sources)
+def authenticate(run,head,name,aid,digest):
+ # All operations inside authenticate_once are read-only. Never retry a failed
+ # content hash or design assertion, and never change the pinned source.
+ for attempt in range(3):
+  try:return authenticate_once(run,head,name,aid,digest)
+  except subprocess.CalledProcessError:
+   if attempt==2:raise
+   print('Retrying pinned source authentication after failed GitHub read',run,attempt+1,flush=True)
+   time.sleep(5*(attempt+1))
+def main():
+ assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
+ r=dict(source_head=os.environ['GITHUB_SHA'],status='PREPARING',accepted=False,current_eco_validated=False,full_chip_timing_closed=False,qualified_rc_minmax=False,external_io_constraints_qualified=False,cdc_constraints_qualified=False,core_blackbox=False,core_baseline='original pre-ECO 104885-instance routed core; integration diagnostic only')
+ try:
+  cz,cr,cm=authenticate(44308129454,'78432b99eb354dcb2a7a2d3266ecbb445a31c9cc','core-only-canonical-extracted-timing-native-44308129454',14429028836,'de85c0ced40577188dcb7af6786736f4f6159025fc41ae9bcdbbd6ec8e57168a')
+  (OUT/'core.v').write_bytes(cz.read('canonical.v'))
+  (OUT/'core.spef').write_bytes(cz.read('extraction/1-nssoc-coreonlyroutercx/nom/soc_top.nom.spef'))
+  assert sha(OUT/'core.v')=='975a8269b799cfef8a279ec34ebff0324a5db8f054f1df94495d39c6c3ca85fd'
+  assert sha(OUT/'core.spef')=='0e81dc36b311d13efbd2d1106f5f76003c208e23a85f7c8a81798dd2f574a6f2'
+  baseline_annotation=json.loads(cz.read('annotation-nom_typ_1p20V_25C.json'))
+  del cz
+  pz,pr,pm=authenticate(44362003609,'3019df728554a279346dfd35fb8d6985935718ee','core-only-parent-corepad-timing-44362003609',int(os.environ['NSSOC_PARENT_TIMING_ARTIFACT_ID']),os.environ['NSSOC_PARENT_TIMING_ARTIFACT_DIGEST'].removeprefix('sha256:'))
+  for source,dest in [('chip-shell.nom.spef','parent.spef'),('shell-cts.sdc','parent.sdc'),('std.lib','std.lib'),('io.lib','io.lib')]:
+   (OUT/dest).write_bytes(pz.read(source))
+  assert pr['coverage']['parsed_nets']==3022
+  rz,rr,rm=authenticate(44360083454,'5ef20155a0e359e73e1330b1813f2cafb7f9b1f9','core-only-parent-corepad-route-44360083454',14455650701,'81864e55ef6fd8c641dae1fdb55f5ca4b7324eef210b740523553142d40cc156')
+  assert pr['outputs']['chip-detailedroute.odb']==rr['outputs']['chip-detailedroute.odb']
+  (OUT/'parent.v').write_bytes(rz.read('chip-detailedroute.v'))
+  assert rr['strict_identity']['instances']==3048
+  # Typical 25 C only: do not mix the SRAM -55 C and stdcell -40 C fast libraries.
+  pdk='c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c'
+  libpath='ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib'
+  command=['gh','api','repos/IHP-GmbH/IHP-Open-PDK/contents/'+libpath+'?ref='+pdk]
+  item=json.loads(subprocess.check_output(command));assert item['sha']=='356aeced2e73b43f1e9e7ed45d1a890e4cae2123'
+  if item.get('encoding')!='base64':item=json.loads(subprocess.check_output(['gh','api','repos/IHP-GmbH/IHP-Open-PDK/git/blobs/'+item['sha']]))
+  data=base64.b64decode(item['content'])
+  assert hashlib.sha1(b'blob '+str(len(data)).encode()+bytes([0])+data).hexdigest()=='356aeced2e73b43f1e9e7ed45d1a890e4cae2123'
+  (OUT/'sram.lib').write_bytes(data)
+  r['sram_library']=dict(pdk=pdk,path=libpath,git_blob='356aeced2e73b43f1e9e7ed45d1a890e4cae2123',sha256=sha(OUT/'sram.lib'),temperature_c=25,production_characterization_qualified=False)
+  core=(OUT/'core.v').read_text();parent=(OUT/'parent.v').read_text()
+  assert re.findall(r'(?m)^\s*module\s+(\S+)',core)==['soc_top']
+  assert re.findall(r'(?m)^\s*module\s+(\S+)',parent)==['nssoc_chip']
+  assert len(re.findall(r'\bsoc_top\s+u_core\s*\(',parent))==1
+  cells=re.findall(r'(?m)^\s*(sg13g2_\w+)\s+(\S+)\s*\(\s*\.(\w+)\(',core)
+  macros=re.findall(r'(?m)^\s*(RM_IHPSG13_1P_2048x64_c2_bm_bist)\s+(\S+)\s*\(',core)
+  assert len(cells)>100000 and len(macros)==4,(len(cells),len(macros))
+  def q(p):
+   p=str(p);assert '{'not in p and '}'not in p and chr(10)not in p;return '{'+p+'}'
+  lines=[]+['read_liberty '+q(OUT/p)for p in ['std.lib','io.lib','sram.lib']]
+  lines+=['read_verilog '+q(OUT/'core.v'),'read_verilog '+q(OUT/'parent.v'),'link_design nssoc_chip']
+  def identifier(name):return name[1:]if name.startswith(chr(92))else name
+  timed_flops=[identifier(name)for master,name,pin in cells if master=='sg13g2_dfrbpq_1']
+  assert len(timed_flops)>=8
+  representatives=['u_core/'+name+'/CLK'for name in timed_flops[:8]]
+  representatives+=['u_core/'+identifier(name)+'/A_CLK'for master,name in macros]
+  for pin in representatives:lines+=['if {[llength [get_pins '+q(pin)+']] != 1} {error "Actual core leaf missing"}']
+  lines+=['read_sdc '+q(OUT/'parent.sdc'),'read_spef '+q(OUT/'parent.spef'),'read_spef -path u_core '+q(OUT/'core.spef')]
+  lines+=['if {[llength [all_clocks]] != 2} {error "Unexpected hierarchical clocks"}','foreach name {shell_main shell_test} {set c [get_clocks $name]; if {[llength $c]!=1 || abs([get_property $c period]-20)>1e-9 || ![get_property $c is_propagated]} {error "Clock changed"}}']
+  lines+=['puts NSSOC_ACTUAL_CORE_AND_PARENT_LINKED','report_parasitic_annotation -report_unannotated','check_setup -verbose','report_worst_slack -max -digits 9','report_worst_slack -min -digits 9']
+  for delay in ['max','min']:
+   lines+=['report_checks -path_delay '+delay+' -group_path_count 100 -format full_clock_expanded -fields {capacitance slew fanout input_pin net} -digits 9 > '+q(OUT/(delay+'-paths.rpt'))]
+  lines+=['report_check_types -max_delay -min_delay -max_slew -max_capacitance -max_fanout -violators -digits 9 > '+q(OUT/'violations.rpt'),'puts NSSOC_HIERARCHICAL_BASELINE_STA_COMPLETE']
+  (OUT/'hierarchical.tcl').write_text(chr(10).join(lines)+chr(10))
+  protected={str(p):sha(p)for p in [Path(__file__),*[p for p in OUT.iterdir()if p.is_file()]]}
+  r.update(source_artifacts=[cm,pm,rm],protected_inputs=protected,representative_core_pins=representatives,status='RUNNING_ACTUAL_HIERARCHICAL_BASELINE')
+  app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')
+  with (OUT/'native.log').open('w')as log:subprocess.run([str(app),'sta','-exit',str(OUT/'hierarchical.tcl')],stdout=log,stderr=subprocess.STDOUT,check=True)
+  text=(OUT/'native.log').read_text();assert 'NSSOC_HIERARCHICAL_BASELINE_STA_COMPLETE'in text
+  assert not re.search(r'(?im)^\s*Error[: ]',text), 'Native STA error'
+  r['native_warnings']=[line for line in text.splitlines()if re.search(r'(?i)warning',line)]
+  r['annotation_review_complete']=False
+  annotation_lines=text.splitlines()
+  markers=[i for i,line in enumerate(annotation_lines) if re.fullmatch(r'Found [0-9]+ unannotated drivers[.]',line)]
+  assert len(markers)==1
+  index=markers[0];count=int(annotation_lines[index].split()[1])
+  drivers=[line.strip() for line in annotation_lines[index+1:index+1+count]]
+  assert len(set(drivers))==count and all(n and len(n.split())==1 for n in drivers)
+  core_names={n.removeprefix('u_core/') for n in drivers if n.startswith('u_core/')}
+  original_names={x['driver'] for x in baseline_annotation['drivers']}
+  contacts=json.loads(rz.read('route-selection.json'))['coincident_pad_nets']
+  known_boundary={x['port'] for x in contacts}|{x['terminal'] for x in contacts}
+  unknown_boundary=sorted(n for n in drivers if not n.startswith('u_core/') and n not in known_boundary)
+  r['annotation_comparison']=dict(core_set_unchanged=core_names==original_names,new_core_drivers=sorted(core_names-original_names),removed_core_drivers=sorted(original_names-core_names),unknown_boundary_drivers=unknown_boundary,full_coverage_approved=False)
+  r['annotation_review_complete']=core_names==original_names and not unknown_boundary
+
+  maxpaths=(OUT/'max-paths.rpt').read_text()
+  assert 'u_core/'in maxpaths and 'clock shell_main'in maxpaths,'Actual core clocked paths missing'
+  r['worst_slack_ns']={}
+  for delay in ['max','min']:
+   matches=re.findall(r'(?m)^worst slack '+delay+r' ([+-]?[0-9]+(?:\.[0-9]+)?)\s*$',text);assert len(matches)==1
+   r['worst_slack_ns'][delay]=float(matches[0])
+   assert 'Startpoint:'in(OUT/(delay+'-paths.rpt')).read_text()
+  assert all(sha(p)==h for p,h in protected.items())
+  r.update(status='HIERARCHICAL_BASELINE_STA_EXECUTED_REQUIRES_COVERAGE_AND_CURRENT_ECO_VALIDATION',sources_unchanged=True)
+ except BaseException as e:r.update(status='FAIL_OR_INCOMPLETE',error=repr(e));raise
+ finally:
+  r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p.name!='result.json'}
+  (OUT/'result.json').write_text(json.dumps(r,indent=2)+chr(10))
+if __name__=='__main__':main()
