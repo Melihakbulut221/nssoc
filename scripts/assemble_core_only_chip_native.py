@@ -12,7 +12,7 @@ db=odb.dbDatabase.create()
 odb.read_lef(db,str(inputs['tech']))
 assert db.getTech() and len(list(db.getTech().getLayers()))==19
 for name in ['std','io','core_lef']:assert odb.read_lef(db,str(inputs[name]))
-chip=odb.dbChip.create(db);block=odb.dbBlock.create(chip,'nssoc_chip');units=db.getTech().getDbUnitsPerMicron()
+chip=odb.dbChip.create(db,db.getTech());block=odb.dbBlock.create(chip,'nssoc_chip');units=db.getTech().getDbUnitsPerMicron()
 block.setDefUnits(units);block.setDieArea(odb.Rect(0,0,4000*units,3200*units))
 module=json.loads(inputs['mapped'].read_text())['modules']['nssoc_chip']
 placements=json.loads(inputs['placements'].read_text())
