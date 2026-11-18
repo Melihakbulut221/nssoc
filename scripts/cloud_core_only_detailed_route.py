@@ -99,6 +99,7 @@ def main():
         protected = {str(p): sha(p) for p in paths}
         result["protected_inputs"] = protected
         directory = OUT / "routing"
+        directory.mkdir(parents=True, exist_ok=False)
         command = [str(app), "python", str(flow), "--flow", "CoreOnlyDetailedRoute",
             "--pdk-root", str(ROOT / "hw/soc/tools/ciel-corrpre"), "--pdk", "ihp-sg13g2",
             "--scl", "sg13g2_stdcell", "--force-run-dir", str(directory),
