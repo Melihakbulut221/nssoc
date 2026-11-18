@@ -1,3 +1,11 @@
+# New terminal postGRT result: partial improvement, not closure
+
+PostGRT run **44247595292** is now completed SUCCESS as an execution. Authenticated summary artifact14403083866 SHA2566829a3334853dc58737bafc9b8f56d0254143815cdfc80a49b43857facc6dd2e read. Final slow setup369 violations, worst -1.06756ns (baseline1103/-3.81095); hold0 all corners, fast worst+0.0508253ns. Final slew slow18/typical0/fast0, cap7 everycorner, fanout748 everycorner. Output timing/4-nssoc-coreonlyroutetimingafterfast/state_out.json. Native artifact **14402989198**,167618159bytes,SHA256 **938d630865cab913e1321ea3ea3802b7318c9da24a81527b66a7c11fcfd6898d**. NEXT: independently verify native inner output hashes and fresh corner metrics, inspect timing repair log for100-iteration limit/stall and slow critical paths/electrical pins before deciding further repair. Do not claim native independent inspection already done; only summary checked so far.
+
+Separate CTS8 results below remain473-output/nine-metric verified, fanout1 at clkbuf_0_clk_bus/X16vs8, remaining SRAM b2/A_MEN slew. Its timing is placement-only. Targeted clock branch split and driver inspection are not implemented yet and this fanout improvement is NOT part of the routed postGRT candidate. Final lint run44250667802/source27cfb8c7882323426d7fc96c449715155d96e8ce still needs final artifact verification. Preserve native boot44239816779. Goal active, cloud-only.
+
+---
+
 # Current continuation: CTS8 diagnosis and final lint rerun
 
 Latest functional source **27cfb8c7882323426d7fc96c449715155d96e8ce**, branch codex/core-only-lint. Final lint rerun **44250667802** started; do not duplicate dispatch. Previous44249608673: array ledger PASS, SRAM/MBIST/logic-ROM/SYNPRE compile rc0 but missing ledger FAIL. Physical843 diagnostics are exact subset of existing full-sram-logic-mbist;197 removed,zero new, no owned_unaccepted or immutable drift, unchanged hashes. Added only profiles.full-sram-logic-mbist-core-only with that exact measured set; fresh final rerun must pass. Evidence in docs/evidence/core-only-lint-physical-review-20261118.json.
