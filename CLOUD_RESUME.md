@@ -1,3 +1,9 @@
+# Current: pad-shell technology mapping cloud experiment prepared
+
+Branch codex/core-only-shell-map inherits eac5e21b320790a5cc8189b737162a379dbd7fc2. New cloud runner maps actual status mailbox plus native pad boundaries, with explicit authenticated soc_top blackbox; gate-simulates resulting shell using qualified explicit core stub/native pad/stdcell models and negative enable control. No full core physical integration claim. See docs/core-only-shell-map.md. DRT44263061910 still live at last check; extraction-v2 remains eac5... prepared with Decimal/annotation fixes, not dispatched. Preserve physical producer; do not use shell-map workflow for extraction.
+
+---
+
 # Current: annotation parser qualification verified; DRT still live
 
 Extraction branch codex/core-only-routed-extraction-v2 remains PREPARED, NOT DISPATCHED. Parser qualification44266420803/source02ffd8964247ec14e64a81cdad2e3796df9841b7 terminalSUCCESS; artifact and all three bound source hashes independently checked against extraction branch. Evidence docs/evidence/core-only-annotation-controls-20261118.json. This proves parser controls and Python syntax only, NOT native database/SPEF coverage. Native Decimal qualification44265620568 already verified. Current annotated driver classifier runs after three-corner actual-SPEF STA, leaves annotation_qualified/accepted false and retains full driver inventories.
