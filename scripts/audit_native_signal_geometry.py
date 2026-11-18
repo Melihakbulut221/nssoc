@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+"""Physical signal continuity on native routing plus LEF pin geometry.
+
+A native cell terminal is one electrically equivalent access group; this does
+not prove hidden macro/internal transistor connectivity or replace full LVS.
+"""
+import json,os,hashlib,sys
+from pathlib import Path
+from collections import defaultdict,Counter
+
+def touch(a,b):return a[0]<=b[2]and b[0]<=a[2]and a[1]<=b[3]and b[1]<=a[3]
+def components(rows):
+    # row=(x0,y0,x1,y1,layer,electrical_group,kind,label)
+    parent=list(range(len(rows)))
+    def root(i):
+        while parent[i]!=i:parent[i]=parent[parent[i]];i=parent[i]
+        return i
+    def union(a,b):
+        a,b=root(a),root(b)
+        if a!=b:parent[b]=a
+    groups={};layers=defaultdict(list)
+    for i,row in enumerate(rows):
+        assert row[0]<row[2]and row[1]<row[3]
+        if row[5]in groups:union(i,groups[row[5]])
+        else:groups[row[5]]=i
+        layers[row[4]].append(i)
+    for ids in layers.values():
+        active=[]
+        for i in sorted(ids,key=lambda i:rows[i][0]):
+            active=[j for j in active if rows[j][2]>=rows[i][0]]
+            for j in active:
+                if touch(rows[i],rows[j]):union(i,j)
+            active.append(i)
+    result=defaultdict(list)
+    for i in range(len(rows)):result[root(i)].append(i)
+    return list(result.values())
+
+def self_test():
+    pin0=(0,0,2,2,'M1','p0','pin','p0');pin1=(8,0,10,2,'M1','p1','pin','p1')
+    wire=(2,0,8,2,'M1','wire','wire','wire')
+    assert len(components([pin0,pin1,wire]))==1
+    assert len(components([pin0,pin1]))==2
+    assert len(components([pin0,pin1,(2,0,8,2,'M2','wrong','wire','wrong')]))==3
+    assert len(components([pin0,pin1,wire,(20,0,22,2,'M1','float','wire','float')]))==2
+    via=[(1,0,3,2,'M1','v','via','v'),(1,0,3,2,'M2','v','via','v')]
+    assert len(components([pin0,*via,(3,0,8,2,'M2','w','wire','w'),(8,0,10,2,'M2','p2','pin','p2')]))==1
+    assert len(components([pin0,*via[:1],(3,0,8,2,'M2','w','wire','w'),(8,0,10,2,'M2','p2','pin','p2')]))==2
+    assert not touch((0,0,2,2),(3,0,5,2))and touch((0,0,2,2),(2,0,4,2))
+    return dict(connected_metal=True,missing_wire_rejected=True,wrong_layer_rejected=True,floating_fragment_rejected=True,native_via_group_model=True,missing_via_landing_rejected=True,integer_edge_contact=True)
+
+def main():
+    import odb
+    out=Path(os.environ['NSSOC_PHYSICAL_ROUTE_OUT']);path=Path(os.environ['NSSOC_PHYSICAL_ROUTE_ODB']);before=hashlib.sha256(path.read_bytes()).hexdigest()
+    db=odb.dbDatabase.create();odb.read_db(db,str(path));block=db.getChip().getBlock();all_shapes=defaultdict(list);reports=[];missing=[];fault=None
+    for net in block.getNets():
+        name=net.getName();rows=[];counter=0
+        def add(layer,rect,group,kind,label,dx=0,dy=0):
+            if not layer or layer.getRoutingLevel()==0:return
+            row=(rect.xMin()+dx,rect.yMin()+dy,rect.xMax()+dx,rect.yMax()+dy,layer.getName(),group,kind,label)
+            rows.append(row);all_shapes[row[4]].append((*row[:4],name,label))
+        def via_shape(via,x,y,group,kind):
+            assert via
+            metal_layers=set()
+            for box in via.getBoxes():
+                layer=box.getTechLayer()
+                if layer.getRoutingLevel()>0:metal_layers.add(layer.getName())
+                add(layer,box,group,kind,via.getName(),x,y)
+            assert len(metal_layers)>=2,'Via must expose both routing-metal landings'
+        for t in net.getITerms():
+            label=t.getInst().getName()+'/'+t.getMTerm().getName();g='pin:'+label
+            start=len(rows)
+            for layer,rect in t.getGeometries():add(layer,rect,g,'pin',label)
+            if len(rows)==start:missing.append(dict(net=name,terminal=label))
+        for t in net.getBTerms():
+            g='port:'+t.getName();start=len(rows)
+            for p in t.getBPins():
+                for box in p.getBoxes():
+                    assert not box.isVia();add(box.getTechLayer(),box,g,'pin',g)
+            if len(rows)==start:missing.append(dict(net=name,terminal=g))
+        w=net.getWire()
+        if w:
+            it=odb.dbWireShapeItr();it.begin(w);shape=odb.dbShape()
+            while it.next(shape):
+                counter+=1;group='wire:'+str(counter)
+                if shape.isVia():via_shape(shape.getTechVia()or shape.getVia(),*shape.getViaXY(),group,'wire')
+                else:add(shape.getTechLayer(),shape.getBox(),group,'wire',group)
+        for w in net.getSWires():
+            for box in w.getWires():
+                counter+=1;group='special:'+str(counter)
+                if box.isVia():via_shape(box.getTechVia()or box.getBlockVia(),*box.getViaXY(),group,'special')
+                else:add(box.getTechLayer(),box,group,'special',group)
+        if str(net.getSigType())in['POWER','GROUND']:continue
+        parts=components(rows);terminals={row[5]for row in rows if row[6]=='pin'}
+        if len(parts)>1:reports.append(dict(net=name,components=len(parts),terminals=len(terminals),component_summary=[dict(shapes=len(ids),terminals=sorted({rows[i][7]for i in ids if rows[i][6]=='pin'}))for ids in parts]))
+        if fault is None and len(parts)==1 and len(terminals)>1:
+            removed=[row for row in rows if row[6]=='pin']
+            if len(components(removed))>1:fault=dict(net=name,removed_route_shapes=len(rows)-len(removed),detected_components=len(components(removed)))
+    assert fault,'No physical disconnection negative control could be exercised'
+    counts=Counter();examples=[]
+    for layer,rows in all_shapes.items():
+        active=[]
+        for row in sorted(rows):
+            active=[x for x in active if x[2]>=row[0]]
+            for prev in active:
+                if prev[4]!=row[4]and touch(prev,row):
+                    counts[layer+':'+':'.join(sorted([prev[4],row[4]]))]+=1
+                    if len(examples)<100:examples.append(dict(layer=layer,a=prev,b=row))
+            active.append(row)
+    assert hashlib.sha256(path.read_bytes()).hexdigest()==before
+    report=dict(source_odb_sha256=before,signal_nets_with_disconnected_geometry=reports,terminals_without_geometry=missing,inter_net_contact_pairs=sum(counts.values()),contact_counts=dict(counts),contact_examples=examples,synthetic_controls=self_test(),actual_route_removal_control=fault,source_unchanged=True,accepted=False,full_gds_lvs=False,scope='Native wire/via and LEF terminal geometry; each library terminal is treated as internally electrically equivalent. Does not prove hidden cell/macro GDS, transistor connectivity, or foundry DRC.')
+    (out/'physical-route-audit.json').write_text(json.dumps(report,indent=2)+'\n')
+    assert not reports and not missing and not counts,'Physical route continuity/contact checks failed'
+if __name__=='__main__':
+    if '--self-test'in sys.argv:print(json.dumps(self_test(),indent=2))
+    else:main()

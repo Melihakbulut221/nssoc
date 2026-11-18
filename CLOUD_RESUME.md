@@ -1,3 +1,11 @@
+# Current: physical signal continuity guard prepared while integrated DRT runs
+
+New audit_native_signal_geometry.py decodes native dbWireShapeItr segments/vias, transformedITerm andBTerm metal, specialwires; signalwithin-net components + allinter-netmetalcontacts. Equivalentaccessshapes of each libraryterminal are grouped; hiddenmacro/cellGDS notproven, notfullLVS. Qualificationworkflow onlysyntheticconnected/brokenwire/wronglayer/floatingfragment/viacomponents controls andpycompile, NOTnativeODBdecodeoractualchipverification. ActualroutedODB input notavailableyet. When actualDRTfinishes bindproducer/artifacts before executing nativeaudit; neverclaim ReportDisconnectedPins asphysicalcontinuity.
+
+IntegratedDRT44289826075/source723fe02e71279036fabb7a5d7204d309351f4e19 live lastpoll, previousDRT44289373096 terminalbefore routing(supplyspecialflagfixed). MaincoreDRT44263061910 also live. Do notduplicate either. Currentbranchworkflow isqualificationonly; restoreDRTworkflow from723fe... ifneededonfuturederivedbranch.
+
+---
+
 # Current: native DRT supply-net classification corrected
 
 First integratedDRT44289373096/source3a1fd3f94c864d8fa4bbff4a940c5adccd475ca5 failedbefore routing: DRT0305 IOVDD POWER notspecial. Native14420083849 SHA4166a12fe9f235ed1afb95e47a3637e0fd3a8edadfc996647852ddd5fc2f2b40 verified. IOVDD/IOVSS have nativepadgeometry andstrictconnectivitypass but no special-wire object, so their dbNet special flagwasabsent. Setallfourverifiedsupplynetsspecial, preservegeometry/connections, requireflagsinoutputaudit. No signalwaiver. NativewarnsLEF58_ENCLOSURE withoutCUTCLASS unsupported; nativeDRC alonecannotreplacefoundrydeck. Physical signalcontinuitystillneeds geometrycheck: LibreLane ReportDisconnectedPins onlytests logicalnetassignment. MaincoreDRT44263061910 remainslive.
