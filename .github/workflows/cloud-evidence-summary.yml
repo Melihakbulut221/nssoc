@@ -1,4 +1,4 @@
-name: Inventory every remaining load split electrical violation
+name: Prepare bounded fanout trees on 205 signal nets
 on:
   workflow_dispatch:
 permissions:
@@ -7,7 +7,7 @@ permissions:
 jobs:
   inspect:
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 60
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
@@ -23,14 +23,14 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_loadsplit_all_inventory.py scripts/inventory_loadsplit_all_violations_native.py
+          python3 -m py_compile scripts/cloud_core_only_signal_fanout_prep.py scripts/prepare_core_only_signal_fanout.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - run: python3 scripts/cloud_core_only_loadsplit_all_inventory.py
+      - run: python3 scripts/cloud_core_only_signal_fanout_prep.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-loadsplit-all-violations-inventory-${{ github.run_id }}
-          path: hw/soc/out/core-only-loadsplit-all-violations-inventory/
+          name: core-only-signal-fanout-prep-${{ github.run_id }}
+          path: hw/soc/out/core-only-signal-fanout-prep/
           if-no-files-found: error
           retention-days: 90

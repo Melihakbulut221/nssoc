@@ -1,0 +1,7 @@
+# Signal fanout batch candidate — 2026-11-19
+
+Complete native inventory run 44571330223, source `06f837a24a95b979f1bb316b9e42a3546e613d4b`, artifact 14553853079 SHA-256 `5bae77546b494ad46ac8d7f83b10ea7420c596fa7c9c4f1808ac9c7ce7232385`: 672 unique violating pins on 334 nets. Every inventoried net has exactly one driver and no top-level ports.
+
+Of 207 fanout-violating nets, 205 are signal nets and two are clock nets (clknet_1_0_0_clk_i, clknet_7_92__leaf_clk_i_regs). This candidate addresses all 205 signal nets with 413 `sg13g2_buf_8` cells. Functional loads are spatially partitioned; each group has at least one functional load and at most eight total loads including diodes. 720 diode signal terminals move with their load groups; none are removed. Original drivers see two or three buffer inputs. Clock fanout remains a separate repair target.
+
+This is a candidate, not a passing physical result. Native legalization must preserve every original cell geometry, all original logical connectivity after identity-buffer collapse, all 2,113 clock routes, NDR assignments, and 102,910 unaffected nonpower DEF records. All 826 new power terminals must pass rail-contact checks. It then requires selected routing, antenna and independent geometry checks, fresh RC and all-corner timing; no timing or electrical limit is relaxed. Slew/capacitance regressions and SRAM output capacitance remain tracked.
