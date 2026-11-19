@@ -1,12 +1,21 @@
-name: Verify six-buffer extraction imports and diode rebinding
+name: Fresh RC and three-corner STA of clean six-buffer regression ECO
 on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
-  check:
+  qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 10
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      APPIMAGE_EXTRACT_AND_RUN: '1'
+      NSSOC_REGRESSION_ROUTE_ARTIFACT_ID: '14543516160'
+      NSSOC_REGRESSION_ROUTE_ARTIFACT_SHA256: '44feb72eb6405fbafdf4e8c729ae81b87cdeb24e2f3d8c0ed89f8eb84399eecd'
+      NSSOC_REGRESSION_ROUTE_ODB_SHA256: 'bd28f784aa3cad49b72197de70c394727ab0e72608610febd4c4e16dfc4a28bc'
+      NSSOC_ROUTE_ARTIFACT_ID: '14470750161'
+      NSSOC_ROUTE_ARTIFACT_DIGEST: 'sha256:649654de02cb1931abd888d8ffbb038f5cb743e89aa8dfe4a7ee484805fb8415'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -14,7 +23,24 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 scripts/test_regression_antenna_rebinding.py
-      - run: |
-          python3 -m py_compile scripts/cloud_core_only_regression_antenna_extraction.py scripts/cloud_core_only_critical_clean_extraction_base.py
-          PYTHONPATH=scripts python3 -c "import cloud_core_only_regression_antenna_extraction as m; assert m.RUN == 44545302944; assert m.flow.EXPECTED_INSTANCES == 106664"
+      - name: Prepare pinned native runtime
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl
+          python3 -m py_compile scripts/cloud_core_only_regression_antenna_extraction.py
+          PYTHONPATH=scripts python3 -c 'import cloud_core_only_regression_antenna_extraction'
+          python3 scripts/test_antenna_insertion_admission.py
+          python3 scripts/test_antenna_netlist_export.py
+          python3 scripts/test_regression_antenna_rebinding.py
+          python3 scripts/bootstrap_flow.py
+          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
+      - name: Export fresh routed views, extract nominal RC and measure all corners
+        run: python3 scripts/cloud_core_only_regression_antenna_extraction.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: core-only-regression-antenna-extraction-${{ github.run_id }}
+          path: hw/soc/out/core-only-regression-antenna-extraction/
+          if-no-files-found: error
+          retention-days: 90

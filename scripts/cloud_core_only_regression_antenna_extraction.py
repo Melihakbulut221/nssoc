@@ -45,7 +45,7 @@ def restore_candidate():
     assert r['routed_odb_sha256']==odbhash and r['output_odb']=='restored-status.odb'
     counts=[]
     for key,expected in [('fixed-type-admission','FIXED'),('restored-type-admission','ROUTED')]:
-        t=r[key];assert t['checked_nets']>100000 and t['expected_encoded_type']==expected and not t['wrong_types'] and t['source_unchanged']
+        t=r[key];assert t['checked_nets']==102977 and t['expected_encoded_type']==expected and not t['wrong_types'] and t['source_unchanged']
         assert t['controls']['metadata_only_fix_rejected'] and t['controls']['encoded_fixed_accepted'];counts.append(t['checked_nets'])
     assert counts[0]==counts[1]==r['fixed_route_preparation']['fixed_nets'] and r['fixed_route_preparation']['all_records_verified']
     report,artifacts,initial=previous.restore_candidate()
