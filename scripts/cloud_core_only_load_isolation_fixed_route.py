@@ -57,8 +57,16 @@ def main():
    protected[str(path)]=sha(path)
   fixed_def=OUT/'fixed-patch.def';patch(fixed_def,[(n,re.sub(r'\+ ROUTED\b','+ FIXED',source_records[n]))for n in fixed_names])
   fixed=OUT/'fixed-global.odb';fixed_export=OUT/'fixed-export.def'
-  execute('read_db {'+str(selected)+'}\nread_def -incremental {'+str(fixed_def)+'}\nwrite_db {'+str(fixed)+'}\nwrite_def {'+str(fixed_export)+'}\n','fix-unselected')
+  execute('read_db {'+str(selected)+'}\nread_def -floorplan_initialize {'+str(fixed_def)+'}\nwrite_db {'+str(fixed)+'}\nwrite_def {'+str(fixed_export)+'}\n','fix-unselected')
   fixed_records=records(fixed_export.read_text());assert set(fixed_records)==set(source_records)
+  assert all(re.search(r'\+ FIXED\b',fixed_records[n])and not re.search(r'\+ ROUTED\b',fixed_records[n])for n in fixed_names),'Native DEF did not apply FIXED status'
+  names_path=OUT/'fixed-net-names.json';names_path.write_text(json.dumps(fixed_names)+'\n');protected[str(names_path)]=sha(names_path)
+  type_guard=ROOT/'scripts/audit_encoded_fixed_wire_type.py';protected[str(type_guard)]=sha(type_guard)
+  def verify_types(odb_path,expected,label):
+   env=dict(os.environ,NSSOC_FIXED_VERIFY_ODB=str(odb_path),NSSOC_FIXED_VERIFY_NAMES=str(names_path),NSSOC_FIXED_VERIFY_TYPE=expected,NSSOC_FIXED_VERIFY_REPORT=str(OUT/(label+'.json')))
+   with (OUT/(label+'.log')).open('w')as log:subprocess.run([str(app),'openroad','-exit','-python',str(type_guard)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
+   r[label]=json.loads((OUT/(label+'.json')).read_text());save()
+  verify_types(fixed,'FIXED','fixed-type-admission')
   for n,v in fixed_records.items():
    normalized=re.sub(r'\+ FIXED\b','+ ROUTED',v)if n in fixed_names else v
    assert ' '.join(normalized.split())==' '.join(source_records[n].split()),('fix_roundtrip_changed_net',n)
@@ -75,8 +83,8 @@ def main():
    assert ' '.join(re.sub(r'\+ FIXED\b','+ ROUTED',routed_records[n]).split())==' '.join(source_records[n].split()),('fixed_route_changed',n)
   thaw=OUT/'restore-route-status.def';patch(thaw,[(n,re.sub(r'\+ FIXED\b','+ ROUTED',routed_records[n]))for n in fixed_names])
   final=OUT/'restored-status.odb'
-  execute('read_db {'+str(after)+'}\nread_def -incremental {'+str(thaw)+'}\nwrite_db {'+str(final)+'}\n','restore-status')
-  after=final;r['routed_odb_sha256']=sha(after);r['output_odb']='restored-status.odb';save()
+  execute('read_db {'+str(after)+'}\nread_def -floorplan_initialize {'+str(thaw)+'}\nwrite_db {'+str(final)+'}\n','restore-status')
+  after=final;verify_types(after,'ROUTED','restored-type-admission');r['routed_odb_sha256']=sha(after);r['output_odb']='restored-status.odb';save()
   audit(after,'detailed')
   geom=OUT/'geometry';geom.mkdir();env=dict(os.environ,NSSOC_PHYSICAL_ROUTE_OUT=str(geom),NSSOC_PHYSICAL_ROUTE_ODB=str(after))
   with (OUT/'geometry.log').open('w')as log:subprocess.run([str(app),'openroad','-exit','-python',str(geometry)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
