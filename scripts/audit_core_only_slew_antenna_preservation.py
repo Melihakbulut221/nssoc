@@ -13,6 +13,19 @@ left=records(b,out/'before.def');right=records(bb,out/'after.def');assert set(le
 def ndr_assignments(block):
  return {n.getName():n.getNonDefaultRule().getName()if n.getNonDefaultRule()else None for n in block.getNets()}
 assert ndr_assignments(b)==ndr_assignments(bb),'ndr_assignment_changed'
+def ndr_layers(db,block):
+ result={}
+ for rule in block.getNonDefaultRules():
+  rows={}
+  for layer in db.getTech().getLayers():
+   if str(layer.getType())!='ROUTING':continue
+   lr=rule.getLayerRule(layer)
+   rows[layer.getName()]=(lr.getWidth(),lr.getSpacing())if lr else None
+  result[rule.getName()]=rows
+ return result
+assert ndr_layers(d,b)==ndr_layers(dd,bb),'ndr_layer_rules_changed'
+assert {n for n,r in ndr_assignments(bb).items()if r=='NSSOC_SLEW_LOWER_SPACE2'}=={'net4410','nssoc_sta_n_55164','nssoc_sta_n_55165','nssoc_sta_n_56323'}
+
 bad=[];clocks=[];checked=0
 for n,v in left.items():
  if n in changed or str(b.findNet(n).getSigType())in ['POWER','GROUND']:continue
