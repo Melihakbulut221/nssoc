@@ -1,0 +1,7 @@
+# Enforce unaffected-route preservation during detailed routing
+
+Native delta run 44433830030/head ee4f08b3e0216bfef463b376470119de92d4833b, artifact 14486589302 SHA256 20b8d9895099f94f38728e548fcd0c72e520ae6bb81130bd3cbe220e39e44953 and all five outputs were verified. Of 33 changed DEF records, five retain the same shape multiset and 28 differ. clk_i has 34 removed and 21 added shape entries. Shape multiset difference is not geometric union equality analysis; this result does not waive the preservation failure.
+
+Pinned OpenROAD dcf36133 src/drt/src/io/io.cpp recognizes FIXED from dbWireDecoder, marks that net fixed, and skips destroying fixed wires during database update. dbNet::setWireType alone changes only net flags and is insufficient. The new experiment exports the selected-global-route DEF, converts the unaffected routed NETS entries to FIXED through an incremental native DEF read, and checks every normalized record before routing. No coordinates are edited.
+
+After detailed routing, all fixed records must still match the original geometry. Their status is restored to ROUTED via native incremental DEF read, then the existing exact terminal, geometry/status/master and unaffected-route guards run. Full visible-geometry checks remain required. DRC must be zero; antenna counts are measured without declaring closure. Fresh RC and timing are mandatory after successful routing. The prior failed attempt remains rejected.
