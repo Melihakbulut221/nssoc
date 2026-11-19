@@ -1,0 +1,11 @@
+# Bounded data-neighbor repair: physical contact closure
+
+Run 44441944245 at 8f09cf5534ffcf385b5f961129c4ec1bb05c74fc passed the routing and independent physical checks. Artifact 14493085851 SHA256 e4377313fefeb524dabe0f204882c8093a48ea8329cf0a89b552f1c2985b7228 and all 45 manifest outputs independently verified.
+
+Restored ODB: efcc8e9b4d5023553d039a4c5e0a4ea984b9d0d8e3ebc9766bb6b47fff4d3540. Native DRC zero; independent inter-net contacts zero; no disconnected signal geometry, unwired multi-terminal nets or terminals lacking geometry. All 103080 unselected net records and all 2113 clock records remain exact. Identity retains 106619 instances and exact connectivity, cell geometry, masters, net types and PG geometry. The previous three Metal2 contacts between nssoc_sta_n_19589 and nssoc_sta_n_48214 are absent. Explicitly permitting that one SIGNAL neighbor to reroute resolved the defect without freeing the clock tree.
+
+This candidate still has 15 antenna nets/pins from its round-1 antenna lineage. It does not contain the later 30 diode additions or the SRAM clock-driver resize. No actual-RC setup improvement has yet been measured for this candidate. Do not label its green workflow timing closure or substitute it for the latest clock candidate.
+
+The next integration should carry the two identity-buffer changes (2657/Y and 11771/Y load isolation) onto the latest admitted clock/antenna source, with all prior instances frozen and all original functional terminal connections recovered by buffer collapse. Route only the four buffer-related data nets plus the proven contacting SIGNAL neighbor, then require exact other routes, independent geometry, antenna closure and fresh all-corner RC timing. Existing pre-repair clock timing evidence is run 44441326165: hold zero in all three measured corners, but slow setup 59 violations at -0.74034647175 ns. Clock antenna successor 44442857432 remains live at the time of this record. Its completion must be authenticated before using its output.
+
+The production goal remains open: electrical constraints, full RC/corner qualification, coverage, SRAM/I/O transistor LVS, external I/O package timing and manufacturer signoff are not closed by these route checks.
