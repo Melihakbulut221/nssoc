@@ -1,0 +1,7 @@
+# Setup ECO neighbor-contact correction — 2026-11-19
+
+Rejected run 44452163259 at 2883b59ee5c635c0eec5c660aae2e7f4f791824f. Artifact 14496954427 SHA256 7cf98e95ff440c893194dc98202fe37cfcc7f023352f35592e5bc6b46bc93574; all 45 outputs verified. Native detailed routing reached DRC zero at iteration 23; native antenna nets/pins zero. Identity passed for 106650 instances; all 103080 unselected non-power DEF records and 2113 clocks remained exact.
+
+Independent decoded geometry rejected routed ODB c53926b0539eaeab5ed04cd933263dcbe17c2effa9a337cc4ce238018dff949e: two Metal2 contacts between nssoc_sta_n_11352 and fixed neighbor nssoc_sta_n_97099. The neighbor wire rectangle is [2300540,1135160,2300740,1149220] DBU; the new route wire and Via1_XY landing overlap it near y=1135680. No disconnected nets, unwired multi-terminal nets or missing terminal geometry were reported. This candidate is not electrically admitted despite native DRC zero. Do not run signoff timing on it or promote it.
+
+Retry from the same authenticated legal placement run 44451541789, not the rejected routed geometry. Add only nssoc_sta_n_97099 to the original five allowed data nets. Explicitly require all six nets to be SIGNAL; retain exact identity, all 2113 clock records and 103079 other non-power DEF records. Re-run native DRC, antenna and independent contact/continuity controls, then fresh RC/all-corner timing only on a clean candidate. No comparison or foundry rule is waived.
