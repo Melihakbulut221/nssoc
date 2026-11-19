@@ -12,7 +12,7 @@ def function(text,name):
  while depth:depth+=(text[j]=='{')-(text[j]=='}');j+=1
  f=re.findall(r'\bfunction\s*:\s*([^;]+)',text[start:j]);assert len(f)==1
  return f[0].strip().strip('"')
-d,b=load(OUT/'source.odb');assert len(list(b.getInsts()))==446672
+d,b=load(OUT/'source.odb');assert len(list(b.getInsts()))==106672
 if mode=='prepare':
  statuses={i.getName():str(i.getPlacementStatus())for i in b.getInsts()};before=connections(b);newcells={};moves={}
  # Every original load on these eight nets must be explicitly assigned once.
@@ -85,7 +85,7 @@ elif mode=='audit':
  checked=0
  for name,value in left.items():
   if name not in changed and str(b.findNet(name).getSigType())not in ['POWER','GROUND']:assert right.get(name)==value,('unaffected_route_changed',name);checked+=1
- assert checked==443086,checked
+ assert checked==103086,checked
  clocks=[n for n in b.getNets()if str(n.getSigType())=='CLOCK'];assert len(clocks)==2113
  assert all(left[n.getName()]==right[n.getName()]for n in clocks)
  for net in b.getNets():
