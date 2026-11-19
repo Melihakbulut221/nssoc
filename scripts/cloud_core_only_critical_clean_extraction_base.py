@@ -178,7 +178,7 @@ def main():
         name_guard=ROOT/'scripts/audit_core_only_extraction_names.py'
         name_report=OUT/'extraction-name-admission.json'
         original_odb=current_path(json.loads(initial.read_text())['odb'])
-        env=dict(os.environ,NSSOC_EXTRACTION_NAME_ODB=str(original_odb),NSSOC_EXTRACTION_NAME_REPORT=str(name_report),NSSOC_EXTRACTION_EXPECTED_INSTANCES='106656')
+        env=dict(os.environ,NSSOC_EXTRACTION_NAME_ODB=str(original_odb),NSSOC_EXTRACTION_NAME_REPORT=str(name_report),NSSOC_EXTRACTION_EXPECTED_INSTANCES='106664')
         with (OUT/'extraction-name-admission.log').open('w')as log:
             subprocess.run([str(app),'openroad','-exit','-python',str(name_guard)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
         report['name_admission']=json.loads(name_report.read_text())
