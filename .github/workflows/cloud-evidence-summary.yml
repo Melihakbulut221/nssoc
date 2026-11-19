@@ -1,4 +1,4 @@
-name: Verify regression diode inventory rebinding
+name: Verify six-buffer extraction imports and diode rebinding
 on:
   workflow_dispatch:
 permissions:
@@ -15,3 +15,6 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 scripts/test_regression_antenna_rebinding.py
+      - run: |
+          python3 -m py_compile scripts/cloud_core_only_regression_antenna_extraction.py scripts/cloud_core_only_critical_clean_extraction_base.py
+          PYTHONPATH=scripts python3 -c "import cloud_core_only_regression_antenna_extraction as m; assert m.RUN == 44545302944; assert m.flow.EXPECTED_INSTANCES == 106664"

@@ -17,6 +17,7 @@ from cloud_core_only_detailed_route import restore_refinement
 OUT = ROOT / "hw/soc/out/core-only-antenna-extraction"
 RUN = 44392013502
 HEAD = "bea6ce2b77b37f1d7260008aa35007cef91c7f73"
+EXPECTED_INSTANCES = 106664
 CORNERS = ["nom_slow_1p08V_125C", "nom_typ_1p20V_25C", "nom_fast_1p32V_m40C"]
 
 
@@ -178,7 +179,7 @@ def main():
         name_guard=ROOT/'scripts/audit_core_only_extraction_names.py'
         name_report=OUT/'extraction-name-admission.json'
         original_odb=current_path(json.loads(initial.read_text())['odb'])
-        env=dict(os.environ,NSSOC_EXTRACTION_NAME_ODB=str(original_odb),NSSOC_EXTRACTION_NAME_REPORT=str(name_report),NSSOC_EXTRACTION_EXPECTED_INSTANCES='106664')
+        env=dict(os.environ,NSSOC_EXTRACTION_NAME_ODB=str(original_odb),NSSOC_EXTRACTION_NAME_REPORT=str(name_report),NSSOC_EXTRACTION_EXPECTED_INSTANCES=str(EXPECTED_INSTANCES))
         with (OUT/'extraction-name-admission.log').open('w')as log:
             subprocess.run([str(app),'openroad','-exit','-python',str(name_guard)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
         report['name_admission']=json.loads(name_report.read_text())
