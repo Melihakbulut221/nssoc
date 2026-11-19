@@ -1,4 +1,4 @@
-name: Repair four proven neighbor contacts in slew ECO
+name: Fresh RC and three-corner STA of contact-clean slew ECO
 on:
   workflow_dispatch:
 permissions:
@@ -25,18 +25,18 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_slew_neighbor_route.py
-          PYTHONPATH=scripts python3 -c 'import cloud_core_only_slew_neighbor_route'
+          python3 -m py_compile scripts/cloud_core_only_slew_neighbor_extraction.py
+          PYTHONPATH=scripts python3 -c 'import cloud_core_only_slew_neighbor_extraction'
           python3 scripts/test_antenna_insertion_admission.py
           python3 scripts/test_antenna_netlist_export.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Route 18 data nets and audit geometry, antenna and all preserved routes
-        run: python3 scripts/cloud_core_only_slew_neighbor_route.py
+      - name: Export fresh routed views, extract nominal RC and measure all corners
+        run: python3 scripts/cloud_core_only_slew_neighbor_extraction.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-slew-neighbor-route-${{ github.run_id }}
-          path: hw/soc/out/core-only-slew-neighbor-route/
+          name: core-only-slew-neighbor-extraction-${{ github.run_id }}
+          path: hw/soc/out/core-only-slew-neighbor-extraction/
           if-no-files-found: error
           retention-days: 90

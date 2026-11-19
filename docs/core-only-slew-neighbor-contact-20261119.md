@@ -10,3 +10,9 @@ Native detailed routing reached zero DRC at iteration 23 and antenna nets/pins w
 - nssoc_sta_n_56385 versus nssoc_sta_n_56322: 3 contacts.
 
 Each pair contains one of the 14 selected incident nets and an otherwise fixed neighbor. New routing admits exactly these four neighbors in addition to the 14 original nets, starting from the verified preparation ODB 4fc368e1d6ca1d5661f048b8cad148d38554176849b003245bf2f74454edf14b (run 44461789690), not from the shorted result. All 18 nets must be SIGNAL; no clock changes are authorized. Preservation count becomes 103067 unaffected non-power records, still 2113 clocks. Native encoded FIXED wires protect every other route. Independent geometry, antenna and DRC checks remain mandatory; no waiver is added. Fresh nominal RC and three-corner timing follow only after physical admission. The earlier clean nominal setup/hold baseline remains unchanged and production approval remains open.
+
+## Contact-clean routed result
+
+Run 44465781176, head 144b7a14e8978ab90639276687c0091c038c96fa, attempt 1 succeeded. Artifact 14501894937 SHA256 b1a6bb7cec948c35b52d9deb69ba1d2019334f341816212eca108a259610c2f5; all 45 outputs verified. Routed ODB 773f9b92c29ead0f8755f0a6803503c855d27279eca288eb778269190449be5f. Native DRC and antenna net/pin counts are zero. Independent decoded geometry reports zero inter-net contacts, disconnected nets, unwired multi-terminal nets and missing terminal geometry; native route-removal and synthetic controls pass. All 103067 unselected non-power DEF records and 2113 clocks are exact. Native encoded FIXED/ROUTED checks cover 102951 wires. Exact instance geometry, connectivity, net types, special wires, ports and die pass.
+
+This closes the four proven neighbor contacts in this candidate. Fresh extraction is next; electrical improvement, preserved setup/hold and production approval remain unproven until the corresponding analyses pass.
