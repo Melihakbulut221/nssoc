@@ -41,14 +41,15 @@ def main():
   inv=OUT/'insertion-audit.json';env=dict(os.environ,NSSOC_CONTROL_BUFFER_OUT=str(OUT),NSSOC_ROUTE_IDENTITY_BEFORE=str(original),NSSOC_ROUTE_IDENTITY_AFTER=str(before),NSSOC_ANTENNA_AUDIT_OUT=str(inv))
   with (OUT/'insertion-audit.log').open('w')as log:subprocess.run([str(app),'openroad','-exit','-python',str(audit)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
   added=json.loads(inv.read_text());r['insertion_audit']=added;save()
-  assert added['original_instances']==106656 and 1<=added['new_diodes']<=4 and added['total_instances']==106656+added['new_diodes'] and added['sources_unchanged']
-  assert len(added['new_cells'])==added['new_diodes']
-  assert set(added['new_cells'])=={'ANTENNA_'+str(i)for i in range(2569,2569+added['new_diodes'])}
+  assert added['original_instances']==106656 and added['new_diodes']==8 and added['total_instances']==106656+added['new_diodes'] and added['sources_unchanged']
+  assert sha(before)=='8d1a34b991abf59c1e26a7e2ef119b3ee74f7bf82ddd96167b4e95814524e5ed'
+  assert len(added['new_cells'])==8
+  assert set(added['new_cells'])=={'ANTENNA_'+str(i)for i in range(2569,2577)}
   assert all(c['master']=='sg13g2_antennanp' and c['signal_terms']==[dict(pin='A',type='SIGNAL',net='nssoc_sta_n_60783')] for c in added['new_cells'].values())
   env=dict(os.environ,ANTENNA_POWER_ODB=str(before),ANTENNA_POWER_REPORT=str(OUT/'power-contact.json'),ANTENNA_POWER_INVENTORY=str(inv),ANTENNA_POWER_EXPECTED_DIODES=str(added['new_diodes']))
   with (OUT/'power-contact.log').open('w')as log:subprocess.run([str(app),'openroad','-exit','-python',str(power)],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
   r['added_power_contact']=json.loads((OUT/'power-contact.json').read_text());protected[str(inv)]=sha(inv)
-  assert r['added_power_contact']['checked_power_terminals']==2*added['new_diodes'] and not r['added_power_contact']['failures'] and r['added_power_contact']['sources_unchanged']
+  assert r['added_power_contact']['checked_power_terminals']==16 and not r['added_power_contact']['failures'] and r['added_power_contact']['sources_unchanged']
   assert all(c['signal_terms'][0]['net']=='nssoc_sta_n_60783'for c in added['new_cells'].values()),'Unexpected diode net'
   routeguard=ROOT/'scripts/audit_core_only_load_resize_antenna_preservation.py';protected[str(routeguard)]=sha(routeguard)
   env=dict(os.environ,NSSOC_CONTROL_BUFFER_OUT=str(OUT),NSSOC_ROUTE_IDENTITY_BEFORE=str(original),NSSOC_ROUTE_IDENTITY_AFTER=str(before),NSSOC_PRESERVED_ROUTE_AUDIT=str(OUT/'preservation'))

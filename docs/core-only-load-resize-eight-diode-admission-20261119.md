@@ -1,0 +1,7 @@
+# Exact eight-diode preparation admission — 2026-11-19
+
+Preparation run https://github.com/Melihakbulut221/nssoc/actions/runs/44517748156 (head 49a97b8198f2c486b2bb95b7eaa316e3407e4787, attempt 1) failed at an incorrect wrapper assumption of at most four new diodes. Native insertion and check_placement succeeded. The native log reports exactly eight inserted diodes.
+
+Artifact 14527150619 SHA256 401a70cc3de8358100263b8df8dc09625f440c58ec675fa2bf79ba636b311440; all seven outputs independently hash-verified in memory. The insertion audit proves ANTENNA_2569 through ANTENNA_2576 are sg13g2_antennanp, each A connected only to nssoc_sta_n_60783, VDD to VPWR, VSS to VGND. Original 106656 instances preserve exact geometry/status/connections, power geometry, ports and die; the new total is 106664. Candidate ODB SHA256 8d1a34b991abf59c1e26a7e2ef119b3ee74f7bf82ddd96167b4e95814524e5ed.
+
+The corrected preparation requires exactly those eight cells and the measured candidate ODB hash, rather than a broad count range. It must still pass positive contact checks on all sixteen supply terminals, negative controls and exact preservation of unaffected signal and clock routes. The prior failed run did not reach those checks. No antenna closure is yet established: rerouting, antenna/DRC/native geometry and fresh RC/STA remain required. This corrects an inventory assumption, not a physical-rule waiver.

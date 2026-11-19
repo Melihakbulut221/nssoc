@@ -31,7 +31,7 @@ jobs:
           python3 scripts/test_antenna_netlist_export.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Insert two signal diodes and verify original cells, supplies and all other routes
+      - name: Insert eight verified signal diodes and verify original cells, supplies and all other routes
         run: python3 scripts/cloud_core_only_load_resize_antenna_prep.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
