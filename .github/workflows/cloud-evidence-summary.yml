@@ -1,4 +1,4 @@
-name: Measure all electrical pin deltas after six-buffer ECO
+name: Inspect remaining worst slew fanout and capacitance driver loads
 on:
   workflow_dispatch:
 permissions:
@@ -7,9 +7,10 @@ permissions:
 jobs:
   inspect:
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 45
     env:
       GH_TOKEN: ${{ github.token }}
+      APPIMAGE_EXTRACT_AND_RUN: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -17,11 +18,20 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - run: python3 scripts/cloud_core_only_six_buffer_electrical_delta.py
+      - name: Prepare pinned runtime
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl
+          python3 -m py_compile scripts/cloud_core_only_six_buffer_next_inventory.py scripts/inventory_six_buffer_next_native.py
+          PYTHONPATH=scripts python3 -c 'import cloud_core_only_six_buffer_next_inventory'
+          python3 scripts/bootstrap_flow.py
+          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
+      - run: python3 scripts/cloud_core_only_six_buffer_next_inventory.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-six-buffer-electrical-delta-${{ github.run_id }}
-          path: hw/soc/out/core-only-six-buffer-electrical-delta/
+          name: core-only-six-buffer-next-inventory-${{ github.run_id }}
+          path: hw/soc/out/core-only-six-buffer-next-inventory/
           if-no-files-found: error
           retention-days: 90
