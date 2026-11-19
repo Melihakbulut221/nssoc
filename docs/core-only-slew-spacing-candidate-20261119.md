@@ -1,0 +1,7 @@
+# Spacing-only candidate for slew regression — 2026-11-19
+
+Source evidence and exact coupling increases are in core-only-slew-coupling-cause-20261119.md. This experiment starts from verified three-driver preparation run44461789690 / ODB4fc368e1d6ca1d5661f048b8cad148d38554176849b003245bf2f74454edf14b. It retains the previous allowed 18 data nets and 103067 unaffected non-power record / 2113 clock preservation checks.
+
+Four measured coupling aggressors (nssoc_sta_n_55164, nssoc_sta_n_55165, nssoc_sta_n_56323, net4410) receive NSSOC_SLEW_SPACE2, spacing twice native default on Metal2 through TopMetal2 and native default widths on all routing layers. A native admission check after global routing and again after detailed routing checks every net assignment, exactly four SIGNAL changes, unchanged widths and doubled spacing on the six intended layers. It verifies no other rule name appears, and source files remain unchanged. Assignment validation is not realized-spacing or coupling proof.
+
+Pinned OpenROAD implementation src/odb/src/swig/tcl/odb.tcl at dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 and its src/odb/test/ndr.tcl confirm create_ndr multiplier syntax and explicit default-width initialization. The candidate additionally requires native DRC/antenna zero, independent decoded geometry/contact continuity, exact unselected routes and clocks, then fresh RC and all-corner STA. Rules may increase congestion; no improvement or production approval is claimed before measurement. No timing constraints or electrical limits are relaxed.
