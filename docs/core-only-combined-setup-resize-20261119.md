@@ -11,3 +11,9 @@ Next: selected routing with native encoded FIXED guard, independent geometric sh
 ## External interface decision
 
 The user confirmed that package, PCB, QSPI memory model and connected devices have not been selected. External I/O timing is unresolved; no board delay, device timing, package parasitic, interface speed or production approval is inferred. Continue internal timing independently. Before external signoff, select these components and derive traceable min/max input/output constraints for SpaceWire/SPI/QSPI and other retained interfaces.
+
+## First preparation result and accounting fix
+
+Run 44450991767 (ab080effab0a560aa8c00237432c06965470c41d) failed at the expected preserved DEF record count, after all individual unchanged-record comparisons passed. Placement was legal (maximum displacement 3.8 um), native function/pin identity and original-cell/connectivity guards passed. Artifact 14495910928 SHA256 13a22522df860d34342c881684e7c5203d3c4f1cc2603bde40c92f62cfe258b1; all 11 manifest outputs checked. This failed candidate is not admitted.
+
+The resize audit counts power NETS records; the later routing audit excludes those two records. Correct the preparation assertion to require all 103087 DEF records, 103082 unchanged records (five invalidated data nets), explicit presence of VPWR/VGND, and all 2113 clocks unchanged. No per-record comparison is removed or relaxed. Re-run native preparation and supply-contact verification.

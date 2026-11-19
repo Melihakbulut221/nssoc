@@ -55,7 +55,12 @@ elif mode=='audit':
  checked=0
  for name,value in left.items():
   if name not in invalidated:assert right[name]==value,('unaffected_net_changed',name);checked+=1
- assert checked==103080
+ # DEF includes both VPWR and VGND records; the route guard separately excludes them.
+ assert len(left)==103087 and checked==103082,(len(left),checked)
+ assert all(name in left for name in ['VPWR','VGND'])
+ clocks=[n.getName()for n in b.getNets()if str(n.getSigType())=='CLOCK']
+ assert len(clocks)==2113 and not set(clocks)&invalidated
+ assert all(right[n]==left[n]for n in clocks)
  for name in invalidated:assert not bb.findNet(name).getWire()
  (out/'preserved-route-audit.json').write_text(json.dumps(dict(checked_net_records=checked,invalidated_data_nets=sorted(invalidated),all_other_routes_preserved=True),indent=2)+'\n')
  (out/'power-inventory.json').write_text(json.dumps(dict(new_cells={name:dict(master=pair[1])for name,pair in resize.items()}),indent=2)+'\n')
