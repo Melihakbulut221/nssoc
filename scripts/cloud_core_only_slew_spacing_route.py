@@ -4,7 +4,7 @@ import os,json,hashlib,subprocess,re
 from pathlib import Path
 from bootstrap_flow import verify
 from cloud_core_only_postgrt import ROOT,sha,completed,archive,put
-OUT=ROOT/'hw/soc/out/core-only-slew-spacing-route'
+OUT=ROOT/'hw/soc/out/core-only-slew-spacing-lower-route'
 def main():
  assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(parents=True,exist_ok=False)
  r=dict(source_head=os.environ['GITHUB_SHA'],accepted=False,final_timing_complete=False,status='PREPARING')
@@ -43,7 +43,7 @@ def main():
    r[label+'_ndr']=json.loads((OUT/(label+'-ndr.json')).read_text());save()
   selected=OUT/'selected-global.odb'
   r.update(status='SELECTED_GLOBAL_ROUTING',source_artifact=m,source_audit=src['audit']);save()
-  execute('read_db {'+str(original)+'}\nset_thread_count 4\ncreate_ndr -name NSSOC_SLEW_SPACE2 -spacing {Metal2:TopMetal2 *2} -width {*1}\nforeach net {nssoc_sta_n_55164 nssoc_sta_n_55165 nssoc_sta_n_56323 net4410} {assign_ndr -ndr NSSOC_SLEW_SPACE2 -net $net}\nset_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2\nset_global_routing_layer_adjustment Metal2-TopMetal2 0.2\nset_nets_to_route {nssoc_sta_n_55109 nssoc_sta_n_55117 nssoc_sta_n_55140 nssoc_sta_n_55164 nssoc_sta_n_55165 nssoc_sta_n_56297 nssoc_sta_n_56302 nssoc_sta_n_56312 nssoc_sta_n_56322 nssoc_sta_n_56323 nssoc_sta_n_58638 nssoc_sta_n_58639 nssoc_sta_n_58640 nssoc_sta_n_58641 nssoc_sta_n_55098 net5477 net4410 nssoc_sta_n_56385}\nglobal_route -verbose\nwrite_db {'+str(selected)+'}\n','global')
+  execute('read_db {'+str(original)+'}\nset_thread_count 4\ncreate_ndr -name NSSOC_SLEW_LOWER_SPACE2 -spacing {Metal1 *1 Metal2:Metal5 *2 TopMetal1:TopMetal2 *1} -width {*1}\nforeach net {nssoc_sta_n_55164 nssoc_sta_n_55165 nssoc_sta_n_56323 net4410} {assign_ndr -ndr NSSOC_SLEW_LOWER_SPACE2 -net $net}\nset_routing_layers -signal Metal2-TopMetal2 -clock Metal2-TopMetal2\nset_global_routing_layer_adjustment Metal2-TopMetal2 0.2\nset_nets_to_route {nssoc_sta_n_55109 nssoc_sta_n_55117 nssoc_sta_n_55140 nssoc_sta_n_55164 nssoc_sta_n_55165 nssoc_sta_n_56297 nssoc_sta_n_56302 nssoc_sta_n_56312 nssoc_sta_n_56322 nssoc_sta_n_56323 nssoc_sta_n_58638 nssoc_sta_n_58639 nssoc_sta_n_58640 nssoc_sta_n_58641 nssoc_sta_n_55098 net5477 net4410 nssoc_sta_n_56385}\nglobal_route -verbose\nwrite_db {'+str(selected)+'}\n','global')
   audit(selected,'global');audit_ndr(selected,'global')
   # Fix native encoded paths, not merely dbNet metadata: DRT reads decoder wire type.
   selected_def=OUT/'selected.def'
