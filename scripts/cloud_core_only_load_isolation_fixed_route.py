@@ -46,6 +46,16 @@ def main():
    m=re.search(r'^NETS (\d+) ;\n(.*?)^END NETS',text,re.M|re.S);assert m
    entries=re.findall(r'^[ \t]*- (\S+) (.*?);',m.group(2),re.M|re.S);assert len(entries)==int(m.group(1))
    result=dict(entries);assert len(result)==len(entries);return result
+  def canonical_record(value):
+   # DEF terminal order is non-semantic. Preserve multiplicity and every suffix token.
+   prefix,sep,suffix=value.partition('+');assert sep
+   terminals=re.findall(r'\(\s*([^()]*)\)',prefix)
+   assert not re.sub(r'\([^()]*\)','',prefix).strip(),prefix
+   return (tuple(sorted(' '.join(t.split())for t in terminals)), ' '.join((sep+suffix).split()))
+  fixture='( a A ) ( b B ) + USE SIGNAL + ROUTED Metal2 ( 10 20 ) ( 30 * )'
+  assert canonical_record(fixture)==canonical_record(fixture.replace('( a A ) ( b B )','( b B ) ( a A )'))
+  for wrong in [fixture.replace('b B','b C'),fixture.replace('( 30 * )','( 31 * )'),fixture.replace('( a A )','( a A ) ( a A )')]:
+   assert canonical_record(fixture)!=canonical_record(wrong)
   source_text=selected_def.read_text();source_records=records(source_text)
   design=re.search(r'^DESIGN (\S+) ;',source_text,re.M).group(1);units=re.search(r'^UNITS DISTANCE MICRONS (\d+) ;',source_text,re.M).group(1)
   changed={'nssoc_sta_n_11344','nssoc_sta_n_19589','nssoc_loadiso_0_net','nssoc_loadiso_1_net'}
@@ -69,7 +79,7 @@ def main():
   verify_types(fixed,'FIXED','fixed-type-admission')
   for n,v in fixed_records.items():
    normalized=re.sub(r'\+ FIXED\b','+ ROUTED',v)if n in fixed_names else v
-   assert ' '.join(normalized.split())==' '.join(source_records[n].split()),('fix_roundtrip_changed_net',n)
+   assert canonical_record(normalized)==canonical_record(source_records[n]),('fix_roundtrip_changed_net',n)
   r['fixed_route_preparation']=dict(fixed_nets=len(fixed_names),all_records_verified=True);save()
   selected=fixed
   after=OUT/'soc_top.odb';r['status']='DETAILED_ROUTING_FIXED_UNSELECTED';save()
@@ -80,7 +90,7 @@ def main():
   execute('read_db {'+str(after)+'}\nwrite_def {'+str(routed_fixed_def)+'}\n','export-fixed-result')
   routed_records=records(routed_fixed_def.read_text());assert set(routed_records)==set(source_records)
   for n in fixed_names:
-   assert ' '.join(re.sub(r'\+ FIXED\b','+ ROUTED',routed_records[n]).split())==' '.join(source_records[n].split()),('fixed_route_changed',n)
+   assert canonical_record(re.sub(r'\+ FIXED\b','+ ROUTED',routed_records[n]))==canonical_record(source_records[n]),('fixed_route_changed',n)
   thaw=OUT/'restore-route-status.def';patch(thaw,[(n,re.sub(r'\+ FIXED\b','+ ROUTED',routed_records[n]))for n in fixed_names])
   final=OUT/'restored-status.odb'
   execute('read_db {'+str(after)+'}\nread_def -floorplan_initialize {'+str(thaw)+'}\nwrite_db {'+str(final)+'}\n','restore-status')
