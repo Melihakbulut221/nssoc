@@ -1,4 +1,4 @@
-name: Fresh RC and STA of antenna-clean resized route
+name: Inventory SRAM clock drivers on actual RC failing candidate
 on:
   workflow_dispatch:
 permissions:
@@ -7,12 +7,10 @@ permissions:
 jobs:
   qualify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 360
+    timeout-minutes: 40
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
-      NSSOC_ROUTE_ARTIFACT_ID: '14470750161'
-      NSSOC_ROUTE_ARTIFACT_DIGEST: 'sha256:649654de02cb1931abd888d8ffbb038f5cb743e89aa8dfe4a7ee484805fb8415'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -25,17 +23,17 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_critical_clean_extraction.py
+          python3 -m py_compile scripts/cloud_core_only_sram_clock_inventory.py
           python3 scripts/test_antenna_insertion_admission.py
           python3 scripts/test_antenna_netlist_export.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Export fresh routed views, extract nominal RC and run three-corner STA
-        run: python3 scripts/cloud_core_only_critical_clean_extraction.py
+      - name: Read native SRAM clock connectivity and geometry
+        run: python3 scripts/cloud_core_only_sram_clock_inventory.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-critical-clean-extraction-${{ github.run_id }}
-          path: hw/soc/out/core-only-critical-clean-extraction/
+          name: core-only-sram-clock-inventory-${{ github.run_id }}
+          path: hw/soc/out/core-only-sram-clock-inventory/
           if-no-files-found: error
           retention-days: 90
