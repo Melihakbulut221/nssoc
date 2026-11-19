@@ -1,0 +1,7 @@
+# Combined layout physical admission and fresh RC
+
+Run 44446105491 at a537abf3e2f06e598cc785c2364e68b6c7df90f4 completed successfully, attempt 1. Artifact 14493847778 SHA256 ab94e7825565f4795e5cd9e905b2cfbfb333554e8f44e1c4270d03dcbb413300 and all 45 outputs independently verified. Final ODB 81766779033ee0642d322a417e4e8f389807b7cb2d1d5ceb6cf1842915fb68ee contains 106650 instances.
+
+DRC zero, antenna zero nets/pins, independent native contact/continuity checks pass. Exact cell identities, connectivity, net types, PG geometry and 103080 unaffected net records are preserved, including all 2113 clock records. Five explicitly selected data nets were routed; no clock path was freed.
+
+The next workflow exports fresh netlist/DEF from this exact ODB and performs nominal extraction plus all three existing timing corners with unchanged 20 ns/5 percent constraints. It independently authenticates the two-buffer preparation and the added clock diode inventory, requires 1397 cumulative added diodes in the new netlist and expects exactly 106650 instances. The inherited native extraction name guard changes only its exact expected instance count. Loaded unannotated nets and electrical violations remain reported. This is not qualified RC min/max, external I/O timing, transistor LVS or manufacturing approval. Prior hold-zero measurements must not be substituted for this combined layout's new results.
