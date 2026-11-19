@@ -30,7 +30,10 @@ if mode=='prepare':
    supplies={t.getNet().getName():t.getNet()for t in driver.getITerms()if str(t.getSigType())==kind};assert len(supplies)==1
    terms=[t for t in cell.getITerms()if str(t.getSigType())==kind];assert len(terms)==1;terms[0].connect(next(iter(supplies.values())))
   for sn,sp in sinks:
-   t=b.findInst(sn).findITerm(sp);assert t and t.getNet()==net and str(t.getIoType())=='INPUT';t.connect(wire);moves[sn+'/'+sp]=dict(old=netname,new=wire.getName())
+   sink=b.findInst(sn);assert sink,('missing_sink',sn)
+   t=sink.findITerm(sp);assert t and t.getNet(),('missing_connected_terminal',sn,sp)
+   actual=t.getNet().getName();assert actual==netname and str(t.getIoType())=='INPUT',('unexpected_sink_connection',sn,sp,actual,netname,str(t.getIoType()))
+   t.connect(wire);moves[sn+'/'+sp]=dict(old=netname,new=wire.getName())
   newcells[tag]=dict(master=mastername,input=netname,output=wire.getName(),initial_xy=list(cell.getLocation()))
  for i in b.getInsts():
   if i.getName()in statuses and statuses[i.getName()]=='PLACED':i.setPlacementStatus('FIRM')
