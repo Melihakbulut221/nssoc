@@ -1,0 +1,7 @@
+# Combined clock/data candidate: placement admission and routing
+
+Preparation run 44445416976 at b1583bfb21a37be84e123d3b179aaa5c26db5985 passed on attempt 1. Artifact 14493640185 SHA256 d878b0137b2bfe8e79a6be7b630238e69051c3d6ea4f340755248df3fb7722b1 and all 16 manifest outputs independently verified. Candidate ODB 39fcd33d846a52665509e699c861f5918e2e6620d290b4879b940c2bd9ed22d0 contains 106650 instances.
+
+The two data buffers are placed legally with all original geometry, PG geometry, diode connections and functional terminal connections preserved (after identity-buffer collapse). Four added buffer supply terminals pass positive-area native rail contact, with fault controls. All 103081 unaffected route records, including the clock tree, are unchanged. Input was the authenticated zero-DRC/zero-antenna clock source from run 44442857432.
+
+The next job routes nssoc_sta_n_11344, nssoc_sta_n_19589, nssoc_loadiso_0_net, nssoc_loadiso_1_net and the specifically diagnosed SIGNAL neighbor nssoc_sta_n_48214. Every other native wire is FIXED during DRT, then restored to ROUTED. Exact preservation of 103080 other records, independent physical contact/continuity, exact cell/connectivity identity, zero DRC and zero antenna are required. This includes every clock route. Fresh RC and all-corner setup/hold/electrical timing must follow; neither independent predecessor's timing can be assumed for this combined layout. 20 ns and 5 percent derating remain unchanged.
