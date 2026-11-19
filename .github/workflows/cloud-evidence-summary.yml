@@ -1,4 +1,4 @@
-name: Route 29 selected nets after 21-buffer load split
+name: Route load split with six measured contacting neighbors
 on:
   workflow_dispatch:
 permissions:
@@ -23,15 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_loadsplit_route.py scripts/audit_core_only_loadsplit_routes.py
-          PYTHONPATH=scripts python3 -c 'import cloud_core_only_loadsplit_route'
+          python3 -m py_compile scripts/cloud_core_only_loadsplit_neighbor_route.py scripts/audit_core_only_loadsplit_neighbor_routes.py scripts/verify_loadsplit_route_rejection.py
+          PYTHONPATH=scripts python3 -c 'import cloud_core_only_loadsplit_neighbor_route'
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - run: python3 scripts/cloud_core_only_loadsplit_route.py
+      - run: python3 scripts/cloud_core_only_loadsplit_neighbor_route.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-loadsplit-route-${{ github.run_id }}
-          path: hw/soc/out/core-only-loadsplit-route/
+          name: core-only-loadsplit-neighbor-route-${{ github.run_id }}
+          path: hw/soc/out/core-only-loadsplit-neighbor-route/
           if-no-files-found: error
           retention-days: 90
