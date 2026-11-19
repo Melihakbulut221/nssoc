@@ -1,0 +1,7 @@
+# Data ECO fixed-route contact rejection and bounded repair
+
+Run 44437975932, attempt 1, head 1d0880588d90ef1f322b26f6470f5eabd0464716 failed the independent geometry guard. Artifact 14491347684 SHA256 05c0b2f35349a7e47d1198ae40b7067177c77922b53f7b96a13073d0f1f9f1c3 and all 45 outputs verified. Final restored ODB: 0392c3c1601d4e0a288262048f861ee92e651032b431df59af9bd741aa7bfbcc.
+
+DRT reported zero DRC; 103081 unselected records including 2113 clocks were unchanged. Nevertheless independent native decoded geometry found three Metal2 contacts between nssoc_sta_n_19589 and fixed nssoc_sta_n_48214. The neighbor segment spans [2147900,1146500,2148100,1184500] DBU; the new wire/via shapes overlap it near y=1149020..1150945. No disconnections were reported. Fifteen antenna nets/pins remain from the input lineage. This candidate is rejected, and DRT zero is not a substitute for the independent contact guard.
+
+The next experiment starts from the same authenticated two-buffer preparation, permits the original four data nets plus only nssoc_sta_n_48214 to route, and keeps all clock routes fixed. The new preservation guard explicitly verifies that the added neighbor is SIGNAL and requires all 103080 other records to remain exact. Native FIXED/ROUTED type checks, identity, independent physical geometry and DRC gates remain enabled. No connectivity, clock period, derating or acceptance criteria are relaxed. Antenna closure and fresh RC remain necessary after geometry admission.
