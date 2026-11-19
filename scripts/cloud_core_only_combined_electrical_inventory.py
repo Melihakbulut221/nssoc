@@ -26,9 +26,13 @@ def main():
    for line in zz.read(n).decode().splitlines():
     if line.strip()in counts[corner]:kind=line.strip();continue
     if line.startswith('==='):kind=None
-    row=re.match(r'^(\S+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s+\(VIOLATED\)',line)
-    if kind and row:
-     pin,limit,actual,slack=row.groups();violations.append(dict(corner=corner,kind=kind,pin=pin,limit=float(limit),actual=float(actual),slack=float(slack)));counts[corner][kind]+=1
+    if kind and '(VIOLATED)'in line:
+     fields=line.split();assert fields[-1]=='(VIOLATED)'and len(fields)in [4,5],(kind,line)
+     if len(fields)==4:
+      assert kind=='max fanout',line
+      pin,limit,actual,_=fields;slack=None
+     else:pin,limit,actual,slack,_=fields;slack=float(slack)
+     violations.append(dict(corner=corner,kind=kind,pin=pin,limit=float(limit),actual=float(actual),slack=slack,slack_printed=slack is not None));counts[corner][kind]+=1
   assert counts=={'nom_slow_1p08V_125C':{'max slew':502,'max fanout':210,'max capacitance':52},'nom_typ_1p20V_25C':{'max slew':4,'max fanout':210,'max capacitance':54},'nom_fast_1p32V_m40C':{'max slew':0,'max fanout':210,'max capacitance':60}},counts
   (OUT/'violations.json').write_text(json.dumps(violations,indent=2)+'\n');r['source_report_artifact']=mm;r['counts']=counts
   app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64');helper=ROOT/'scripts/inventory_combined_electrical_native.py';h=sha(helper)
