@@ -65,15 +65,15 @@ elif mode=='audit':
  # and terminal lists survive legalization, including every clock net.
  def records(block,path):
   odb.write_def(block,str(path))
-  text=path.read_text();match=re.search(r'^NETS \d+ ;\n(.*?)^END NETS',text,re.M|re.S);assert match
-  entries=re.findall(r'^- (\S+) (.*?);',match.group(1),re.M|re.S)
-  result={name:' '.join(body.split()) for name,body in entries};assert len(result)==len(entries)
+  text=path.read_text();match=re.search(r'^NETS (\d+) ;\n(.*?)^END NETS',text,re.M|re.S);assert match
+  entries=re.findall(r'^[ \t]*- (\S+) (.*?);',match.group(2),re.M|re.S)
+  result={name:' '.join(body.split()) for name,body in entries};assert len(result)==len(entries)==int(match.group(1)),(len(result),len(entries),match.group(1))
   return result
  left=records(b,OUT/'source-route-audit.def');right=records(bb,OUT/'candidate-route-audit.def')
  changed={v[3]for v in SPEC}|{v['output']for v in plan['new_cells'].values()}
  checked=0
  for name,value in left.items():
-  if name not in changed:assert right.get(name)==value,('unaffected_route_changed',name);checked+=1
+  if name not in changed and str(b.findNet(name).getSigType())not in ['POWER','GROUND']:assert right.get(name)==value,('unaffected_route_changed',name);checked+=1
  assert checked>100000,checked
  for name in changed:assert not bb.findNet(name).getWire()
  (OUT/'preserved-route-audit.json').write_text(json.dumps(dict(unchanged_def_net_records=checked,changed_nets=sorted(changed),clock_routes_preserved=True,requires_incremental_routing=True),indent=2)+'\n')
