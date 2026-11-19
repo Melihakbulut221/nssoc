@@ -1,4 +1,4 @@
-name: Inspect resized core regressions and remaining worst drivers
+name: Prepare six load-isolation buffers with exact logical and physical guards
 on:
   workflow_dispatch:
 permissions:
@@ -23,15 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_resized_regression_inventory.py scripts/inventory_resized_regression_native.py
-          PYTHONPATH=scripts python3 -c 'import cloud_core_only_resized_regression_inventory'
+          python3 -m py_compile scripts/cloud_core_only_regression_load_isolation_prep.py scripts/prepare_core_only_regression_load_isolation.py
+          PYTHONPATH=scripts python3 -c 'import cloud_core_only_regression_load_isolation_prep'
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - run: python3 scripts/cloud_core_only_resized_regression_inventory.py
+      - run: python3 scripts/cloud_core_only_regression_load_isolation_prep.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-resized-regression-inventory-${{ github.run_id }}
-          path: hw/soc/out/core-only-resized-regression-inventory/
+          name: core-only-regression-load-isolation-prep-${{ github.run_id }}
+          path: hw/soc/out/core-only-regression-load-isolation-prep/
           if-no-files-found: error
           retention-days: 90
