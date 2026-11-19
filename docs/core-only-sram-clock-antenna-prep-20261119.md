@@ -1,0 +1,5 @@
+# Bounded SRAM clock antenna repair preparation
+
+The preserved clock route from run 44438114279 has one violation: clknet_1_0_0_clk_i, u_ram.g_ram_2048x64_ecc.u_b1/A_CLK, Metal4 cumulative ratio 549.84 versus required 200.00. Other SRAM clock pins meet their reported thresholds. Source artifact and every manifest output were verified before this preparation was authored.
+
+Use native repair_antennas with diode_only, one iteration and 10 percent ratio margin. Reject changes to any original cell, original terminal connectivity, net inventory, power geometry or ports. New cells must be sg13g2_antennanp diodes connected only to this clock net, and their supply pins must overlap the correct native supply rails with positive area. Require 103081 other DEF records to remain exact. This is insertion and placement admission only; detailed routing, antenna recheck, physical contact checks and fresh RC remain mandatory. The running pre-repair RC experiment is diagnostic and cannot qualify the modified layout.
