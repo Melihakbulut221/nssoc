@@ -1,4 +1,4 @@
-name: Prepare bounded SRAM clock antenna repair
+name: Route isolated SRAM clock antenna repair
 on:
   workflow_dispatch:
 permissions:
@@ -23,17 +23,17 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_sram_clock_antenna_prep.py
+          python3 -m py_compile scripts/cloud_core_only_sram_clock_antenna_route.py
           python3 scripts/test_antenna_insertion_admission.py
           python3 scripts/test_antenna_netlist_export.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Insert clock antenna diodes and verify unchanged cells, routes and power contacts
-        run: python3 scripts/cloud_core_only_sram_clock_antenna_prep.py
+      - name: Route only SRAM output clock and verify geometry, DRC and antenna closure
+        run: python3 scripts/cloud_core_only_sram_clock_antenna_route.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-sram-clock-antenna-prep-${{ github.run_id }}
-          path: hw/soc/out/core-only-sram-clock-antenna-prep/
+          name: core-only-sram-clock-antenna-route-${{ github.run_id }}
+          path: hw/soc/out/core-only-sram-clock-antenna-route/
           if-no-files-found: error
           retention-days: 90
