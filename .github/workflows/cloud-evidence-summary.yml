@@ -1,4 +1,4 @@
-name: Inspect remaining worst slew fanout and capacitance driver loads
+name: Prepare spatial load split on eight worst electrical nets
 on:
   workflow_dispatch:
 permissions:
@@ -23,15 +23,15 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_six_buffer_next_inventory.py scripts/inventory_six_buffer_next_native.py
-          PYTHONPATH=scripts python3 -c 'import cloud_core_only_six_buffer_next_inventory'
+          python3 -m py_compile scripts/cloud_core_only_loadsplit_prep.py scripts/prepare_core_only_loadsplit.py
+          PYTHONPATH=scripts python3 -c 'import cloud_core_only_loadsplit_prep'
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - run: python3 scripts/cloud_core_only_six_buffer_next_inventory.py
+      - run: python3 scripts/cloud_core_only_loadsplit_prep.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-six-buffer-next-inventory-${{ github.run_id }}
-          path: hw/soc/out/core-only-six-buffer-next-inventory/
+          name: core-only-loadsplit-prep-${{ github.run_id }}
+          path: hw/soc/out/core-only-loadsplit-prep/
           if-no-files-found: error
           retention-days: 90
