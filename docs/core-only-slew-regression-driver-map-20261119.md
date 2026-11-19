@@ -1,0 +1,7 @@
+# Regression driver mapping — 2026-11-19
+
+Native inventory run 44470513348, head d1d0421409876b3cd862414279cbe4d608bc93f3, attempt 1 passed. Artifact 14504187501 SHA256 eba5a2dd866b7452c32e4f602d966109bfe2d5bdc8baa1570674a7105016794b; both outputs verified. Source ODB 773f9b92c29ead0f8755f0a6803503c855d27279eca288eb778269190449be5f.
+
+New driver 54480 is a21oi_1, output net55232 with two functional loads and four antenna loads; a21oi_2 exists. Driver53399 is o21ai_1, output net54157 with two functional loads and one antenna load; no _2/_4/_8/_16 native master exists. Driver57755 is nor4_1, output net58480 with one functional load; nor4_2 exists. Instance and signal net numeric names use nssoc_sta_i_ and nssoc_sta_n_ prefixes. Their output nets are not among the 18 rerouted nets. Their routes were preserved, but this does not imply unchanged extracted coupling or input slew.
+
+Before another sizing or isolation ECO, extract exact resolved-name SPEF blocks for all three outputs and their ten input nets from verified baseline/slew extraction artifacts. Compare capacitance and coupling partners, resistance topology, and driver input effects. Do not attribute the cause to cell input growth without evidence. In particular do not invent an o21ai_2 master or waive the new violations. The regression candidate is not production-admitted; the clean original nominal setup/hold candidate remains available.
