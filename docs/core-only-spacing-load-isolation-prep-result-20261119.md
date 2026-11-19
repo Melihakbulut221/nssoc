@@ -1,0 +1,7 @@
+# Three-buffer preparation verified — 2026-11-19
+
+Run https://github.com/Melihakbulut221/nssoc/actions/runs/44484842788 succeeded at `424916da5073bb877d9562283d0776f9e84b4312`, attempt 1. Artifact 14509698252 SHA256 `e561c72c73d4ff2e3423d1aa7418346e899dbc55e6dd325b92fda65336e9828d`; all 16 output hashes verified. The inherited workflow step label said two buffers; executable SPEC and audited result both contain exactly three. The next workflow labels are corrected.
+
+Prepared ODB SHA256 `817da3424bab97949446a8735eb1ee14b49b7d9bbdf39e1b2680e6c6bd0761a2`. Exactly three sg13g2_buf_8 instances nssoc_slewiso_0/1/2 added, total 106654. All original cell geometry, supplies and diode connections preserved. Verified identity-buffer collapse recovers all original terminal connections; wrong-connection control rejected. Six new supply pins have correct positive-area rail contact and no wrong-rail contact. All 103082 unaffected non-power DEF records and 2113 clock records preserved; original NDR assignments unchanged.
+
+Six data nets require routing: nssoc_sta_n_100406, nssoc_sta_n_53586, nssoc_sta_n_63283, nssoc_slewiso_0_net, nssoc_slewiso_1_net, nssoc_slewiso_2_net. All other routed paths must be encoded FIXED during DRT and checked after restoring ROUTED status. Require native DRC/antenna 0, independent connectivity/contact geometry clean, original cell identity and NDR rules preserved. Only then run fresh RC/STA; no timing benefit or manufacturing closure is yet claimed.

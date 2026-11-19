@@ -1,4 +1,4 @@
-name: Prepare combined clock and critical data timing ECO
+name: Route three slew load-isolation buffers
 on:
   workflow_dispatch:
 permissions:
@@ -11,6 +11,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       APPIMAGE_EXTRACT_AND_RUN: '1'
+      NSSOC_ROUTE_ARTIFACT_ID: '14470750161'
+      NSSOC_ROUTE_ARTIFACT_DIGEST: 'sha256:649654de02cb1931abd888d8ffbb038f5cb743e89aa8dfe4a7ee484805fb8415'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -23,17 +25,18 @@ jobs:
           set -euo pipefail
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends libfuse2 tcl
-          python3 -m py_compile scripts/cloud_core_only_spacing_load_isolation_prep.py
+          python3 -m py_compile scripts/cloud_core_only_spacing_load_isolation_route.py
+          PYTHONPATH=scripts python3 -c 'import cloud_core_only_spacing_load_isolation_route'
           python3 scripts/test_antenna_insertion_admission.py
           python3 scripts/test_antenna_netlist_export.py
           python3 scripts/bootstrap_flow.py
           echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
-      - name: Insert two data buffers on clean clock route and verify geometry, identity and power
-        run: python3 scripts/cloud_core_only_spacing_load_isolation_prep.py
+      - name: Route six signal nets and verify DRC, antenna, geometry and all clocks
+        run: python3 scripts/cloud_core_only_spacing_load_isolation_route.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: core-only-spacing-load-isolation-prep-${{ github.run_id }}
-          path: hw/soc/out/core-only-spacing-load-isolation-prep/
+          name: core-only-spacing-load-isolation-route-${{ github.run_id }}
+          path: hw/soc/out/core-only-spacing-load-isolation-route/
           if-no-files-found: error
           retention-days: 90
