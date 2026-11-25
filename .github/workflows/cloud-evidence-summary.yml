@@ -1,4 +1,4 @@
-name: Complete prepared Python regression
+name: Replay interrupted Python group
 on: workflow_dispatch
 permissions:
   contents: read
@@ -8,15 +8,17 @@ jobs:
     timeout-minutes: 360
     strategy:
       fail-fast: false
-      max-parallel: 8
+      max-parallel: 2
       matrix:
-        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        part: [mirror, remaining]
     env:
       PDK_ROOT: ${{ github.workspace }}/hw/soc/tools/pdk
-      INDEX: ${{ matrix.shard }}
+      INDEX: '1'
+      PART: ${{ matrix.part }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: a58c2711c3d2fec6c88d2bdc74a8db45a932604d
           fetch-depth: 0
           filter: blob:none
           persist-credentials: false
@@ -44,7 +46,11 @@ jobs:
           assert nodes and len(nodes) == len(set(nodes))
           files = sorted({n.split("::",1)[0] for n in nodes})
           index = int(os.environ["INDEX"])
-          subset = files[index::12]
+          assigned = files[index::12]
+          mirror = "sw/tests/test_mirror_redaction_is_idempotent.py"
+          assert assigned.count(mirror) == 1
+          subset = [f for f in assigned if (f == mirror) == (os.environ["PART"] == "mirror")]
+          assert subset
           print("Collection",len(nodes),"files",len(files),"shard",index,"assigned files",len(subset),"collection SHA-256",hashlib.sha256("\n".join(nodes).encode()).hexdigest(),flush=True)
           assert set().union(*(set(files[i::12]) for i in range(12))) == set(files)
           subprocess.run(["make","test","PYTEST_ARGS=--tb=line -rfs -o tmp_path_retention_policy=failed " + " ".join(subset)], check=True)
