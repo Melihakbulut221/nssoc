@@ -39,7 +39,6 @@ jobs:
         run: |
           (cd "$RUNNER_TEMP" && ./librelane.AppImage --appimage-extract > /dev/null)
           shell=/nix/store/ycav2pkclnif0d8yhyhl1a1kl133bx1j-devshell/bin/devshell
-          test -x "$RUNNER_TEMP/squashfs-root$shell"
           docker run --rm -v "$RUNNER_TEMP/squashfs-root/nix:/nix:ro" \
             -v "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE:ro" -v "$RUNNER_TEMP:$RUNNER_TEMP" \
             -w "$GITHUB_WORKSPACE" debian:trixie-slim "$shell" python hw/soc/flow/check_interface_route_snapshot.py "${{ matrix.check }}" \
