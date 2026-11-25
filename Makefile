@@ -34,7 +34,7 @@ test:
 	cd $(ROOT) && $(PY) -m pytest -q
 
 rtl-test: soc-interfaces-prepare
-	cd $(ROOT) && $(PY) scripts/run_prepared_cocotb.py
+	cd $(ROOT) && $(PYTHON) scripts/run_prepared_cocotb.py
 
 check:
 	cd $(ROOT) && scripts/ci_local.sh all
@@ -100,7 +100,7 @@ soc-interfaces-prepare:
 
 .PHONY: soc-interfaces-test soc-interfaces-sim
 soc-interfaces-test: soc-interfaces-prepare
-	cd $(ROOT) && $(PY) scripts/run_prepared_cocotb.py soc_interfaces
+	cd $(ROOT) && $(PYTHON) scripts/run_prepared_cocotb.py soc_interfaces
 
 soc-interfaces-sim: soc-interfaces-prepare
 	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" SW_DEFINES=-DINTERFACE_DEMO IBEX_REGFILE=secded SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 bash hw/soc/flow/sim_soc.sh hw/soc/out/interfaces-cpu
