@@ -20,7 +20,10 @@ def main():
         runner = [str(root / "scripts/run_cocotb.sh"), *sys.argv[1:]]
     env = os.environ.copy()
     hardware_bin = root / "hw/.venv/bin"
-    compiler = shutil.which("iverilog")
+    suite = Path(env.get("OSS_CAD_SUITE") or root / "hw/soc/tools/oss-cad-suite")
+    search_path = os.pathsep.join((env["PATH"], str(suite.resolve() / "bin")))
+    compiler = shutil.which("iverilog", path=search_path)
+    env["PATH"] = search_path
     with tempfile.TemporaryDirectory(prefix="nssoc-cocotb-") as tmp:
         if compiler and (hardware_bin / "cocotb-config").is_file():
             runtime, _, _ = prepare_runtime(Path(compiler).parent, Path(tmp) / "bin")
