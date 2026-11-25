@@ -38,6 +38,16 @@ jobs:
       - name: Check authenticated physical checkpoint
         run: |
           (cd "$RUNNER_TEMP" && ./librelane.AppImage --appimage-extract > /dev/null)
+          df -h "$RUNNER_TEMP"
+          free -h
+          reserve=$(( $(df -Pm "$RUNNER_TEMP" | awk 'NR==2{print $4}') - 6144 ))
+          test "$reserve" -ge 4096
+          size=$(( reserve < 12288 ? reserve : 12288 ))
+          sudo fallocate -l "${size}M" "$RUNNER_TEMP/filler.swap"
+          sudo chmod 600 "$RUNNER_TEMP/filler.swap"
+          sudo mkswap "$RUNNER_TEMP/filler.swap"
+          sudo swapon "$RUNNER_TEMP/filler.swap"
+          swapon --show
           shell=/nix/store/ycav2pkclnif0d8yhyhl1a1kl133bx1j-devshell/bin/devshell
           docker run --rm -v "$RUNNER_TEMP/squashfs-root/nix:/nix:ro" \
             -v "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE:ro" -v "$RUNNER_TEMP:$RUNNER_TEMP" \
@@ -48,6 +58,8 @@ jobs:
       - name: Print native verdict and report inventory
         if: always()
         run: |
+          sudo dmesg | grep -Ei 'oom-kill|killed process' | tail -10 || true
+          find "$RUNNER_TEMP/deck" -name '*.gds' -printf '%s %p\n' || true
           if test -f "$RUNNER_TEMP/deck/result.json"; then cat "$RUNNER_TEMP/deck/result.json"; fi
           if test -d "$RUNNER_TEMP/deck/flow"; then
             find "$RUNNER_TEMP/deck/flow" -type f \( -name '*.rpt' -o -name '*.lyrdb' -o -name '*lvs*.json' \) -printf '%s %p\n'
