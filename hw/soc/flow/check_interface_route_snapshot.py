@@ -21,6 +21,7 @@ CHECKS = {
     "xor": ([Magic.StreamOut, KLayout.StreamOut, KLayout.XOR], "design__xor_difference__count"),
     "magic-drc": ([Magic.StreamOut, Magic.DRC], "magic__drc_error__count"),
     "klayout-drc": ([KLayout.StreamOut, KLayout.DRC], "klayout__drc_error__count"),
+    "filled-density": ([KLayout.StreamOut, KLayout.Filler, KLayout.Density], "klayout__density_error__count"),
     "density": ([KLayout.StreamOut, KLayout.Density], "klayout__density_error__count"),
     "antenna": ([KLayout.StreamOut, KLayout.Antenna], "klayout__antenna_error__count"),
     "lvs": ([Magic.StreamOut, Magic.SpiceExtraction, Netgen.LVS], "design__lvs_error__count"),
@@ -79,7 +80,11 @@ def main():
     final = flow.start(with_initial_state=state, _force_run_dir=str(out / "flow"))
     value = final.metrics.get(metric)
     result = {"check": args.check, "odb_sha256": digest, "metric": metric, "value": value}
-    if args.check in {"klayout-drc", "density"}:
+    if args.check == "filled-density":
+        filled, = (out / "flow").glob("*-klayout-filler/soc_top.gds")
+        with filled.open("rb") as src:
+            result["filled_gds_sha256"] = hashlib.file_digest(src, "sha256").hexdigest()
+    if args.check in {"klayout-drc", "density", "filled-density"}:
         report, = (out / "flow").rglob("*.klayout.lyrdb")
         groups = {}
         for _, item in ET.iterparse(report, events=("end",)):
