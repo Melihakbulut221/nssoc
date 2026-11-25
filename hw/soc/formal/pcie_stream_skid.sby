@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+[tasks]
+width10
+width11
+width12
+cover12
+
+[options]
+mode prove
+cover12: mode cover
+depth 12
+
+[engines]
+~cover12: abc pdr
+cover12: smtbmc yices
+
+[script]
+read_verilog -defer -sv soc_pcie_replay_tx.v
+read_verilog -formal -sv pcie_stream_skid_props.v
+width10: chparam -set W 10 pcie_stream_skid_props
+width11: chparam -set W 11 pcie_stream_skid_props
+prep -top pcie_stream_skid_props -flatten
+
+[files]
+../rtl/pcie/soc_pcie_replay_tx.v
+pcie_stream_skid_props.v
