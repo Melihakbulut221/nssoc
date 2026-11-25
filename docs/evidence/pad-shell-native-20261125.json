@@ -1,0 +1,50 @@
+{
+  "status": "PASS_NATIVE_IO_TRANSPORT_WITH_REJECTED_WIRING_MUTATIONS",
+  "cases": {
+    "baseline": {
+      "returncode": 0,
+      "accepted": true,
+      "log_sha256": "55a274ce06e344b6db59efdfd153d5824c80bda906f8b1c1fabbc41cf2ba7e22"
+    },
+    "i2c_drives_high": {
+      "returncode": 1,
+      "accepted": false,
+      "log_sha256": "ffc2f3e696c8cbedfb577990a33ac09e2ed3b29c162cc3826eb73c51c6b91992"
+    },
+    "gpio_always_drives": {
+      "returncode": 1,
+      "accepted": false,
+      "log_sha256": "5c587ecf383489d765361982426d1c2c7e7c431fe05c776aa05cba8822d27ce4"
+    },
+    "gpio_lane_permutation": {
+      "returncode": 1,
+      "accepted": false,
+      "log_sha256": "5c587ecf383489d765361982426d1c2c7e7c431fe05c776aa05cba8822d27ce4"
+    },
+    "gpio_input_swap": {
+      "returncode": 1,
+      "accepted": false,
+      "log_sha256": "a5c8a2df19520cf45a4d745df74cdb7005adc13e5abe6204056da6e4e457b024"
+    },
+    "status_payload_swap": {
+      "returncode": 1,
+      "accepted": false,
+      "log_sha256": "a4aeab026c8de01057aee59b924dd6ac0ab8ae67638580d5a2a301330ca8200a"
+    }
+  },
+  "input_sha256": {
+    "/workspace/nssoc/scripts/check_chip_io.py": "8355be1f5d84cf49d5067ccb901bda3650b89054d519456a29ed701aee8b2138",
+    "/workspace/nssoc/scripts/generate_chip_io.py": "eecf4d939327bd7ef0ba31e6a6ff542b110c78b663cb8672ec8474903517321c",
+    "/workspace/nssoc/hw/soc/chip-io-contract.json": "c14461e30ce73cedff6a55baeaf05831c51796e4dc56aa2213ddcce484d729e0",
+    "/workspace/nssoc/hw/soc/rtl/chip/soc_status_serial.v": "ff281403d1e0962026b194a81268ae736e165193f8ff92addaab45798f923e62",
+    "/workspace/nssoc/hw/soc/tools/pdk-bootstrap-ca/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/verilog/sg13g2_io.v": "0195945188ec15560ad2cc9c000e3ff70255d65da717099b87b6b726a6e53429",
+    "/workspace/nssoc/hw/soc/tools/oss-cad-suite/bin/iverilog": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d",
+    "/workspace/nssoc/hw/soc/tools/oss-cad-suite/bin/vvp": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc",
+    "/workspace/nssoc/hw/soc/out/pad-shell-cloud-20261125/tb_chip_io.v": "c481b1ce2fb6f7c4e237d4befe93472cc313e22b00a53c4fe7a5542b484134d8",
+    "/workspace/nssoc/hw/soc/out/pad-shell-cloud-20261125/core_stimulus.v": "9fe51e2e68d5e47e27e0d665b4bb08598bb1b2ee5a7a2200c14f2607d1aa4992",
+    "/workspace/nssoc/hw/soc/out/pad-shell-cloud-20261125/nssoc_chip.v": "a7f935e1536f632ad72de358b453db0fba449cbd83864ead496776636f9c5d58"
+  },
+  "scope": "Exercise the chip shell with native IHP IO models and a pin-stimulus core.\n\nThis is an IO wiring/serial-status test, not execution of the real CPU or PHY,\nand not electrical, ESD, timing or physical padframe qualification.\n",
+  "timing_accepted": false,
+  "manufacturing_approval": false
+}
