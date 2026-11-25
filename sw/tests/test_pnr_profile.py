@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -65,3 +66,29 @@ def test_duplicate_macro_is_not_silently_overwritten(design):
     netlist, _, _, master = design
     netlist.write_text(netlist.read_text().replace("endmodule", f"{master} \\u_ram.ecc.u_b0 ();\nendmodule"))
     with pytest.raises(ValueError, match="Duplicate"): profile.mapped_macros(netlist)
+
+
+def test_mbist_fifo_floorplan_and_power_match_all_banks(tmp_path):
+    directory = ROOT / "hw/soc/pnr"
+    legacy = json.loads((directory / "config-interfaces-logicrom.json").read_text())
+    path = directory / "config-interfaces-mbist-logicrom.json"
+    config = json.loads(path.read_text())
+    master = "RM_IHPSG13_2P_256x16_c2_bm_bist"
+    placements = config["MACROS"][master]["instances"]
+    expected = {}
+    for direction in ("rx", "tx"):
+        for bank in range(8):
+            prefix = f"u_eth.u_mac.{direction}_fifo.fifo_inst"
+            name = f"{prefix}.u_sram.g_bank[{bank}].u_mem"
+            expected[name] = legacy["MACROS"][master]["instances"][f"{prefix}.mem.0.{bank}"]
+            odb_name = name.replace("[", r"\[").replace("]", r"\]")
+            connections = [rule.split()[1:] for rule in config["PDN_MACRO_CONNECTIONS"]
+                           if re.fullmatch(rule.split()[0], odb_name)]
+            assert sorted(connections) == [["VPWR", "VGND", pin, "VSS!"]
+                                           for pin in ("VDD!", "VDDARRAY!")]
+    assert placements == expected
+    mapped = tmp_path / "soc.v"
+    mapped.write_text("module soc_top();\n" + "".join(
+        f"{cell} \\{name} ();\n" for name, cell in profile.configured_macros(config).items()
+    ) + "endmodule\n")
+    assert profile.select(mapped, directory, "logic") == path
