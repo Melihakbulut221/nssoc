@@ -5,10 +5,20 @@
 set -euo pipefail
 root=$(git rev-parse --show-toplevel)
 original=14f5b2f38ce6040433b888b3522800b1b264a04d
+npu_source=17efc403ed235cd47dcedc4fae70f9afb12dc671
 head=$(git -C "$root" rev-parse HEAD)
 python=$(command -v "${PYTHON:-python3}")
 if ! git -C "$root" cat-file -e "$original^{commit}"; then
     echo "Fetch the historical source with git fetch --depth=1 origin $original" >&2
+    exit 1
+fi
+case "${1:-}" in
+    "") with_npu=false ;;
+    --with-npu) with_npu=true ;;
+    *) echo "Usage: $0 [--with-npu]" >&2; exit 2 ;;
+esac
+if "$with_npu" && ! git -C "$root" cat-file -e "$npu_source^{commit}"; then
+    echo "Fetch the historical source with git fetch --depth=1 origin $npu_source" >&2
     exit 1
 fi
 temp=$(mktemp -d)
@@ -18,6 +28,9 @@ git -C "$root" worktree add --quiet --no-checkout --detach "$work" "$head"
 cd "$work"
 git sparse-checkout init --no-cone
 git sparse-checkout set '/scripts/' '/sw/tests/' '/hw/soc/pnr/*lock.json' '/hw/soc/tb/' '/hw/soc/flow/' '/.github/workflows/' '/docs/evidence/*json' '/docs/evidence/alu-prefix-c10-input-20261002.tar.xz'
+if "$with_npu"; then
+    git sparse-checkout add '/docs/evidence/alu-qualification-input-20261002.tar.xz'
+fi
 git checkout --quiet HEAD
 git restore --source="$original" --worktree -- \
     .github/workflows/timing-alu-qualification.yml \
@@ -26,6 +39,14 @@ git restore --source="$original" --worktree -- \
     .github/workflows/timing-alu-state-partitions.yml \
     .github/workflows/timing-alu-state-refinement.yml \
     hw/soc/flow/sim_logic_boot_gl.py
+if "$with_npu"; then
+    git restore --source="$npu_source" --worktree -- \
+        .github/workflows/timing-alu-boot-trace.yml \
+        .github/workflows/timing-npu-state-trace.yml \
+        .github/workflows/timing-npu-cone-trace.yml \
+        .github/workflows/timing-npu-frontier-trace.yml \
+        .github/workflows/timing-npu-evq-trace.yml
+fi
 # The C10 protocol tests pin an 81-file capture including generated Ibex RTL.
 # Restore the exact source view into this temporary worktree only.
 "$python" - "$temp" <<'PYTHON'
@@ -51,6 +72,16 @@ shutil.copytree(stage / "sources", root, dirs_exist_ok=True)
 shutil.rmtree(stage)
 core.source_contract(root)
 PYTHON
-"$python" -m pytest -q sw/tests/test_alu_boot_trace.py sw/tests/test_alu_hard_bits.py \
-    sw/tests/test_alu_remaining_bits.py sw/tests/test_alu_state_refinement.py \
+suites=(
+    sw/tests/test_alu_boot_trace.py sw/tests/test_alu_hard_bits.py
+    sw/tests/test_alu_remaining_bits.py sw/tests/test_alu_state_refinement.py
     sw/tests/test_alu_state_bit_benchmark.py sw/tests/test_core_ack_protocol.py
+)
+if "$with_npu"; then
+    # The archived observer workflow uses Ubuntu 22.04 Icarus 11.0.
+    suites+=(
+        sw/tests/test_npu_write_trace.py sw/tests/test_npu_state_trace.py
+        sw/tests/test_npu_cone_trace.py sw/tests/test_npu_evq_trace.py sw/tests/test_npu_frontier_trace.py
+    )
+fi
+"$python" -m pytest -q "${suites[@]}"
