@@ -45,8 +45,8 @@ reg[511:0] current_block,next_block,current_predecode,next_predecode;
 reg current_valid,next_valid;reg[1:0] slice;
 wire enabled=rst_ni&&!flush_i&&!stream_start_i&&!stream_abort_i;
 wire step=enabled&&active_o&&!ending&&current_valid&&drive_step;
-wire block_ready_o=enabled&&active_o&&!ending&&drive_ready&&(!next_valid||last_slice);
 wire last_slice=step&&slice==3;
+wire block_ready_o=enabled&&active_o&&!ending&&drive_ready&&(!next_valid||last_slice);
 wire[511:0] input_predecode=predecode_block(payload_i);
 """.replace("NAME", name)
         + OLD["functions"]()
