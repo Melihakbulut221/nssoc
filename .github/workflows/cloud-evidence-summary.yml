@@ -37,7 +37,12 @@ jobs:
           python scripts/bootstrap_flow.py --destination "$RUNNER_TEMP/librelane.AppImage"
       - name: Check authenticated physical checkpoint
         run: |
-          "$RUNNER_TEMP/librelane.AppImage" python hw/soc/flow/check_interface_route_snapshot.py "${{ matrix.check }}" \
+          (cd "$RUNNER_TEMP" && ./librelane.AppImage --appimage-extract > /dev/null)
+          shell=/nix/store/ycav2pkclnif0d8yhyhl1a1kl133bx1j-devshell/bin/devshell
+          test -x "$RUNNER_TEMP/squashfs-root$shell"
+          docker run --rm -v "$RUNNER_TEMP/squashfs-root/nix:/nix:ro" \
+            -v "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE:ro" -v "$RUNNER_TEMP:$RUNNER_TEMP" \
+            -w "$GITHUB_WORKSPACE" debian:trixie-slim "$shell" python hw/soc/flow/check_interface_route_snapshot.py "${{ matrix.check }}" \
             --archive docs/evidence/qspi-first-detail-20261125.odb.xz \
             --receipt docs/evidence/qspi-first-detail-nominal-rc-20261125.json \
             --pdk-root "$PDK_ROOT" --out "$RUNNER_TEMP/deck"
