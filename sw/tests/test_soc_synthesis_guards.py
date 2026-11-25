@@ -252,6 +252,9 @@ else:
 
 
 def _sg13g2_liberty():
+    if os.environ.get("PDK_ROOT"):
+        candidate = Path(os.environ["PDK_ROOT"]) / "ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib"
+        return candidate if candidate.is_file() else None
     pattern = (".ciel/ciel/ihp-sg13g2/versions/*/ihp-sg13g2/libs.ref/"
                "sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib")
     libs = sorted(Path.home().glob(pattern))
@@ -3396,6 +3399,9 @@ def test_every_pnr_config_declares_every_macro_the_rtl_instantiates():
 
 
 def _sg13g2_tech_lef():
+    if os.environ.get("PDK_ROOT"):
+        candidate = Path(os.environ["PDK_ROOT"]) / "ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef"
+        return candidate if candidate.is_file() else None
     pattern = (".ciel/ciel/ihp-sg13g2/versions/*/ihp-sg13g2/libs.ref/"
                "sg13g2_stdcell/lef/sg13g2_tech.lef")
     lefs = sorted(Path.home().glob(pattern))
