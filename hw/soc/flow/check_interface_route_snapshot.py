@@ -9,6 +9,7 @@ import lzma
 from pathlib import Path
 import shutil
 import subprocess
+import xml.etree.ElementTree as ET
 
 from librelane.common import Path as LanePath
 from librelane.flows import SequentialFlow
@@ -78,6 +79,20 @@ def main():
     final = flow.start(with_initial_state=state, _force_run_dir=str(out / "flow"))
     value = final.metrics.get(metric)
     result = {"check": args.check, "odb_sha256": digest, "metric": metric, "value": value}
+    if args.check in {"klayout-drc", "density"}:
+        report, = (out / "flow").rglob("*.klayout.lyrdb")
+        groups = {}
+        for _, item in ET.iterparse(report, events=("end",)):
+            if item.tag != "item":
+                continue
+            key = (item.findtext("category"), item.findtext("cell"))
+            group = groups.setdefault(key, {"items": 0, "sample": item.findtext("values/value")})
+            group["items"] += 1
+            item.clear()
+        result["rule_cells"] = [
+            {"category": category, "cell": cell, **entry}
+            for (category, cell), entry in sorted(groups.items(), key=lambda row: -row[1]["items"])
+        ]
     print(json.dumps(result, default=str), flush=True)
     (out / "result.json").write_text(json.dumps(result, indent=2, default=str) + "\n")
     if value is None or value != 0:
