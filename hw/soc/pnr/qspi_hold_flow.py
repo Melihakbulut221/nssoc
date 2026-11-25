@@ -5,11 +5,16 @@ from pathlib import Path
 
 from librelane.flows import Flow
 from librelane.steps import OpenROAD
+from librelane.state import DesignFormat
 
 from interface_flow import Interfaces
 
 
 class RouteWithQspiDelay(OpenROAD.GlobalRouting):
+    # A native routing step ordinarily inherits the preceding netlists. This
+    # variant inserts cells, so both exported views must describe the new ODB.
+    outputs = [*OpenROAD.GlobalRouting.outputs, DesignFormat.NETLIST, DesignFormat.POWERED_NETLIST]
+
     def get_script_path(self):
         native = Path(super().get_script_path())
         script = native.read_text()

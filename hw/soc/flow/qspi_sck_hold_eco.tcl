@@ -20,11 +20,10 @@ proc insert_qspi_sck_hold_delay {count} {
     if {[[$driver getMTerm] getIoType] ne "OUTPUT"} {
         error "Missing SCK output driver"
     }
-    for {set i 0} {$i < $count} {incr i} {
-        if {[$block findInst qspi_sck_hold_$i] ne "NULL" ||
-            [$block findNet qspi_sck_dly_$i] ne "NULL"} {
-            error "Existing QSPI ECO cell or net at index $i"
-        }
+    # OpenROAD appends a unique serial number to the requested prefixes.
+    if {[llength [get_cells -quiet qspi_sck_hold_*]] ||
+        [llength [get_nets -quiet qspi_sck_dly_*]]} {
+        error "Existing QSPI ECO cells or nets"
     }
     lassign [[$driver getInst] getLocation] x y
     set x [ord::dbu_to_microns $x]
