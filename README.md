@@ -77,8 +77,7 @@ make rtl-test
 make check
 ```
 
-The installer verifies the pinned 2026-08-04 archive and preserves existing installations. Allow about 4 GB;
-`OSS_CAD_SUITE=/absolute/path` selects another checkout. Physical tools/PDK are separate.
+The installer verifies the pinned 2026-08-04 archive and preserves existing installations. Allow about 4 GB; `OSS_CAD_SUITE=/absolute/path` selects another checkout. Physical tools/PDK are separate.
 
 Local `make check` covers Python, licensing and documentation; hardware jobs are separate. Missing dependencies produce skips.
 
@@ -89,16 +88,13 @@ make soc-sim
 make soc-memory-parity
 ```
 
-The default `SOC_INTERFACE_PROFILE=base` includes I2C/Ethernet and SPI. Set `SOC_INTERFACE_PROFILE=full`
-for LGPL SpaceWire/CAN in preparation and every subsequent build command. See [interface profiles](docs/88-interface-integration.md).
+The default `SOC_INTERFACE_PROFILE=base` includes I2C/Ethernet and SPI. Set `SOC_INTERFACE_PROFILE=full` for LGPL SpaceWire/CAN in preparation and every subsequent build command. See [interface profiles](docs/88-interface-integration.md).
 
-On a prepared checkout, `python3 scripts/check_formal_sweep.py` runs formal checks with source guards and explicit exceptions.
-RTL, RAM parity, formal and processor/boot jobs remain separate; whole-netlist native boot is a long-running workflow option.
+On a prepared checkout, `python3 scripts/check_formal_sweep.py` runs formal checks with source guards and explicit exceptions. RTL, RAM parity, formal and processor/boot jobs remain separate; whole-netlist native boot is a long-running workflow option.
 
 The [pilot driver](sw/pilotlink/README.md) supports cocotb, serial and RP2040 SPI backends. Physical-board qualification remains open.
 
-The [SoC datasheet](docs/60-soc-datasheet.md), section 0.4, describes implemented interfaces, profiles and verification limits.
-Older measurements retain their original revisions; the [errata index](docs/ERRATA.md) links corrections and reproduction paths.
+The [SoC datasheet](docs/60-soc-datasheet.md), section 0.4, describes implemented interfaces, profiles and verification limits. Older measurements retain their original revisions; the [errata index](docs/ERRATA.md) links corrections and reproduction paths.
 
 ## Repository map
 
