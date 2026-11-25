@@ -26,4 +26,6 @@ git restore --source="$original" --worktree -- \
     .github/workflows/timing-alu-state-partitions.yml \
     .github/workflows/timing-alu-state-refinement.yml \
     hw/soc/flow/sim_logic_boot_gl.py
-"$python" -m pytest -q sw/tests/test_alu_boot_trace.py sw/tests/test_alu_hard_bits.py
+"$python" -m pytest -q sw/tests/test_alu_boot_trace.py sw/tests/test_alu_hard_bits.py \
+    sw/tests/test_alu_remaining_bits.py sw/tests/test_alu_state_refinement.py \
+    sw/tests/test_alu_state_bit_benchmark.py
