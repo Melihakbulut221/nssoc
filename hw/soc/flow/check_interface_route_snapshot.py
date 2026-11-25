@@ -20,6 +20,8 @@ CHECKS = {
     "xor": ([Magic.StreamOut, KLayout.StreamOut, KLayout.XOR], "design__xor_difference__count"),
     "magic-drc": ([Magic.StreamOut, Magic.DRC], "magic__drc_error__count"),
     "klayout-drc": ([KLayout.StreamOut, KLayout.DRC], "klayout__drc_error__count"),
+    "density": ([KLayout.StreamOut, KLayout.Density], "klayout__density_error__count"),
+    "antenna": ([KLayout.StreamOut, KLayout.Antenna], "klayout__antenna_error__count"),
     "lvs": ([Magic.StreamOut, Magic.SpiceExtraction, Netgen.LVS], "design__lvs_error__count"),
 }
 
@@ -50,6 +52,7 @@ def main():
     original = json.loads((pnr / "config-interfaces-mbist-logicrom.json").read_text())
     config = {key: original[key] for key in ("DESIGN_NAME", "PDK", "STD_CELL_LIBRARY", "MACROS")}
     steps, metric = CHECKS[args.check]
+    config["PRIMARY_GDSII_STREAMOUT_TOOL"] = "klayout" if steps[0] == KLayout.StreamOut else "magic"
     if args.check == "magic-drc":
         config["MAGIC_DRC_USE_GDS"] = False
     if args.check == "lvs":
