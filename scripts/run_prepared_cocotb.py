@@ -14,7 +14,10 @@ from cocotb_icarus_runtime import prepare_runtime
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    runner = [str(root / "scripts/run_cocotb.sh"), *sys.argv[1:]]
+    if sys.argv[1:2] == ["--pytest"]:
+        runner = [sys.executable, "-m", "pytest", *sys.argv[2:]]
+    else:
+        runner = [str(root / "scripts/run_cocotb.sh"), *sys.argv[1:]]
     env = os.environ.copy()
     hardware_bin = root / "hw/.venv/bin"
     compiler = shutil.which("iverilog")

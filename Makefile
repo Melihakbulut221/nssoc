@@ -27,11 +27,11 @@ setup:
 	@$(PYTHON) -c 'import sys; assert (3,9) <= sys.version_info[:2] <= (3,13), "cocotb 2.0.1 requires Python 3.9-3.13; set PYTHON to a compatible interpreter"'
 	$(PYTHON) -m venv $(ROOT)/.venv
 	$(PYTHON) -m venv $(ROOT)/hw/.venv
-	$(PY) -m pip install -r $(ROOT)/sw/requirements.txt
+	$(PY) -m pip install -r $(ROOT)/sw/requirements.txt -r $(ROOT)/hw/requirements.txt
 	$(ROOT)/hw/.venv/bin/python -m pip install -r $(ROOT)/hw/requirements.txt
 
 test:
-	cd $(ROOT) && $(PY) -m pytest -q
+	cd $(ROOT) && $(PY) scripts/run_prepared_cocotb.py --pytest -q $(PYTEST_ARGS)
 
 rtl-test: soc-interfaces-prepare
 	cd $(ROOT) && $(PYTHON) scripts/run_prepared_cocotb.py
