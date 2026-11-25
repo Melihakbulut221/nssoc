@@ -46,6 +46,9 @@ def main():
         raise ValueError("Routing checkpoint digest mismatch")
     script = out / "export.tcl"
     script.write_text("read_db soc_top.odb\nwrite_def soc_top.def\n"
+                      "set b [ord::get_db_block]\nset r [$b getDieArea]\n"
+                      "set f [open die-area.txt w]\n"
+                      "foreach side {xMin yMin xMax yMax} {puts $f [expr {double([$r $side])/[$b getDbUnitsPerMicron]}]}\nclose $f\n"
                       "write_verilog -include_pwr_gnd soc_top.pnl.v\n")
     subprocess.run(["openroad", "-exit", str(script)], cwd=out, check=True)
     pnr = Path(__file__).resolve().parents[1] / "pnr"
@@ -59,6 +62,7 @@ def main():
         if not all(all(str(view).startswith("pdk_dir::") for view in macro[key])
                    for macro in config["MACROS"].values() for key in ("gds", "lef")):
             raise ValueError("Expected pinned PDK SRAM GDS and LEF views")
+        config["DIE_AREA"] = [float(n) for n in (out / "die-area.txt").read_text().split()]
         config["MAGIC_MACRO_STD_CELL_SOURCE"] = "PDK"
     if args.check == "magic-drc":
         config["MAGIC_DRC_USE_GDS"] = False
