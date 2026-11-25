@@ -13,15 +13,40 @@ import xml.etree.ElementTree as ET
 
 from librelane.common import Path as LanePath
 from librelane.flows import SequentialFlow
-from librelane.state import State
+from librelane.state import DesignFormat, State
 from librelane.steps import KLayout, Magic, Netgen
+
+
+class StagedIHPFiller(KLayout.Filler):
+    """Release KLayout memory between the three native IHP fill passes."""
+
+    def run_ihp_sg13g2(self, state_in, **kwargs):
+        kwargs, env = self.extract_env(kwargs)
+        env.update(PDK_ROOT=str(self.config["PDK_ROOT"]), PDK=str(self.config["PDK"]))
+        current = state_in[DesignFormat.GDS]
+        passes = [
+            ("active-poly.gds", ("no_metal", "no_topmetal")),
+            ("metal.gds", ("no_activ", "no_topmetal")),
+            ("soc_top.gds", ("no_activ", "no_metal")),
+        ]
+        for filename, disabled in passes:
+            target = Path(self.step_dir) / filename
+            args = ["klayout", "-b", "-zz", "-r", str(self.config["KLAYOUT_FILLER_SCRIPT"]),
+                    "-rd", f"output_file={target}"]
+            for flag in disabled:
+                args.extend(["-rd", flag])
+            self.run_subprocess([*args, str(current)], env=env)
+            if target.stat().st_size == 0:
+                raise ValueError(f"Empty filled layout at {target}")
+            current = target
+        return {DesignFormat.GDS: LanePath(current)}, {}
 
 
 CHECKS = {
     "xor": ([Magic.StreamOut, KLayout.StreamOut, KLayout.XOR], "design__xor_difference__count"),
     "magic-drc": ([Magic.StreamOut, Magic.DRC], "magic__drc_error__count"),
     "klayout-drc": ([KLayout.StreamOut, KLayout.DRC], "klayout__drc_error__count"),
-    "filled-density": ([KLayout.StreamOut, KLayout.Filler, KLayout.Density], "klayout__density_error__count"),
+    "filled-density": ([KLayout.StreamOut, StagedIHPFiller, KLayout.Density], "klayout__density_error__count"),
     "density": ([KLayout.StreamOut, KLayout.Density], "klayout__density_error__count"),
     "antenna": ([KLayout.StreamOut, KLayout.Antenna], "klayout__antenna_error__count"),
     "lvs": ([Magic.StreamOut, Magic.SpiceExtraction, Netgen.LVS], "design__lvs_error__count"),
