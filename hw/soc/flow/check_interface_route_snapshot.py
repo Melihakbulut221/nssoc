@@ -53,6 +53,13 @@ def main():
     config = {key: original[key] for key in ("DESIGN_NAME", "PDK", "STD_CELL_LIBRARY", "MACROS")}
     steps, metric = CHECKS[args.check]
     config["PRIMARY_GDSII_STREAMOUT_TOOL"] = "klayout" if steps[0] == KLayout.StreamOut else "magic"
+    if Magic.StreamOut in steps:
+        # The hard SRAM and its LEF/GDS come from the same pinned PDK tree.
+        # Magic imports the real macro GDS and annotates it with its matching LEF.
+        if not all(all(str(view).startswith("pdk_dir::") for view in macro[key])
+                   for macro in config["MACROS"].values() for key in ("gds", "lef")):
+            raise ValueError("Expected pinned PDK SRAM GDS and LEF views")
+        config["MAGIC_MACRO_STD_CELL_SOURCE"] = "PDK"
     if args.check == "magic-drc":
         config["MAGIC_DRC_USE_GDS"] = False
     if args.check == "lvs":
