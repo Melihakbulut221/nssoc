@@ -419,26 +419,24 @@ def test_the_codec_corrects_on_every_path_that_reads_a_row():
     assert "wire [31:0] enc_in = req_i ? wdata_i : rd_word;" in ecc
     assert ".data_in   ({56'h0, enc_in[8*l +: 8]})," in ecc
     assert ".data_in   ({32'h0, enc_in})," in ecc
-    assert "assign rd_word[8*l +: 8] = row_dout_i[8*l +: 8] ^ mask;" in ecc
-    assert "assign rd_word  = row_dout_i[31:0] ^ mask;" in ecc
+    assert "assign rd_word[8*l +: 8] = `SOC_MEM_DEC_ROW[8*l +: 8] ^ mask;" in ecc
+    assert "assign rd_word  = `SOC_MEM_DEC_ROW[31:0] ^ mask;" in ecc
     assert "assign bm_wb[8*l +: 8]        = {8{sec[l]}};" in ecc
     assert "assign bm_wb[32+8*l +: 8]     = {8{sec[l]}};" in ecc
     assert "assign s_wb   = s_hit && sec_any;" in ecc
-    assert "wire err0 = er0 || (rsp_rd && ded_any);" in ecc
+    assert "wire err0 = `SOC_MEM_ER || (rsp_rd && ded_any);" in ecc
     assert "assign sec_o      = s_wb;" in ecc
     assert "assign rd_o       = rsp_rd && sec_any;" in ecc
     assert "assign ded_o      = (rsp_rd || s_hit) && ded_any;" in ecc
     # The raw row reaches nothing but the decoders, the correction XOR
     # and the plain arm.
-    for line in ecc.splitlines():
-        code = line.split("//")[0]
-        if "row_dout_i" not in code or "input" in code:
-            continue
-        assert ("secded_dec" in code or ".code_in" in code
-                or "^ mask" in code or "g_dec_plain" in code
-                or "assign rd_word = row_dout_i[31:0];" in code), (
-            "the raw row is read somewhere the correction does not "
-            "cover:\n  " + code.strip())
+    raw_uses = {line.split("//")[0].strip() for line in ecc.splitlines()
+                if "row_dout_i" in line.split("//")[0] and "input" not in line.split("//")[0]}
+    assert raw_uses == {"else         raw_q <= row_dout_i;", "assign dec_row = row_dout_i;",
+                        "`define SOC_MEM_DEC_ROW row_dout_i"}
+    assert "assign dec_row = raw_q;" in ecc
+    assert "`define SOC_MEM_DEC_ROW dec_row" in ecc
+    assert "`define SOC_MEM_ER er_d" in ecc and "`define SOC_MEM_ER er0" in ecc
 
 
 def test_the_scrubber_never_takes_the_port_from_the_bus():
@@ -552,7 +550,9 @@ def test_the_pnr_floorplans_name_the_arms_the_rtl_has():
             if macro == "RM_IHPSG13_2P_256x16_c2_bm_bist":
                 # These SRAMs are inferred from the two Ethernet FIFOs by
                 # techmap; they do not belong to soc_mem_sram's generate arms.
-                expected = {f"u_eth.u_mac.{direction}_fifo.fifo_inst.mem.0.{bank}"
+                leaf = ("u_sram.g_bank[{bank}].u_mem" if "SOC_ETH_MBIST" in c.get("VERILOG_DEFINES", [])
+                        else "mem.0.{bank}")
+                expected = {f"u_eth.u_mac.{direction}_fifo.fifo_inst." + leaf.format(bank=bank)
                             for direction in ("rx", "tx") for bank in range(8)}
                 assert set(spec["instances"]) == expected, cfg.name
                 mapping = ROOT / "hw/soc/techmap/eth_ram_map.v"

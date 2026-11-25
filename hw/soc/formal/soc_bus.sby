@@ -30,12 +30,15 @@
 # too-strong environment assumption would quietly make unreachable.
 
 [tasks]
-bmc      base bmc
-prove    base prove
-cover    base cover
-bmc_rr   rr   bmc
-prove_rr rr   prove
-cover_rr rr   cover
+bmc      base direct bmc
+prove    base direct prove
+cover    base direct cover
+bmc_rr   rr direct bmc
+prove_rr rr direct prove
+cover_rr rr direct cover
+
+prove_input_rr rr input_queue prove
+cover_input_rr rr input_queue cover
 
 [options]
 bmc: mode bmc
@@ -49,7 +52,8 @@ cover: depth 24
 smtbmc yices
 
 [script]
-read_verilog -I. -formal soc_bus.v
+direct: read_verilog -I. -formal soc_bus.v
+input_queue: read_verilog -DSOC_BUS_IREQ_REG -DSOC_BUS_WDATA_OWN -I. -formal soc_bus.v
 # The chparam needs a derived hierarchy to bind to, and `prep` would
 # derive it too late. Both lines are task-prefixed so that the default
 # tasks run the script they have always run.
