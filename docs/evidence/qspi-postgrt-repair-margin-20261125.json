@@ -1,0 +1,107 @@
+{
+  "scope": "MBIST 20-SRAM Ethernet/QSPI interface soc_top, estimated global-route RC after timing repair",
+  "source_state": {
+    "bytes": 9440,
+    "sha256": "ed22617acd113750d8b36b9c2d1e1f31ea2bbe120f1ed96b992845908c470883"
+  },
+  "changed_optimizer_setting": "GRT_RESIZER_HOLD_SLACK_MARGIN",
+  "timing_derate_percent": 5.0,
+  "allow_setup_violations": false,
+  "variants": {
+    "control": {
+      "margin_ns": 0.05,
+      "timing": {
+        "nom_fast_1p32V_m40C": {
+          "port": {
+            "hold_ns": 0.741491,
+            "setup_ns": 11.151543
+          },
+          "design": {
+            "hold_ns": -0.791102,
+            "setup_ns": 3.994205
+          }
+        },
+        "nom_typ_1p20V_25C": {
+          "port": {
+            "hold_ns": 3.059072,
+            "setup_ns": 8.43741
+          },
+          "design": {
+            "hold_ns": -0.059184,
+            "setup_ns": 2.659911
+          }
+        },
+        "nom_slow_1p08V_125C": {
+          "port": {
+            "hold_ns": 7.29578,
+            "setup_ns": 3.493884
+          },
+          "design": {
+            "hold_ns": -0.00702,
+            "setup_ns": -1.422679
+          }
+        }
+      },
+      "native_design": {
+        "bytes": 90041452,
+        "sha256": "80cb70590de3325dbe8b3c656eabecb867ea00791767c874255c3d75e2af8815"
+      },
+      "measurement_log": {
+        "bytes": 9386,
+        "sha256": "076440c6b0f94a97800f4480a77d98437ab9843220a0b7ae06ecb1b86d993d97"
+      },
+      "timing_repair_log": {
+        "bytes": 94307,
+        "sha256": "dad01ae6bb2eeb07b126c3a31c5b2815807477cdc2d1533f5915b1658f44d571"
+      }
+    },
+    "trial": {
+      "margin_ns": 0.3,
+      "timing": {
+        "nom_fast_1p32V_m40C": {
+          "port": {
+            "hold_ns": 0.752363,
+            "setup_ns": 11.139155
+          },
+          "design": {
+            "hold_ns": -1.092189,
+            "setup_ns": 3.395907
+          }
+        },
+        "nom_typ_1p20V_25C": {
+          "port": {
+            "hold_ns": 3.068874,
+            "setup_ns": 8.426015
+          },
+          "design": {
+            "hold_ns": 0.071242,
+            "setup_ns": 2.292241
+          }
+        },
+        "nom_slow_1p08V_125C": {
+          "port": {
+            "hold_ns": 7.305241,
+            "setup_ns": 3.482635
+          },
+          "design": {
+            "hold_ns": 0.221144,
+            "setup_ns": -1.441297
+          }
+        }
+      },
+      "native_design": {
+        "bytes": 93871719,
+        "sha256": "74a61ebcdc39cedc6fe135689fdd36822839b8210885e26639e2a99b4a7ee026"
+      },
+      "measurement_log": {
+        "bytes": 9394,
+        "sha256": "855b5b9a151c931e3014de306f791b33ccd287af3dc5793b9e83abac00562dc9"
+      },
+      "timing_repair_log": {
+        "bytes": 160683,
+        "sha256": "112c00f251f070b3370e0a58b84236be0bf9b5728f701bdeae78f971a50a909b"
+      }
+    }
+  },
+  "verdict": "Rejected larger repair margin. Whole-design fast hold and slow setup worsened under the same three-corner measurement. Both resizer logs reported missing route-to-pin estimates before detailed routing."
+}
