@@ -56,5 +56,54 @@
       "separate_native_memory_parity": 1
     },
     "conclusion": "success"
+  },
+  "separate_native_memory_parity": {
+    "command": "make soc-memory-parity",
+    "positive_cases": 6,
+    "read_bus_corruption_rejected": true,
+    "cases": {
+      "h0-w16384-r0": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "deca83a4825296f27d424fc4ca102a7dd06d33e8284ec7aa927ac51f27c2c0e3"
+      },
+      "h0-w16384-r1": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "9bfcd83cc89eb5048cf1af74399cc5076ebcec7387aa8384b9d076efc4a643fa"
+      },
+      "h0-w8192-r0": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "42e615087e239b972a20f83e8efedb9a7ada2131bdb286d2a772265e4ad868da"
+      },
+      "h0-w8192-r1": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "346a6007d5b0d67ef1c5ccee775c13294b22bd7ca75ebeda08fe84b88304bb8c"
+      },
+      "h1-w8192-r0": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "9f29a762ebc4267f1ae04b07a7acf9b98c546efdfa4d63fe2c2cde6674675e9f"
+      },
+      "h1-w8192-r1": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "d72e347d67c70eec044ddb91732652337d642025d59a755669682f6f30518e6d"
+      },
+      "negative": {
+        "passed": false,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "175c55d1462ffb8d051297cc538d2c00c6c5bf65f2376d7b059d7971114b20a8"
+      }
+    }
   }
 }
