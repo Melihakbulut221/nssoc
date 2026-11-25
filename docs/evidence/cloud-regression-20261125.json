@@ -1,0 +1,37 @@
+{
+  "soc_pytest": {
+    "command": "PDK_ROOT=<pinned PDK root> python -m pytest -q -rs sw/tests/test_soc*.py",
+    "passed": 418,
+    "failed": 0,
+    "skipped": 0,
+    "source_revision": "c3e1151f"
+  },
+  "historical_alu": {
+    "command": "scripts/test_historical_alu.sh",
+    "passed": 260,
+    "failed": 0,
+    "dependency_revision": "14f5b2f38ce6040433b888b3522800b1b264a04d",
+    "scope": "Five ALU suites in an isolated checkout with six restored dependencies."
+  },
+  "mirror_idempotence": {
+    "hosted_run": 45628128084,
+    "passed": 6
+  },
+  "full_rtl_cloud_workspace": {
+    "command": "make rtl-test",
+    "returncode": 2,
+    "passed": 1164,
+    "failed_test_cases": 0,
+    "unclean_groups": 5,
+    "skipped": 22,
+    "diagnostics": [
+      "Three hosted-only groups and their module registration check rejected the local environment.",
+      "The RX framer compile could not create its build directory while a concurrent repository-mirror test filled the disk."
+    ],
+    "framer_after_disk_recovery": {
+      "passed": 6,
+      "skipped": 0
+    }
+  },
+  "full_python_regression_accepted": false
+}
