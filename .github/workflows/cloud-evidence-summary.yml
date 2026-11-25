@@ -8,9 +8,9 @@ jobs:
     timeout-minutes: 360
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 5
       matrix:
-        part: [mirror, remaining]
+        part: [failures, tail0, tail1, tail2, tail3, tail4, tail5, tail6, tail7]
     env:
       PDK_ROOT: ${{ github.workspace }}/hw/soc/tools/pdk
       INDEX: '1'
@@ -49,9 +49,12 @@ jobs:
           assigned = files[index::12]
           mirror = "sw/tests/test_mirror_redaction_is_idempotent.py"
           assert assigned.count(mirror) == 1
-          subset = [f for f in assigned if (f == mirror) == (os.environ["PART"] == "mirror")]
+          assert hashlib.sha256("\n".join(nodes).encode()).hexdigest() == "366d8ce1d519d595229b98fe4a8a8ecebff749607ccdf9d510e2b3f60a7c43b4"
+          old = [n for f in assigned if f != mirror for n in nodes if n.split("::",1)[0] == f]
+          part = os.environ["PART"]
+          subset = [old[i] for i in [*range(11),220]] if part == "failures" else old[504+int(part[4:])::8]
           assert subset
-          print("Collection",len(nodes),"files",len(files),"shard",index,"assigned files",len(subset),"collection SHA-256",hashlib.sha256("\n".join(nodes).encode()).hexdigest(),flush=True)
-          assert set().union(*(set(files[i::12]) for i in range(12))) == set(files)
-          subprocess.run(["make","test","PYTEST_ARGS=--tb=line -rfs -o tmp_path_retention_policy=failed " + " ".join(subset)], check=True)
+          import shlex
+          print("Assigned node IDs", *subset, sep="\n", flush=True)
+          subprocess.run(["make","test","PYTEST_ARGS=-v --tb=line -rfs -o tmp_path_retention_policy=failed " + shlex.join(subset)], check=True)
           PY
