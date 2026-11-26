@@ -53,3 +53,14 @@ detailed_route -droute_end_iter 64 -or_seed 42 -verbose 1 -drc_report_iter_step 
 puts "ROUTING_DRVS [detailed_route_num_drvs]"
 write_db /work/routed.odb
 check_antennas
+
+puts "PRE_REPAIR_HASH [exec sha256sum /work/routed.odb]"
+if {[check_antennas]} {
+    set inserted [repair_antennas sg13g2_antennanp -ratio_margin 10]
+    puts "DIODES_INSERTED $inserted"
+    if {!$inserted} {error "Expected physical antenna repair"}
+    detailed_route -droute_end_iter 64 -or_seed 42 -verbose 1 -drc_report_iter_step 1 -output_drc /work/soc_top-repaired.drc
+}
+puts "POST_REPAIR_DRVS [detailed_route_num_drvs]"
+check_antennas
+write_db /work/routed.odb
