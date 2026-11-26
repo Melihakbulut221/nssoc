@@ -4,6 +4,40 @@
 require 'json'
 
 raise 'Expected a database and top circuit' if $db.to_s.empty? || $top.to_s.empty?
+# Reject an explicit native top mismatch before KLayout materializes all geometry.
+# Every other outcome still goes through the complete native database checks.
+def reject_explicit_top_failure(io, top)
+  return unless io.gets(64) == "#%lvsdb-klayout\n"
+  pair = /^ X\(#{Regexp.escape(top)} #{Regexp.escape(top)} [SX](?:[ )]|$)/i
+  tail = ''.b
+  comparison = false
+  while (chunk = io.read(1 << 20))
+    data = tail + chunk
+    unless comparison
+      start = data.index("\nZ(\n")
+      if start
+        comparison = true
+        data = data.byteslice(start..)
+      end
+    end
+    if comparison && data.match?(pair)
+      raise 'Native comparison explicitly skipped or rejected the requested top'
+    end
+    tail = data.byteslice(-[data.bytesize, top.bytesize * 2 + 64].min..)
+  end
+end
+
+File.open($db, 'rb') do |file|
+  signature = file.read(2)
+  file.rewind
+  if signature == "\x1f\x8b".b
+    require 'zlib'
+    Zlib::GzipReader.wrap(file) { |stream| reject_explicit_top_failure(stream, $top) }
+  elsif file.size >= (64 << 20)
+    reject_explicit_top_failure(file, $top)
+  end
+end
+
 report = RBA::LayoutVsSchematic.new
 report.read($db)
 raise 'Missing extracted or reference netlist' unless report.netlist && report.reference
