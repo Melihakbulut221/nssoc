@@ -14,6 +14,10 @@ report.xref.each_circuit_pair do |pair|
   counts[status] += 1
   if pair.first && pair.second
     if status == 'Match' && pair.first.name.casecmp?($top) && pair.second.name.casecmp?($top)
+      report.xref.each_pin_pair(pair) do |pins|
+        raise 'Unmatched top port' unless pins.first && pins.second && pins.status.to_s == 'Match'
+        raise 'Top port name mismatch' unless pins.first.name.casecmp?(pins.second.name)
+      end
       matched_top += 1
     end
   elsif status == 'Match'
