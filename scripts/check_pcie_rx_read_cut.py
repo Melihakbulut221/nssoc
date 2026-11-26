@@ -41,6 +41,42 @@ def read_expression(text):
     return text[start:end]
 
 
+def registered_read_cut(text, header, reference, slots):
+    """Compare one active bank-register edge with the frozen arbitrary-address read."""
+    def section(first, after):
+        return text[text.index(first):text.index(after, text.index(first))]
+
+    bank = section("    genvar bank,read_bit,read_offset;", "    end endgenerate")
+    edge = "always @(posedge clk_i)\n            registered<="
+    if bank.count(edge) != 1 or bank.count(": registered;") != 1:
+        raise ValueError("Unexpected bank register transition")
+    # Expose the D input at the edge, with arbitrary Q immediately before it.
+    bank = bank.replace(edge, "always @* registered=").replace(
+        ": registered;", ": prior[8*bank+:8];")
+    bank += "    end endgenerate\n"
+    cursor = section("    wire [READ_CHOICES-1:0] next_onehot=", "    wire handshake=")
+    mux = section("    reg [7:0] tlp_byte;", "    assign out_sop_o")
+    header = header.replace("output [7:0] out_data_o", """input [8*SLOT_COUNT-1:0] prior,
+ input [SLOT_COUNT-1:0] commit_bank,input [7:0] stage_byte,
+ input handshake,restart,output [7:0] out_data_o""")
+    header = header.replace("SLOT_COUNT", str(slots))
+    shared = """
+ localparam integer READ_CHOICES=1<<CW;
+ wire [CW-1:0] previous_index=output_index-1'b1;
+ wire [READ_CHOICES-1:0] read_onehot=1'b1 << previous_index;
+ wire [SLOTS-1:0] head_onehot=1'b1 << head_slot;
+ wire [7:0] staging[0:0]; assign staging[0]=stage_byte;
+"""
+    gold = header.replace("NAME", "gold") + reference.replace(
+        "assign out_data_o=", "wire [7:0] flat_byte=") + """
+ assign out_data_o=select_dllp ? flat_byte : commit_bank[head_slot] ? stage_byte :
+     restart ? packets[head_slot*CAP] : handshake ? flat_byte : prior[8*head_slot+:8];
+endmodule
+"""
+    gate = header.replace("NAME", "gate") + shared + cursor + bank + mux + "\nendmodule\n"
+    return gold, gate
+
+
 def run(candidate, out, yosys, parameters=None):
     candidate, out, yosys = map(lambda p: Path(p).resolve(), (candidate, out, yosys))
     parameters = parameters or {}
@@ -69,8 +105,13 @@ def run(candidate, out, yosys, parameters=None):
  assign defined_read=select_dllp ? output_index<6 :
  head_slot<SLOTS && head_slot*CAP+output_index<SLOTS*CAP;
 """
-    for name, body in (("gold", gold), ("gate", gate)):
-        (out / (name + ".v")).write_text(header.replace("NAME", name) + body + "\nendmodule\n")
+    if "generate for(bank=0;bank<SLOTS;bank=bank+1) begin: read_bank" in candidate.read_text():
+        modules = registered_read_cut(candidate.read_text(), header, gold, slots)
+    else:
+        modules = tuple(header.replace("NAME", name) + body + "\nendmodule\n"
+                        for name, body in (("gold", gold), ("gate", gate)))
+    for name, module in zip(("gold", "gate"), modules):
+        (out / (name + ".v")).write_text(module)
     recipe = """read_verilog -sv gold.v gate.v
 proc
 memory_map
