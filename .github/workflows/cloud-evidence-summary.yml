@@ -4,10 +4,6 @@ permissions:
   contents: read
 jobs:
   python:
-    strategy:
-      fail-fast: false
-      matrix:
-        group: [0, 1, 2]
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     env:
@@ -16,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: cf4a07e2d237d45bf25a84cb760754da1dd598e8
+          ref: 75a941c264f68136ab5e6497cadb619eda4818ac
           fetch-depth: 0
           filter: blob:none
           persist-credentials: false
@@ -33,12 +29,8 @@ jobs:
           ciel fetch --pdk-root "$PDK_ROOT" --pdk-family ihp-sg13g2 -l all "$pin"
           ciel enable --pdk-root "$PDK_ROOT" --pdk-family ihp-sg13g2 "$pin"
           make soc-prepare
-      - name: Reproduce previous shard-nine failures on current PR source
-        env:
-          GROUP: ${{ matrix.group }}
-        run: |
-          .venv/bin/python - <<'PY'
-          import os, shlex, subprocess
-          nodes = ["sw/tests/test_core_ack_protocol.py::test_preparation_copies_actual_c10_core_without_regeneration","sw/tests/test_core_ack_protocol.py::test_all_actual_rf_alert_port_bits_reach_observer[0]","sw/tests/test_core_ack_protocol.py::test_all_actual_rf_alert_port_bits_reach_observer[1]","sw/tests/test_core_ack_protocol.py::test_all_actual_rf_alert_port_bits_reach_observer[2]","sw/tests/test_core_ack_protocol.py::test_all_actual_rf_alert_port_bits_reach_observer[4]","sw/tests/test_core_ack_protocol.py::test_clean_cloud_checkout_does_not_need_ignored_generated_ibex","sw/tests/test_core_ack_protocol.py::test_repinning_mutated_method_or_actual_core_does_not_make_it_valid[sources/hw/soc/gen/ibex_load_store_unit.v]","sw/tests/test_core_ack_protocol.py::test_repinning_mutated_method_or_actual_core_does_not_make_it_valid[tb_core_ack_protocol.v]","sw/tests/test_core_ack_protocol.py::test_repinning_mutated_method_or_actual_core_does_not_make_it_valid[firmware.S]","sw/tests/test_core_ack_protocol.py::test_repinning_mutated_method_or_actual_core_does_not_make_it_valid[link.ld]","sw/tests/test_core_ack_protocol.py::test_repinning_mutated_method_or_actual_core_does_not_make_it_valid[ack/candidate.v]","sw/tests/test_core_ack_protocol.py::test_preparation_cannot_claim_native_or_product_acceptance[actual_core_protocol_proved]","sw/tests/test_core_ack_protocol.py::test_preparation_cannot_claim_native_or_product_acceptance[whole_soc_verified]","sw/tests/test_core_ack_protocol.py::test_preparation_cannot_claim_native_or_product_acceptance[sequential_equivalence_proved]","sw/tests/test_core_ack_protocol.py::test_preparation_cannot_claim_native_or_product_acceptance[candidate_adopted]","sw/tests/test_core_ack_protocol.py::test_preparation_cannot_claim_native_or_product_acceptance[timing_accepted]","sw/tests/test_pair_hold.py::test_exact_existing_single_producer_and_all_history","sw/tests/test_pcie_gen3_dllp_consumer_native_v3.py::test_exact_recipe_and_frozen_positive_sources","sw/tests/test_pcie_gen3_event_packet_type_v1.py::test_only_declared_sideband_added[soc_pcie_gen3_dllp_consumer_v5.v-soc_pcie_gen3_dllp_consumer_v6.v-CONSUMER_CHANGES]","sw/tests/test_pcie_rx_read_cut.py::test_actual_read_cut[parameters0]","sw/tests/test_pcie_rx_read_cut.py::test_actual_read_cut[parameters1]","sw/tests/test_pcie_rx_read_cut.py::test_actual_wrong_byte_is_rejected[packets[bank*CAP+output_index]-packets[bank*CAP+(output_index^1)]]","sw/tests/test_pcie_rx_read_cut.py::test_actual_wrong_byte_is_rejected[dllp[output_index]-dllp[output_index^1]]"]
-          subprocess.run(["make","test","PYTEST_ARGS=--tb=line -rfs " + shlex.join(nodes[int(os.environ["GROUP"])::3])],check=True)
-          PY
+      - name: Prove default registered RX read and reject live mutants
+        run: make test PYTEST_ARGS="-v --tb=short sw/tests/test_pcie_rx_read_cut.py"
+      - name: Show native SAT diagnostics
+        if: failure()
+        run: find /tmp/pytest-of-runner -name proof.log -exec tail -12 {} \;
