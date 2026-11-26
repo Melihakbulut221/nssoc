@@ -29,7 +29,7 @@ proc pin_map {inst} {
     }
     return [lsort -stride 2 -index 0 $result]
 }
-foreach name {fanout662 fanout4070 fanout3716 fanout5688 fanout2869 fanout3256} {
+foreach name {fanout662 fanout4070 fanout3716 fanout5688 fanout2869 fanout3256 fanout4053 fanout3699 fanout3240 fanout2863 fanout589 fanout474} {
     set inst [$block findInst $name]
     if {$inst eq "NULL" || [[$inst getMaster] getName] ne "sg13g2_buf_1"} {error "Unexpected buffer $name"}
     set before [pin_map $inst]
