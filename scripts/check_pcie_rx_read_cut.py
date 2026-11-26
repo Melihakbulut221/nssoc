@@ -48,11 +48,13 @@ def registered_read_cut(text, header, reference, slots):
 
     bank = section("    genvar bank,read_bit,read_offset;", "    end endgenerate")
     edge = "always @(posedge clk_i)\n            registered<="
-    if bank.count(edge) != 1 or bank.count(": registered;") != 1:
+    if bank.count(edge) != 1:
         raise ValueError("Unexpected bank register transition")
     # Expose the D input at the edge, with arbitrary Q immediately before it.
-    bank = bank.replace(edge, "always @* registered=").replace(
-        ": registered;", ": prior[8*bank+:8];")
+    prefix, assignment = bank.split(edge)
+    rhs, suffix = assignment.split(";", 1)
+    rhs = re.sub(r"\bregistered\b", "prior[8*bank+:8]", rhs)
+    bank = prefix + "always @* registered=" + rhs + ";" + suffix
     bank += "    end endgenerate\n"
     cursor = section("    wire [READ_CHOICES-1:0] next_onehot=", "    wire handshake=")
     mux = section("    reg [7:0] tlp_byte;", "    assign out_sop_o")
