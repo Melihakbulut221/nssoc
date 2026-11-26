@@ -16,12 +16,46 @@ sys.path.insert(0,str(ROOT/'scripts'))
 import run_core_ack_protocol as core  # noqa: E402
 
 
-def test_preparation_copies_actual_c10_core_without_regeneration(tmp_path):
-    before=core.source_contract()
-    out=tmp_path/'prepared';row=core.prepare(out)
-    assert row==core.verify_prepared(out)
-    assert core.source_contract()==before and len(before)==81
-    assert core.core_instance((ROOT/'hw/soc/rtl/soc_top.v').read_text()) in (out/'tb_core_ack_protocol.v').read_text()
+@pytest.fixture(scope='module')
+def c10_root(tmp_path_factory):
+    stage = tmp_path_factory.mktemp('c10-source')
+    assert core.ack.sha(ROOT / core.LOCK) == core.LOCK_SHA
+    assert core.ack.sha(ROOT / core.EVIDENCE) == core.EVIDENCE_SHA
+    lock = json.loads((ROOT / core.LOCK).read_text())
+    evidence = json.loads((ROOT / core.EVIDENCE).read_text())
+    archive = lock['archive']
+    assert core.pin(ROOT / archive['path']) == {k: archive[k] for k in ('bytes', 'sha256')}
+    pins = {name: lock['files']['repo/' + name]
+            for name in evidence['current_source_files_verified']}
+    core.restore_sources(stage, pins, ROOT)
+    source = stage / 'sources'
+    for name in (*core.OWN, archive['path']):
+        dest = source / name
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / name, dest)
+    assert core.source_contract(source) == pins
+    return source
+
+
+def test_live_sources_must_match_capture_to_qualify(c10_root):
+    pins = core.source_contract(c10_root)
+    tracked = json.loads((ROOT / core.LOCK).read_text())['tracked_sources']
+    changed = [name for name, pin in pins.items()
+               if (name in tracked or (ROOT / name).exists())
+               and (not (ROOT / name).is_file() or core.pin(ROOT / name) != pin)]
+    if changed:
+        with pytest.raises(ValueError, match='Current source differs from exact C10'):
+            core.source_contract(ROOT)
+    else:
+        assert core.source_contract(ROOT) == pins
+
+
+def test_preparation_copies_actual_c10_core_without_regeneration(c10_root,tmp_path):
+    before=core.source_contract(c10_root)
+    out=tmp_path/'prepared';row=core.prepare(out,c10_root)
+    assert row==core.verify_prepared(out,c10_root)
+    assert core.source_contract(c10_root)==before and len(before)==81
+    assert core.core_instance((c10_root/'hw/soc/rtl/soc_top.v').read_text()) in (out/'tb_core_ack_protocol.v').read_text()
     assert 'hw/soc/gen/ibex_load_store_unit.v' in row['selected_core_sources']
     assert 'hw/soc/gen/ibex_pmp.v' in row['selected_core_sources']
     assert 'hw/soc/rtl/ibex_regfile_secded.v' in row['selected_core_sources']
@@ -30,11 +64,11 @@ def test_preparation_copies_actual_c10_core_without_regeneration(tmp_path):
 
 
 @pytest.mark.parametrize('injected',[0,1,2,4])
-def test_all_actual_rf_alert_port_bits_reach_observer(tmp_path,injected):
+def test_all_actual_rf_alert_port_bits_reach_observer(c10_root,tmp_path,injected):
     # Compile only the real observer declarations/condition against the pinned
     # core's actual output-port width. This is a tiny observer wiring control,
     # not an execution of Ibex or an injection into its register file.
-    out=tmp_path/'prepared';core.prepare(out)
+    out=tmp_path/'prepared';core.prepare(out,c10_root)
     native=(out/'sources/hw/soc/genp/ibex_top.v').read_text()
     declaration=re.findall(r'output wire \[\d+:\d+\] rf_ecc_err_o;',native)
     assert declaration==['output wire [2:0] rf_ecc_err_o;']
@@ -61,12 +95,12 @@ def test_all_actual_rf_alert_port_bits_reach_observer(tmp_path,injected):
         assert result.returncode==0 and 'OBSERVER_NO_ALERT' in result.stdout
 
 
-def test_clean_cloud_checkout_does_not_need_ignored_generated_ibex(tmp_path):
+def test_clean_cloud_checkout_does_not_need_ignored_generated_ibex(c10_root,tmp_path):
     checkout=tmp_path/'checkout'
-    lock=json.loads((ROOT/core.LOCK).read_text())
+    lock=json.loads((c10_root/core.LOCK).read_text())
     for name in set(core.OWN)|set(lock['tracked_sources'])|{lock['archive']['path']}:
         dest=checkout/name;dest.parent.mkdir(parents=True,exist_ok=True)
-        shutil.copyfile(ROOT/name,dest)
+        shutil.copyfile(c10_root/name,dest)
     assert not (checkout/'hw/soc/gen/ibex_core.v').exists()
     out=tmp_path/'prepared'
     row=core.prepare(out,checkout)
@@ -77,22 +111,22 @@ def test_clean_cloud_checkout_does_not_need_ignored_generated_ibex(tmp_path):
 
 @pytest.mark.parametrize('target',['sources/hw/soc/gen/ibex_load_store_unit.v','tb_core_ack_protocol.v',
                                   'firmware.S','link.ld','ack/candidate.v'])
-def test_repinning_mutated_method_or_actual_core_does_not_make_it_valid(tmp_path,target):
-    out=tmp_path/'prepared';core.prepare(out)
+def test_repinning_mutated_method_or_actual_core_does_not_make_it_valid(c10_root,tmp_path,target):
+    out=tmp_path/'prepared';core.prepare(out,c10_root)
     changed=out/target;changed.write_text(changed.read_text()+'\n')
     row=json.loads((out/'preparation.json').read_text())
     row['prepared_files'][target]=core.pin(changed)
     (out/'preparation.json').write_text(json.dumps(row))
-    with pytest.raises(ValueError):core.verify_prepared(out)
+    with pytest.raises(ValueError):core.verify_prepared(out,c10_root)
 
 
 @pytest.mark.parametrize('field',['actual_core_protocol_proved','whole_soc_verified',
                                 'sequential_equivalence_proved','candidate_adopted','timing_accepted'])
-def test_preparation_cannot_claim_native_or_product_acceptance(tmp_path,field):
-    out=tmp_path/'prepared';core.prepare(out)
+def test_preparation_cannot_claim_native_or_product_acceptance(c10_root,tmp_path,field):
+    out=tmp_path/'prepared';core.prepare(out,c10_root)
     row=json.loads((out/'preparation.json').read_text());row[field]=True
     (out/'preparation.json').write_text(json.dumps(row))
-    with pytest.raises(ValueError,match='acceptance'):core.verify_prepared(out)
+    with pytest.raises(ValueError,match='acceptance'):core.verify_prepared(out,c10_root)
 
 
 COUNTS=dict(reset_phase=0,cycles=900,accepted=20,delivered=20,cancelled=0,responses=20,
