@@ -133,6 +133,7 @@ def main():
             runtime[str(candidate)] = pin(candidate)
     before = {str(p): pin(p) for p in files}
     out.mkdir(parents=True)
+    simulation_timeout = 600 if args.native and args.top == "soc_pcie_rx_credit" else 300
     record = dict(
         status="RUNNING",
         top=args.top,
@@ -143,6 +144,7 @@ def main():
         runtime=runtime,
         address_space_limit_bytes=2 * 1024**3,
         command_timeout_seconds=300,
+        simulation_timeout_seconds=simulation_timeout,
         scope="Finite P/NP ownership, real local Init/Update FC and completer-only infinite Cpl with requester disabled. Component finite Cpl is not endpoint compliance. Ready/valid byte boundary; no PHY, calibrated link timers, SDF or SoC instance.",
     )
 
@@ -160,7 +162,7 @@ def main():
                 env=environment,
                 stdout=log,
                 stderr=subprocess.STDOUT,
-                timeout=300,
+                timeout=simulation_timeout if log_name == "simulation.log" else 300,
                 preexec_fn=child_limits,
             )
         record["commands"].append(
