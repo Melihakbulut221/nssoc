@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: a7035af6ea019aeae50a11933c905ee19cbb2ba1
+          ref: 05f2788367cfb8c4d291a9417e581f25e7b88f18
           fetch-depth: 0
           filter: blob:none
           persist-credentials: false
@@ -29,8 +29,5 @@ jobs:
           ciel fetch --pdk-root "$PDK_ROOT" --pdk-family ihp-sg13g2 -l all "$pin"
           ciel enable --pdk-root "$PDK_ROOT" --pdk-family ihp-sg13g2 "$pin"
           make soc-prepare
-      - name: Regenerate sideband outputs and test interfaces and mutants
-        run: |
-          python scripts/generate_pcie_event_type_sideband_v1.py
-          git diff --exit-code -- hw/soc/rtl/pcie
-          make test PYTEST_ARGS="-v --tb=line sw/tests/test_pcie_gen3_event_packet_type_v1.py"
+      - name: Verify the physical profile
+        run: make test PYTEST_ARGS="-v --tb=line sw/tests/test_pnr_profile.py"
