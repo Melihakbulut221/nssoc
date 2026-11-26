@@ -4,15 +4,20 @@ permissions:
   contents: read
 jobs:
   python:
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        group: [0, 1, 2, 3, 4, 5, 6]
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     env:
       PDK_ROOT: ${{ github.workspace }}/hw/soc/tools/pdk
-      INDEX: '1'
+      GROUP: ${{ matrix.group }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 05f2788367cfb8c4d291a9417e581f25e7b88f18
+          ref: ca1e0af275027503df10266baf2bf6a73c544dc8
           fetch-depth: 0
           filter: blob:none
           persist-credentials: false
@@ -29,5 +34,16 @@ jobs:
           ciel fetch --pdk-root "$PDK_ROOT" --pdk-family ihp-sg13g2 -l all "$pin"
           ciel enable --pdk-root "$PDK_ROOT" --pdk-family ihp-sg13g2 "$pin"
           make soc-prepare
-      - name: Verify the physical profile
-        run: make test PYTEST_ARGS="-v --tb=line sw/tests/test_pnr_profile.py"
+      - name: Run original tail5 node IDs on current sources
+        run: |
+          python - <<'PY'
+          import json, os, shlex, subprocess
+          ids = json.loads(r'''["sw/tests/test_pcie_gen3_continuous_rx_integrity_v2.py::test_actual_wide_rx_fault_rejected[bad_block_header_ignored]","sw/tests/test_pcie_gen3_continuous_rx_integrity_v2.py::test_actual_wide_rx_fault_rejected[ordinary_lcrc_not_checked]","sw/tests/test_pcie_gen3_continuous_rx_integrity_v7.py::test_actual_wide_rx_full_positive_profiles[4118]","sw/tests/test_pcie_gen3_continuous_rx_integrity_v7.py::test_actual_wide_rx_fault_rejected[edb_releases_bad]","sw/tests/test_pcie_gen3_dllp_consumer_v1.py::test_actual_positive_ports[soc_pcie_gen3_rx_events_v1]","sw/tests/test_pcie_gen3_dllp_consumer_v1.py::test_actual_hdl_fault_rejected[held_event_freed]","sw/tests/test_pcie_gen3_integrity_v10_banks.py::test_exact_generated_inverse_and_wrapper_bridge","sw/tests/test_pcie_gen3_integrity_v18_commit.py::test_actual_complete_parser_arbitrary_state_and_four_state[None]","sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_v22_v23_cycle_exact_all_public_outputs[4118]","sw/tests/test_pcie_gen3_integrity_v23_miter.py::test_actual_miter_fault_is_observed[header_current_input_tail]","sw/tests/test_pcie_gen3_integrity_v29_output.py::test_actual_output_epoch_quarantine[positive]","sw/tests/test_pcie_gen3_integrity_v6_metadata_wrap.py::test_actual_max_width_metadata_network[carry_sequence]","sw/tests/test_pcie_gen3_recovered_x4_v1.py::test_actual_x4_wire_fault_is_rejected[lost_alignment_fault]","sw/tests/test_pcie_gen3_tx_path_v4.py::test_watchdog_kills_ignoring_child_after_leader_exits","sw/tests/test_pcie_gen3_tx_path_v4.py::test_real_port_counterexample_rejects_tx_path_fault[if(block_ready_o) begin-if(block_ready_o || block_valid_i) begin]","sw/tests/test_pcie_local_vco_hybrid_v4.py::test_native_contact_uses_exact_area_and_perimeter_formula[ptap1]","sw/tests/test_pcie_local_vco_hybrid_v4.py::test_invalid_spice_numbers_reject[1e4evil]","sw/tests/test_pcie_local_vco_hybrid_v4.py::test_device_anchor_body_or_extra_wire_change_rejects[X1 c b e body npn13G2 Nx=1\\nRshort c b 0]","sw/tests/test_pcie_local_vco_hybrid_v4.py::test_real_finite_physics_failures_remain_visible[startup_upper]","sw/tests/test_pcie_native_publisher_v3.py::test_native_transient_authentication_retries_and_preserves_exact_prefix[net/http: TLS handshake timeout]","sw/tests/test_pcie_native_publisher_v3.py::test_actual_completed_truncation_corruption_extra_bytes_never_retry[mode2]","sw/tests/test_pcie_native_publisher_v3.py::test_actual_anonymous_http_status_retry_classification[404]","sw/tests/test_pcie_native_publisher_v3.py::test_real_signal_at_child_completion_is_terminal_and_never_retries[0]","sw/tests/test_pcie_pll_acquisition_v1.py::test_independent_linear_crossing_arithmetic","sw/tests/test_pcie_pll_acquisition_v1.py::test_early_transient_is_reported_without_rewriting_late_acquisition","sw/tests/test_pcie_pll_acquisition_v1.py::test_memory_advisory_cannot_hide_other_failure[nodes]","sw/tests/test_pcie_pll_acquisition_v1.py::test_failed_settling_receipt_can_only_gate_new_trial_with_valid_electrical_capture","sw/tests/test_pcie_pll_acquisition_v1.py::test_actual_file_and_record_mutations_fail_closed[dirty]","sw/tests/test_pcie_pll_acquisition_v1.py::test_retained_op_and_actual_memory_reject_changes[count]","sw/tests/test_pcie_pll_acquisition_v1.py::test_prerequisite_off_identity_is_exact_not_just_a_count[duplicate]","sw/tests/test_pcie_pll_loop_v2.py::test_pinned_native_channel_means_match_independent_terminal_clamp[6.820837044655643e-06-1.3221966264011225e-05--6.401100754053405e-06]","sw/tests/test_pcie_sampler_layout.py::test_sampler_source_drift_rejected[Nx=4-Nx=3]","sw/tests/test_pcie_sampler_layout.py::test_incomplete_bank_primitive_rejected[TX-RP AVDD-XP AVDD]","sw/tests/test_pcie_sampler_layout.py::test_real_reference_faults_bind_exactly_one[check_pcie_sampler_cell-wrong_input]","sw/tests/test_pcie_sampler_layout.py::test_clock_open_requires_exact_port_loss[check_pcie_sampler_cell-CLKP]","sw/tests/test_pcie_vco_v5_powered_v1.py::test_actual_writer_exits_before_final_chunk_budget_decision[owned_drain]","sw/tests/test_pcie_vco_v6_hybrid_v1.py::test_changed_finite_contact_geometry_rejects[parameters2]","sw/tests/test_pcie_vco_v6_hybrid_v1.py::test_device_anchor_body_or_extra_wire_change_rejects[X1 b c e body npn13G2 Nx=1]","sw/tests/test_pcie_vco_v6_hybrid_v1.py::test_incomplete_or_forged_wave_rejects[early_end]","sw/tests/test_pcie_vco_v6_hybrid_v1.py::test_only_explicit_external_bias_changes_the_native_recipe","sw/tests/test_pcie_vco_v6_hybrid_v1.py::test_changed_mim_dimensions_or_multiplicity_reject[P-44.4001]","sw/tests/test_replica_placement.py::test_the_replicas_are_not_separated_on_the_die","sw/tests/test_soc_npu_guards.py::test_the_generated_soc_header_is_current_and_unguarded","sw/tests/test_soc_npu_guards.py::test_the_reserved_parts_of_the_window_are_not_silently_decoded","sw/tests/test_soc_npu_guards.py::test_the_report_is_inside_the_protected_word","sw/tests/test_soc_npu_guards.py::test_every_cause_bit_the_block_has_is_a_fault_bit_the_program_knows","sw/tests/test_verify_cloud_supply_artifacts.py::test_reject_unsafe_or_duplicate_zip_members[names0]","sw/tests/test_verify_cloud_supply_artifacts.py::test_reject_symlink_even_with_safe_name","sw/tests/test_verify_cloud_supply_artifacts.py::test_reject_incomplete_or_unrelated_artifact_catalog[digest]"]''')
+          bounds = [8, 9, 10, 15, 23, 31, 40, 49]
+          group = int(os.environ['GROUP'])
+          nodes = ids[bounds[group]:bounds[group + 1]]
+          for node in nodes:
+              print("START", node, flush=True)
+              subprocess.run(["make", "test", "PYTEST_ARGS=-vv --tb=line " + shlex.quote(node)], check=True)
+              print("PASS", node, flush=True)
+          PY
