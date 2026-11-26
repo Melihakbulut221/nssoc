@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 3b29a5fd49d8763f31c6c54f44ca10494f887dbe
+          ref: a7035af6ea019aeae50a11933c905ee19cbb2ba1
           fetch-depth: 0
           filter: blob:none
           persist-credentials: false
@@ -29,8 +29,8 @@ jobs:
           ciel fetch --pdk-root "$PDK_ROOT" --pdk-family ihp-sg13g2 -l all "$pin"
           ciel enable --pdk-root "$PDK_ROOT" --pdk-family ihp-sg13g2 "$pin"
           make soc-prepare
-      - name: Prove default registered RX read and reject live mutants
-        run: make test PYTEST_ARGS="-v --tb=short sw/tests/test_pcie_rx_read_cut.py::test_live_pipeline_reads_queued_bytes"
-      - name: Show native SAT diagnostics
-        if: failure()
-        run: find /tmp/pytest-of-runner -name proof.log -exec tail -12 {} \;
+      - name: Regenerate sideband outputs and test interfaces and mutants
+        run: |
+          python scripts/generate_pcie_event_type_sideband_v1.py
+          git diff --exit-code -- hw/soc/rtl/pcie
+          make test PYTEST_ARGS="-v --tb=line sw/tests/test_pcie_gen3_event_packet_type_v1.py"
