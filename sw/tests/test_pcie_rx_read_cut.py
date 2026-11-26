@@ -21,8 +21,12 @@ def test_actual_read_cut(tmp_path, parameters):
 
 
 @pytest.mark.parametrize("old,new", [
-    ("packets[bank*CAP+output_index]", "packets[bank*CAP+(output_index^1)]"),
-    ("dllp[output_index]", "dllp[output_index^1]"),
+    ("next_onehot[read_offset] & packets[bank*CAP+read_offset]",
+     "next_onehot[read_offset] & packets[bank*CAP+(read_offset^1)]"),
+    ("dllp[3'(output_index)]", "dllp[3'(output_index)^3'd1]"),
+    ("restart ? packets[bank*CAP]", "restart ? packets[bank*CAP+1]"),
+    ("handshake ? following : registered", "handshake ? following : ~registered"),
+    ("registered<=commit_bank[bank] ? staging[0]", "registered<=commit_bank[bank] ? ~staging[0]"),
 ])
 def test_actual_wrong_byte_is_rejected(tmp_path, old, new):
     text = SOURCE.read_text()
