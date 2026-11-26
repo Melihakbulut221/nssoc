@@ -1,0 +1,7 @@
+# Mapped GMII transmit output pads
+
+Replay the [mapped compilation](ihp-mapped-pad-clock-replay.md) with top `tb_tx` and [this test source](../../hw/soc/tb/tb_chip_mapped_gmii_tx_boundary.v). Use the same mapped netlist, native pad and standard-cell models, SRAM models and wrapper.
+
+With only clocks and reset driven, TX_EN stayed low for 32 post-reset TX clocks. This short probe supplied no flash application or TX FIFO writes. The candidate uses a fixed boot ROM (image SHA-256 ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801). The repository's [CPU-driven workload](../../hw/soc/tb/sw/ethernet_loopback.c) enables the MAC and writes payload and end-of-frame through MMIO. Its [existing probe](../../hw/soc/flow/ethernet_cpu_probe.py) observes the soc_top boundary. No autonomous frame was observed through the product-shell pads in this experiment.
+
+The separate wiring phase explicitly forces the mapped core's TXD and TX_EN outputs and observes only the external pad outputs. The original wrapper passed 17 patterns including walking bits and alternating TX_EN. In a scratch copy of the wrapper, swapping only `.c2p(eth_txd_o[0])` and `.c2p(eth_txd_o[1])` produced simulation exit 1 with `TX pad mismatch expected=01/1 observed=02/1` at 404 ns. The baseline exited 0 at 434 ns. Both compiled successfully. These results cover digital bit ordering, output direction and TX_EN level transport. Frame generation, MAC enable sequencing, PHY behavior, pad timing and package operation remain open for this exact assembly.
