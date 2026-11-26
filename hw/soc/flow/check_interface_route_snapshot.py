@@ -45,6 +45,7 @@ class StagedIHPFiller(KLayout.Filler):
 CHECKS = {
     "xor": ([Magic.StreamOut, KLayout.StreamOut, KLayout.XOR], "design__xor_difference__count"),
     "magic-drc": ([Magic.StreamOut, Magic.DRC], "magic__drc_error__count"),
+    "row-filled-drc": ([KLayout.StreamOut, KLayout.DRC], "klayout__drc_error__count"),
     "klayout-drc": ([KLayout.StreamOut, KLayout.DRC], "klayout__drc_error__count"),
     "filled-density": ([KLayout.StreamOut, StagedIHPFiller, KLayout.Density], "klayout__density_error__count"),
     "density": ([KLayout.StreamOut, KLayout.Density], "klayout__density_error__count"),
@@ -72,7 +73,19 @@ def main():
     if digest != receipt["layout_odb_sha256"]:
         raise ValueError("Routing checkpoint digest mismatch")
     script = out / "export.tcl"
-    script.write_text("read_db soc_top.odb\nwrite_def soc_top.def\n"
+    row_fill = ""
+    if args.check == "row-filled-drc":
+        row_fill = """
+set block [ord::get_db_block]
+set count_before [llength [$block getInsts]]
+filler_placement {sg13g2_fill_2 sg13g2_fill_1}
+set added [expr {[llength [$block getInsts]] - $count_before}]
+if {$added <= 0} {error "No native row fillers placed"}
+puts "NSSOC_ROW_FILLERS $added"
+check_placement
+write_db row-filled.odb
+"""
+    script.write_text("read_db soc_top.odb\n" + row_fill + "write_def soc_top.def\n"
                       "set b [ord::get_db_block]\nset r [$b getDieArea]\n"
                       "set f [open die-area.txt w]\n"
                       "foreach side {xMin yMin xMax yMax} {puts $f [expr {double([$r $side])/[$b getDbUnitsPerMicron]}]}\nclose $f\n"
@@ -95,7 +108,7 @@ def main():
         config["MAGIC_DRC_USE_GDS"] = False
     if args.check == "lvs":
         config["MAGIC_EXT_USE_GDS"] = False
-    if args.check == "klayout-drc":
+    if args.check in {"klayout-drc", "row-filled-drc"}:
         config["KLAYOUT_DRC_OPTIONS"] = {"run_mode": "deep", "no_recommended": True}
     class SnapshotFlow(SequentialFlow):
         Steps = steps
@@ -109,7 +122,10 @@ def main():
         filled, = (out / "flow").glob("*-klayout-filler/soc_top.gds")
         with filled.open("rb") as src:
             result["filled_gds_sha256"] = hashlib.file_digest(src, "sha256").hexdigest()
-    if args.check in {"klayout-drc", "density", "filled-density"}:
+    if args.check == "row-filled-drc":
+        with (out / "row-filled.odb").open("rb") as src:
+            result["row_filled_odb_sha256"] = hashlib.file_digest(src, "sha256").hexdigest()
+    if args.check in {"klayout-drc", "row-filled-drc", "density", "filled-density"}:
         report, = (out / "flow").rglob("*.klayout.lyrdb")
         groups = {}
         for _, item in ET.iterparse(report, events=("end",)):
