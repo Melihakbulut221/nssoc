@@ -116,3 +116,10 @@ soc-interfaces-decks:
 .PHONY: soc-memory-parity
 soc-memory-parity:
 	bash $(ROOT)/scripts/check_soc_memory_parity.sh $(PARITY_OUT)
+
+.PHONY: check-native-lvs
+check-native-lvs: export LVS_DB := $(value LVS_DB)
+check-native-lvs: export LVS_TOP := $(value LVS_TOP)
+check-native-lvs:
+	@test -n "$$LVS_DB" && test -n "$$LVS_TOP" || { echo 'Set LVS_DB and LVS_TOP' >&2; exit 2; }
+	klayout -b -r "$(ROOT)/hw/soc/flow/check_native_lvs.rb" -rd "db=$$LVS_DB" -rd "top=$$LVS_TOP"
