@@ -19,13 +19,13 @@ from cocotb_results import count_results  # noqa: E402
 MUTANTS = [
     (
         "soc_pcie_rx_credit",
-        "packets[bank*CAP+output_index]",
-        "packets[bank*CAP+output_index+1]",
+        "assign bank_byte[bank]=registered;",
+        "assign bank_byte[bank]=packets[bank*CAP+output_index+1];",
     ),
     (
         "soc_pcie_rx_credit",
-        "bank_byte[head_slot]",
-        "bank_byte[0]",
+        "tlp_byte=tlp_byte|bank_byte[h];",
+        "tlp_byte=tlp_byte|bank_byte[0];",
     ),
     (
         "soc_pcie_rx_credit",
@@ -34,8 +34,8 @@ MUTANTS = [
     ),
     (
         "soc_pcie_rx_credit",
-        "localparam [7:0] H_INIT=SLOTS_PER_CLASS;",
-        "localparam [7:0] H_INIT=SLOTS_PER_CLASS+1;",
+        "localparam [7:0] H_INIT=8'(SLOTS_PER_CLASS);",
+        "localparam [7:0] H_INIT=8'(SLOTS_PER_CLASS+1);",
     ),
     (
         "soc_pcie_rx_credit",
@@ -66,8 +66,8 @@ MUTANTS = [
     ),
     (
         "soc_pcie_buffered_flow_packets",
-        ".initialized_i(peer_init1_done_o && local_init2_sent_o)",
-        ".initialized_i(initialized_o)",
+        "else rx_initialized<=peer_init1_done_o && local_init2_sent_o;",
+        "else rx_initialized<=initialized_o;",
     ),
 ]
 
