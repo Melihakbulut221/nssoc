@@ -42,3 +42,23 @@ def test_actual_wrong_byte_is_rejected(tmp_path, old, new):
 def test_changed_state_shape_is_rejected():
     with pytest.raises(ValueError, match="state shape"):
         read_expression(SOURCE.read_text().replace("CAP=MAX_TLP_DWORDS*4+6", "CAP=MAX_TLP_DWORDS*4+7"))
+
+
+@pytest.mark.parametrize("old,new", [
+    (None, None),
+    ("packets[head_slot*CAP+output_index]", "packets[head_slot*CAP+(output_index^1)]"),
+    ("dllp[output_index]", "dllp[output_index^1]"),
+])
+def test_frozen_flat_read_contract(tmp_path, old, new):
+    fixture = ROOT / "sw/tests/fixtures/pcie_chip_timing/flat-rx.v"
+    candidate = fixture
+    if old is not None:
+        text = fixture.read_text()
+        assert text.count(old) == 1
+        candidate = tmp_path / "flat-mutant.v"
+        candidate.write_text(text.replace(old, new))
+    yosys = Path(shutil.which("yosys") or ROOT / "hw/soc/tools/oss-cad-suite/bin/yosys")
+    result = run(candidate, tmp_path / "proof", yosys, {"MAX_TLP_DWORDS": 3, "SLOTS_PER_CLASS": 1})
+    assert result["status"] == ("PASS" if old is None else "FAIL")
+    if old is not None:
+        assert "SAT proof finished - model found: FAIL!" in (tmp_path / "proof/proof.log").read_text()
