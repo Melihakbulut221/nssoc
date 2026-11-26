@@ -1,4 +1,4 @@
-name: 52-cell detailed route and extracted timing
+name: Interface routing checkpoint physical decks
 on: workflow_dispatch
 permissions:
   contents: read
@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        trial: [sized]
+        check: [row-filled-drc]
     runs-on: ubuntu-24.04
     timeout-minutes: 350
     env:
@@ -19,9 +19,10 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /scripts/bootstrap_flow.py
-            /hw/soc/flow/
-            /hw/soc/sta/
-            /cloud52/
+            /hw/soc/pnr/
+            /hw/soc/flow/check_interface_route_snapshot.py
+            /docs/evidence/qspi-first-detail-20261125.odb.xz
+            /docs/evidence/qspi-first-detail-nominal-rc-20261125.json
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -38,13 +39,16 @@ jobs:
         run: |
           (cd "$RUNNER_TEMP" && ./librelane.AppImage --appimage-extract > /dev/null)
           shell=/nix/store/ycav2pkclnif0d8yhyhl1a1kl133bx1j-devshell/bin/devshell
-          mkdir "$RUNNER_TEMP/physical"
-          cd "$RUNNER_TEMP/physical"
-          xz -dc "$GITHUB_WORKSPACE/cloud52/input.odb.xz" > input.odb
-          sha256sum -c "$GITHUB_WORKSPACE/cloud52/input.sha256"
-          cp "$GITHUB_WORKSPACE/cloud52/"*.tcl .
-          for step in route extract sta; do
-            docker run --rm -e TRIAL="${{ matrix.trial }}" -e STEP_DIR=/work -v "$RUNNER_TEMP/squashfs-root/nix:/nix:ro" -v "$GITHUB_WORKSPACE:/repo:ro" -v "$PWD:/work" -w /work debian:trixie-slim "$shell" openroad -exit "/work/$step.tcl"
-          done
-          sha256sum routed.odb nominal.spef
-          python "$GITHUB_WORKSPACE/hw/soc/flow/audit_estimated_spef.py" --help
+          docker run --rm -v "$RUNNER_TEMP/squashfs-root/nix:/nix:ro" \
+            -v "$GITHUB_WORKSPACE:$GITHUB_WORKSPACE:ro" -v "$RUNNER_TEMP:$RUNNER_TEMP" \
+            -w "$GITHUB_WORKSPACE" debian:trixie-slim "$shell" python hw/soc/flow/check_interface_route_snapshot.py "${{ matrix.check }}" \
+            --archive docs/evidence/qspi-first-detail-20261125.odb.xz \
+            --receipt docs/evidence/qspi-first-detail-nominal-rc-20261125.json \
+            --pdk-root "$PDK_ROOT" --out "$RUNNER_TEMP/deck"
+      - name: Print native verdict and report inventory
+        if: always()
+        run: |
+          if test -f "$RUNNER_TEMP/deck/result.json"; then cat "$RUNNER_TEMP/deck/result.json"; fi
+          if test -d "$RUNNER_TEMP/deck/flow"; then
+            find "$RUNNER_TEMP/deck/flow" -type f \( -name '*.rpt' -o -name '*.lyrdb' -o -name '*lvs*.json' \) -printf '%s %p\n'
+          fi
