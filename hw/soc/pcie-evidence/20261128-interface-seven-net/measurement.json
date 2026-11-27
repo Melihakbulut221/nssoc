@@ -1,0 +1,101 @@
+{
+  "scope": "soc_top interface profile; post-route nominal RC, full-interface STA",
+  "candidate": "AND4 and XOR2 on QSPI ECO reference",
+  "top": "soc_top",
+  "gds_sha256": "15f8cdfdbc317f9e71d73b051580c8d330950f951ef6e2e6efc95c00d41d11bb",
+  "main_drc_script_sha256": "22a570bfb43d564b7ce3de9d7df0795197be79f86c8a484b4959932c8dd75961",
+  "sdc_sha256": "78ce832a94cc18fd7956ddabb136d00827047903f83d420ac52658f222869ca8",
+  "route_records_sha256": "545806340344b629c5c3cf33aca370d7fc929cc7e80d1d42e6624d194421f263",
+  "changed_signal_routes": [
+    "_019116_",
+    "_019117_",
+    "_019122_",
+    "_019136_",
+    "_019137_",
+    "_019138_",
+    "_019139_"
+  ],
+  "expected_def_byte_match": true,
+  "openroad_antenna": {
+    "nets": 0,
+    "pins": 0
+  },
+  "timing": {
+    "nom_fast_1p32V_m40C": {
+      "qspi_reference": {
+        "min": {
+          "group": "clk_i",
+          "slack_ns": -0.55709
+        },
+        "max": {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 3.983307
+        }
+      },
+      "seven_net_candidate": {
+        "min": {
+          "group": "clk_i",
+          "slack_ns": -0.55709
+        },
+        "max": {
+          "group": "eth_rx_clk_i",
+          "slack_ns": 3.983307
+        }
+      },
+      "candidate_sta_log_sha256": "462e4050dbe9d32212328b7a2fccf8ee09090a06eaa7f53b5592809df6944147"
+    },
+    "nom_slow_1p08V_125C": {
+      "qspi_reference": {
+        "min": {
+          "group": "clk_i",
+          "slack_ns": 0.16153
+        },
+        "max": {
+          "group": "clk_i",
+          "slack_ns": -9.321738
+        }
+      },
+      "seven_net_candidate": {
+        "min": {
+          "group": "clk_i",
+          "slack_ns": 0.16153
+        },
+        "max": {
+          "group": "clk_i",
+          "slack_ns": -9.210652
+        }
+      },
+      "candidate_sta_log_sha256": "3c731e64bdd80ec7a88d618506a0aef5b4c43eb0fb1a65b94229f219cf45a163"
+    },
+    "nom_typ_1p20V_25C": {
+      "qspi_reference": {
+        "min": {
+          "group": "clk_i",
+          "slack_ns": 0.079987
+        },
+        "max": {
+          "group": "clk_i",
+          "slack_ns": 1.785058
+        }
+      },
+      "seven_net_candidate": {
+        "min": {
+          "group": "clk_i",
+          "slack_ns": 0.079987
+        },
+        "max": {
+          "group": "clk_i",
+          "slack_ns": 1.785058
+        }
+      },
+      "candidate_sta_log_sha256": "a8f50fa35d0bc217e84f78ddd913771178467c3477767623b2854a9fbc5ee180"
+    }
+  },
+  "open": [
+    "complete IHP rule receipts including density",
+    "native full-chip LVS",
+    "slow setup",
+    "fast hold",
+    "foundry approval"
+  ]
+}
