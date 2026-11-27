@@ -28,7 +28,14 @@ def test_exact_recipe_and_frozen_positive_sources():
     }
     assert constants["ABC_RECIPE"] == "strash; balance -x; &get -n; &nf; &put\n"
     for name, digest in constants["FROZEN_SOURCES"].items():
-        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == digest
+        source = ROOT / name
+        if name == "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_rx_events_v3":
+            evidence = ROOT / "hw/soc/pcie-evidence/20261007-ci-resume"
+            tested = (evidence / "tested-source" / name).read_bytes()
+            assert hashlib.sha256(tested).hexdigest() == "c10fd2eea867a9d2e1bd01497a0a3893b38e0056ef9918c654e5dc4c8cfb9459"
+            assert source.read_bytes() == tested
+            source = evidence / "before" / source.name
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == digest
     assert " -nofsm -noabc; dfflibmap" in SOURCE.read_text()
 
 

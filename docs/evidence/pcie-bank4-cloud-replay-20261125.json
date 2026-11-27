@@ -1,0 +1,87 @@
+{
+  "scope": "Standalone archived nssoc_pcie_analog_bank4, separate from routed interface SoC and full serial PHY",
+  "source": "docs/evidence/pcie-bank4-20261004.tar.xz",
+  "deck_revision": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+  "drc": {
+    "drc-good": {
+      "categories": 560,
+      "markers": 0,
+      "report_sha256": "6aaeaa77a2d2b3d4712dcf5a4a490ea4f03cb02a011daf3b8304c182e6c1c55f",
+      "main_table_completed": true
+    },
+    "drc-physical_offgrid": {
+      "categories": 560,
+      "markers": 6,
+      "report_sha256": "db2c1d905e7d4718f600df61278cf5b13e7fdbb298eac9efd80b676dfa29d131",
+      "main_table_completed": true
+    }
+  },
+  "lvs": {
+    "lvs-good": {
+      "status": "PASS within comparison scope",
+      "top": "nssoc_pcie_analog_bank4",
+      "reasons": [],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "Match": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_pcie_analog_bank4",
+          "schematic": "NSSOC_PCIE_ANALOG_BANK4",
+          "status": "Match",
+          "layout_devices_recursive": 57,
+          "schematic_devices_recursive": 57
+        }
+      ],
+      "inputs": {
+        "result.lvsdb": {
+          "bytes": 969505,
+          "sha256": "aeaeceb6aadd8821178a3cff65c4ab5c5179239ac05fed55c29f8a22f7d29168"
+        },
+        "deck.log": {
+          "bytes": 37004,
+          "sha256": "d00c733deb83566c244dedc4f8c1a87728b241b13aa347faeea07fc6e6f47b6a"
+        }
+      }
+    },
+    "lvs-physical_open": {
+      "status": "FAIL",
+      "top": "nssoc_pcie_analog_bank4",
+      "reasons": [
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "Match": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_pcie_analog_bank4",
+          "schematic": "NSSOC_PCIE_ANALOG_BANK4",
+          "status": "Match",
+          "layout_devices_recursive": 57,
+          "schematic_devices_recursive": 57
+        }
+      ],
+      "inputs": {
+        "result.lvsdb": {
+          "bytes": 969363,
+          "sha256": "fb28aba67fa141e99e0667b7cb21420e3b0c731bc6e0a86cb4b9f3cdaa788b7b"
+        },
+        "deck.log": {
+          "bytes": 37014,
+          "sha256": "57a93fb70102c2b485ef57a5e824b03c45ccc78ee5184f862d70cfce94239f83"
+        }
+      }
+    }
+  },
+  "archive_sha256": "359e9a2712523512c95ebf1e83a22a3c1122b1afdba3c87fee1c83fc2eb44ecc",
+  "inputs": {
+    "bank4/layout/nssoc_pcie_analog_bank4.gds": "93d88e657b034065605d5bdb65e45d20c05903ef3c5d32b8df4509c07514b6da",
+    "bank4/layout/schematic.cir": "52b4799d16ec7e933ad621d489a3f03264a98f3be6dba74ff77a56053f9d88e6",
+    "bank4/native-checks/physical_offgrid/wrong.gds": "30fef32d1e6e535d4b68e6b8b32b522220859bbc83f40b1b0bf1f00db19af3a2",
+    "bank4/native-checks/physical_open/wrong.gds": "2901caf27c7c1ee4824bf06303d95ee60c8a944ef1ede9458d30eab6ca8e9167"
+  }
+}

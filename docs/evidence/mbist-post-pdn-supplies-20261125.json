@@ -1,0 +1,28 @@
+{
+  "source": "c5edc8091d81575e943d6581ca6792ff31e1fa63",
+  "stage": "OpenROAD.GeneratePDN",
+  "odb_sha256": "aab5e127fa6077d902c2dfacdaa6a0263a5569ed855ee2e01fcaf016368ca1e9",
+  "scope": "Logical SRAM power terminal assignments in the post-PDN database. Physical power integrity, routing and signoff remain open.",
+  "openroad_output": [
+    "OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 ",
+    "Features included (+) or not (-): +GPU +GUI +Python",
+    "This program is licensed under the BSD-3 license. See the LICENSE file for details.",
+    "Components of this program may be licensed under more restrictive licenses which must be honored.",
+    "PASS: 20 SRAM instances, 60 supply terminal bindings"
+  ],
+  "readback_tcl": [
+    "read_db /workspace/nssoc-full/hw/soc/pnr/runs/cloud-mbist-closure/13-openroad-generatepdn/soc_top.odb",
+    "set count 0",
+    "foreach inst [[ord::get_db_block] getInsts] {",
+    "  if {![string match RM_IHPSG13* [[$inst getMaster] getName]]} { continue }",
+    "  foreach {pin supply} {VDD! VPWR VDDARRAY! VPWR VSS! VGND} {",
+    "    set term [$inst findITerm $pin]",
+    "    if {$term eq \"NULL\" || [$term getNet] eq \"NULL\"} {error \"Unbound [$inst getName] $pin\"}",
+    "    if {[[$term getNet] getName] ne $supply} {error \"Wrong supply [$inst getName] $pin\"}",
+    "  }",
+    "  incr count",
+    "}",
+    "if {$count != 20} {error \"Unexpected macro count $count\"}",
+    "puts \"PASS: $count SRAM instances, 60 supply terminal bindings\""
+  ]
+}

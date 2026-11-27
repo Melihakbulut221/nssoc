@@ -30,10 +30,10 @@ def quote(path):
 
 
 def library_script(liberties, macro_verilog, macro_defines=()):
-    flags = " ".join("-D" + name for name in macro_defines)
+    flags = ["-D" + name for name in macro_defines]
     return '\n'.join(
         ['read_liberty -lib ' + quote(p.resolve()) for p in liberties]
-        + ['read_verilog -lib ' + flags + ' ' + quote(p.resolve()) for p in macro_verilog])
+        + [" ".join(["read_verilog", "-lib", *flags, quote(p.resolve())]) for p in macro_verilog])
 
 
 def main():

@@ -1,0 +1,109 @@
+{
+  "soc_pytest": {
+    "command": "PDK_ROOT=<pinned PDK root> python -m pytest -q -rs sw/tests/test_soc*.py",
+    "passed": 418,
+    "failed": 0,
+    "skipped": 0,
+    "source_revision": "c3e1151f"
+  },
+  "historical_alu": {
+    "command": "scripts/test_historical_alu.sh",
+    "passed": 260,
+    "failed": 0,
+    "dependency_revision": "14f5b2f38ce6040433b888b3522800b1b264a04d",
+    "scope": "Five ALU suites in an isolated checkout with six restored dependencies."
+  },
+  "mirror_idempotence": {
+    "hosted_run": 45628128084,
+    "passed": 6
+  },
+  "full_rtl_cloud_workspace": {
+    "command": "make rtl-test",
+    "returncode": 2,
+    "passed": 1164,
+    "failed_test_cases": 0,
+    "unclean_groups": 5,
+    "skipped": 22,
+    "diagnostics": [
+      "Three hosted-only groups and their module registration check rejected the local environment.",
+      "The RX framer compile could not create its build directory while a concurrent repository-mirror test filled the disk."
+    ],
+    "framer_after_disk_recovery": {
+      "passed": 6,
+      "skipped": 0
+    }
+  },
+  "full_python_regression_accepted": false,
+  "historical_c10": {
+    "command": "scripts/test_historical_alu.sh",
+    "passed": 299,
+    "failed": 0,
+    "scope": "Five ALU suites and the C10 core acknowledgement protocol suite. Includes the 260 ALU tests above.",
+    "archive_sha256": "80360ad330aef4f6bb353c2a14ca0e9e5fef1a6b6421bd9f5876828554e69695"
+  },
+  "full_hosted_rtl": {
+    "command": "make rtl-test",
+    "run": 45624627371,
+    "job": 139241458935,
+    "source_commit": "3858e37e",
+    "passed": 1258,
+    "failed": 0,
+    "unclean_groups": 0,
+    "skipped": {
+      "secded": 12,
+      "tmr": 3,
+      "soc_interfaces": 6,
+      "separate_native_memory_parity": 1
+    },
+    "conclusion": "success"
+  },
+  "separate_native_memory_parity": {
+    "command": "make soc-memory-parity",
+    "positive_cases": 6,
+    "read_bus_corruption_rejected": true,
+    "cases": {
+      "h0-w16384-r0": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "deca83a4825296f27d424fc4ca102a7dd06d33e8284ec7aa927ac51f27c2c0e3"
+      },
+      "h0-w16384-r1": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "9bfcd83cc89eb5048cf1af74399cc5076ebcec7387aa8384b9d076efc4a643fa"
+      },
+      "h0-w8192-r0": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "42e615087e239b972a20f83e8efedb9a7ada2131bdb286d2a772265e4ad868da"
+      },
+      "h0-w8192-r1": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "346a6007d5b0d67ef1c5ccee775c13294b22bd7ca75ebeda08fe84b88304bb8c"
+      },
+      "h1-w8192-r0": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "9f29a762ebc4267f1ae04b07a7acf9b98c546efdfa4d63fe2c2cde6674675e9f"
+      },
+      "h1-w8192-r1": {
+        "passed": true,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "d72e347d67c70eec044ddb91732652337d642025d59a755669682f6f30518e6d"
+      },
+      "negative": {
+        "passed": false,
+        "tests": 1,
+        "sources_unchanged": true,
+        "receipt_sha256": "175c55d1462ffb8d051297cc538d2c00c6c5bf65f2376d7b059d7971114b20a8"
+      }
+    }
+  }
+}

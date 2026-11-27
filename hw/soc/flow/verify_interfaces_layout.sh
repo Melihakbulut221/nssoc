@@ -25,6 +25,7 @@ python3 - "$SOC_DIR" "$INPUT_STATE" "$CONFIG" "$OUT" <<'PY'
 import hashlib
 import json
 import sys
+import shlex
 from pathlib import Path
 
 soc, state_path, config_path, out = map(Path, sys.argv[1:])
@@ -33,9 +34,34 @@ try:
 except ValueError:
     raise SystemExit('Input state must belong to this SoC run directory')
 state = json.loads(state_path.read_text())
-profile = soc / 'pnr' / 'config-interfaces-synpre.json'
-config = json.loads(profile.read_text())
 original = json.loads((state_path.parent.parent / 'resolved.json').read_text())
+sys.path.insert(0, str(soc / 'flow'))
+from select_pnr_profile import select
+
+defines = original.get('VERILOG_DEFINES') or []
+rom = 'logic' if 'SOC_LOGIC_BOOT_ROM' in defines else 'legacy'
+profile = select(state['nl'], soc / 'pnr', rom)
+config = json.loads(profile.read_text())
+placements = lambda cfg: {k: v['instances'] for k, v in cfg['MACROS'].items()}
+if placements(config) != placements(original):
+    raise SystemExit('Input layout macro placements differ from the physical profile')
+environment = {
+    'SOC_BOOT_ROM': rom,
+    'SOC_SRAM_MBIST': int('SOC_SRAM_MBIST' in defines),
+    'SOC_ETH_SRAM': int('RM_IHPSG13_2P_256x16_c2_bm_bist' in original['MACROS']),
+    'SOC_INTERFACE_PROFILE': 'full' if 'SOC_LGPL_INTERFACES' in defines else 'base',
+}
+if rom == 'logic':
+    modules = [Path(f) for f in original['VERILOG_FILES'] if Path(f).name == 'soc_logic_boot_rom.v']
+    if len(modules) != 1:
+        raise SystemExit('Expected one recorded logic ROM module')
+    implementation = modules[0].parents[2]
+    firmware = implementation / 'firmware/test_soc.bin'
+    inputs = json.loads((implementation / 'inputs.json').read_text())
+    if (hashlib.sha256(firmware.read_bytes()).hexdigest() != inputs['boot_image_sha256'] or
+            hashlib.sha256(modules[0].read_bytes()).hexdigest() != inputs['boot_rom_sha256']):
+        raise SystemExit('The ROM image or generated module differs from the layout input')
+    environment.update(SOC_BOOT_ROM_IMAGE=str(firmware), SOC_BOOT_ROM_DIR=str(out / 'boot-rom'))
 for key in ('DESIGN_NAME', 'PDK', 'DIE_AREA', 'CORE_AREA', 'CLOCK_PERIOD'):
     if original.get(key) != config[key]:
         raise SystemExit(f'Input layout does not match the interface profile: {key}')
@@ -61,6 +87,8 @@ config['//interface_decks'] = (
     'vendor SRAM interiors by omitting their CDL models. '
     'No checker or timing constraint is relaxed.')
 out.mkdir(parents=True)
+(out / 'profile.env').write_text(''.join(
+    f'export {key}={shlex.quote(str(value))}\n' for key, value in environment.items()))
 config_path.write_text(json.dumps(config, indent=4) + '\n')
 (out / 'inputs.json').write_text(json.dumps({
     'state': str(state_path),
@@ -73,6 +101,7 @@ config_path.write_text(json.dumps(config, indent=4) + '\n')
 (out / 'input-netlist.txt').write_text(str(Path(state['nl']).resolve()) + '\n')
 PY
 
+source "$OUT/profile.env"
 export PNR_CONFIG="$CONFIG"
 export PNR_STATE="$SOC_DIR/pnr/state/${RUN_TAG}-seed.json"
 export SYN_NETLIST

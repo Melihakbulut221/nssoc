@@ -57,8 +57,8 @@ def core_physical_status(record):
     checks.append((physical["supplemental"][0]["measurement"], 11))
     for check, count in checks:
         if (check.get("status") != "PASS" or check.get("markers") != 0 or
-                check.get("category_count") != count or check.get("categories") or
-                check.get("process_returncode", 0) != 0):
+                check.get("category_count") != count or check.get("categories") != {} or
+                check.get("process_returncode", 0 if check is physical["main"] else None) != 0):
             raise ValueError("Incomplete or failing core physical measurement")
     lvs = physical["lvs"]
     if (lvs.get("status") != "PASS_WIDE_SPACING_REPAIRED_CORE_TRANSISTOR_LVS" or
@@ -98,14 +98,14 @@ def eth_mbist_physical_status(record):
     for step in steps:
         check = step["measurement"]
         if (step.get("status") != "PASS" or check.get("status") != "PASS" or
-                check.get("markers") != 0 or check.get("categories") or
+                check.get("markers") != 0 or check.get("categories") != {} or
                 check.get("category_count") != expected[step["name"]] or
                 check.get("process_returncode") != 0 or
                 not re.fullmatch(r"[0-9a-f]{64}", check.get("report_sha256", ""))):
             raise ValueError("Failed or incomplete MBIST physical measurement")
     main = drc["main"]
     if (main.get("status") != "PASS" or main.get("category_count") != 560 or
-            main.get("markers") != 0 or main.get("categories")):
+            main.get("markers") != 0 or main.get("categories") != {}):
         raise ValueError("Incomplete main rule coverage")
     def hierarchy(audit):
         circuits = audit["circuits"]

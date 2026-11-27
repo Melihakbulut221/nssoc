@@ -35,6 +35,7 @@ away, so that a reader who re-runs a step from its own directory meets
 the number instead of the surprise.
 """
 
+import hashlib
 import json
 import pathlib
 import subprocess
@@ -81,6 +82,27 @@ def _carrying_the_key(paths):
     return found
 
 
+def _archived_native_configs():
+    # The PCIe delivery copied native LibreLane step output byte for byte.
+    # Recognize only step configs in its digest inventory. An
+    # unlisted config in the same directory remains subject to the float guard.
+    directory = ROOT / "hw/soc/pcie-evidence/20261006-chip-placement-and-routed-rx"
+    inventory = (directory / "delivery-inventory.json").read_bytes()
+    assert hashlib.sha256(inventory).hexdigest() == "89d070ad938a3455d3aea1e2d2998f4fff41bd5485ce175824b102a7c41fb2ef"
+    records = json.loads(inventory)["files"]
+    configs = {}
+    for name, record in records.items():
+        path = pathlib.Path(name)
+        if path.name == "config.json" and "native-logs" in path.parts:
+            actual = directory / path
+            payload = actual.read_bytes()
+            assert len(payload) == record["bytes"], name
+            assert hashlib.sha256(payload).hexdigest() == record["sha256"], name
+            configs[actual] = json.loads(payload)
+    assert configs, "missing native step configurations in the inventory"
+    return configs
+
+
 def test_every_tracked_config_writes_the_derate_as_a_float():
     """The guard docs/72 section 14 item 4 asked for.
 
@@ -93,8 +115,12 @@ def test_every_tracked_config_writes_the_derate_as_a_float():
         "key was renamed or\nthis test is looking in the wrong place; "
         "either way it is no longer guarding anything.")
 
+    archived = _archived_native_configs()
     wrong = [(p.relative_to(ROOT).as_posix(), v) for p, v in carrying
-             if isinstance(v, bool) or not isinstance(v, float)]
+             if p not in archived and (isinstance(v, bool) or not isinstance(v, float))]
+    # Pin the observed demotion in the historical outputs as well.
+    assert any(type(record.get(KEY)) is int and record[KEY] == 5
+               for record in archived.values())
     assert not wrong, (
         "these tracked configurations write {} as something other than a "
         "float:\n  {}\n\nOpenROAD computes the derate factor in Tcl "

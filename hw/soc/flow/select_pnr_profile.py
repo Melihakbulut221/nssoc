@@ -49,7 +49,8 @@ def select(netlist, directory, rom, override=None):
         raise ValueError(f"refusing: PNR_CONFIG must be under {directory}")
     actual = mapped_macros(netlist)
     candidates = [Path(override)] if override else [directory / name for name in (
-        "config-interfaces-logicrom.json", "config-interfaces-synpre.json",
+        "config-interfaces-logicrom.json", "config-interfaces-mbist-logicrom.json",
+        "config-interfaces-synpre.json",
         "config-interfaces.json", "config-ecc-rom.json", "config-ecc.json",
         "config.json")]
     reasons = []

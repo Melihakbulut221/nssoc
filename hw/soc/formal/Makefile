@@ -57,7 +57,7 @@ REPO := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../../..)
 # having run a single proof.
 .PHONY: all bus apb apbwb clint clkwakegnt wdog wdogtmr wdog_tmr_params regfile regfilescrub busstat npuser npu gpio qspi scrub boot boot_tmr_params bytesecded memecc clkwake clean
 .DEFAULT_GOAL := all
-all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols regfilescrubcomplete regfilescrubcontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt uart pnp gptimer peripheralcontrols pcietlp pciestream reqpipe
+all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols regfilescrubcomplete regfilescrubcontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt uart pnp gptimer peripheralcontrols pcietlp pciestream pcieskid reqpipe
 
 include $(REPO)/tools.mk
 
@@ -67,7 +67,9 @@ TASKS := bmc prove cover
 reqpipe:
 	@for t in $(TASKS); do $(SBY) -f soc_req_pipe.sby $$t || exit 1; done
 
-.PHONY: pcietlp pciestream
+.PHONY: pcietlp pciestream pcieskid
+pcieskid:
+	$(SBY) -f pcie_stream_skid.sby
 pcietlp:
 	@for t in $(TASKS); do $(SBY) -f soc_pcie_tlp_regs.sby $$t || exit 1; done
 pciestream:
@@ -375,6 +377,7 @@ clkwakegnt:
 clean:
 	rm -rf $(addprefix soc_uart_,$(TASKS)) $(addprefix soc_pnp_,$(TASKS)) \
 	       $(addprefix soc_gptimer_,$(TASKS) prove_full) \
+	       $(addprefix pcie_stream_skid_,width10 width11 width12 cover12) \
 	       $(addprefix clkgate_wake_,$(CLKWAKE_TASKS)) clkgate_wake \
 	       $(addprefix soc_wdog_tmr_,$(WDOG_TMR_TASKS)) soc_wdog_tmr \
 	       soc_bus soc_bus_bmc soc_bus_prove soc_bus_cover \

@@ -132,6 +132,9 @@ def pinned_source_snapshot(prepared_sources):
 
 
 def _sg13g2_liberty():
+    if os.environ.get("PDK_ROOT"):
+        candidate = Path(os.environ["PDK_ROOT"]) / "ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib"
+        return candidate if candidate.is_file() else None
     pattern = (".ciel/ciel/ihp-sg13g2/versions/*/ihp-sg13g2/libs.ref/"
                "sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib")
     libs = sorted(Path.home().glob(pattern))

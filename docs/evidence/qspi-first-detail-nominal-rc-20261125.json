@@ -1,0 +1,77 @@
+{
+  "scope": "First completed detailed route of the 20-SRAM MBIST interface SCK candidate, before antenna repair. Native nominal RC with three cell PVT corners. No separate RCmin/RCmax models.",
+  "layout_odb_sha256": "786b3109036a98ef1cef238f1742d1566c9c95166b91c263425fde6747ff7067",
+  "route_iteration_markers": [
+    67224,
+    37962,
+    34916,
+    1371,
+    42,
+    0
+  ],
+  "final_router_report_bytes": 0,
+  "antenna_before_repair": {
+    "nets": 623,
+    "pins": 730
+  },
+  "nominal_rc_rules_sha256": "ffda02d57a6ecb39b02268be9511d89ef072911f17bd2dcd095f3f3cbeb5a905",
+  "spef_integrity": {
+    "status": "PASS within scope",
+    "nets": 101034,
+    "inconsistent_nets": 0,
+    "declared_total_pf": 1537.227398196488,
+    "serialized_total_pf": 1537.2273782331515,
+    "coupling_entries": 2046604,
+    "allow_coupling": true,
+    "difference_pf": 1.9963336399086984e-05,
+    "examples": [],
+    "input_sha256": "bb3b6eb2922e8f72e3688e223d5d4e205bd79c6abc5175809350bd74739a50af",
+    "scope": "Per-net wire-capacitance conservation only; each net includes its own coupling entries when explicitly enabled. Aggregate sums are not unique physical capacitance. Excludes RC accuracy, connectivity, coupling symmetry/model correctness, timing and manufacturing acceptance."
+  },
+  "annotation": {
+    "unannotated": 750,
+    "partially_unannotated": 0,
+    "physical_connectivity": {
+      "no_load": 112,
+      "no_net": 638
+    },
+    "requires_review": []
+  },
+  "timing": {
+    "nom_fast_1p32V_m40C": {
+      "port": {
+        "hold_ns": 0.887436,
+        "setup_ns": 10.995563
+      },
+      "design": {
+        "hold_ns": -0.615206,
+        "setup_ns": 3.639732
+      }
+    },
+    "nom_typ_1p20V_25C": {
+      "port": {
+        "hold_ns": 3.273641,
+        "setup_ns": 8.208442
+      },
+      "design": {
+        "hold_ns": 0.105134,
+        "setup_ns": 1.423112
+      }
+    },
+    "nom_slow_1p08V_125C": {
+      "port": {
+        "hold_ns": 7.622344,
+        "setup_ns": 3.138841
+      },
+      "design": {
+        "hold_ns": 0.177925,
+        "setup_ns": -9.831254
+      }
+    }
+  },
+  "native_logs_and_commands": {
+    "path": "docs/evidence/qspi-first-detail-nominal-rc-20261125.tar.xz",
+    "sha256": "d620d924d387f790dae68dbb6a4865287d34c3b4911319343b57164bc2a25f5f"
+  },
+  "verdict": "Fails whole-profile fast hold and slow setup. The unmodified SCK constraints pass on this snapshot. Independent GDS decks and the post-antenna route remain separate."
+}

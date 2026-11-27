@@ -47,13 +47,14 @@ def test_prepared_pytest_status_rejects_unearned_pass(defect):
     with pytest.raises(ValueError): project_status.python_status(record)
 
 
-@pytest.mark.parametrize("defect", ["main_markers", "incomplete_density", "antenna_error",
+@pytest.mark.parametrize("defect", ["main_markers", "missing_antenna_exit", "incomplete_density", "antenna_error",
                                     "supplement_missing", "supplement_error", "lvs_count",
                                     "gds_binding", "gds_archive", "timing", "manufacturing"])
 def test_physical_status_cannot_promote_failed_or_unbound_candidate(defect):
     record = json.loads((ROOT / "docs/evidence/sram-repaired-core-physical-20260926.json").read_text())
     physical = record["physical"]
     if defect == "main_markers": physical["main"]["markers"] = 1
+    elif defect == "missing_antenna_exit": del physical["antenna"]["process_returncode"]
     elif defect == "incomplete_density": physical["density"]["category_count"] -= 1
     elif defect == "antenna_error": physical["antenna"]["process_returncode"] = 1
     elif defect == "supplement_missing": physical["supplemental"].clear()
@@ -224,7 +225,7 @@ def test_mbist_status_accepts_complete_scoped_fixture_without_mutation():
 
 @pytest.mark.parametrize("defect", [
     "different_gds", "unbound_lvs", "unarchived", "unfinished", "missing_group", "duplicate_group",
-    "marker", "missing_categories", "bad_report", "process_error", "main_incomplete", "skipped_circuit",
+    "marker", "missing_category_map", "missing_categories", "bad_report", "process_error", "main_incomplete", "skipped_circuit",
     "unequal_devices", "duplicate_circuit", "roundtrip_drift", "missing_core", "empty_core",
     "accepted_fault", "unmutated_pins", "equal_nets", "bad_audit_exit", "logic_fail", "signoff",
 ])
@@ -238,6 +239,7 @@ def test_mbist_status_rejects_incomplete_or_false_acceptance(defect):
     elif defect == "missing_group": drc["steps"].pop()
     elif defect == "duplicate_group": drc["steps"][-1] = drc["steps"][0]
     elif defect == "marker": drc["steps"][0]["measurement"]["markers"] = 1
+    elif defect == "missing_category_map": del drc["steps"][0]["measurement"]["categories"]
     elif defect == "missing_categories": drc["steps"][0]["measurement"]["category_count"] -= 1
     elif defect == "bad_report": drc["steps"][0]["measurement"]["report_sha256"] = "missing"
     elif defect == "process_error": drc["steps"][0]["measurement"]["process_returncode"] = 1

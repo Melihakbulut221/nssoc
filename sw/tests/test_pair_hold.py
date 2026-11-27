@@ -57,8 +57,36 @@ def fixture(tmp_path,fault=None):
     return lock,nl,placement
 
 
-def test_exact_existing_single_producer_and_all_history():
-    row=m.lock(ROOT)
+def test_exact_existing_single_producer_and_all_history(tmp_path):
+    pins = locked()['frozen_method_pins']
+    snapshot = tmp_path / 'producer'
+    lock_path = snapshot / m.LOCK
+    lock_path.parent.mkdir(parents=True)
+    lock_path.write_bytes((ROOT / m.LOCK).read_bytes())
+    push_filter = (
+        b"    # Cloud evidence and storage tags must not launch unrelated engineering experiments.\n"
+        b"    branches: ['**']\n    tags-ignore: ['cloud-*']\n"
+    )
+    filtered_workflows = {
+        f'.github/workflows/timing-{stem}.yml' for stem in (
+            'hold-diagnostic', 'targeted-hold', 'combined-repair', 'eco-logic-proof',
+            'electrical-repair', 'electrical-margin', 'residual-repair',
+            'critical-followup', 'explicit-hold')
+    }
+    for name in pins:
+        data = (ROOT / name).read_bytes()
+        if name in filtered_workflows:
+            assert b'on:\n  push:\n' + push_filter + b'    paths:\n' in data
+            assert data.count(push_filter) == 1
+            data = data.replace(push_filter, b'')
+        elif name == 'hw/soc/flow/check_eco_logic_clones.py':
+            data = Path(__file__).with_name('pair_hold_producer_checker.py.txt').read_bytes()
+        dest = snapshot / name
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(data)
+    with pytest.raises(ValueError, match='Missing/changed pinned input'):
+        m.lock(ROOT)
+    row=m.lock(snapshot)
     assert len(row['frozen_method_pins'])==64 and len(row['historical_reference_metrics'])==8
     assert row['baseline_metrics']['instance_count']==103907
     assert row['producer_guard']['aggregate_estimate_guard_passed'] is True
@@ -450,3 +478,40 @@ def test_real_frozen_zip_extraction_and_producer_source_verifier(tmp_path,monkey
     else:
         assert m.eco.verify_producer_sources(capture,trial)==methods
         assert calls==[(trial['source_commit'],entry)]
+
+
+@pytest.mark.parametrize('variant', ['producer', 'current', 'current_define'])
+def test_pair_checker_accepts_identity_and_rejects_rewired_macro(tmp_path, variant):
+    import shutil
+
+    flow = ROOT / 'hw/soc/flow'
+    checker = flow / 'check_eco_logic_clones.py'
+    if variant == 'producer':
+        checker = tmp_path / checker.name
+        shutil.copyfile(Path(__file__).with_name('pair_hold_producer_checker.py.txt'), checker)
+        for module in ['eco_logic.py', 'eco_logic_clones.py']:
+            shutil.copyfile(flow / module, tmp_path / module)
+
+    lib = tmp_path / 'cells.lib'
+    lib.write_text('library(example) { cell(BUF) { pin(A) { direction: input; } '
+                   'pin(Y) { direction: output; function: "A"; } } }\n')
+    macro = tmp_path / 'macro.v'
+    macro.write_text('`ifdef PROOF_INTERFACE\nmodule macro_cell(input C, output Y);\n'
+                     '`else\nmodule macro_cell(input A, output Y);\n`endif\nendmodule\n')
+    pin = 'C' if variant == 'current_define' else 'A'
+    design = f'module soc_top(input a,b, output y); macro_cell u(.{pin}(a),.Y(y)); endmodule\n'
+    before, after = tmp_path / 'before.v', tmp_path / 'after.v'
+    before.write_text(design)
+    args = [sys.executable, str(checker), str(before), str(after), '--liberty', str(lib),
+            '--macro-verilog', str(macro)]
+    if variant == 'current_define':
+        args.extend(['--macro-verilog-define', 'PROOF_INTERFACE'])
+    after.write_text(design)
+    good = tmp_path / 'good'
+    subprocess.run([*args, '--output', str(good)], check=True)
+    assert json.loads((good / 'result.json').read_text())['status'] == 'PASS within scope'
+    after.write_text(design.replace(f'.{pin}(a)', f'.{pin}(b)'))
+    bad = tmp_path / 'bad'
+    result = subprocess.run([*args, '--output', str(bad)], capture_output=True, text=True)
+    assert result.returncode and 'State/macro input changed' in result.stderr
+    assert not (bad / 'result.json').exists()

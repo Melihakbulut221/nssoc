@@ -129,6 +129,13 @@ def main():
     ]
     for name, digest in FROZEN_SOURCES.items():
         f = ROOT / name
+        if name == "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_rx_events_v3":
+            evidence = ROOT / "hw/soc/pcie-evidence/20261007-ci-resume"
+            tested = evidence / "tested-source" / name
+            if pin(tested)["sha256"] != "c10fd2eea867a9d2e1bd01497a0a3893b38e0056ef9918c654e5dc4c8cfb9459" or f.read_bytes() != tested.read_bytes():
+                p.error("RX v3 compilation sources differ from tested October recipe")
+            files.extend([f, tested])
+            f = evidence / "before" / f.name
         if pin(f)["sha256"] != digest:
             p.error("Frozen positive-source contract changed: " + name)
         files.append(f)

@@ -96,7 +96,31 @@ initial assume (!rst_ni);
 // ---------------------------------------------------------------------
 // Observations, in terms of ports only
 // ---------------------------------------------------------------------
-wire        f_gnt     = mi_gnt_o || md_gnt_o;
+// An optional input queue can accept a new CPU request while the data
+// port wins the fabric. Track queue admission and fabric issue separately.
+`ifdef SOC_BUS_IREQ_REG
+wire f_issue_i = i_take;
+reg [31:0] f_issue_addr;
+reg f_input_full;
+always @(posedge clk_i or negedge rst_ni)
+    if (!rst_ni) begin
+        f_input_full <= 0;
+        f_issue_addr <= 0;
+    end else begin
+        if (mi_gnt_o) f_issue_addr <= mi_addr_i;
+        f_input_full <= mi_gnt_o || (f_input_full && !f_issue_i);
+    end
+always @(posedge clk_i) if (rst_ni) begin
+    assert (f_input_full == ir_val);
+    assert (!f_input_full || f_issue_addr == ir_addr);
+    assert (!f_issue_i || f_input_full);
+    assert (!mi_gnt_o || !f_input_full || f_issue_i);
+end
+`else
+wire f_issue_i = mi_gnt_o;
+wire [31:0] f_issue_addr = mi_addr_i;
+`endif
+wire        f_gnt     = f_issue_i || md_gnt_o;
 wire [2:0]  f_tgt_idx = s_req_o[0] ? 3'd0 :
                         s_req_o[1] ? 3'd1 :
                         s_req_o[2] ? 3'd2 :
@@ -146,7 +170,7 @@ end
 
 wire f_take     = (REQ_REG == 0) ? f_gnt    : f_fly_xfer;
 wire f_take_own = (REQ_REG == 0) ? md_gnt_o : f_fly_own;
-wire f_take_i   = (REQ_REG == 0) ? mi_gnt_o : (f_fly_xfer && !f_fly_own);
+wire f_take_i   = (REQ_REG == 0) ? f_issue_i : (f_fly_xfer && !f_fly_own);
 wire f_take_d   = (REQ_REG == 0) ? md_gnt_o : (f_fly_xfer &&  f_fly_own);
 
 // Whether a request is being PRESENTED to a target this cycle, which is
@@ -201,8 +225,8 @@ always @(posedge clk_i or negedge rst_ni) begin
         f_lock_d <= 3'd0;
         for (f_s = 0; f_s < F_NS; f_s = f_s + 1) f_occ[f_s] <= 4'd0;
     end else begin
-        if (mi_gnt_o && !mi_rvalid_o) f_out_i <= f_out_i + 3'd1;
-        if (!mi_gnt_o && mi_rvalid_o) f_out_i <= f_out_i - 3'd1;
+        if (f_issue_i && !mi_rvalid_o) f_out_i <= f_out_i + 3'd1;
+        if (!f_issue_i && mi_rvalid_o) f_out_i <= f_out_i - 3'd1;
         if (md_gnt_o && !md_rvalid_o) f_out_d <= f_out_d + 3'd1;
         if (!md_gnt_o && md_rvalid_o) f_out_d <= f_out_d - 3'd1;
         // The LOCK moves with the request, not with the grant: it
@@ -445,7 +469,7 @@ always @(posedge clk_i) if (rst_ni) begin
 
     // F3b. One master at a time. Both granted in one cycle would put two
     //      addresses on one broadcast bus.
-    assert (!(mi_gnt_o && md_gnt_o));
+    assert (!(f_issue_i && md_gnt_o));
 
     // F3c. A transfer to a real slave requires that slave to have
     //      accepted. The error slave is internal and always ready, so
@@ -487,8 +511,8 @@ always @(posedge clk_i) if (rst_ni) begin
             if (!f_fly_own) assert (s_we_o == 1'b0);
         end
     end else begin
-        if (mi_gnt_o) begin
-            assert (s_addr_o == mi_addr_i);
+        if (f_issue_i) begin
+            assert (s_addr_o == f_issue_addr);
             assert (s_we_o == 1'b0);
         end
         if (md_gnt_o) begin
@@ -508,7 +532,7 @@ reg [31:0] f_cap_addr, f_cap_wdata;
 reg        f_cap_we;
 reg  [3:0] f_cap_be;
 always @(posedge clk_i) if ((REQ_REG != 0) && f_gnt) begin
-    f_cap_addr  <= md_gnt_o ? md_addr_i  : mi_addr_i;
+    f_cap_addr  <= md_gnt_o ? md_addr_i  : f_issue_addr;
     f_cap_we    <= md_gnt_o ? md_we_i    : 1'b0;
     f_cap_be    <= md_gnt_o ? md_be_i    : 4'hF;
     f_cap_wdata <= md_gnt_o ? md_wdata_i : 32'h0;
@@ -768,6 +792,10 @@ end
 integer f_g;
 always @(posedge clk_i) if (f_past_valid && $past(rst_ni) && rst_ni
                             && !$past(clk_en_o)) begin
+`ifdef SOC_BUS_IREQ_REG
+    assert ($stable(ir_val));
+    assert ($stable(ir_addr));
+`endif
     assert (issue_en   == $past(issue_en));
     assert (last_was_d == $past(last_was_d));
     assert (err_rvalid == $past(err_rvalid));
@@ -798,6 +826,16 @@ always @(posedge clk_i) if (f_past_valid && $past(rst_ni) && rst_ni
         assert (s_wdata_o == $past(s_wdata_o));
     end
 end
+
+`ifdef SOC_BUS_WDATA_OWN
+generate if (REQ_REG != 0) begin : g_f10_wdata
+    always @(posedge clk_i)
+        if (f_past_valid && $past(rst_ni) && rst_ni && !$past(clk_en_o)) begin
+            assert ($stable(g_req_reg.r_wdata_d));
+            assert ($stable(g_req_reg.r_wdata));
+        end
+end endgenerate
+`endif
 
 // F10b. And the enable is not the constant 1, which is the vacuity
 //       check docs/09 section B.1 requires of a new property: a gate

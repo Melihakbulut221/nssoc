@@ -27,14 +27,14 @@ setup:
 	@$(PYTHON) -c 'import sys; assert (3,9) <= sys.version_info[:2] <= (3,13), "cocotb 2.0.1 requires Python 3.9-3.13; set PYTHON to a compatible interpreter"'
 	$(PYTHON) -m venv $(ROOT)/.venv
 	$(PYTHON) -m venv $(ROOT)/hw/.venv
-	$(PY) -m pip install -r $(ROOT)/sw/requirements.txt
+	$(PY) -m pip install -r $(ROOT)/sw/requirements.txt -r $(ROOT)/hw/requirements.txt
 	$(ROOT)/hw/.venv/bin/python -m pip install -r $(ROOT)/hw/requirements.txt
 
 test:
-	cd $(ROOT) && $(PY) -m pytest -q
+	cd $(ROOT) && $(PY) scripts/run_prepared_cocotb.py --pytest -q $(PYTEST_ARGS)
 
 rtl-test: soc-interfaces-prepare
-	cd $(ROOT) && scripts/run_cocotb.sh
+	cd $(ROOT) && $(PYTHON) scripts/run_prepared_cocotb.py
 
 check:
 	cd $(ROOT) && scripts/ci_local.sh all
@@ -100,7 +100,7 @@ soc-interfaces-prepare:
 
 .PHONY: soc-interfaces-test soc-interfaces-sim
 soc-interfaces-test: soc-interfaces-prepare
-	cd $(ROOT) && scripts/run_cocotb.sh soc_interfaces
+	cd $(ROOT) && $(PYTHON) scripts/run_prepared_cocotb.py soc_interfaces
 
 soc-interfaces-sim: soc-interfaces-prepare
 	cd $(ROOT) && PATH="$(ROOT)/.venv/bin:$$PATH" SW_DEFINES=-DINTERFACE_DEMO IBEX_REGFILE=secded SOC_MEM_HARDEN=1 SOC_ROM_HARDEN=1 SOC_MEM_RDREG=1 SOC_REQ_REG=1 SOC_RF_SYNPRE=1 bash hw/soc/flow/sim_soc.sh hw/soc/out/interfaces-cpu
@@ -116,3 +116,10 @@ soc-interfaces-decks:
 .PHONY: soc-memory-parity
 soc-memory-parity:
 	bash $(ROOT)/scripts/check_soc_memory_parity.sh $(PARITY_OUT)
+
+.PHONY: check-native-lvs
+check-native-lvs: export LVS_DB := $(value LVS_DB)
+check-native-lvs: export LVS_TOP := $(value LVS_TOP)
+check-native-lvs:
+	@test -n "$$LVS_DB" && test -n "$$LVS_TOP" || { echo 'Set LVS_DB and LVS_TOP' >&2; exit 2; }
+	klayout -b -r "$(ROOT)/hw/soc/flow/check_native_lvs.rb" -rd "db=$$LVS_DB" -rd "top=$$LVS_TOP"

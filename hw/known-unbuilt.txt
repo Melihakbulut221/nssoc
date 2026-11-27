@@ -39,3 +39,125 @@ soc_pcie_gen3_tx_path	Standalone four-lane fixed130/32 TX with actual128bit payl
 soc_pcie_gen3_variable_tx	Standalone four-lane66/98/130/162/194bit block-to32bit TX reservoir; actual port and native tests, caller-owned contents, no SKP policy, RX rate compensation, PMA or main-chip integration.
 soc_pcie_gen3_tx_path_v2	Standalone parallel-prefix TX timing experiment preserving byte-control stream behavior; native ports pass but the unchanged slow-corner cell-only4ns screen fails. Not selected in the product hierarchy.
 soc_pcie_gen3_tx_path_v3	Standalone two-stage TX pipeline; RTL/native streams and three-corner cell-only development screens pass, while actual placement timing is still under repair. No PHY or main-chip physical integration.
+
+# Standalone PCIe PHY development hierarchy, inventoried from the module bodies.
+nssoc_benz_8b10b_decode	Instantiated by standalone soc_pcie_gen12_8b10b_decode. The product hierarchy uses the packet-level PCIe interface.
+nssoc_benz_8b10b_encode	Instantiated by standalone soc_pcie_gen12_8b10b_encode. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen12_8b10b_decode	Instantiated by standalone soc_pcie_gen12_codec_lane, soc_pcie_gen12_raw32_rx. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen12_8b10b_encode	Instantiated by standalone soc_pcie_gen12_codec_lane, soc_pcie_gen12_tx_raw32. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen12_codec_lane	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen12_codec_lane.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen12_raw32_align	Instantiated by standalone soc_pcie_gen12_raw32_rx. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen12_raw32_rx	Instantiated by standalone soc_pcie_gen12_training_records. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen12_record_cdc_v1	Instantiated by standalone soc_pcie_gen12_recovered_records_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen12_recovered_records_v1	Instantiated by standalone soc_pcie_training_ingress_x4_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen12_training_records	Instantiated by standalone soc_pcie_gen12_recovered_records_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen12_tx_raw32	Instantiated by standalone soc_pcie_gen12_training_records. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_block_cdc_v1	Instantiated by standalone soc_pcie_gen12_record_cdc_v1, soc_pcie_gen3_recovered_front_x4_v1, soc_pcie_gen3_recovered_x4_v1, soc_pcie_gen3_recovered_x4_v2, soc_pcie_gen3_recovered_x4_v3, soc_pcie_gen3_recovered_x4_v4. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v1	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v1.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v10	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v10.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v11	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v11.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v12	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v12.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v13	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v13.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v14	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v14.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v17	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v17.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v18	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v18.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v19	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v19.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v2	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v2.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v20	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v20.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v21	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v21.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v22	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v22.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v23	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v23.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v24	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v24.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v25	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v25.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v26	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v26.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v27	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v27.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v28	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v28.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v29	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v29.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v3	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v3.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v30	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v30.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v4	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v4.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v5	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v5.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v6	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v6.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v7	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v7.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_integrity_v9	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v9.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_owned_v1	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_owned_v1.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_owned_v2	Instantiated by standalone soc_pcie_gen3_rx_events_v1, soc_pcie_gen3_rx_events_v2, soc_pcie_gen3_rx_events_v3, soc_pcie_gen3_rx_events_v4, soc_pcie_gen3_rx_events_v5. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_continuous_rx_wide	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_wide.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_data_descrambler	Instantiated by standalone soc_pcie_gen3_continuous_rx, soc_pcie_gen3_continuous_rx_integrity_v1, soc_pcie_gen3_continuous_rx_integrity_v10, soc_pcie_gen3_continuous_rx_integrity_v11, soc_pcie_gen3_continuous_rx_integrity_v12, soc_pcie_gen3_continuous_rx_integrity_v13, soc_pcie_gen3_continuous_rx_integrity_v14, soc_pcie_gen3_continuous_rx_integrity_v17, soc_pcie_gen3_continuous_rx_integrity_v18, soc_pcie_gen3_continuous_rx_integrity_v19, soc_pcie_gen3_continuous_rx_integrity_v2, soc_pcie_gen3_continuous_rx_integrity_v20, soc_pcie_gen3_continuous_rx_integrity_v21, soc_pcie_gen3_continuous_rx_integrity_v22, soc_pcie_gen3_continuous_rx_integrity_v23, soc_pcie_gen3_continuous_rx_integrity_v24, soc_pcie_gen3_continuous_rx_integrity_v25, soc_pcie_gen3_continuous_rx_integrity_v26, soc_pcie_gen3_continuous_rx_integrity_v27, soc_pcie_gen3_continuous_rx_integrity_v28, soc_pcie_gen3_continuous_rx_integrity_v29, soc_pcie_gen3_continuous_rx_integrity_v3, soc_pcie_gen3_continuous_rx_integrity_v30, soc_pcie_gen3_continuous_rx_integrity_v4, soc_pcie_gen3_continuous_rx_integrity_v5, soc_pcie_gen3_continuous_rx_integrity_v6, soc_pcie_gen3_continuous_rx_integrity_v7, soc_pcie_gen3_continuous_rx_integrity_v9, soc_pcie_gen3_continuous_rx_owned_v1, soc_pcie_gen3_continuous_rx_owned_v2, soc_pcie_gen3_continuous_rx_wide. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_dllp_consumer_v1	Instantiated by standalone soc_pcie_gen3_rx_events_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_dllp_consumer_v2	Instantiated by standalone soc_pcie_gen3_rx_events_v2. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_dllp_consumer_v3	Instantiated by standalone soc_pcie_gen3_rx_events_v3. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_dllp_consumer_v4	Instantiated by standalone soc_pcie_gen3_rx_events_v4. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_dllp_consumer_v5	Instantiated by standalone soc_pcie_gen3_recovered_events_v1, soc_pcie_gen3_rx_events_v5. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_dllp_consumer_v6	Instantiated by standalone soc_pcie_gen3_recovered_events_v2, soc_pcie_gen3_recovered_events_v3. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx	Instantiated by standalone soc_pcie_gen3_packet_rx_path. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v1	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v10	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v10. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v11	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v11. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v12	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v12. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v13	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v13. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v14	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v14. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v17	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v17. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v18	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v18. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v19	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v19. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v2	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v2. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v20	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v20. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v21	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v21. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v22	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v22. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v23	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v23. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v24	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v24. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v25	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v25. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v26	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v26. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v27	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v27. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v28	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v28. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v29	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v29. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v3	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v3. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v30	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v30. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v4	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v4. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v5	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v5. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v6	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v6. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v7	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v7. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v8	Instantiated by standalone soc_pcie_gen3_recovered_packet_rx_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_integrity_v9	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v9. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_owned_v1	Instantiated by standalone soc_pcie_gen3_continuous_rx_owned_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_owned_v2	Instantiated by standalone soc_pcie_gen3_continuous_rx_owned_v2. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_owned_v3	Instantiated by standalone soc_pcie_gen3_recovered_owned_rx_v1, soc_pcie_gen3_recovered_owned_rx_v2. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_prefetch	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_prefetch.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_prefetch_v2	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_prefetch_v2.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_v2	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_v2.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_v3	Instantiated by standalone soc_pcie_gen3_continuous_rx. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_rx_v4	Instantiated by standalone soc_pcie_gen3_continuous_rx_wide. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_framer_tx	Instantiated by standalone soc_pcie_gen3_packet_tx_path. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_ingress	Instantiated by standalone soc_pcie_gen3_continuous_rx, soc_pcie_gen3_continuous_rx_integrity_v1, soc_pcie_gen3_continuous_rx_integrity_v10, soc_pcie_gen3_continuous_rx_integrity_v2, soc_pcie_gen3_continuous_rx_integrity_v3, soc_pcie_gen3_continuous_rx_integrity_v4, soc_pcie_gen3_continuous_rx_integrity_v5, soc_pcie_gen3_continuous_rx_integrity_v6, soc_pcie_gen3_continuous_rx_integrity_v7, soc_pcie_gen3_continuous_rx_integrity_v9, soc_pcie_gen3_continuous_rx_owned_v1, soc_pcie_gen3_continuous_rx_owned_v2, soc_pcie_gen3_continuous_rx_wide. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_ingress_integrity_v11	Instantiated by standalone soc_pcie_gen3_continuous_rx_integrity_v11, soc_pcie_gen3_continuous_rx_integrity_v12, soc_pcie_gen3_continuous_rx_integrity_v13, soc_pcie_gen3_continuous_rx_integrity_v14, soc_pcie_gen3_continuous_rx_integrity_v17, soc_pcie_gen3_continuous_rx_integrity_v18, soc_pcie_gen3_continuous_rx_integrity_v19, soc_pcie_gen3_continuous_rx_integrity_v20, soc_pcie_gen3_continuous_rx_integrity_v21, soc_pcie_gen3_continuous_rx_integrity_v22, soc_pcie_gen3_continuous_rx_integrity_v23, soc_pcie_gen3_continuous_rx_integrity_v24, soc_pcie_gen3_continuous_rx_integrity_v25, soc_pcie_gen3_continuous_rx_integrity_v26, soc_pcie_gen3_continuous_rx_integrity_v27, soc_pcie_gen3_continuous_rx_integrity_v28, soc_pcie_gen3_continuous_rx_integrity_v29, soc_pcie_gen3_continuous_rx_integrity_v30. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_lane_align_v1	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v1.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_lane_align_v2	Instantiated by standalone soc_pcie_gen3_recovered_x4_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_lane_align_v3	Instantiated by standalone soc_pcie_gen3_recovered_front_x4_v1, soc_pcie_gen3_recovered_x4_v2, soc_pcie_gen3_recovered_x4_v3, soc_pcie_gen3_recovered_x4_v4. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_packet_duplex	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_packet_duplex.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_packet_rx_path	Instantiated by standalone soc_pcie_gen3_packet_duplex. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_packet_tx_path	Instantiated by standalone soc_pcie_gen3_packet_duplex. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_record_descrambler_v1	Instantiated by standalone soc_pcie_gen3_recovered_x4_v3, soc_pcie_gen3_recovered_x4_v4, soc_pcie_gen3_recovered_x4_v5. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_events_v1	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v1.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_events_v2	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_events_v3	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v3.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_front_x4_v1	Instantiated by standalone soc_pcie_gen3_recovered_x4_v5, soc_pcie_training_ingress_x4_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_owned_rx_v1	Instantiated by standalone soc_pcie_gen3_recovered_events_v1, soc_pcie_gen3_recovered_events_v2. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_owned_rx_v2	Instantiated by standalone soc_pcie_gen3_recovered_events_v3. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_packet_rx_v1	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_recovered_packet_rx_v1.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_x4_v1	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v1.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_x4_v2	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v2.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_x4_v3	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v3.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_x4_v4	Instantiated by standalone soc_pcie_gen3_recovered_owned_rx_v1, soc_pcie_gen3_recovered_packet_rx_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_recovered_x4_v5	Instantiated by standalone soc_pcie_gen3_recovered_owned_rx_v2. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_rx_events_v1	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v1.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_rx_events_v2	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v2.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_rx_events_v3	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v3.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_rx_events_v4	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v4.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_rx_events_v5	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v5.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_sds_deskew_v1	Instantiated by standalone soc_pcie_gen3_recovered_x4_v2, soc_pcie_gen3_recovered_x4_v3. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_sds_deskew_v2	Instantiated by standalone soc_pcie_gen3_recovered_x4_v4, soc_pcie_gen3_recovered_x4_v5. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_stp	Instantiated by standalone soc_pcie_gen3_framer_tx. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_gen3_tx_path_v4	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_gen3_tx_path_v4.v. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_training_epoch_control_v1	Instantiated by standalone soc_pcie_training_ingress_x4_v1. The product hierarchy uses the packet-level PCIe interface.
+soc_pcie_training_ingress_x4_v1	Standalone development top declared in hw/soc/rtl/pcie/soc_pcie_training_ingress_x4_v1.v. The product hierarchy uses the packet-level PCIe interface.

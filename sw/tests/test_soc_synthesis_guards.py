@@ -252,6 +252,9 @@ else:
 
 
 def _sg13g2_liberty():
+    if os.environ.get("PDK_ROOT"):
+        candidate = Path(os.environ["PDK_ROOT"]) / "ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib"
+        return candidate if candidate.is_file() else None
     pattern = (".ciel/ciel/ihp-sg13g2/versions/*/ihp-sg13g2/libs.ref/"
                "sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib")
     libs = sorted(Path.home().glob(pattern))
@@ -2093,9 +2096,10 @@ def test_the_fabric_does_not_gate_its_request_path_with_the_reset_net():
             "section 5 measured what that costs.".format(m.group(1)))
     assert re.search(r"reg\s+issue_en\b", body), (
         "hw/soc/rtl/soc_bus.v no longer declares issue_en")
-    assert len(re.findall(r"wire\s+can_issue_[id]\s*=", body)) == 2, (
-        "hw/soc/rtl/soc_bus.v no longer has exactly two can_issue gates; "
-        "this guard needs updating rather than deleting")
+    requests = re.findall(r"wire\s+can_issue_([id])\s*=\s*issue_en\s*&&\s*(\w+)", body)
+    assert sorted(requests) == [("d", "md_req_i"), ("i", "ir_val"), ("i", "mi_req_i")]
+    for assignment in re.findall(r"wire\s+can_issue_[id]\s*=([^;]+);", body):
+        assert "rst_ni" not in assignment
 
 
 def test_the_registered_request_phase_ships_off_and_is_forwarded():
@@ -3395,6 +3399,9 @@ def test_every_pnr_config_declares_every_macro_the_rtl_instantiates():
 
 
 def _sg13g2_tech_lef():
+    if os.environ.get("PDK_ROOT"):
+        candidate = Path(os.environ["PDK_ROOT"]) / "ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_tech.lef"
+        return candidate if candidate.is_file() else None
     pattern = (".ciel/ciel/ihp-sg13g2/versions/*/ihp-sg13g2/libs.ref/"
                "sg13g2_stdcell/lef/sg13g2_tech.lef")
     lefs = sorted(Path.home().glob(pattern))

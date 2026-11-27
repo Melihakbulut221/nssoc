@@ -1,0 +1,124 @@
+{
+  "status": "PASS",
+  "scope": "LibreLane devshell / full IHP PDK / upstream SPM example only",
+  "source_sha256": "6512144ace4f5791916273c126f857d3d73c9b46a19b00eeee5802577f97b5e5",
+  "commands": [
+    {
+      "command": [
+        "librelane",
+        "--version"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.41637369599999374,
+      "log_sha256": "0eaf500dff5de49997f4f0e0f49c015bd59b72d00ab4a48b6f7aff39ee2972be"
+    },
+    {
+      "command": [
+        "openroad",
+        "-version"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.11457741399999577,
+      "log_sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae"
+    },
+    {
+      "command": [
+        "yosys",
+        "-V"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.007904483999993772,
+      "log_sha256": "76e506cbb7d03bec5a2d7083d6c4b1a6e99eae2efdbfc0b499710840c232c5dd"
+    },
+    {
+      "command": [
+        "ciel",
+        "enable",
+        "--pdk",
+        "ihp-sg13g2",
+        "--pdk-root",
+        "/workspace/nssoc/hw/soc/tools/pdk-bootstrap-ca",
+        "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c"
+      ],
+      "returncode": 0,
+      "elapsed_s": 10.711268591000021,
+      "log_sha256": "b838daab419456b2a2037288d34193e13848ca0912f74c4993e9fa5ee67eb2f7"
+    },
+    {
+      "command": [
+        "librelane",
+        "--pdk",
+        "ihp-sg13g2",
+        "--pdk-root",
+        "/workspace/nssoc/hw/soc/tools/pdk-bootstrap-ca",
+        "--run-tag",
+        "BOOTSTRAP",
+        "--run-example",
+        "spm"
+      ],
+      "returncode": 0,
+      "elapsed_s": 108.94929009000003,
+      "log_sha256": "0f23a451b066b0cc5848e3e4635c687e767210dd6f9f893448edb3191cc2f574"
+    }
+  ],
+  "librelane_version": "3.0.5",
+  "pdk_pin": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+  "pdk_hashes_sha256": "bf6b5088fb0fbd2874a6a52440331fbabc7455f6a2a227cb4da8999939d80153",
+  "tools": {
+    "librelane": {
+      "path": "/nix/store/ffl2vg3m80k0p74pyffnmai83fnv38mf-python3-3.13.9-env/bin/librelane",
+      "sha256": "95cfb030f81200fb943e306213235193b731c89aa94378ddb45f8cba0340a2a8"
+    },
+    "ciel": {
+      "path": "/nix/store/ffl2vg3m80k0p74pyffnmai83fnv38mf-python3-3.13.9-env/bin/ciel",
+      "sha256": "cc95bee252719cf6d166f79486d04fa3bb125b19f7a3fe609910852b19784f41"
+    },
+    "openroad": {
+      "path": "/nix/store/mdidx1z155x3fgnmslssk76wi9jmw45f-openroad-2026-02-17-python3-3.13.9-env/bin/openroad",
+      "sha256": "e41c3de2e496258357b41e9e9bdc8d9036cff6f53ffda2c2f61daef5bc827afc"
+    },
+    "yosys": {
+      "path": "/nix/store/vqq4mi8prw8x5rfwz7b3136rqi8v70m7-yosys-with-plugins-0.62-python3-3.13.9-env/bin/yosys",
+      "sha256": "63b1229caf9f50360cf9c61d6b812a82b2d81155306e3d3c72fd89b675b732ba"
+    },
+    "magic": {
+      "path": "/nix/store/i68lxdmnc7422hvlabbmrhss4sqqkjzq-magic-vlsi-8.3.623/bin/magic",
+      "sha256": "9ffdc249b0464611c2ecdf58d5bd65ff21907f91281a6eb23a8f83cfb622f0a8"
+    },
+    "klayout": {
+      "path": "/nix/store/c8mymw0gckkiw7lqwnm2l6mqnd99xmzy-klayout-0.30.7/bin/klayout",
+      "sha256": "9871282c43f561b7e3094f15f71fbd825bb0bf4f376f4651999cad15e115d67a"
+    },
+    "netgen": {
+      "path": "/nix/store/kw3frc6fbv3zi2m9n0wv93y1nfiyjiy6-netgen-1.5.316/bin/netgen",
+      "sha256": "ee0e49db5f9c1804ae3404f37bef23bb0facb6f7aa99dc05e3c5780f8abe41cf"
+    }
+  },
+  "enabled_pdk": "/workspace/nssoc/hw/soc/tools/pdk-bootstrap-ca/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2",
+  "views": {
+    "spm/runs/BOOTSTRAP/final/gds/spm.gds": {
+      "bytes": 690098,
+      "sha256": "a5dc1df1f419b65700d5fce1028b3e7d0a9d59cd0cfb8472048203a627771785"
+    },
+    "spm/runs/BOOTSTRAP/final/klayout_gds/spm.klayout.gds": {
+      "bytes": 409604,
+      "sha256": "b85b72068c467ca10a6eca4dde901d7ae9198e74cdcbd2c97977358ed405b89d"
+    },
+    "spm/runs/BOOTSTRAP/final/mag_gds/spm.magic.gds": {
+      "bytes": 690098,
+      "sha256": "a5dc1df1f419b65700d5fce1028b3e7d0a9d59cd0cfb8472048203a627771785"
+    },
+    "spm/runs/BOOTSTRAP/final/def/spm.def": {
+      "bytes": 364518,
+      "sha256": "420c440159969c16b2ab816b73bafe4e0cda8aaaf4dc22749c9a0e52a29e6148"
+    },
+    "spm/runs/BOOTSTRAP/final/nl/spm.nl.v": {
+      "bytes": 52238,
+      "sha256": "2e2187da1861de63ebf72a5c61da272ea1e6028eb15057335fd71c6f1778793b"
+    },
+    "spm/runs/BOOTSTRAP/final/pnl/spm.pnl.v": {
+      "bytes": 74876,
+      "sha256": "630ef2ba81c079044270272dc64250b5c41ebafae9993600276c185700d2a18e"
+    }
+  }
+}
